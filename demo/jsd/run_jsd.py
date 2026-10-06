@@ -76,6 +76,24 @@ def load_conditions():
             conds["contagion"] = (norm(c["w_TV_contagion"]), c.get("gamma_TV", 0.83))
     except Exception:
         pass
+    try:
+        q = json.load(open(f"{BASE}/multiexecutor_checkpoint.json"))
+        r0 = (q.get("results") or [{}])[0]
+        wq = r0.get("w_TV", r0.get("w_T", {}))
+        if wq:
+            conds["multiexecutor"] = (norm(wq), abs(r0.get("gTV", 1.0)))
+    except Exception:
+        pass
+    try:
+        qp = json.load(open(f"{BASE}/mm_epc_qwen_partial.json"))
+        # INTERRUPTED run (N_valid=5/7, account arrearage): partial data used
+        # as-is with the caveat recorded, not imputed.
+        rp = (qp.get("results") or [{}])[0]
+        wq = rp.get("w_TV", rp.get("w_T", {}))
+        if wq:
+            conds["qwen-partial(N=5*)"] = (norm(wq), abs(rp.get("gamma_TV", 1.23)))
+    except Exception:
+        pass
     return conds
 
 
