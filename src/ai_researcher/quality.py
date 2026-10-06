@@ -66,6 +66,9 @@ MECHANICAL = {
         ("C4-double-blind", "manuscript carries no author identity, acknowledgments, or links to non-anonymous material"),
         ("C5-references-resolve", "every citation has a resolvable target (no hallucinated refs)"),
         ("C6-pages", "main content within the venue page limit"),
+        ("C7-contribution-delta", "the contribution is stated as a concrete change (output/operation/representation/assumption), not a novelty label"),
+        ("C8-comparison-purpose", "every comparison states what decision it resolves, what stays fixed, and what changes"),
+        ("C9-bounded-lesson", "ends with what readers can reconsider, separating observation / interpretation / proposed action, plus transfer limits"),
     ],
     "tmlr": [
         ("T1-numbers-trace", "every number traces to evidence file + field"),
@@ -175,6 +178,27 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             out.append((cid, True, "mechanical pass; hallucination scan is a separate gate"))
         elif cid.endswith("pages"):
             out.append((cid, True, "page count checked at submission render, not here"))
+        elif cid.endswith("contribution-delta"):
+            low = text.lower()
+            has_change = any(k in low for k in ("compared to", "differs", "whereas",
+                                                "instead of", "unlike", "whereas",
+                                                "change", "difference"))
+            has_label_only = ("novel" in low or "innovative" in low) and not has_change
+            out.append((cid, not has_label_only,
+                        "ok" if not has_label_only
+                        else "novelty label without a stated concrete change"))
+        elif cid.endswith("comparison-purpose"):
+            low = text.lower()
+            ok = ("fixed" in low or "controlled" in low or "held constant" in low
+                  or "same " in low)
+            out.append((cid, ok,
+                        "ok" if ok else "no comparison states what stays fixed"))
+        elif cid.endswith("bounded-lesson"):
+            low = text.lower()
+            ok = (("lesson" in low or "takeaway" in low or "reconsider" in low)
+                  and ("limitation" in low or "limit" in low))
+            out.append((cid, ok,
+                        "ok" if ok else "no bounded lesson (takeaway + transfer limits)"))
         elif cid.endswith("not-survey"):
             low = text.lower()
             out.append((cid, "survey" not in low.split("\n")[0],

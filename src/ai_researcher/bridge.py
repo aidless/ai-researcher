@@ -176,6 +176,16 @@ def cmd_bridge(args):
           "## What would change this section",
           "- A larger replication (n>=200) with a preregistered McNemar analysis.",
           "- A second model family: transfer is a claim about families, not instances."]
+    # Bounded lesson (oral practice #7): what readers can reconsider, separated
+    # into observation / interpretation / proposed action, plus transfer limits.
+    d += ["", "## Bounded lesson", "",
+          "Observation: " + (rows[0]["claim"] if rows else "no claims") + ".",
+          "Interpretation: see kill-switch verdict and robustness distribution above; "
+          "neither is stated here as fact about any other setting.",
+          "Proposed action: replicate the exact procedure before citing; "
+          "do not port the numbers to a different model, metric, or n.",
+          "Transfer limits: single-replication evidence unless the ledger says "
+          "otherwise; magnitude comparisons across different-sized sets are invalid."]
     (out / "DRAFT_SEED.md").write_text("\n".join(d) + "\n", encoding="utf-8")
 
     # copy the signed evidence alongside

@@ -55,6 +55,11 @@ class Envelope:
     seed: int = 0           # fixed seed for the methods command (EVO_SEED); 0 = not fixed
     power: object = None    # Power; None = not declared (refused by validate)
     negative_publish: str = ""  # what happens on refute: "replication-report" | "archive" (must choose)
+    tension: str = ""       # the research tension (oral practice #1 + Hamming):
+                            # an unmet operational requirement OR a discrepancy between
+                            # theoretical expectation and reported observation, plus what
+                            # answering it would change. A hypothesis without a tension
+                            # is a solution in search of a problem and is refused.
 
     def validate(self) -> list:
         """Return a list of problems. Empty means executable."""
@@ -94,6 +99,10 @@ class Envelope:
         if self.negative_publish not in ("replication-report", "archive"):
             problems.append("negative_publish must be 'replication-report' or 'archive': "
                             "a refute without a publication plan is publication bias by design")
+        if len(self.tension.strip()) < 50:
+            problems.append("tension too short (<50 chars): state the unmet requirement or "
+                            "the theory-vs-observation discrepancy, plus what answering it "
+                            "would change. Cf. Hamming: which important problem is this?")
         return problems
 
     def to_dict(self) -> dict:
@@ -110,6 +119,7 @@ class Envelope:
             "approved_by": self.approved_by,
             "approved_at": self.approved_at,
             "seed": self.seed,
+            "tension": self.tension,
             "power": {"n": p.n, "alpha": p.alpha,
                       "min_detectable_effect": p.min_detectable_effect,
                       "power_at_mde": p.power_at_mde} if p else None,
@@ -132,6 +142,7 @@ class Envelope:
             seed=int(d.get("seed", 0)),
             power=Power(**pd) if isinstance(pd, dict) else None,
             negative_publish=d.get("negative_publish", ""),
+            tension=d.get("tension", ""),
         )
 
     def save(self, path) -> None:

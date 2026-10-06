@@ -53,7 +53,9 @@ SEED_GAPS = [
      "falsifies": "balanced subset erases the cross-model excess (pattern was an artifact of slot counts)",
      "tier": "T0",
      "needs": "committed per-strategy weights",
-     "venue": "workshop or appendix extension"},
+     "venue": "workshop or appendix extension",
+     "importance": "",
+     "bold": False},
     {"id": "mm-epc-evaluator-diversity",
      "source": "mm-epc/paper/mm_epc_paper.tex:489",
      "gap": "findings specific to GPT-4o as evaluator; Claude/Gemini/Qwen-VL unknown",
@@ -61,7 +63,9 @@ SEED_GAPS = [
      "falsifies": "no tested evaluator exceeds 1.5x (collapse is GPT-4o-specific, not general)",
      "tier": "T2",
      "needs": "paid multimodal API calls, ~2000 per evaluator",
-     "venue": "full paper if positive, workshop if mixed"},
+     "venue": "full paper if positive, workshop if mixed",
+     "importance": "",
+     "bold": False},
     {"id": "gsm8k-cross-model-transfer",
      "source": "gsm8k round-2 established step-calc on qwen2.5:7b only",
      "gap": "policy effect may be model-specific; no cross-family evidence",
@@ -69,7 +73,9 @@ SEED_GAPS = [
      "falsifies": "gain <= 0 on the second family (effect does not transfer)",
      "tier": "T1",
      "needs": "local ollama, 160 calls, ~25 min",
-     "venue": "workshop replication or extension section"},
+     "venue": "workshop replication or extension section",
+     "importance": "",
+     "bold": False},
     {"id": "fm-detector-false-positive-rate",
      "source": "FM-30/FM-31 meta-lesson: detector false-positive rate decides its credibility",
      "gap": "no measured false-positive rate for any of the account's own checkers on held-out manuscripts",
@@ -77,7 +83,22 @@ SEED_GAPS = [
      "falsifies": "> 3 false mismatches per 10 pages (the gate trains users to ignore it)",
      "tier": "T1",
      "needs": "2-3 clean manuscripts + local runs",
-     "venue": "methods note, strengthens every paper that cites the checker"},
+     "venue": "methods note, strengthens every paper that cites the checker",
+     "importance": "every paper on this account cites these checkers; an unmeasured "
+                   "false-positive rate means every cited verification is uncalibrated",
+     "bold": False},
+    {"id": "bold-evaluator-disagreement-predicts-collapse",
+     "source": "against consensus: the field measures collapse after the fact; "
+               "prediction from cheap evaluator disagreement is untested",
+     "gap": "no one predicts collapse before running the full protocol; JSD r=0.969 is retrospective",
+     "hypothesis": "evaluator-pair JSD computed on <10 probe tasks predicts the full-protocol collapse ordering",
+     "falsifies": "probe JSD uncorrelated with full collapse (prediction needs the full run after all)",
+     "tier": "T1",
+     "needs": "local models, probe tasks, committed full-protocol weights as ground truth",
+     "venue": "full paper if positive (actionable early-warning); workshop if mixed",
+     "importance": "turns a retrospective measurement into a prospective tool; "
+                   "changes how practitioners choose evaluators",
+     "bold": True},
 ]
 
 
@@ -85,6 +106,21 @@ def rank(ideas: list) -> list:
     """Publishability x cheapness. T0 first, then T1, then T2. Stable order."""
     tier_rank = {"T0": 0, "T1": 1, "T2": 2}
     return sorted(ideas, key=lambda x: (tier_rank.get(x.get("tier", "T2"), 2), x["id"]))
+
+
+def hamming_rerank(ideas: list) -> list:
+    """Hamming (1986): which important problem is each idea working on?
+
+    Re-sorts by importance-first: ideas that answer a stated important problem
+    (importance field set, with a reason) outrank ideas that are merely cheap.
+    Cheapness decides ties. An idea with no importance claim sorts last no
+    matter how cheap -- that is the point: "if it is not important, why do it?"
+    """
+    tier_rank = {"T0": 0, "T1": 1, "T2": 2}
+    def key(x):
+        imp = 0 if x.get("importance") else 1
+        return (imp, tier_rank.get(x.get("tier", "T2"), 2), x["id"])
+    return sorted(ideas, key=key)
 
 
 def to_envelope(idea: dict, methods: str, rounds: int = 1) -> dict:
@@ -114,13 +150,15 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("rank")
     r.add_argument("--out", default="")
+    h = sub.add_parser("hamming")
+    h.add_argument("--out", default="")
     e = sub.add_parser("envelope")
     e.add_argument("idea_id")
     e.add_argument("--methods", required=True)
     e.add_argument("--out", required=True)
     a = ap.parse_args(argv)
-    if a.cmd == "rank":
-        ranked = rank(SEED_GAPS)
+    if a.cmd in ("rank", "hamming"):
+        ranked = hamming_rerank(SEED_GAPS) if a.cmd == "hamming" else rank(SEED_GAPS)
         doc = [{"rank": i + 1, **g} for i, g in enumerate(ranked)]
         if a.out:
             Path(a.out).write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
