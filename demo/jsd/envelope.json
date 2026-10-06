@@ -1,0 +1,33 @@
+{
+  "hypothesis": "evaluator-pair JSD predicts full-protocol collapse ordering (leave-one-out rank within 1, hit rate >= 0.6 on >= 5 conditions)",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" python3 /tmp/air-jsd/run_jsd.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 0.5,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "at threshold: extend to more evaluator conditions + ablations for a real validation set"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "JSD does not predict ordering: retrospective correlation only"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T11:05:32.785395+00:00",
+  "seed": 20261006,
+  "tension": "The field measures collapse after paying for the full protocol, while a retrospective JSD correlation of 0.969 sits unused. If cheap evaluator disagreement predicts collapse, practitioners choose evaluators before spending. If not, the correlation is descriptive trivia.",
+  "power": {
+    "n": 5,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.6,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}
