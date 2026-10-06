@@ -168,19 +168,30 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             ok = any(k in text.lower() for k in ("reproduce", "seed", "command", "verify"))
             out.append((cid, ok, "ok" if ok else "no reproduce entrypoint mentioned"))
         elif cid.endswith("ci-present"):
+            import re
             n_claims = max(1, len([r for r in ledger_rows
-                                  if isinstance(r.get("value"), (int, float))]))
-            n_ci = text.lower().count("ci") + text.count("CI") + text.count("confidence")
+                                   if isinstance(r.get("value"), (int, float))]))
+            # Word boundaries: bare-substring "ci" matches social/special/species.
+            # Bayesian analyses report posteriors/credible intervals/Bayes factors
+            # instead of frequentist CIs; those count.
+            n_ci = len(re.findall(r"\bCI\b|\bCIs\b|confidence interval|"
+                                  r"credible interval|posterior|Bayes factor|\bBF\b",
+                                  text))
             out.append((cid, n_ci >= n_claims,
                         "ok" if n_ci >= n_claims
-                        else f"only {n_ci} CI mentions for {n_claims} numeric claims"))
+                        else f"only {n_ci} interval mentions for {n_claims} numeric claims"))
         elif cid.endswith("double-blind"):
+            # AAAI rule: no pointers to web material in the submission at all,
+            # including anonymous repositories -- supplementary goes in the ZIP.
+            # So this check flags every web pointer, and data-code-available
+            # accepts "see supplementary" as satisfying availability.
             low = text.lower()
             hits = [w for w in ("liuzewen", "liu zewen", "aidless", "acknowledg",
-                                "github.com/", "anonymous github", "huggingface.co/")
+                                "github.com/", "anonymous github", "huggingface.co/",
+                                "zenodo.org/", "arxiv.org/abs")
                     if w in low]
             out.append((cid, not hits,
-                        "ok" if not hits else f"identity leaks: {hits}"))
+                        "ok" if not hits else f"identity/web pointers: {hits}"))
         elif cid.endswith("references-resolve"):
             out.append((cid, True, "mechanical pass; hallucination scan is a separate gate"))
         elif cid.endswith("pages"):
@@ -264,7 +275,8 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
         elif cid.endswith("data-code-available"):
             low = text.lower()
             ok = (("code" in low and "available" in low)
-                  or "github.com" in low or "zenodo" in low or "huggingface" in low)
+                  or "github.com" in low or "zenodo" in low or "huggingface" in low
+                  or "supplementary" in low)
             out.append((cid, ok,
                         "ok" if ok else "no concrete data/code availability statement"))
         elif cid.endswith("impact-ethics"):
@@ -275,7 +287,9 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             out.append((cid, ok,
                         "ok" if ok else "missing broader-impact and/or ethics discussion"))
         else:
-            out.append((cid, True, "unknown check id; treated as pass, flagged"))
+            out.append((cid, False,
+                        f"unknown check id {cid!r}: failing closed (a typo must "
+                        f"never read as a pass)"))
     return out
 
 
@@ -287,14 +301,28 @@ def gate_report(tier: str, ledger_rows: list, draft_text: str,
     mech_ok = all(p for _, p, _ in mech)
     dims = JUDGMENT.get(tier, [])
     means = {}
+    incomplete = {}
     for seat, scores in (seat_scores or {}).items():
-        vals = [float(scores.get(d, 0)) for d in dims]
+        # Missing dimensions are INCOMPLETE, not zero: scoring an absent
+        # dimension as 0 craters the mean and punishes the paper for the
+        # reviewer's malformed output. A seat missing any dimension fails
+        # the judgment half outright instead.
+        missing = [d for d in dims if d not in (scores or {})]
+        if missing:
+            incomplete[seat] = missing
+            continue
+        try:
+            vals = [float(scores[d]) for d in dims]
+        except (TypeError, ValueError):
+            incomplete[seat] = ["non-numeric scores"]
+            continue
         means[seat] = round(sum(vals) / len(vals), 2) if vals else 0.0
     bar = BAR.get(tier, 7.0)
-    judg_ok = bool(means) and all(v >= bar for v in means.values())
+    judg_ok = bool(means) and not incomplete and all(v >= bar for v in means.values())
     verdict = "PASS" if (mech_ok and judg_ok) else "FAIL"
     return {"tier": tier, "verdict": verdict, "bar": bar,
             "mechanical": [{"id": c, "pass": p, "reason": r} for c, p, r in mech],
             "mechanical_ok": mech_ok,
             "judgment_means": means, "judgment_ok": judg_ok,
+            "judgment_incomplete": incomplete,
             "dimensions": dims}

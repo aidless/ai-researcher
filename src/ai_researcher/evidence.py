@@ -109,11 +109,10 @@ def verify_round(artifacts_dir, bundle: dict, envelope: dict,
     if manifest["sha256"] != bundle["sha256"]:
         return {"valid": False,
                 "reason": "artifact hash mismatch: the directory changed since signing"}
-    drift = _environment_drift(bundle.get("manifest", {}).get("environment", {}))
-    if drift:
-        return {"valid": True,
-                "reason": f"ok, but environment drifted since signing: {drift}. "
-                          f"Recomputation may not reproduce these files."}
+    # Signature FIRST, drift second: the previous order returned valid=True on
+    # drift before reaching verification, so drifted bundles were never
+    # signature-checked. An attacker who can change the environment record
+    # could otherwise launder an unsigned bundle through the drift path.
     p = envelope["payload"]
     if p["bundle_id"] != bundle["bundle_id"] or p["bundle_sha256"] != bundle["sha256"]:
         return {"valid": False, "reason": "bundle binding mismatch"}
@@ -124,6 +123,11 @@ def verify_round(artifacts_dir, bundle: dict, envelope: dict,
         return {"valid": False, "reason": f"bad signature: {type(e).__name__}"}
     if datetime.fromisoformat(p["expires_at"]) <= datetime.now(timezone.utc):
         return {"valid": False, "reason": "expired"}
+    drift = _environment_drift(bundle.get("manifest", {}).get("environment", {}))
+    if drift:
+        return {"valid": True,
+                "reason": f"ok, signature valid, but environment drifted since signing: {drift}. "
+                          f"Recomputation may not reproduce these files."}
     return {"valid": True, "reason": "ok"}
 
 

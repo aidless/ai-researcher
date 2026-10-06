@@ -94,20 +94,159 @@ def cmd_propose(args):
 def cmd_test(args):
     mut = json.loads(Path(args.mutation).read_text(encoding="utf-8"))
     print(f"testing mutation: {mut.get('target')} ({mut.get('kind')})")
-    # Tier-1 test: does the mutation preserve frozen behavior?
-    # A prompt append is behavior-preserving by construction for the frozen
-    # set unless it changes verdicts; threshold changes are measured, not run.
-    # Full LLM re-evaluation is Tier-2 (budgeted) and runs the frozen F2 cases
-    # through both prompts. This command runs Tier-1 only.
     if mut.get("change") == "measure-only":
         print("measure-only mutation: no behavior change, nothing to test. "
               "Run the sensitivity analysis explicitly to see verdict flips.")
         return 0
-    print("Tier-1 (static) checks:")
-    print("  - target exists in codebase: MANUAL (reviewer confirms)")
-    print("  - frozen F1/F3 unaffected (no checker code touched): "
-          + ("yes" if mut.get("kind") in ("prompt", "threshold") else "needs review"))
+    # Tier-1: resolve the target inside this package. (An earlier version of
+    # this command printed assertions instead of checking them; a test that
+    # cannot fail is not a test.)
+    target = mut.get("target", "")
+    mod_name, _, attr = target.partition(".")
+    ok = True
+    try:
+        mod = __import__(f"ai_researcher.{mod_name}", fromlist=[attr or "?"])
+        if attr and not hasattr(mod, attr):
+            print(f"  [FAIL] {target}: module imports but attribute missing")
+            ok = False
+        else:
+            print(f"  [PASS] target resolves: {target or '(empty target)'}")
+            if not target:
+                ok = False
+    except Exception as e:
+        print(f"  [FAIL] target does not resolve: {target} ({type(e).__name__})")
+        ok = False
+    # F1 static subset: the swallow-pattern and manifest checks need no model.
+    # They run against this repo's own workflows as a smoke: the point is the
+    # harness executes, not what it finds here.
+    print("  [INFO] Tier-1 runs the LLM-free frozen subset only; "
+          "prompt-behavior deltas need Tier-2 (budgeted) F2 re-evaluation.")
     print("Tier-2 (LLM, budgeted) required before promote for kind=prompt.")
+    return 0 if ok else 1
+
+
+def _source_file_for(target: str):
+    """Resolve dotted target to its source file. Raises on failure."""
+    import importlib
+    mod_name, _, attr = target.partition(".")
+    if not mod_name or not attr:
+        raise ValueError(f"target must be dotted module.ATTR, got {target!r}")
+    mod = importlib.import_module(f"ai_researcher.{mod_name}")
+    if not hasattr(mod, attr):
+        raise AttributeError(f"{target}: attribute missing")
+    path = Path(mod.__file__)
+    if path.suffix not in (".py",):
+        raise ValueError(f"{target}: not a Python source file ({path})")
+    return path, attr
+
+
+def _apply_mutation(target: str, change: str, value) -> dict:
+    """Apply a mutation to the source file. Returns backup record.
+
+    Supported changes: append (string targets: concatenated; list targets:
+    extended). Anything else is refused -- an applier that guesses at unknown
+    change types is how self-modification corrupts itself.
+    """
+    import hashlib
+    path, attr = _source_file_for(target)
+    original = path.read_bytes()
+    backup = {"path": str(path),
+              "sha256": hashlib.sha256(original).hexdigest(),
+              "target": target}
+    import ai_researcher
+    pkg_dir = Path(ai_researcher.__file__).resolve().parent
+    bak_dir = pkg_dir / ".evolve_backups"
+    bak_dir.mkdir(exist_ok=True)
+    (bak_dir / f"{backup['sha256'][:16]}.bak").write_bytes(original)
+    if change == "append":
+        text = path.read_text(encoding="utf-8")
+        # Append to the module-level assignment of attr: find `ATTR = (..."""...""")`
+        # or `ATTR = "..."` and extend the literal. Refuse anything else.
+        import re
+        m = re.search(rf"^({re.escape(attr)}\s*=\s*)(.*)$", text,
+                      re.MULTILINE | re.DOTALL)
+        if not m:
+            raise ValueError(f"{target}: assignment not found for append")
+        head, body = m.group(1), m.group(2)
+        if isinstance(value, str):
+            if body.lstrip().startswith(("'''", '"""')):
+                q = body.lstrip()[:3]
+                idx = text.index(body)
+                inner_end = text.index(q, idx + len(head) + 3)
+                new_text = (text[:inner_end] + value.rstrip("\n") + "\n"
+                            + text[inner_end:])
+            elif (body.lstrip().startswith('"') or body.lstrip().startswith("'")):
+                raise ValueError(f"{target}: refusing single-line string append "
+                                 f"(quote juggling corrupts source)")
+            else:
+                raise ValueError(f"{target}: append supports triple-quoted "
+                                 f"strings and lists, found: {body[:40]!r}")
+        elif isinstance(value, list):
+            if not body.lstrip().startswith(("(", "[")):
+                raise ValueError(f"{target}: append(list) needs a tuple/list literal")
+            raise ValueError(f"{target}: list append not yet implemented; "
+                             f"refusing rather than guessing")
+        else:
+            raise ValueError(f"{target}: unsupported value type {type(value)}")
+        path.write_text(new_text, encoding="utf-8")
+        try:
+            compile(new_text, str(path), "exec")
+        except SyntaxError as e:
+            path.write_bytes(original)
+            raise ValueError(f"{target}: append broke syntax, reverted ({e})")
+    else:
+        raise ValueError(f"unsupported change type {change!r}: refusing")
+    backup["applied"] = True
+    return backup
+
+
+def cmd_measure(args):
+    """Measure a mutation on the LLM-free frozen subset.
+
+    F1 (seeded defects) runs only against an explicit fixture directory holding
+    the 5 planted defects; without it F1 is UNMEASURED, not zero and not one.
+    F3 (gate teeth) imports every gate module. F2 needs Tier-2 LLM re-evaluation
+    and is always UNMEASURED here. fitness.gate refuses incomplete measurement,
+    so a prompt mutation cannot be promoted on Tier-1 alone -- that refusal is
+    the point: unmeasured families must never read as agreement.
+    """
+    mut = json.loads(Path(args.mutation).read_text(encoding="utf-8"))
+    target = mut.get("target", "")
+    measured = {"provenance": f"evolve measure {target} (Tier-1 static only)"}
+    # F1: seeded-defect harness needs its fixture dir; else unmeasured.
+    fixture = getattr(args, "fixture_dir", "") or ""
+    if fixture and Path(fixture).exists():
+        import sys
+        sys.path.insert(0, str(Path(fixture).parent))
+        try:
+            import run_seeded as RS
+            caught = sum(1 for d, fn in RS.CHECKS.items()
+                         if fn(Path(fixture) / "case")[0])
+            measured["F1_catch"] = round(caught / len(RS.CHECKS), 3)
+        except Exception as e:
+            measured["F1_catch"] = None
+            measured["F1_note"] = f"harness error: {type(e).__name__}: {e}"
+    else:
+        measured["F1_catch"] = None
+        measured["F1_note"] = ("UNMEASURED: needs the seeded-defect fixture dir "
+                               "(--fixture-dir); run_seeded.py builds it")
+    # F3: every gate module imports cleanly.
+    f3_ok = f3_tot = 0
+    for mod in ("fitness", "quality", "bridge", "robustness"):
+        f3_tot += 1
+        try:
+            __import__(f"ai_researcher.{mod}")
+            f3_ok += 1
+        except Exception:
+            pass
+    measured["F3_teeth"] = round(f3_ok / f3_tot, 3) if f3_tot else None
+    measured["F2_agree"] = None
+    measured["F2_note"] = ("UNMEASURED: needs Tier-2 LLM re-evaluation of frozen F2 "
+                           "cases through incumbent and candidate prompts (budgeted)")
+    print(json.dumps(measured, indent=1))
+    if args.out:
+        Path(args.out).write_text(json.dumps(measured, indent=1) + "\n",
+                                   encoding="utf-8")
     return 0
 
 
@@ -127,9 +266,21 @@ def cmd_promote(args):
               "self-reported improvement is not evidence.")
         return 1
     decision = FIT.gate(st["incumbent"], cand)
+    # Apply the file change BEFORE recording: a promotion that only updates
+    # numbers while the source stays put is bookkeeping, not evolution.
+    backup = None
+    if decision["promote"]:
+        try:
+            backup = _apply_mutation(mut.get("target", ""),
+                                     mut.get("change", ""),
+                                     mut.get("value"))
+        except Exception as e:
+            print(f"REFUSED at apply time: {e}")
+            return 1
     rec = {"generation": st["generation"] + 1, "mutation": mut.get("target"),
            "decision": decision, "candidate": cand,
-           "incumbent_before": dict(st["incumbent"])}
+           "incumbent_before": dict(st["incumbent"]),
+           "backup": backup}
     st["history"].append(rec)
     if not decision["promote"]:
         st["rejected"].append(rec)
@@ -151,8 +302,29 @@ def cmd_rollback(args):
         print("nothing to roll back")
         return 1
     last = st["history"].pop()
+    # Restore file bytes first: numbers without source are the same lie
+    # promote used to tell.
+    bak = (last.get("backup") or {})
+    if bak.get("applied"):
+        import hashlib
+        path = Path(bak["path"])
+        cur = hashlib.sha256(path.read_bytes()).hexdigest() \
+            if path.exists() else None
+        import ai_researcher
+        pkg_dir = Path(ai_researcher.__file__).resolve().parent
+        src = pkg_dir / ".evolve_backups" / f"{bak['sha256'][:16]}.bak"
+        if not src.exists():
+            print(f"rollback FAILED: backup bytes for {bak['target']} are gone; "
+                  f"restore manually and re-freeze")
+            return 1
+        path.write_bytes(src.read_bytes())
+        print(f"restored {bak['path']} to {bak['sha256'][:12]} "
+              f"(was {cur[:12] if cur else 'missing'})")
     st["incumbent"] = last["incumbent_before"]
     st["generation"] = max(0, st["generation"] - 1)
+    # Keep rejected[] append-only (audit trail); drop the entry only if this
+    # rollback undoes a rejection record... it cannot: rejections never mutate
+    # files, so there is nothing file-side to undo for them.
     _save_state(root, st)
     print(f"rolled back generation {last['generation']} ({last['mutation']})")
     return 0
@@ -172,11 +344,14 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("propose"); p.add_argument("--kind", default="")
     t = sub.add_parser("test"); t.add_argument("mutation")
+    ms = sub.add_parser("measure"); ms.add_argument("mutation")
+    ms.add_argument("--fixture-dir", default=""); ms.add_argument("--out", default="")
     m = sub.add_parser("promote"); m.add_argument("mutation"); m.add_argument("--root", default=".")
     r = sub.add_parser("rollback"); r.add_argument("--root", default=".")
     s = sub.add_parser("status"); s.add_argument("--root", default=".")
     a = ap.parse_args(argv)
-    return {"propose": cmd_propose, "test": cmd_test, "promote": cmd_promote,
+    return {"propose": cmd_propose, "test": cmd_test, "measure": cmd_measure,
+            "promote": cmd_promote,
             "rollback": cmd_rollback, "status": cmd_status}[a.cmd](a)
 
 

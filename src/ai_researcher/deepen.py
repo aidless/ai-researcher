@@ -97,6 +97,79 @@ def plan(report: dict) -> list:
     return tasks
 
 
+def _exec_effect_size(task: dict, ctx: dict) -> dict:
+    """Compute Cohen's h + CIs from committed per-case detail. Returns result."""
+    import math
+    detail = (ctx.get("result") or {}).get("models", {})
+    if not detail:
+        return {"done": False, "reason": "no models/detail in result; nothing to compute from"}
+    lines = []
+    for model, m in detail.items():
+        dd = m.get("policies", {}).get("direct", {}).get("detail", [])
+        ss = m.get("policies", {}).get("step-calc", {}).get("detail", [])
+        if not dd or not ss:
+            return {"done": False,
+                    "reason": f"{model}: per-case detail missing, refusing to invent"}
+        p1 = sum(d["passed"] for d in ss) / len(ss)
+        p0 = sum(d["passed"] for d in dd) / len(dd)
+        h = 2 * math.asin(math.sqrt(max(0, min(1, p1)))) - \
+            2 * math.asin(math.sqrt(max(0, min(1, p0))))
+        mag = "large" if abs(h) >= 0.8 else "medium" if abs(h) >= 0.5 else "small"
+        ci = (m.get("gain_ci95") or ["?", "?"])
+        lines.append(f"- {model}: Cohen's h = {h:.3f} ({mag}); "
+                     f"raw gain {(p1 - p0):.3f} [{ci[0]}, {ci[1]}]. "
+                     f"Practical reading: {'visible to the naked eye' if abs(h) >= 0.8 else 'needs the CI, not the p-value'}.")
+    (Path(ctx["paper"]) / "EFFECT_SIZES.md").write_text(
+        "# Effect sizes (machine-computed from committed detail)\n\n"
+        + "\n".join(lines) + "\n", encoding="utf-8")
+    return {"done": True, "wrote": "EFFECT_SIZES.md", "lines": lines}
+
+
+def _exec_ablation_envelope(task: dict, ctx: dict) -> dict:
+    """Draft a preregistered ablation envelope for the named gap."""
+    env = {"hypothesis": f"ablation for {task['check']}: see instruction",
+           "methods": "TBD by human (ablation target machine-specific)",
+           "max_rounds": 1, "max_cost_usd": 0.0, "max_wall_hours": 2.0,
+           "seed": 20261006,
+           "power": {"n": 0, "alpha": 0.05, "min_detectable_effect": 0.0,
+                     "power_at_mde": 0.0},
+           "kill_switch": [{"condition": "confirmed == True", "action": "STOP-EXTEND",
+                            "note": ""},
+                           {"condition": "confirmed == False", "action": "STOP-REFUTED",
+                            "note": ""}],
+           "required_artifacts": ["result.json"],
+           "negative_publish": "replication-report",
+           "approved_by": "", "approved_at": "",
+           "tension": task["instruction"][:500],
+           "source_check": task["check"]}
+    name = f"ablation-{task['check'].lower().replace('_', '-')}.draft.json"
+    (Path(ctx["paper"]) / name).write_text(
+        json.dumps(env, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return {"done": True, "wrote": name,
+            "note": "draft only: power fields are zero, human must fill n/effect before approval"}
+
+
+def _exec_data_code(task: dict, ctx: dict) -> dict:
+    """State concrete data/code locations from the actual run directories."""
+    workdir = Path(ctx.get("workdir", "."))
+    lines = ["# Data & code availability (machine-stated, checkable)", ""]
+    for rnd in sorted(workdir.glob("round-*")):
+        arts = rnd / "artifacts"
+        if arts.exists():
+            files = sorted(p.name for p in arts.iterdir() if p.is_file())
+            lines.append(f"- {rnd.name}/artifacts/: {', '.join(files)}")
+    lines += ["", "- Code: ai-researcher package at the pinned commit (see paper manifest).",
+              "- Seeds, model digests: see each round envelope.json."]
+    (Path(ctx["paper"]) / "DATA_CODE.md").write_text("\n".join(lines) + "\n",
+                                                     encoding="utf-8")
+    return {"done": True, "wrote": "DATA_CODE.md"}
+
+
+_EXECUTORS = {"effect-size": _exec_effect_size,
+              "ablation-complete": _exec_ablation_envelope,
+              "data-code-available": _exec_data_code}
+
+
 def cmd_deepen(args):
     rep = json.loads(Path(args.report).read_text(encoding="utf-8"))
     tasks = plan(rep)
@@ -105,9 +178,41 @@ def cmd_deepen(args):
     print(f"deepening plan: {len(tasks)} tasks ({len(auto)} auto, {len(rest)} assisted/human)")
     for t in tasks:
         print(f"  [{t['executable']:8}] {t['check']}: {t['instruction'][:100]}")
+    Path(args.out).mkdir(parents=True, exist_ok=True)
     (Path(args.out) / "DEEPEN_PLAN.json").write_text(
         json.dumps(tasks, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"wrote {args.out}/DEEPEN_PLAN.json")
+    # Execute what is executable. Anything raising is recorded, never swallowed:
+    # a deepening step that fails must say so, or the next gate re-run would
+    # pass on the assumption that deepening happened.
+    ctx = {"paper": args.out}
+    if getattr(args, "workdir", ""):
+        ctx["workdir"] = args.workdir
+        try:
+            st = json.loads((Path(args.workdir) / "state.json").read_text(
+                encoding="utf-8"))
+            if st.get("rounds"):
+                ctx["result"] = st["rounds"][-1].get("result", {})
+        except Exception as e:
+            print(f"  [WARN] cannot load run state: {e}; compute tasks will refuse")
+    results = []
+    for t in auto:
+        kind = t["check"].split("-", 1)[-1] if "-" in t["check"] else t["check"]
+        fn = _EXECUTORS.get(kind)
+        if not fn:
+            results.append({"check": t["check"], "done": False,
+                            "reason": "no executor registered"})
+            continue
+        try:
+            r = fn(t, ctx)
+        except Exception as e:
+            r = {"done": False, "reason": f"{type(e).__name__}: {e}"}
+        r["check"] = t["check"]
+        results.append(r)
+        print(f"  [{'DONE' if r['done'] else 'FAILED'}] {t['check']}: "
+              f"{r.get('wrote', r.get('reason', ''))}")
+    (Path(args.out) / "DEEPEN_RESULTS.json").write_text(
+        json.dumps(results, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return 0
 
 
@@ -115,6 +220,7 @@ def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(prog="ai-researcher.deepen")
     ap.add_argument("report"); ap.add_argument("--out", required=True)
+    ap.add_argument("--workdir", default="")
     return cmd_deepen(ap.parse_args(argv))
 
 

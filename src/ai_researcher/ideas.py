@@ -176,7 +176,14 @@ def hamming_rerank(ideas: list) -> list:
 
 
 def to_envelope(idea: dict, methods: str, rounds: int = 1) -> dict:
-    """Draft an envelope skeleton from a ranked idea. Human fills methods."""
+    """Draft an envelope skeleton from a ranked idea. Human fills methods.
+
+    Includes every field envelope.validate() requires, except power numbers
+    and approval: power_at_mde ships as 0.0 so validate() REFUSES the draft
+    until a human does the power analysis, and approved_by ships empty.
+    A draft that passed validation without human input would defeat the
+    one-human-decision design.
+    """
     return {
         "hypothesis": idea["hypothesis"],
         "methods": methods,
@@ -192,6 +199,11 @@ def to_envelope(idea: dict, methods: str, rounds: int = 1) -> dict:
         "required_artifacts": ["result.json"],
         "approved_by": "",
         "approved_at": "",
+        "seed": 20261006,
+        "power": {"n": 0, "alpha": 0.05, "min_detectable_effect": 0.0,
+                  "power_at_mde": 0.0},
+        "negative_publish": "replication-report",
+        "tension": idea.get("tension", ""),
         "source_gap": idea["id"],
     }
 

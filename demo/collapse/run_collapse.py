@@ -61,13 +61,25 @@ def llm(model, system, user, timeout=120):
 
 
 def judge(judge_model, question, out_a, out_b):
+    """Vote A/B or None (abstain). Never defaults: an error or ambiguous
+    verdict abstains and the caller skips the update, because a default vote
+    is a systematic bias, not noise."""
+    import re
     p = (f"问题：{question}\n回答A：{out_a[:400]}\n回答B：{out_b[:400]}\n"
          f"哪个回答更好？只回答 A 或 B。")
     try:
-        r = llm(judge_model, "你是严格的评审员。", p).strip().upper()
-        return "A" if "A" in r[:10] else "B"
+        r = llm(judge_model, "你是严格的评审员。", p).strip()
     except Exception:
-        return "B"
+        return None
+    # Prefer explicit verdict patterns, last occurrence wins (verdicts come last).
+    # Bare-substring matching ("A" in r[:10]) misfires on "As an AI..." openers.
+    for pat in (r"(?:答案|回答|选择|选)\s*[:：]?\s*([AB])\b",
+                r"\b([AB])\s*(?:更好|更优|获胜|胜出)",
+                r"\b([AB])\b"):
+        ms = re.findall(pat, r, re.IGNORECASE)
+        if ms:
+            return ms[-1].upper()
+    return None
 
 
 def pci(w):
@@ -81,6 +93,7 @@ def run_condition(judge_model, seed):
     rng = random.Random(seed)
     weights = {k: 1.0 / len(STRATEGIES) for k in STRATEGIES}
     traj = [round(pci(weights), 4)]
+    abstained = 0
     for rnd in range(ROUNDS):
         task_q, _ = TASKS[rnd % len(TASKS)]
         rv = rng.random() * sum(weights.values())
@@ -94,12 +107,17 @@ def run_condition(judge_model, seed):
             out = llm(EXECUTOR, f"你是专家AI助手。策略：{STRATEGIES[strategy]}", task_q)
             ctl = llm(EXECUTOR, "你是专家AI助手。策略：逐步推理。", task_q)
             winner = judge(judge_model, task_q, out, ctl)
+            if winner is None:
+                abstained += 1
+                traj.append(traj[-1])
+                continue
             weights[strategy] = max(0.01, weights[strategy] + (0.08 if winner == "A" else -0.04))
         except Exception:
-            pass
-        traj.append(round(pci(weights), 4))
+            abstained += 1
+            traj.append(traj[-1])
     return {"judge": judge_model, "pci_trajectory": traj,
-            "pci_final": traj[-1], "pci_start": traj[0]}
+            "pci_final": traj[-1], "pci_start": traj[0],
+            "abstained": abstained}
 
 
 def main():

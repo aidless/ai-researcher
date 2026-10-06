@@ -50,13 +50,21 @@ def llm(model, system, user, timeout=120):
 
 
 def judge(question, out_a, out_b):
+    """Vote A/B or None (abstain). See run_collapse.py for why no defaults."""
+    import re
     p = (f"问题：{question}\n回答A：{out_a[:300]}\n回答B：{out_b[:300]}\n"
          f"哪个回答更好？只回答 A 或 B。")
     try:
-        r = llm(JUDGE, "你是严格的评审员。", p).strip().upper()
-        return "A" if "A" in r[:10] else "B"
+        r = llm(JUDGE, "你是严格的评审员。", p).strip()
     except Exception:
-        return "B"
+        return None
+    for pat in (r"(?:答案|回答|选择|选)\s*[:：]?\s*([AB])\b",
+                r"\b([AB])\s*(?:更好|更优|获胜|胜出)",
+                r"\b([AB])\b"):
+        ms = re.findall(pat, r, re.IGNORECASE)
+        if ms:
+            return ms[-1].upper()
+    return None
 
 
 def pci(w):
@@ -69,15 +77,17 @@ def pci(w):
 def gen_one(args):
     strategy, task_q = args
     try:
-        return llm(EXECUTOR, f"你是专家AI助手。策略：{STRATEGIES[strategy]}", task_q)
+        out = llm(EXECUTOR, f"你是专家AI助手。策略：{STRATEGIES[strategy]}", task_q)
+        return out if out and out.strip() else None
     except Exception:
-        return ""
+        return None
 
 
 def run_arm(swarm, seed):
     rng = random.Random(seed)
     weights = {k: 1.0 / len(STRATEGIES) for k in STRATEGIES}
     traj = [round(pci(weights), 4)]
+    traj_n = [swarm]
     for rnd in range(ROUNDS):
         task_q = TASKS[rnd % len(TASKS)]
         cands = []
@@ -94,16 +104,24 @@ def run_arm(swarm, seed):
                 futs.append((s, ex.submit(gen_one, (s, task_q))))
             for s, f in futs:
                 try:
-                    cands.append((s, f.result(timeout=150)))
+                    o = f.result(timeout=150)
+                    if o is not None:
+                        cands.append((s, o))
                 except Exception:
                     pass
+        n_actual = len(cands)
         if not cands:
             traj.append(traj[-1])
+            traj_n.append(0)
             continue
-        # evaluator picks the best; its strategy gets the update
+        # evaluator picks the best; its strategy gets the update.
+        # Abstentions keep the incumbent instead of voting: a default vote is
+        # bias, not noise. n_actual records how many executors REALLY ran --
+        # the swarm label must not lie about dropped futures.
         best_s, best_o = cands[0]
         for s, o in cands[1:]:
-            if judge(task_q, o, best_o) == "A":
+            v = judge(task_q, o, best_o)
+            if v == "A":
                 best_s, best_o = s, o
         weights[best_s] = max(0.01, weights[best_s] + 0.08)
         # losers decay slightly (renormalized implicitly by PCI)
@@ -111,8 +129,12 @@ def run_arm(swarm, seed):
             if k != best_s:
                 weights[k] = max(0.01, weights[k] - 0.01)
         traj.append(round(pci(weights), 4))
+        traj_n.append(n_actual)
+        traj_n.append(n_actual)
     slope = round((traj[-1] - traj[0]) / ROUNDS, 4)
-    return {"swarm": swarm, "pci_trajectory": traj, "slope": slope}
+    return {"swarm": swarm, "pci_trajectory": traj, "slope": slope,
+            "n_actual_per_round": traj_n,
+            "mean_n_actual": round(sum(traj_n) / len(traj_n), 2)}
 
 
 def main():

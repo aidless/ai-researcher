@@ -23,6 +23,8 @@ import urllib.request
 OLLAMA = "http://127.0.0.1:11434/api/generate"
 MODEL = "deepseek-r1:7b"
 K = int(os.environ.get("EVO_K", "3"))
+if K < 2:
+    raise SystemExit("EVO_K must be >= 2: stability of 1 trace is 1.0 by definition")
 
 QUESTIONS = [
     ("syllogism", "All A are B and all B are C. Is A necessarily C? Answer yes or no, then explain.", "yes"),
@@ -97,8 +99,26 @@ def main():
                                  "s2_deduct_placement": s2,
                                  "n_ok": sum(oks)}
     # verdict: detector separates iff correct-majority questions score higher
-    # on (s1, s2) jointly than incorrect-majority ones -- preregistered rule
-    res["confirmed"] = True   # separation measured below; kill-switch reads s1/s2
+    # on (s1, s2) jointly than incorrect-majority ones -- preregistered rule.
+    # Separation = mean s1+s2 over correct-majority questions exceeds that over
+    # incorrect-majority ones by >= 0.15. No correct-majority questions, or no
+    # incorrect-majority ones to compare against, means the probe cannot decide:
+    # confirmed=False (a one-sided probe proves nothing).
+    def joint(q):
+        s1 = q["s1_stability"]
+        s2 = q["s2_deduct_placement"]
+        return s1 + (s2 if s2 is not None else 0.0)
+    correct = [joint(res["questions"][q]) for q in res["questions"]
+               if res["questions"][q]["correct_majority"]]
+    wrong = [joint(res["questions"][q]) for q in res["questions"]
+             if not res["questions"][q]["correct_majority"]]
+    if correct and wrong:
+        import statistics
+        gap = statistics.mean(correct) - statistics.mean(wrong)
+    else:
+        gap = 0.0
+    res["separation_gap"] = round(gap, 3)
+    res["confirmed"] = gap >= 0.15
     (out / "result.json").write_text(json.dumps(res, indent=1) + "\n")
     print(json.dumps({k: {kk: v[kk] for kk in ("s1_stability", "s2_deduct_placement", "n_ok")}
                       for k, v in res["questions"].items()}, indent=1))

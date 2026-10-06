@@ -73,12 +73,26 @@ def _chat(model: str, prompt: str, url: str, key: str,
         "temperature": 0.2,
         "max_tokens": max_tokens,
     }).encode()
-    req = urllib.request.Request(
-        url, data=body,
-        headers={"Authorization": f"Bearer {key}",
-                 "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        data = json.loads(resp.read().decode())
+    last = None
+    # 429s happened twice in production; a review that dies on rate limit is
+    # a missing review, and missing reviews must not read as agreement.
+    for attempt in range(4):
+        try:
+            req = urllib.request.Request(
+                url, data=body,
+                headers={"Authorization": f"Bearer {key}",
+                         "Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                data = json.loads(resp.read().decode())
+            break
+        except urllib.error.HTTPError as e:
+            last = e
+            if getattr(e, "code", None) != 429 or attempt == 3:
+                raise
+            import time
+            time.sleep(2 ** (attempt + 1) * 5)
+    else:
+        raise last
     content = (data["choices"][0]["message"] or {}).get("content")
     # reasoning-type models spend the budget on reasoning_tokens and return
     # content None with finish_reason length: that is a silent failure, not a review.

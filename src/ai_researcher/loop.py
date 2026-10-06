@@ -25,6 +25,7 @@ Usage:
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import time
@@ -67,7 +68,39 @@ def _load_state(workdir: Path) -> dict:
 
 
 def _save_state(workdir: Path, st: dict) -> None:
-    (workdir / STATE).write_text(json.dumps(st, indent=2) + "\n", encoding="utf-8")
+    """Atomic write: temp file + rename, so a crash mid-write cannot corrupt."""
+    tmp = workdir / (STATE + ".tmp")
+    tmp.write_text(json.dumps(st, indent=2) + "\n", encoding="utf-8")
+    os.replace(tmp, workdir / STATE)
+
+
+def _acquire_lock(workdir: Path):
+    """Exclusive lock: two processes on one workdir corrupt state silently."""
+    import os as _os
+    lock = workdir / "run.lock"
+    try:
+        fd = _os.open(lock, _os.O_CREAT | _os.O_EXCL | _os.O_WRONLY)
+    except FileExistsError:
+        try:
+            pid = int(lock.read_text(encoding="utf-8").strip().split()[0])
+            _os.kill(pid, 0)
+            print(f"refusing: {lock} held by live pid {pid}")
+            return None
+        except (ValueError, ProcessLookupError, FileNotFoundError):
+            print(f"stale lock {lock}, taking over")
+            lock.unlink(missing_ok=True)
+            return _acquire_lock(workdir)
+    _os.write(fd, f"{_os.getpid()} {_now()}\n".encode())
+    return fd
+
+
+def _release_lock(fd, workdir: Path) -> None:
+    import os as _os
+    try:
+        _os.close(fd)
+    except Exception:
+        pass
+    (workdir / "run.lock").unlink(missing_ok=True)
 
 
 def _eval_kill(rows: list, result: dict):
@@ -106,6 +139,19 @@ def _run_round(env: Envelope, workdir: Path, rnd: int, st: dict) -> dict:
             result = {"_parse_error": str(e)}
     result.setdefault("exit_code", proc.returncode)
     result.setdefault("wall_s", round(elapsed, 1))
+    # Cost accrual: the methods command reports spend via result.json
+    # "cost_usd" (LLM API meter) or a cost_usd.txt sidecar. Without either,
+    # spend is unknown and the budget gate cannot protect: record that.
+    cost = result.get("cost_usd")
+    if cost is None:
+        sidecar = rd / "artifacts" / "cost_usd.txt"
+        if sidecar.exists():
+            try:
+                cost = float(sidecar.read_text(encoding="utf-8").strip())
+            except Exception:
+                cost = None
+    result["cost_usd_known"] = cost is not None
+    result["round_cost_usd"] = float(cost or 0.0)
     missing = [a for a in env.required_artifacts if not (rd / "artifacts" / a).exists()]
     return {"round": rnd, "dir": str(rd), "result": result, "missing": missing,
             "exit_code": proc.returncode}
@@ -121,6 +167,23 @@ def cmd_run(args):
         return 1
     workdir = Path(args.workdir)
     workdir.mkdir(parents=True, exist_ok=True)
+    lock_fd = _acquire_lock(workdir)
+    if lock_fd is None:
+        return 1
+    try:
+        return _cmd_run_locked(args, workdir, lock_fd)
+    finally:
+        _release_lock(lock_fd, workdir)
+
+
+def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
+    env = Envelope.load(args.envelope)
+    problems = env.validate()
+    if problems:
+        print("refusing to start: envelope not executable:")
+        for p in problems:
+            print(f"  - {p}")
+        return 1
     st = _load_state(workdir)
     if st["status"] not in ("READY", "RUNNING"):
         print(f"run already {st['status']}; refusing to resume a finished run")
@@ -136,7 +199,9 @@ def cmd_run(args):
 
     while len(st["rounds"]) < env.max_rounds:
         rnd = len(st["rounds"]) + 1
-        # 1. budget
+        # 1. budget. cost_usd accrues from each round's reported spend; rounds
+        # that do not report spend leave cost_usd_known False and do NOT move
+        # the meter -- unknown spend must never read as zero spend.
         if st["cost_usd"] > env.max_cost_usd and env.max_cost_usd > 0:
             st["status"] = "STOP-BUDGET"; break
         if (time.monotonic() - start_wall) / 3600 > env.max_wall_hours:
@@ -162,12 +227,17 @@ def cmd_run(args):
             break
         (workdir / f"round-{rnd:02d}" / "envelope.json").write_text(
             json.dumps(envl, indent=2) + "\n", encoding="utf-8")
-        # 5. kill-switch
+        # 5. kill-switch (notes pass through: a verdict without its reason
+        # is unactionable, and the earlier dict comprehension dropped them)
         action, row = _eval_kill(
-            [{"condition": r.condition, "action": r.action} for r in env.kill_switch],
+            [{"condition": r.condition, "action": r.action, "note": r.note}
+             for r in env.kill_switch],
             rr["result"])
         rec = {**rr, "bundle": envl["bundle"]["bundle_id"],
                "kill_row": (row["condition"] if row else None)}
+        # cost accrues here, once per counted round, from the round's own report
+        st["cost_usd"] = round(st.get("cost_usd", 0.0)
+                               + float(rr["result"].get("round_cost_usd", 0.0)), 6)
         # 5b. selection-robustness audit: if the result declares the selections
         # it depends on (result["audit_values"] = precomputed metric per valid
         # selection), report the distribution now. A claim at 82% is
@@ -228,6 +298,9 @@ def cmd_status(args):
 def cmd_verify(args):
     workdir = Path(args.workdir)
     st = _load_state(workdir)
+    if not st.get("key_pub"):
+        print(f"no key in {workdir}: nothing signed here yet (run first)")
+        return 1
     pub = bytes.fromhex(st["key_pub"])
     ok = bad = 0
     for r in st["rounds"]:
@@ -256,6 +329,9 @@ def cmd_publish(args):
         return 1
     workdir = Path(args.workdir)
     st = _load_state(workdir)
+    if not st.get("rounds"):
+        print(f"no rounds in {workdir}: nothing to judge yet (run first)")
+        return 1
     paper = Path(args.paper)
     draft = (paper / "DRAFT_SEED.md").read_text(encoding="utf-8") if (
         paper / "DRAFT_SEED.md").exists() else ""

@@ -31,6 +31,28 @@ def _load_run(workdir: Path, envelope_path: str):
     return st, env
 
 
+def _walk_numbers(obj: object, prefix: str = "", depth: int = 0,
+                  _seen: int = 0, _limit: int = 40):
+    """Recursively collect (path, value) for numeric leaves, any result shape.
+
+    Skips structural metadata (ids, counts used as sizes, latencies) so the
+    ledger holds claims, not bookkeeping. Caps at _limit rows: a ledger with
+    200 auto-rows is unreadable, which defeats its purpose.
+    """
+    SKIP_KEYS = {"id", "round", "n", "seed", "exit_code", "wall_s", "lat",
+                 "len", "size", "count", "total", "elapsed", "duration"}
+    found = []
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k in SKIP_KEYS or len(found) >= _limit:
+                continue
+            found += _walk_numbers(v, f"{prefix}.{k}" if prefix else str(k),
+                                   depth + 1)
+    elif isinstance(obj, (int, float)) and not isinstance(obj, bool):
+        found.append((prefix, obj))
+    return found
+
+
 def _claim_rows(st: dict, env: dict, workdir: Path):
     """One ledger row per numeric fact in the final round's result.json."""
     rows = []
@@ -61,8 +83,27 @@ def _claim_rows(st: dict, env: dict, workdir: Path):
         return ("inconclusive", "missing: " + "; ".join(missing))
 
     ev_file = f"round-{final['round']:02d}/artifacts/result.json"
-    # Generic numeric top-level fields (gain-style results).
+    # Generic extraction first: every numeric leaf becomes a candidate row.
+    # Shape-specific blocks below add richer claims (paired tables, orders)
+    # that the generic walk cannot express.
+    for path, value in _walk_numbers(result):
+        status, how = status_for(path, value)
+        rows.append({
+            "id": f"C-{path.replace('.', '-')}",
+            "claim": f"{path} = {value:.4f} (n={n})" if isinstance(value, float)
+                     else f"{path} = {value} (n={n})",
+            "evidence": f"{ev_file} -> {path}",
+            "value": round(value, 4) if isinstance(value, float) else value,
+            "how": how,
+            "status": status,
+        })
+    seen_paths = {r["evidence"].split(" -> ", 1)[1] for r in rows}
+    # Shape-specific enrichments for paths the generic walk already covers
+    # are skipped (no duplicate rows); it only ADDS non-numeric claims
+    # (paired tables, orderings) the walk cannot express.
     for key in ("gain", "transfer_gain", "replication_gain"):
+        if key in seen_paths:
+            continue
         if key in result and isinstance(result[key], (int, float)):
             status, how = status_for(key, result[key])
             rows.append({
@@ -116,6 +157,24 @@ def _claim_rows(st: dict, env: dict, workdir: Path):
     return rows
 
 
+def _cell(s) -> str:
+    """Markdown table cells break on literal pipes and newlines."""
+    return str(s).replace("|", "\\|").replace("\n", " ")
+
+
+def _would_change(env: dict, rows: list) -> str:
+    """Next steps derived from the hypothesis and the inconclusive rows,
+    not boilerplate: name the actual upgrade each open claim needs."""
+    out = []
+    for r in rows:
+        if r["status"] == "inconclusive":
+            out.append(f"- {r['id']}: {r['how']}")
+    if not out:
+        out.append("- No open claims: the next step is an independent replication, "
+                   "not a larger version of the same run.")
+    return "\n".join(out)
+
+
 def cmd_bridge(args):
     workdir = Path(args.workdir)
     st, env = _load_run(workdir, args.envelope)
@@ -130,8 +189,8 @@ def cmd_bridge(args):
              "| ID | 声明（章节） | 证据文件+字段 | 数值 | 如何验证 | 状态 |",
              "|---|---|---|---|---|---|"]
     for r in rows:
-        lines.append(f"| {r['id']} | {r['claim']} | {r['evidence']} | {r['value']} | "
-                     f"{r['how']} | {r['status']} |")
+        lines.append(f"| {r['id']} | {_cell(r['claim'])} | {_cell(r['evidence'])} | "
+                     f"{_cell(r['value'])} | {_cell(r['how'])} | {r['status']} |")
     # strong-assertion registry: anything not verified must be hedged or dropped
     lines += ["", "## 强断言登记", ""]
     for r in rows:
@@ -174,12 +233,13 @@ def cmd_bridge(args):
                  "treat as weak signal per the two-seat rule).")
     d += ["",
           "## What would change this section",
-          "- A larger replication (n>=200) with a preregistered McNemar analysis.",
-          "- A second model family: transfer is a claim about families, not instances."]
+          _would_change(env, rows)]
     # Bounded lesson (oral practice #7): what readers can reconsider, separated
     # into observation / interpretation / proposed action, plus transfer limits.
+    lead = next((r for r in rows if r["status"] == "verified"),
+                next((r for r in rows if r["status"] == "inconclusive"), None))
     d += ["", "## Bounded lesson", "",
-          "Observation: " + (rows[0]["claim"] if rows else "no claims") + ".",
+          "Observation: " + (lead["claim"] if lead else "no claims") + ".",
           "Interpretation: see kill-switch verdict and robustness distribution above; "
           "neither is stated here as fact about any other setting.",
           "Proposed action: replicate the exact procedure before citing; "

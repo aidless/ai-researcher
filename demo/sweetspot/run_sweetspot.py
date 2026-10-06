@@ -55,7 +55,16 @@ def ask(prompt, cap, timeout=150):
 
 
 def grade(response, expected):
-    return expected.lower() in response.lower()
+    """Word-boundary match, not substring: "2" must not match "12"/"200",
+    "yes" must not match "eyes". Numbers compare as numbers when both parse."""
+    import re
+    low = response.lower()
+    exp = expected.lower().strip()
+    try:
+        return float(re.findall(r"[-+]?\d*\.?\d+", low)[0]) == float(exp)
+    except (IndexError, ValueError):
+        pass
+    return re.search(r"\b" + re.escape(exp) + r"\b", low) is not None
 
 
 def main():

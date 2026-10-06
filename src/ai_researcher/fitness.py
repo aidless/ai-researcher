@@ -124,27 +124,45 @@ def evaluate_candidate(check_results: dict) -> dict:
 
 
 def gate(incumbent: dict, candidate: dict, min_gain: float = 0.02,
-         alpha: float = 0.05) -> dict:
+         alpha: float = 0.05, cases: list = None) -> dict:
     """Decide promotion. Same semantics as the gsm8k statistical_gate.
 
     The candidate must be no worse on all three families and strictly better
-    on at least one by >= min_gain. Where incumbent and candidate differ on
-    individual cases, McNemar on the discordants must clear alpha; with tiny
-    frozen sets the practical effect is: any regression blocks, and improvement
-    needs a clear margin, not a coin flip.
+    on at least one by >= min_gain. When per-case paired outcomes are supplied
+    (cases = [(incumbent_ok, candidate_ok), ...] over the frozen items), McNemar
+    on the discordant pairs must also clear alpha; without case data the rate
+    rule alone decides and the report says so. Missing families in either side
+    are an error, not a zero: incomplete measurement cannot authorize promotion.
+    Tiny float noise below 1e-9 is not a regression.
     """
     fams = ["F1_catch", "F2_agree", "F3_teeth"]
-    diffs = {f: round(candidate.get(f, 0) - incumbent.get(f, 0), 4) for f in fams}
-    worse = [f for f in fams if diffs[f] < 0]
+    for side, name in ((incumbent, "incumbent"), (candidate, "candidate")):
+        missing = [f for f in fams if f not in side]
+        if missing:
+            return {"promote": False,
+                    "reason": f"{name} missing families {missing}: incomplete "
+                              f"measurement cannot authorize promotion"}
+    EPS = 1e-9
+    diffs = {f: round(candidate[f] - incumbent[f], 4) for f in fams}
+    worse = [f for f in fams if diffs[f] < -EPS]
     better = [f for f in fams if diffs[f] >= min_gain]
     if worse:
         return {"promote": False,
                 "reason": f"regression on {worse}: a candidate must be no worse everywhere"}
+    mcnemar_note = "rate rule only (no per-case data supplied)"
+    if cases:
+        b = sum(1 for i, c in cases if not i and c)
+        c_ = sum(1 for i, c in cases if i and not c)
+        p = mcnemar_exact(b, c_)
+        mcnemar_note = f"McNemar on {b}:{c_} discordants p={p:.4g}"
+        if p >= alpha and (b, c_) != (0, 0):
+            return {"promote": False,
+                    "reason": f"discordant improvement not significant: {mcnemar_note}"}
     if not better:
         return {"promote": False,
-                "reason": f"no family improved by >= {min_gain}: {diffs}"}
+                "reason": f"no family improved by >= {min_gain}: {diffs} ({mcnemar_note})"}
     return {"promote": True,
-            "reason": f"improved {better} with no regressions: {diffs}"}
+            "reason": f"improved {better} with no regressions: {diffs} ({mcnemar_note})"}
 
 
 def freeze_eval(out: Path) -> None:
