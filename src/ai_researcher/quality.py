@@ -1,4 +1,4 @@
-"""Venue-indexed quality gates: workshop / conference-main / TMLR / SCI-journal.
+"""Venue-indexed quality gates: workshop / conference-main / TMLR / SCI-journal / zone1.
 
 Each tier is a different game, not a different difficulty of the same game.
 The gates encode what actually differs, sourced from the venues' own reviewer
@@ -27,6 +27,18 @@ AAAI double-blind + supplementary-ZIP rules):
                        applications-only work. Revision rounds expected, so the
                        gate also checks revision-readiness (every objection maps
                        to a checkable change).
+  zone1             -- SCI Zone 1 (JCR Q1 / CAS Zone 1: top-25% journals). Everything
+                       in sci-journal, PLUS the bars that separate Zone 1 from
+                       Zone 2: effect sizes with practical-significance discussion
+                       (not p-values alone); comprehensive baselines (every
+                       relevant prior method run, not a convenience subset);
+                       ablation completeness (every design choice ablated or
+                       explicitly justified as unablatable); no salami slicing
+                       (the contribution is a complete unit, not one experiment
+                       stretched thin); data + code availability as a hard
+                       requirement (not a link promise); broader-impact and
+                       ethics discussion. Judgment bar 8.0: both seats must rate
+                       every dimension at clear-accept or above.
 
 Each gate has two halves. The mechanical half runs without any model and cannot
 be argued with: numbers trace to evidence, CIs present, limitations section
@@ -36,7 +48,7 @@ against the tier's rubric. A paper passes a tier only if BOTH halves pass.
 """
 from __future__ import annotations
 
-TIERS = ("workshop", "conference-main", "tmlr", "sci-journal")
+TIERS = ("workshop", "conference-main", "tmlr", "sci-journal", "zone1")
 
 # Mechanical checks per tier: (id, description, check_fn_name).
 # check functions live in this module and take (ledger_rows, draft_text, meta).
@@ -75,6 +87,24 @@ MECHANICAL = {
         ("J9-references-resolve", "every citation has a resolvable target"),
         ("J10-revision-ready", "every recorded objection maps to a checkable change or an explicit wont-fix reason"),
     ],
+    "zone1": [
+        ("Z1-numbers-trace", "every number traces to evidence file + field"),
+        ("Z2-ci-present", "every quantitative claim carries a CI or an explicit why-not"),
+        ("Z3-effect-size", "every significant result reports an effect size with a practical-significance discussion, not p-values alone"),
+        ("Z4-baselines-comprehensive", "every relevant prior method is run as a baseline, not a convenience subset; exclusions named with reasons"),
+        ("Z5-ablation-complete", "every design choice is ablated, or explicitly justified as unablatable with a reason"),
+        ("Z6-generality-discussed", "strengths AND limitations AND generality each get explicit text"),
+        ("Z7-predecessors-acknowledged", "related work names predecessors, states what differs, and cites the closest 3+ prior works"),
+        ("Z8-examples-present", "at least one worked example a general ML reader can follow"),
+        ("Z9-new-terms-justified", "every new term/technique states why existing ones are insufficient"),
+        ("Z10-not-narrow", "the contribution is framed for a broad ML audience, not one subfield"),
+        ("Z11-not-applications-only", "not an application of ML to another domain without method contribution"),
+        ("Z12-not-salami", "the contribution is a complete unit: question + method + evidence + boundary, not one experiment stretched thin"),
+        ("Z13-data-code-available", "data + code availability is stated with a concrete location, not a link promise"),
+        ("Z14-impact-ethics", "broader-impact and ethics discussion present"),
+        ("Z15-references-resolve", "every citation has a resolvable target"),
+        ("Z16-revision-ready", "every recorded objection maps to a checkable change or an explicit wont-fix reason"),
+    ],
 }
 
 # Judgment dimensions per tier, scored 1-10 by each seat (NeurIPS scale).
@@ -84,6 +114,8 @@ JUDGMENT = {
     "tmlr": ["correctness", "clarity", "scope-fit"],
     "sci-journal": ["significance", "correctness", "clarity", "generality",
                     "predecessor-acknowledgment"],
+    "zone1": ["significance", "correctness", "clarity", "generality",
+              "predecessor-acknowledgment", "completeness", "breadth-of-interest"],
 }
 
 # Minimum mean seat score to pass the judgment half (both seats must clear it).
@@ -92,6 +124,7 @@ BAR = {
     "conference-main": 7.0,
     "tmlr": 6.0,
     "sci-journal": 7.0,
+    "zone1": 8.0,
 }
 
 
@@ -173,6 +206,43 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             out.append((cid, ok, "ok" if ok else "no method contribution visible"))
         elif cid.endswith("revision-ready"):
             out.append((cid, True, "checked against the objection table at gate time"))
+        elif cid.endswith("effect-size"):
+            low = text.lower()
+            ok = (("effect size" in low or "cohen" in low or "eta" in low
+                   or "practical significance" in low)
+                  and "p <" in low.replace("p<", "p <"))
+            out.append((cid, ok,
+                        "ok" if ok
+                        else "p-values without effect sizes or practical-significance discussion"))
+        elif cid.endswith("baselines-comprehensive"):
+            low = text.lower()
+            if "baseline" not in low:
+                out.append((cid, False, "no baseline comparison visible"))
+            elif "exclud" in low:
+                out.append((cid, True, "baselines present with explicit exclusions"))
+            else:
+                out.append((cid, True,
+                            "baselines present; exclusions not explicitly justified "
+                            "(flagged for the seats)"))
+        elif cid.endswith("ablation-complete"):
+            low = text.lower()
+            ok = ("ablat" in low)
+            out.append((cid, ok, "ok" if ok else "no ablation of design choices found"))
+        elif cid.endswith("not-salami"):
+            out.append((cid, True, "requires reviewer judgment; flagged for the seats"))
+        elif cid.endswith("data-code-available"):
+            low = text.lower()
+            ok = (("code" in low and "available" in low)
+                  or "github.com" in low or "zenodo" in low or "huggingface" in low)
+            out.append((cid, ok,
+                        "ok" if ok else "no concrete data/code availability statement"))
+        elif cid.endswith("impact-ethics"):
+            low = text.lower()
+            ok = (("broader impact" in low or "broader-impact" in low)
+                  and ("ethic" in low or "misuse" in low or "dual use" in low
+                       or "dual-use" in low))
+            out.append((cid, ok,
+                        "ok" if ok else "missing broader-impact and/or ethics discussion"))
         else:
             out.append((cid, True, "unknown check id; treated as pass, flagged"))
     return out
