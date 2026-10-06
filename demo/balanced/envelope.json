@@ -1,0 +1,24 @@
+{
+  "hypothesis": "reanalysis on a balanced 3-text + 3-visual strategy subset preserves the cross-model >> self-eval PCI pattern",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" python3 /tmp/air-balanced/run_balanced.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 0.5,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "pattern survives balancing: extend to multi-seed weight data"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "pattern reverses on balanced subset (1 rep each: refutation-relevant, needs multi-rep weights to close)"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T07:20:36.037324+00:00"
+}
