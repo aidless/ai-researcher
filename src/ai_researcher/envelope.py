@@ -33,6 +33,15 @@ class KillRow:
 
 
 @dataclass
+class Power:
+    """Pre-registered power analysis. Thresholds without power are guesses."""
+    n: int = 0                # planned sample size per condition
+    alpha: float = 0.05
+    min_detectable_effect: float = 0.0   # smallest effect worth detecting
+    power_at_mde: float = 0.0            # must be >= 0.8 to be executable
+
+
+@dataclass
 class Envelope:
     hypothesis: str
     methods: str            # the exact command, e.g. "python scripts/run_exp.py --config {config}"
@@ -43,6 +52,9 @@ class Envelope:
     required_artifacts: list = field(default_factory=list)
     approved_by: str = ""
     approved_at: str = ""
+    seed: int = 0           # fixed seed for the methods command (EVO_SEED); 0 = not fixed
+    power: object = None    # Power; None = not declared (refused by validate)
+    negative_publish: str = ""  # what happens on refute: "replication-report" | "archive" (must choose)
 
     def validate(self) -> list:
         """Return a list of problems. Empty means executable."""
@@ -66,9 +78,26 @@ class Envelope:
                 problems.append("kill_switch row with empty condition")
         if not self.approved_by:
             problems.append("not approved: approved_by is empty (the one human decision)")
+        if self.seed == 0:
+            problems.append("seed is 0 (not fixed): same command must give same assignment; "
+                            "set EVO_SEED via methods")
+        p = self.power
+        if p is None:
+            problems.append("no power analysis: thresholds without power are guesses; "
+                            "declare n/alpha/min_detectable_effect/power_at_mde")
+        else:
+            if p.power_at_mde < 0.8:
+                problems.append(f"power_at_mde={p.power_at_mde} < 0.8: underpowered by design; "
+                                f"raise n (now {p.n}) or narrow the claim")
+            if p.alpha not in (0.05, 0.01):
+                problems.append(f"alpha={p.alpha}: use 0.05 or 0.01 unless preregistered otherwise")
+        if self.negative_publish not in ("replication-report", "archive"):
+            problems.append("negative_publish must be 'replication-report' or 'archive': "
+                            "a refute without a publication plan is publication bias by design")
         return problems
 
     def to_dict(self) -> dict:
+        p = self.power
         return {
             "hypothesis": self.hypothesis,
             "methods": self.methods,
@@ -80,10 +109,16 @@ class Envelope:
             "required_artifacts": self.required_artifacts,
             "approved_by": self.approved_by,
             "approved_at": self.approved_at,
+            "seed": self.seed,
+            "power": {"n": p.n, "alpha": p.alpha,
+                      "min_detectable_effect": p.min_detectable_effect,
+                      "power_at_mde": p.power_at_mde} if p else None,
+            "negative_publish": self.negative_publish,
         }
 
     @staticmethod
     def from_dict(d: dict) -> "Envelope":
+        pd = d.get("power")
         return Envelope(
             hypothesis=d.get("hypothesis", ""),
             methods=d.get("methods", ""),
@@ -94,6 +129,9 @@ class Envelope:
             required_artifacts=list(d.get("required_artifacts", [])),
             approved_by=d.get("approved_by", ""),
             approved_at=d.get("approved_at", ""),
+            seed=int(d.get("seed", 0)),
+            power=Power(**pd) if isinstance(pd, dict) else None,
+            negative_publish=d.get("negative_publish", ""),
         )
 
     def save(self, path) -> None:

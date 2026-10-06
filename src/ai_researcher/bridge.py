@@ -153,6 +153,25 @@ def cmd_bridge(args):
             d.append(f"- {r['claim']}. [INCONCLUSIVE — hedge required: "
                      f"report as observed on n={st['rounds'][-1].get('result', {}).get('n','?')}, "
                      f"do not generalize. To upgrade: {r['how']}]")
+    # Objection-response table: every strongest_objection from any round's review
+    # must be answered, conceded, or used to downgrade -- never silently dropped.
+    d += ["", "## Objections and responses", ""]
+    seen = set()
+    last_idx = len(st["rounds"]) - 1
+    for i, rnd in enumerate(st["rounds"]):
+        rev = rnd.get("review", {})
+        obj = rev.get("devil_objection", "")
+        if obj and obj not in seen:
+            seen.add(obj)
+            if i < last_idx:
+                d.append(f"- [devil, r{rnd['round']:02d}] {obj[:300]}")
+                d.append(f"  → Response: addressed in a later round")
+            else:
+                d.append(f"- [devil, r{rnd['round']:02d}] {obj[:300]}")
+                d.append(f"  → Response: OPEN — must be addressed before submission")
+    if not seen:
+        d.append("- No recorded objections (review absent or joint READY without objection — "
+                 "treat as weak signal per the two-seat rule).")
     d += ["",
           "## What would change this section",
           "- A larger replication (n>=200) with a preregistered McNemar analysis.",

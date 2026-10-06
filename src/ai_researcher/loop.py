@@ -168,6 +168,22 @@ def cmd_run(args):
             rr["result"])
         rec = {**rr, "bundle": envl["bundle"]["bundle_id"],
                "kill_row": (row["condition"] if row else None)}
+        # 5b. selection-robustness audit: if the result declares the selections
+        # it depends on (result["audit_values"] = precomputed metric per valid
+        # selection), report the distribution now. A claim at 82% is
+        # MOSTLY-HOLDS, never "holds" and never "reverses" -- see robustness.py.
+        try:
+            from .robustness import verdict as rob_verdict
+            avals = (rr["result"] or {}).get("audit_values")
+            if isinstance(avals, list) and avals:
+                holds = sum(1 for v in avals if float(v) > 0)
+                rec["robustness"] = {
+                    "total": len(avals), "holds": holds,
+                    "p_holds": round(holds / len(avals), 3),
+                    "verdict": rob_verdict({"p_holds": holds / len(avals)}),
+                }
+        except Exception as e:
+            rec["robustness"] = {"error": f"{type(e).__name__}: {e}"}
         if action != "CONTINUE":
             rec["verdict"] = action
             rec["reason"] = (row.get("note") if row else "")
