@@ -1,0 +1,33 @@
+{
+  "hypothesis": "evaluator-preferred strategies concentrate faster as parallel subagents grow (swarm=4 PCI slope exceeds swarm=1 slope by >= 0.01/round), holding evaluator and task fixed",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261006 python3 /tmp/air-swarm/run_swarm.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 2.0,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "bias amplifies with swarm size: extend to 8/16/32 subagents for the scaling curve"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "flat or reversed: swarm diversity cancels evaluator bias, bounding it to single-agent settings"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T10:57:03.669277+00:00",
+  "seed": 20261006,
+  "tension": "Agent swarms went from 0 to 300 subagents in eighteen months with no measurement of whether the evaluator bias documented for single agents amplifies or cancels at swarm scale. Deploying unevaluated scaling is how reward hacking ships to production.",
+  "power": {
+    "n": 6,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.01,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}

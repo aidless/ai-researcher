@@ -8,20 +8,21 @@
     {
       "condition": "confirmed == True",
       "action": "STOP-EXTEND",
-      "note": "collapse replicates locally with cross excess >= 0.15: extend to more rounds/tasks/seeds for a workshop paper"
+      "note": "collapse replicates locally with cross excess >= 0.15: extend to more rounds/tasks/seeds"
     },
     {
       "condition": "confirmed == False",
       "action": "STOP-REFUTED",
-      "note": "no excess on small models: phenomenon bounded by capability/scale; report as boundary replication"
+      "note": "no excess on small models: phenomenon bounded by capability/scale"
     }
   ],
   "required_artifacts": [
     "result.json"
   ],
   "approved_by": "liuzewen",
-  "approved_at": "2026-10-06T09:39:51.879808+00:00",
+  "approved_at": "2026-10-06T10:57:03.419730+00:00",
   "seed": 20261006,
+  "tension": "The published collapse finding conditions entirely on frontier evaluators. If small local models show the same cross-family excess, the phenomenon is about protocol design and every small-model deployer must account for it. If not, collapse theory needs a capability boundary it does not currently have.",
   "power": {
     "n": 8,
     "alpha": 0.05,

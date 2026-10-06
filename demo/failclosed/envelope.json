@@ -1,0 +1,33 @@
+{
+  "hypothesis": "the pre-submission gate set catches 100% of 5 seeded defect classes (hallucinated ref, drifted number, swallowed exit, unhedged inconclusive, stale manifest) on fixture manuscripts",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" python3 /tmp/air-fc/run_seeded.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 0.5,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "0 escapes: extend to real manuscripts as test corpus"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "any escape means the pipeline is theater for that class; fix the checker, not the test"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T10:02:59.838662+00:00",
+  "seed": 20261006,
+  "tension": "ICLR desk-rejects papers for defects a script could catch before submission, while venues bolt AI onto review after the fact. A pre-submission pipeline is either enforcement or theater, and the only way to know is to plant defects and count escapes. Nobody has published that number.",
+  "power": {
+    "n": 5,
+    "alpha": 0.05,
+    "min_detectable_effect": 1.0,
+    "power_at_mde": 1.0
+  },
+  "negative_publish": "replication-report"
+}

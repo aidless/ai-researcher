@@ -1,0 +1,33 @@
+{
+  "hypothesis": "cross-trace stability (S1) and reflection-inside-deduction placement (S2) jointly separate correct-majority from incorrect-majority question sets on deepseek-r1:7b traces",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" EVO_K=3 python3 /tmp/air-mim/run_mimicry.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 1.5,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "signals separate: extend to more questions/models for a metric paper"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "no separation on this probe set: signals carry no information at this scale"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T10:04:04.136055+00:00",
+  "seed": 20261006,
+  "tension": "Every lab trains long-CoT models and none can tell mimicry from reasoning; benchmarks confound verbosity with deduction. Chen & Wang named the disease (topological mimicry, spinning-wheel traces) but gave no detector. A working S1+S2 probe turns their observation into a tool.",
+  "power": {
+    "n": 9,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.3,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}

@@ -1,0 +1,33 @@
+{
+  "hypothesis": "on deepseek-r1:7b, accuracy as a function of capped reasoning length is non-monotonic (rises then falls) on at least one of math/code/logic task families",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" python3 /tmp/air-sweet/run_sweetspot.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 2.0,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "sweet spot replicates locally: extend to more items/families for a workshop note"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "monotone everywhere: sweet spot is frontier/task-specific artifact"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T10:57:03.915959+00:00",
+  "seed": 20261006,
+  "tension": "Practitioners pay per reasoning token assuming more thinking is better, yet the only systematic study says extra inference can hurt, on one model family at frontier scale. Nobody has checked whether small-model users face the same curve.",
+  "power": {
+    "n": 18,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.2,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}
