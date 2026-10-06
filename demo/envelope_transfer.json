@@ -1,0 +1,29 @@
+{
+  "hypothesis": "step-calc transfers across model families: positive gain on llama3.1:8b heldout40, after replicating the qwen2.5:7b effect in the same harness",
+  "methods": "RD=\"$PWD\"; cd /tmp/ind-audit/gsm8k-self-evolve && EVO_MODELS=\"qwen2.5:7b,llama3.1:8b\" EVO_OUT=\"$RD/artifacts\" PYTHONPATH=/tmp/ind-audit/gsm8k-self-evolve/examples python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_transfer.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 3.0,
+  "kill_switch": [
+    {
+      "condition": "transfer_gain >= 0.10",
+      "action": "STOP-EXTEND",
+      "note": "transfer replicates at scale worth a full 200-item run; McNemar on 40 items is underpowered so this is a go-signal not a claim"
+    },
+    {
+      "condition": "transfer_gain >= 0.0",
+      "action": "STOP-INCONCLUSIVE",
+      "note": "non-negative but below the practical threshold: report as inconclusive, do not extend on noise"
+    },
+    {
+      "condition": "transfer_gain < 0.0",
+      "action": "STOP-REFUTED",
+      "note": "step-calc does not transfer to this family: the policy effect is model-specific"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T06:35:12.266417+00:00"
+}
