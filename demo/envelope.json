@@ -1,0 +1,29 @@
+{
+  "hypothesis": "lowercasing+trimming improves exact-match on 4 fixed normalization cases",
+  "methods": "python3 '/home/liuzewen/F:\\deepseek/ai-researcher/demo/exp-01/run_exp.py'",
+  "max_rounds": 4,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 0.5,
+  "kill_switch": [
+    {
+      "condition": "gain >= 0.5",
+      "action": "STOP-EXTEND",
+      "note": "large effect on 4 cases warrants a bigger replication"
+    },
+    {
+      "condition": "gain >= 0.0",
+      "action": "CONTINUE",
+      "note": "non-negative but small: keep looking within budget"
+    },
+    {
+      "condition": "gain < 0.0",
+      "action": "STOP-REFUTED-REVERSE",
+      "note": "normalization hurts: stop, the direction is wrong"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T06:19:36.438648+00:00"
+}

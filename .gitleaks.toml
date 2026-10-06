@@ -1,0 +1,25 @@
+# account-wide ruleset (same as the other 45 repos)
+title = "aidless custom secret rules"
+[[rules]]
+id = "api2d-forward-key"
+regex = '''fk[0-9a-f]{5,12}-[0-9A-Za-z]{10,}'''
+tags = ["key", "api2d"]
+[[rules]]
+id = "dashscope-bailian-key"
+regex = '''sk-[a-zA-Z0-9]{32}'''
+tags = ["key", "dashscope", "bailian"]
+[[rules]]
+id = "deepseek-key"
+regex = '''sk-[a-f0-9]{32}'''
+tags = ["key", "deepseek"]
+[[rules]]
+id = "openai-style-key"
+regex = '''sk-[A-Za-z0-9_-]{40,}'''
+tags = ["key", "openai"]
+[[rules]]
+id = "github-pat"
+regex = '''gh[pousr]_[A-Za-z0-9]{36,255}'''
+tags = ["key", "github"]
+[allowlist]
+description = "placeholders"
+regexes = ['''sk-xxxx''', '''CHANGE-ME''', '''your[_-]?api[_-]?key''', '''<YOUR_.*?>''', '''\\$\\{[A-Z_]+\\}''', '''gh[pousr]_x{6,}''']
