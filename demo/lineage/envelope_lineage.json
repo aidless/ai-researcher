@@ -1,0 +1,19 @@
+{
+  "hypothesis": "capability on the 50-item copilot eval is non-monotonic across copilot-3b-lora v1..v3c (some checkpoint regresses vs its predecessor on at least one reference-check type)",
+  "methods": "RD=\"$PWD\"; for v in v1 v2 v3 v3b v3c; do EVO_MODEL=copilot-3b-lora-$v EVO_OUT=\"$RD/artifacts/$v\" python3 /tmp/air-track2/run_lineage.py; done",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 4.0,
+  "seed": 20261006,
+  "power": {"n": 50, "alpha": 0.05, "min_detectable_effect": 0.1, "power_at_mde": 0.8},
+  "kill_switch": [
+    {"condition": "any_regression == True", "action": "STOP-EXTEND",
+     "note": "at least one checkpoint regresses: extend to per-check-type attribution + McNemar"},
+    {"condition": "any_regression == False", "action": "STOP-REFUTED",
+     "note": "monotonic or flat across all five: the lineage is clean, report as replication"}
+  ],
+  "required_artifacts": ["result.json"],
+  "negative_publish": "replication-report",
+  "approved_by": "",
+  "approved_at": ""
+}
