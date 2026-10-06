@@ -147,14 +147,21 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             ok = ("limitation" in low) and len(text) > 200
             out.append((cid, ok, "ok" if ok else "no Limitations section found"))
         elif cid.endswith("no-strong-unverified"):
-            HEDGE_WORDS = ("hedge", "inconclusive", "do not claim", "do not generalize",
+            # NOTE: "inconclusive" itself is NOT hedge vocabulary -- it is the
+            # status token. Counting it would make every inconclusive row
+            # trivially "hedged".
+            HEDGE_WORDS = ("hedge", "do not claim", "do not generalize",
                            "not claim", "uncertain", "may be", "suggest", "exploratory",
                            "preliminary", "cannot conclude", "do not conclude")
             low_text = text.lower()
-            bad = [r for r in ledger_rows
-                   if r.get("status") in ("inconclusive", "blocked")
-                   and not any(w in str(r.get("how", "")).lower() for w in HEDGE_WORDS)
-                   and not any(w in low_text for w in HEDGE_WORDS)]
+            bad = []
+            for r in ledger_rows:
+                if r.get("status") not in ("inconclusive", "blocked"):
+                    continue
+                body = f"{r.get('claim','')} {r.get('how','')}".lower()
+                if not any(w in body for w in HEDGE_WORDS) \
+                   and not any(w in low_text for w in HEDGE_WORDS):
+                    bad.append(r)
             out.append((cid, not bad,
                         "ok" if not bad else f"{len(bad)} unhedged non-verified claims"))
         elif cid.endswith("reproduce-sketch"):
