@@ -1,0 +1,33 @@
+{
+  "hypothesis": "step-calc gain is positive on all 8 local instruction-model families, with magnitude varying by family (reasoning-specialized vs general)",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261006 EVO_MODELS=\"qwen2.5:7b,llama3.1:8b,qwen2:7b,gemma3:4b,deepseek-r1:7b,qwen3:4b,qwen2.5-coder:7b,llama3.2:1b\" python3 /tmp/air-transfer/run_transfer.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 4.0,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "all families positive: extend to 200-item heldout + McNemar matrix heatmap for the workshop paper"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "at least one family null/negative: transfer is family-dependent, report boundary"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T10:55:44.222690+00:00",
+  "seed": 20261006,
+  "tension": "Step-calc was established on one model family and replicated on a second (transfer-01: +0.75/+0.775, both p_bh 2e-9). Every citation beyond those two families assumes transfer that was never tested. Eight local families decide whether this is a policy property or a two-model coincidence.",
+  "power": {
+    "n": 40,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.2,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}
