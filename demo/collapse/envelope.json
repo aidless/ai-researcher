@@ -1,0 +1,32 @@
+{
+  "hypothesis": "evaluator-preference collapse occurs in 7-8B local models and is stronger under cross-family evaluation (llama3.1:8b judging qwen2.5:7b) than self-evaluation",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261006 python3 /tmp/air-collapse/run_collapse.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 2.0,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "collapse replicates locally with cross excess >= 0.15: extend to more rounds/tasks/seeds for a workshop paper"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "no excess on small models: phenomenon bounded by capability/scale; report as boundary replication"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T09:39:51.879808+00:00",
+  "seed": 20261006,
+  "power": {
+    "n": 8,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.15,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}
