@@ -37,6 +37,7 @@ TASKS = [
 ]
 ROUNDS = int(os.environ.get("EVO_ROUNDS", "6"))
 SEED = int(os.environ.get("EVO_SEED", "20261006"))
+SEEDS = [int(x) for x in os.environ.get("EVO_SEEDS", str(SEED)).split(",")]
 
 
 def llm(model, system, user, timeout=120):
@@ -137,11 +138,28 @@ def run_arm(swarm, seed):
             "mean_n_actual": round(sum(traj_n) / len(traj_n), 2)}
 
 
+def run_all(seed):
+    a1 = run_arm(1, seed)
+    a4 = run_arm(4, seed + 1)
+    return {"arms": {"swarm1": a1, "swarm4": a4},
+            "slope_excess": round(a4["slope"] - a1["slope"], 4),
+            "seed": seed}
+
+
 def main():
     out = pathlib.Path(os.environ.get("EVO_OUT", "artifacts"))
     out.mkdir(parents=True, exist_ok=True)
-    a1 = run_arm(1, SEED)
-    a4 = run_arm(4, SEED + 1)
+    reps = [run_all(sd) for sd in SEEDS]
+    excesses = [r["slope_excess"] for r in reps]
+    n_pos = sum(1 for e in excesses if e >= 0.01)
+    res = {"reps": reps, "n_seeds": len(reps),
+           "excesses": excesses,
+           "n_positive": n_pos,
+           "confirmed": n_pos >= max(2, len(reps) - 1),
+           "seed": SEEDS[0]}
+    # backward compat for single-seed readers
+    res["arms"] = reps[0]["arms"]
+    res["slope_excess"] = reps[0]["slope_excess"]
     res = {"arms": {"swarm1": a1, "swarm4": a4},
            "slope_excess": round(a4["slope"] - a1["slope"], 4),
            "confirmed": (a4["slope"] - a1["slope"]) >= 0.01,

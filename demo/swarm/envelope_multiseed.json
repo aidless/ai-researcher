@@ -1,0 +1,33 @@
+{
+  "hypothesis": "swarm slope excess replicates across 5 seeds (at least 4/5 positive at >= 0.01)",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" EVO_SEEDS=\"20261006,20261007,20261008,20261009,20261010\" python3 /tmp/air-swarm/run_swarm.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 5.0,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "4+/5 seeds positive: extend to 8/16/32 subagents for the scaling curve + workshop paper"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "fewer than 4/5: single-seed result does not replicate, report boundary"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen",
+  "approved_at": "2026-10-06T11:28:24.961571+00:00",
+  "seed": 20261006,
+  "tension": "The single-seed swarm excess (0.0365) cannot separate effect from noise by construction. Five seeds decide whether evaluator bias amplification is a phenomenon or a draw.",
+  "power": {
+    "n": 5,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.8,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}
