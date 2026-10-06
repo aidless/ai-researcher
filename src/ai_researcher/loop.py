@@ -242,6 +242,66 @@ def cmd_verify(args):
     return 0 if bad == 0 else 1
 
 
+def cmd_publish(args):
+    """Publication gate: a run is submittable to a tier only if BOTH halves pass.
+
+    Mechanical half runs locally (no model). Judgment half scores both seats
+    against the tier rubric. Either half failing -> NOT-SUBMITTABLE, with the
+    failing checks named. There is no override flag: fix the paper, not the gate.
+    """
+    from .quality import gate_report, JUDGMENT, TIERS
+    from .two_seat import review_rubric
+    if args.tier not in TIERS:
+        print(f"unknown tier {args.tier!r}; choose from {', '.join(TIERS)}")
+        return 1
+    workdir = Path(args.workdir)
+    st = _load_state(workdir)
+    paper = Path(args.paper)
+    draft = (paper / "DRAFT_SEED.md").read_text(encoding="utf-8") if (
+        paper / "DRAFT_SEED.md").exists() else ""
+    ledger_path = paper / "CLAIM_LEDGER.md"
+    rows = _parse_ledger(ledger_path) if ledger_path.exists() else []
+    dims = JUDGMENT[args.tier]
+    try:
+        scores = review_rubric(
+            draft, json.dumps(st["rounds"][-1].get("result", {}))[:3000],
+            args.tier, dims)
+        seat_scores = {"methodology": scores["methodology"],
+                       "devil": scores["devil"]}
+    except Exception as e:
+        print(f"judgment half unavailable ({type(e).__name__}: {e}); "
+              f"mechanical half still runs")
+        seat_scores = {}
+    rep = gate_report(args.tier, rows, draft, seat_scores,
+                      {"workdir": str(workdir)})
+    print(f"tier={rep['tier']} verdict={rep['verdict']} bar={rep['bar']}")
+    for m in rep["mechanical"]:
+        print(f"  [{'PASS' if m['pass'] else 'FAIL'}] {m['id']}: {m['reason']}")
+    print(f"  judgment means: {rep['judgment_means']} (need >= {rep['bar']} both seats)")
+    (workdir / f"publish-{args.tier}.json").write_text(
+        json.dumps(rep, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return 0 if rep["verdict"] == "PASS" else 1
+
+
+def _parse_ledger(path: Path) -> list:
+    """Best-effort parse of CLAIM_LEDGER.md rows into {id, value, status, evidence, how}."""
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.startswith("| C-"):
+            continue
+        parts = [p.strip() for p in line.strip("|").split("|")]
+        if len(parts) < 6:
+            continue
+        val = parts[3]
+        try:
+            val = float(val.split()[0].rstrip(":"))
+        except Exception:
+            pass
+        rows.append({"id": parts[0], "claim": parts[1], "evidence": parts[2],
+                     "value": val, "how": parts[4], "status": parts[5]})
+    return rows
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(prog="ai-researcher.loop")
@@ -250,9 +310,11 @@ def main(argv=None):
     r = sub.add_parser("run"); r.add_argument("envelope"); r.add_argument("--workdir", required=True)
     s = sub.add_parser("status"); s.add_argument("workdir")
     v = sub.add_parser("verify"); v.add_argument("workdir")
+    p = sub.add_parser("publish"); p.add_argument("workdir"); p.add_argument("--tier", required=True); p.add_argument("--paper", required=True)
     a = ap.parse_args(argv)
     return {"approve": cmd_approve, "run": cmd_run,
-            "status": cmd_status, "verify": cmd_verify}[a.cmd](a)
+            "status": cmd_status, "verify": cmd_verify,
+            "publish": cmd_publish}[a.cmd](a)
 
 
 if __name__ == "__main__":

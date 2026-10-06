@@ -100,6 +100,48 @@ def _parse(raw: str) -> dict:
 import re  # noqa: E402  (kept at bottom: the module must import even on old Pythons)
 
 
+RUBRIC_PROMPT = """You are a {seat} reviewer scoring a research draft against the
+{tier} rubric. Score each dimension 1-10 (NeurIPS scale: 7+ is accept-level).
+Be precise and adversarial. A score without a concrete reason is a failed review.
+
+Dimensions for {tier}: {dims}
+
+Draft (results + limitations):
+{draft}
+
+Evidence summary:
+{evidence}
+
+Return ONLY valid JSON with exactly these keys:
+{{
+  "scores": {{"<dim>": <1-10 integer>, ...}},
+  "verdict": "READY" or "NOT_READY",
+  "strongest_objection": "<the single most damaging concrete criticism, or empty string>",
+  "evidence_refs": ["<file:line or artifact>"]
+}}"""
+
+
+def review_rubric(draft: str, evidence: str, tier: str, dimensions: list,
+                  model: str = None, url: str = None, key: str = None) -> dict:
+    """Both seats score every rubric dimension. Returns per-seat score dicts."""
+    model = model or os.environ.get("REVIEW_MODEL", "mistralai/mistral-large")
+    url = url or os.environ.get(
+        "LLM_API_URL", "https://openrouter.ai/api/v1/chat/completions")
+    key = key or os.environ.get("SILICONFLOW_API_KEY", "")
+    if not key:
+        raise RuntimeError("no review key: set SILICONFLOW_API_KEY (OpenRouter value)")
+    dims = ", ".join(dimensions)
+    meth = _parse(_chat(model, RUBRIC_PROMPT.format(
+        seat="Methodology", tier=tier, dims=dims,
+        draft=draft[:6000], evidence=evidence[:3000]), url, key))
+    devil = _parse(_chat(model, RUBRIC_PROMPT.format(
+        seat="Devil's Advocate (disagree where you honestly can)",
+        tier=tier, dims=dims,
+        draft=draft[:6000], evidence=evidence[:3000]), url, key))
+    return {"methodology": meth.get("scores", {}), "devil": devil.get("scores", {}),
+            "methodology_full": meth, "devil_full": devil, "model": model}
+
+
 def review(claim: str, evidence: str, model: str = None,
            url: str = None, key: str = None) -> dict:
     """Run both seats. Returns {methodology, devil, contradiction, joint}."""
