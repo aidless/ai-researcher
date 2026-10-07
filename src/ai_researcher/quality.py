@@ -69,6 +69,7 @@ MECHANICAL = {
         ("C7-contribution-delta", "the contribution is stated as a concrete change (output/operation/representation/assumption), not a novelty label"),
         ("C8-comparison-purpose", "every comparison states what decision it resolves, what stays fixed, and what changes"),
         ("C9-bounded-lesson", "ends with what readers can reconsider, separating observation / interpretation / proposed action, plus transfer limits"),
+        ("C10-ai-disclosure", "AI use declared or explicitly denied; named systems only in camera-ready, never in blind text"),
     ],
     "tmlr": [
         ("T1-numbers-trace", "every number traces to evidence file + field"),
@@ -77,6 +78,7 @@ MECHANICAL = {
         ("T4-double-blind", "manuscript anonymized; author info only in OpenReview metadata"),
         ("T5-references-resolve", "every citation has a resolvable target"),
         ("T6-not-survey", "not a survey paper (refused since 2026-09)"),
+        ("T7-ai-disclosure", "AI use declared or explicitly denied; named systems only in camera-ready"),
     ],
     "sci-journal": [
         ("J1-numbers-trace", "every number traces to evidence file + field"),
@@ -89,6 +91,7 @@ MECHANICAL = {
         ("J8-not-applications-only", "not an application of ML to another domain without method contribution"),
         ("J9-references-resolve", "every citation has a resolvable target"),
         ("J10-revision-ready", "every recorded objection maps to a checkable change or an explicit wont-fix reason"),
+        ("J11-ai-disclosure", "AI use declared or explicitly denied; named systems only in camera-ready"),
     ],
     "zone1": [
         ("Z1-numbers-trace", "every number traces to evidence file + field"),
@@ -107,6 +110,7 @@ MECHANICAL = {
         ("Z14-impact-ethics", "broader-impact and ethics discussion present"),
         ("Z15-references-resolve", "every citation has a resolvable target"),
         ("Z16-revision-ready", "every recorded objection maps to a checkable change or an explicit wont-fix reason"),
+        ("Z17-ai-disclosure", "AI use declared or explicitly denied; named systems only in camera-ready"),
     ],
 }
 
@@ -224,6 +228,25 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
                   and ("limitation" in low or "limit" in low))
             out.append((cid, ok,
                         "ok" if ok else "no bounded lesson (takeaway + transfer limits)"))
+        elif cid.endswith("ai-disclosure"):
+            low = text.lower()
+            declares = any(k in low for k in (
+                "ai-assisted", "ai assisted", "generated with the assistance of",
+                "language model", "llm-assisted", "no ai was used", "no ai use",
+                "written without ai assistance", "ai use disclosure",
+                "disclosure of ai"))
+            names_system = any(k in low for k in (
+                "ai-researcher", "ai_scientist", "ai-scientist"))
+            if not declares:
+                out.append((cid, False,
+                            "no AI-use statement: declare assistance or explicitly "
+                            "deny it (venue AI policies require one or the other)"))
+            elif names_system:
+                out.append((cid, False,
+                            "names the AI system in review text: move system names "
+                            "to camera-ready, keep blind text system-agnostic"))
+            else:
+                out.append((cid, True, "ok"))
         elif cid.endswith("not-survey"):
             low = text.lower()
             out.append((cid, "survey" not in low.split("\n")[0],

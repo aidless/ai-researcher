@@ -175,6 +175,50 @@ def hamming_rerank(ideas: list) -> list:
     return sorted(ideas, key=key)
 
 
+def archive_feedback(ideas: list, archive: list) -> list:
+    """Close the loop Sakana-style: completed runs feed back into ranking.
+
+    archive: list of {source_gap, verdict, note} from past loop runs
+    (STOP-EXTEND / STOP-REFUTED / STOP-INVALID and kill-switch verdicts).
+    Rules, all explicit:
+    - an idea whose source_gap already produced STOP-EXTEND twice without a
+      paper is demoted (diminishing returns; write it up or drop it)
+    - an idea refuted twice on independent data is retired, not re-ranked
+      (retrying refuted ideas until one passes by chance is p-hacking)
+    - an idea whose runs keep dying STOP-INVALID gets a harness flag, not a
+      lower rank (broken harness is not a property of the idea)
+    Returns (ranked_ideas, actions) where actions lists retire/demote/harness
+    decisions with reasons. The archive itself is never rewritten by this
+    function -- it is append-only.
+    """
+    from collections import Counter
+    verdicts: dict = {}
+    for rec in archive:
+        verdicts.setdefault(rec.get("source_gap", "?"), []).append(rec.get("verdict"))
+    actions, retired, demoted = [], set(), set()
+    for gid, vs in verdicts.items():
+        n_ext = sum(1 for v in vs if v == "STOP-EXTEND")
+        n_ref = sum(1 for v in vs if v in ("STOP-REFUTED", "STOP-REFUTED-REVERSE"))
+        n_inv = sum(1 for v in vs if v == "STOP-INVALID")
+        if n_ref >= 2:
+            retired.add(gid)
+            actions.append({"gap": gid, "action": "retire",
+                            "reason": f"refuted {n_ref}x on independent data"})
+        elif n_ext >= 2:
+            demoted.add(gid)
+            actions.append({"gap": gid, "action": "demote",
+                            "reason": f"extended {n_ext}x with no paper; write up or drop"})
+        if n_inv >= 2:
+            actions.append({"gap": gid, "action": "harness-flag",
+                            "reason": f"{n_inv}x invalid runs; fix harness, not rank"})
+    kept = [x for x in ideas if x.get("source_gap", x.get("id")) not in retired]
+    ranked = hamming_rerank(kept)
+    # demoted sink below non-demoted at equal importance+tier
+    dem = {a["gap"] for a in actions if a["action"] == "demote"}
+    ranked.sort(key=lambda x: (x.get("source_gap", x.get("id")) in dem,))
+    return ranked, actions
+
+
 def to_envelope(idea: dict, methods: str, rounds: int = 1) -> dict:
     """Draft an envelope skeleton from a ranked idea. Human fills methods.
 
