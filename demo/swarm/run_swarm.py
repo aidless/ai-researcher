@@ -160,12 +160,9 @@ def main():
     # backward compat for single-seed readers
     res["arms"] = reps[0]["arms"]
     res["slope_excess"] = reps[0]["slope_excess"]
-    res = {"arms": {"swarm1": a1, "swarm4": a4},
-           "slope_excess": round(a4["slope"] - a1["slope"], 4),
-           "confirmed": (a4["slope"] - a1["slope"]) >= 0.01,
-           "seed": SEED}
     (out / "result.json").write_text(json.dumps(res, indent=1) + "\n")
-    print(json.dumps({"swarm1_slope": a1["slope"], "swarm4_slope": a4["slope"],
+    print(json.dumps({"n_seeds": len(reps), "excesses": excesses,
+                      "n_positive": n_pos,
                       "confirmed": res["confirmed"]}, ensure_ascii=False))
 
 

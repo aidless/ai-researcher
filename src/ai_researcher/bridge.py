@@ -40,7 +40,8 @@ def _walk_numbers(obj: object, prefix: str = "", depth: int = 0,
     200 auto-rows is unreadable, which defeats its purpose.
     """
     SKIP_KEYS = {"id", "round", "n", "seed", "exit_code", "wall_s", "lat",
-                 "len", "size", "count", "total", "elapsed", "duration"}
+                 "len", "size", "count", "total", "elapsed", "duration",
+                 "round_cost_usd", "cost_usd_known", "caps"}
     found = []
     if isinstance(obj, dict):
         for k, v in obj.items():
@@ -48,6 +49,14 @@ def _walk_numbers(obj: object, prefix: str = "", depth: int = 0,
                 continue
             found += _walk_numbers(v, f"{prefix}.{k}" if prefix else str(k),
                                    depth + 1)
+    elif isinstance(obj, (list, tuple)):
+        # Lists (curves, trajectories, per-round values): index the path so
+        # each element traces. Without this, any list-shaped finding
+        # (accuracy curves, PCI trajectories) vanishes from the ledger.
+        for i, v in enumerate(obj):
+            if len(found) >= _limit:
+                break
+            found += _walk_numbers(v, f"{prefix}[{i}]", depth + 1)
     elif isinstance(obj, (int, float)) and not isinstance(obj, bool):
         found.append((prefix, obj))
     return found
