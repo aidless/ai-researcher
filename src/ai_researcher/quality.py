@@ -350,7 +350,16 @@ def gate_report(tier: str, ledger_rows: list, draft_text: str,
     bar = BAR.get(tier, 7.0)
     judg_ok = bool(means) and not incomplete and all(v >= bar for v in means.values())
     verdict = "PASS" if (mech_ok and judg_ok) else "FAIL"
+    # Carry provenance into the verdict itself. A gate report that does not name
+    # the artifact it read is unauditable: the 2026-10-07 scorecard asserted
+    # "mechanical 17/17 PASS" with no record of which text was reviewed, which is
+    # how per-run draft scaffolds were reported as manuscript verdicts.
     return {"tier": tier, "verdict": verdict, "bar": bar,
+            "manuscript": meta.get("manuscript"),
+            "manuscript_chars": meta.get("manuscript_chars"),
+            "ledger": meta.get("ledger"),
+            "ledger_rows": meta.get("ledger_rows", len(ledger_rows or [])),
+            "runs_in_ledger": meta.get("runs_in_ledger", []),
             "mechanical": [{"id": c, "pass": p, "reason": r} for c, p, r in mech],
             "mechanical_ok": mech_ok,
             "judgment_means": means, "judgment_ok": judg_ok,

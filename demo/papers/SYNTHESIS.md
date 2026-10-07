@@ -304,3 +304,28 @@ value silently becoming a zero, a lenient parse becoming a pass, a swallowed
 exception becoming a null result. The defense is structural rather than
 attentional -- unknown must never read as neutral, and every terminal state must
 be reachable only by an explicit, recorded decision.
+
+## Appendix B: the gate was grading a scaffold
+
+On 2026-10-07 the venue gate was found to be reading `<paper>/DRAFT_SEED.md` and
+nothing else. Every "mechanical 17/17 PASS" printed before then described a
+per-run draft seed of 1-18 KB, not the manuscript; the gate report recorded no
+artifact identity, so a scorecard asserting a full pass was indistinguishable
+from a genuine one. The manuscript itself had never been graded.
+
+Two further silences surfaced in the same audit. The ledger parser accepted only
+rows beginning `| C-`, so the Chinese-headed tables bridge actually writes
+yielded zero claims, which left every evidence-linked check reporting PASS with
+nothing to check. And the kill-switch evaluator swallowed exceptions, so a
+preregistered rule keyed on an absent field counted as "nothing fired".
+
+The shared shape is not carelessness but a default: absent data resolved to
+neutral. All three now fail loudly instead -- an unparseable ledger, an
+unevaluable rule, and a missing manuscript each stop the pipeline, and every
+verdict prints and stores which artifact it read.
+
+Re-graded against the real manuscript with a 138-claim consolidated ledger from
+13 signed runs, the mechanical half passes 17/17 and the two seats split
+methodology 8.29 / devil 7.29, below the 8.0 bar. The earlier 6.57 devil score
+was measured on a draft seed; the current number is the one that counts, and the
+remaining gap is a task-domain-breadth gap, not a measurement gap.

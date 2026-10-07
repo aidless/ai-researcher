@@ -382,10 +382,39 @@ def cmd_publish(args):
         print(f"no rounds in {workdir}: nothing to judge yet (run first)")
         return 1
     paper = Path(args.paper)
-    draft = (paper / "DRAFT_SEED.md").read_text(encoding="utf-8") if (
-        paper / "DRAFT_SEED.md").exists() else ""
+    # Which artifact is under review?  Until 2026-10-07 this read
+    # <paper>/DRAFT_SEED.md and nothing else.  Every "zone1 17/17 PASS" printed
+    # before then was measured against a per-run draft seed, never against the
+    # manuscript -- the gate was validating a scaffold and reporting it as a
+    # paper verdict.  Resolution order is now explicit and printed:
+    #   --manuscript file  >  <paper>/SYNTHESIS.md  >  <paper>/DRAFT_SEED.md
+    # and an absent source is refused rather than silently gated on "".
+    src = None
+    if getattr(args, "manuscript", None):
+        src = Path(args.manuscript)
+        if not src.exists():
+            print(f"refusing to publish: --manuscript not found: {src}")
+            return 1
+    elif (paper / "SYNTHESIS.md").exists():
+        src = paper / "SYNTHESIS.md"
+    elif (paper / "DRAFT_SEED.md").exists():
+        src = paper / "DRAFT_SEED.md"
+    if src is None:
+        print(f"refusing to publish: no manuscript in {paper} "
+              f"(need SYNTHESIS.md or DRAFT_SEED.md, or pass --manuscript). "
+              f"Gating on an empty string would report FAILs that describe the "
+              f"missing file, not the paper.")
+        return 1
+    draft = src.read_text(encoding="utf-8")
+    if not draft.strip():
+        print(f"refusing to publish: {src} is empty")
+        return 1
+    print(f"reviewing artifact: {src} ({len(draft)} chars)")
     ledger_path = paper / "CLAIM_LEDGER.md"
     rows = _parse_ledger(ledger_path) if ledger_path.exists() else []
+    if not rows:
+        print(f"note: no CLAIM_LEDGER.md in {paper}; evidence-linked claim "
+              f"checks will be reported as unverifiable rather than passed")
     dims = JUDGMENT[args.tier]
     try:
         scores = review_rubric(
@@ -397,8 +426,16 @@ def cmd_publish(args):
         print(f"judgment half unavailable ({type(e).__name__}: {e}); "
               f"mechanical half still runs")
         seat_scores = {}
+    # A verdict that does not name the artifact it judged is not auditable:
+    # the 2026-10-07 scorecard claimed "mechanical 17/17 PASS" with no record of
+    # which text was read, which is how a scaffold got reported as a paper.
     rep = gate_report(args.tier, rows, draft, seat_scores,
-                      {"workdir": str(workdir)})
+                      {"workdir": str(workdir),
+                       "manuscript": str(src),
+                       "manuscript_chars": len(draft),
+                       "ledger": str(ledger_path) if ledger_path.exists() else None,
+                       "ledger_rows": len(rows),
+                       "runs_in_ledger": sorted({r.get("run", "?") for r in rows})})
     print(f"tier={rep['tier']} verdict={rep['verdict']} bar={rep['bar']}")
     for m in rep["mechanical"]:
         print(f"  [{'PASS' if m['pass'] else 'FAIL'}] {m['id']}: {m['reason']}")
@@ -409,21 +446,82 @@ def cmd_publish(args):
 
 
 def _parse_ledger(path: Path) -> list:
-    """Best-effort parse of CLAIM_LEDGER.md rows into {id, value, status, evidence, how}."""
-    rows = []
+    """Parse a CLAIM_LEDGER.md table into {id, value, status, evidence, how}.
+
+    Header-driven with English and Chinese aliases. The historical hardcoded
+    `| C-` prefix silently returned zero rows for any ledger whose first column
+    was not a C-numbered id -- and a ledger that parses to nothing makes every
+    evidence-linked gate check unverifiable while still reporting PASS (fifth
+    instance of the shape that has bitten this project: a missing value reading
+    as a neutral one). bridge writes Chinese headers, so English-only matching
+    would have reproduced the same silence.
+
+        id | claim | evidence | value | how | status | run
+        ID | 声明（章节） | 证据文件+字段 | 数值 | 如何验证 | 状态 | 源运行
+
+    Columns are located by name, so ledgers may carry extra columns (e.g. `run`)
+    in any order. With no recognizable header the positional layout is used.
+    """
+    alias = {
+        "id": ("id", "编号"),
+        "run": ("run", "源运行", "运行"),
+        "claim": ("claim", "声明", "声明（章节）", "声明(章节)"),
+        "evidence": ("evidence", "证据", "证据文件", "证据文件+字段"),
+        "value": ("value", "数值"),
+        "how": ("how", "如何验证", "验证"),
+        "status": ("status", "状态"),
+    }
+
+    def norm(c: str) -> str:
+        return "".join(ch for ch in c.lower() if ch.isalnum())
+
+    def match(low: list) -> dict:
+        found = {}
+        for field, names in alias.items():
+            for i, cell in enumerate(low):
+                n = norm(cell)
+                if n and any(n == norm(a) or norm(a) in n for a in names):
+                    found.setdefault(field, i)
+                    break
+        return found
+
+    header, rows = None, []
     for line in path.read_text(encoding="utf-8").splitlines():
-        if not line.startswith("| C-"):
+        s = line.strip()
+        if not s.startswith("|"):
             continue
-        parts = [p.strip() for p in line.strip("|").split("|")]
+        parts = [c.strip() for c in s.strip("|").split("|")]
+        if parts and all(set(c) <= set("-: ") for c in parts if c):
+            continue  # separator row
+        m = match([c.lower() for c in parts])
+        if "id" in m and ("claim" in m or "value" in m):
+            header = m
+            continue
+        if not header:
+            if len(parts) < 6:
+                continue
+            header = {"id": 0, "claim": 1, "evidence": 2,
+                      "value": 3, "how": 4, "status": 5}
         if len(parts) < 6:
             continue
-        val = parts[3]
+
+        def cell(name, fallback=""):
+            i = header.get(name, fallback)
+            return parts[i] if isinstance(i, int) and 0 <= i < len(parts) else ""
+
+        cid = cell("id")
+        if not cid or norm(cid) in ("id", "编号"):
+            continue
+        val = cell("value")
         try:
-            val = float(val.split()[0].rstrip(":"))
+            val = float(val.split()[0].rstrip(":："))
         except Exception:
             pass
-        rows.append({"id": parts[0], "claim": parts[1], "evidence": parts[2],
-                     "value": val, "how": parts[4], "status": parts[5]})
+        row = {"id": cid, "claim": cell("claim"), "evidence": cell("evidence"),
+               "value": val, "how": cell("how"), "status": cell("status")}
+        if cell("run"):
+            row["run"] = cell("run")
+        rows.append(row)
     return rows
 
 
@@ -554,7 +652,8 @@ def main(argv=None):
     r = sub.add_parser("run"); r.add_argument("envelope"); r.add_argument("--workdir", required=True)
     s = sub.add_parser("status"); s.add_argument("workdir")
     v = sub.add_parser("verify"); v.add_argument("workdir")
-    p = sub.add_parser("publish"); p.add_argument("workdir"); p.add_argument("--tier", required=True); p.add_argument("--paper", required=True)
+    p = sub.add_parser("publish"); p.add_argument("workdir"); p.add_argument("--tier", required=True)
+    p.add_argument("--paper", required=True); p.add_argument("--manuscript", default=None)
     fi = sub.add_parser("finalize")
     fi.add_argument("envelope"); fi.add_argument("--workdir", required=True)
     am = sub.add_parser("amend"); am.add_argument("workdir"); am.add_argument("--round", required=True); am.add_argument("--note", required=True); am.add_argument("--apriori", default="no")
