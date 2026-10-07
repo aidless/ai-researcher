@@ -1,0 +1,33 @@
+{
+  "hypothesis": "three competent local evaluators disagree substantially on the same real code diffs (pairwise agreement < 0.8, with at least one ship/no-ship flip case)",
+  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" python3 /tmp/air-breadth/run_breadth.py",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 1.5,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "evaluator dependence is deployment-relevant: extend to 20+ diffs + frontier evaluator for the breadth claim"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "high agreement: evaluator choice does not move ship decisions on this diff set"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen (blanket 全做 directive 2026-10-06)",
+  "approved_at": "2026-10-07T07:55:29.105157+00:00",
+  "seed": 20261006,
+  "tension": "Teams route diffs through whichever LLM reviewer is cheapest, assuming evaluator choice is cosmetic. No measurement exists of whether three competent evaluators reach the same ship/no-ship decisions on the same diffs. If they diverge, every unevaluated reviewer choice is an uncontrolled experiment on production code.",
+  "power": {
+    "n": 8,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.2,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}
