@@ -378,6 +378,31 @@ def _parse_ledger(path: Path) -> list:
     return rows
 
 
+def cmd_amend(args):
+    """Append a correction note to a round WITHOUT touching signed artifacts.
+
+    Directly editing artifacts/result.json breaks the bundle signature (learned
+    the hard way: a threshold recomputation edited the signed file and voided
+    the chain). Amend instead writes a separate amendment.json alongside,
+    recording what was corrected, why, and whether the correction was knowable
+    without seeing the data. Bridge reads amendments and surfaces them.
+    """
+    import shutil
+    workdir = Path(args.workdir)
+    st = _load_state(workdir)
+    rnd = int(args.round)
+    rd = workdir / f"round-{rnd:02d}"
+    if not rd.exists():
+        print(f"no such round: {rd}")
+        return 1
+    note = {"amended_at": _now(), "correction": args.note,
+            "knowable_without_data": args.apriori}
+    (rd / "amendment.json").write_text(
+        json.dumps(note, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"amendment recorded on round-{rnd:02d} (artifacts untouched, bundle intact)")
+    return 0
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(prog="ai-researcher.loop")
@@ -387,10 +412,11 @@ def main(argv=None):
     s = sub.add_parser("status"); s.add_argument("workdir")
     v = sub.add_parser("verify"); v.add_argument("workdir")
     p = sub.add_parser("publish"); p.add_argument("workdir"); p.add_argument("--tier", required=True); p.add_argument("--paper", required=True)
+    am = sub.add_parser("amend"); am.add_argument("workdir"); am.add_argument("--round", required=True); am.add_argument("--note", required=True); am.add_argument("--apriori", default="no")
     a = ap.parse_args(argv)
     return {"approve": cmd_approve, "run": cmd_run,
             "status": cmd_status, "verify": cmd_verify,
-            "publish": cmd_publish}[a.cmd](a)
+            "publish": cmd_publish, "amend": cmd_amend}[a.cmd](a)
 
 
 if __name__ == "__main__":

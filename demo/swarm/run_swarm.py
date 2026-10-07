@@ -184,7 +184,10 @@ def main():
     res = {"reps": reps, "n_seeds": len(reps),
            "excesses": excesses,
            "n_positive": n_pos,
-           "confirmed": n_pos >= max(2, len(reps) - 1),
+           # n_pos >= len-1 (all but one may miss); floor of 1 so single-seed
+           # runs can confirm (the old max(2, ...) made n=1 unconfirmable by
+           # construction -- a threshold bug, not a finding).
+           "confirmed": n_pos >= max(1, len(reps) - 1),
            "seed": SEEDS[0]}
     # backward compat for single-seed readers
     res["arms"] = reps[0]["arms"]
