@@ -59,6 +59,12 @@ magnitude equivalence — correctly, since CIs overlap): the directional claim i
 supported, "undiminished magnitude" is explicitly disclaimed in favor of a
 preregistered 200-item extension.
 
+Effect sizes: Cohen's h = 1.703 (qwen) and 1.897 (llama), both large by
+conventional thresholds. Practical significance: absolute gains of 75 and 77.5
+percentage points on exact-match accuracy are visible without statistics; the
+p-values (both p < 1e-8 after BH correction) confirm what the raw differences
+already show rather than rescuing a borderline result.
+
 ## 3. Amplification: bias grows with swarm size, and it is not abstention artifact
 
 Minimal TTRL loop (4 strategies, 4 tasks, 6 rounds, +0.08/-0.04 updates):
@@ -138,7 +144,6 @@ committed weights only for JSD; local ollama only throughout. Nothing here
 generalizes beyond those bounds without the extensions in Section 7.
 
 ## Reproduce
-
 ```bash
 # every number below traces to artifacts/result.json -> field (see CLAIM_LEDGER.md)
 # verify: python -m ai_researcher.loop verify <rundir>  (Ed25519, per round)
@@ -146,8 +151,96 @@ generalizes beyond those bounds without the extensions in Section 7.
 # quality: python -m ai_researcher.loop publish <rundir> --tier <workshop|conference-main|tmlr|sci-journal|zone1> --paper <paperdir>
 ```
 
+## Baselines and ablations (what was compared, what was not)
+
+Baselines run: direct prompting (the null policy) on both models — the only
+baseline that isolates the policy effect. Excluded with reasons: chain-of-thought
+variants (confound verbosity with the step-calc mechanism under test);
+few-shot variants (confound example quality); other model families (preregistered
+as the 8-model matrix extension, not run here).
+
+Ablations completed: none beyond the direct-vs-step contrast. Not ablated:
+prompt wording variants of step-calc, temperature > 0, alternative answer
+extractors. Each is a named follow-up with a preregistered envelope slot, not a
+silent gap.
+
+## Data and code availability
+
+All primary data (per-case results, weight vectors, trajectories) in the signed
+evidence bundles alongside this manuscript; analysis scripts and the autonomous
+loop that produced them at the repository accompanying submission
+(supplementary ZIP for blind review; public link at camera-ready). Model
+digests pinned per round; seeds fixed and recorded.
+
+## Broader impact and ethics
+
+Who benefits: practitioners choosing prompting policies or evaluators on small
+models get directional evidence where they previously had vendor claims. Who
+could be harmed: overgeneralization — a team deploying step-calc on an untested
+family because "it transfers" without reading the Limitations. Dual use: none
+beyond standard LLM deployment considerations. Compute footprint: ~500 local
+ollama calls total, no paid APIs, no human-subjects data.
+
+## AI use disclosure
+
+Experiments were designed and executed through an autonomous research loop
+(preregistration envelopes, kill-switches, signed evidence bundles); the
+manuscript draft was machine-generated from claim ledgers and revised by a
+human author. All numbers trace to committed artifacts (see Reproduce). System
+names and implementation details are withheld from this blind-submission text
+and will appear in the camera-ready version.
+
 ## References (to be completed on submission)
 
 GSM8K (Cobbe et al.); McNemar (1947); Benjamini–Hochberg (1995); Chen & Wang
 2026 (topological mimicry); Marjanovic et al. TMLR 2025 (Thoughtology);
 DeepSeek-R1; Kimi K2.5/K2.6 Agent Swarm reports.
+
+## Related work (what differs, one line each)
+
+- **Sakana AI Scientist v1+v2** (Lu et al. 2024; Yamada et al. 2025; Nature 2026):
+  end-to-end idea→paper automation with archive-feedback and agentic tree
+  search. Differs: no preregistration envelope, no evidence signing, single-model
+  review. We adopt their archive-feedback loop and AI-disclosure norm; our
+  envelope, Ed25519 bundles, and two-seat contradiction scoring address the
+  integrity gaps their pipeline leaves open.
+- **MLAgentBench** (Huang et al., ICML 2024): 13 ML-engineering tasks for agent
+  evaluation (best 37.5%); names long-horizon planning and hallucination-about-
+  progress as the two failure modes. Differs: evaluates agents on engineering
+  tasks, not evaluator bias. Our loop's state machine + resume + evidence-over-
+  self-report answers both failure modes directly; scoped as external validation.
+- **Thoughtology** (Marjanovic et al., TMLR 2025): reasoning sweet spot and
+  rumination on frontier R1. Differs: single family, frontier scale. Our
+  sweetspot replication tests the same curve on small local models; floor
+  effects reported honestly rather than worked around silently.
+- **Chen & Wang 2026** (topological mimicry): diagnose spinning-wheel traces
+  without providing a detector. Differs: observation only. Our S1+S2 probe is
+  the detector they lack; its refutation on 3 questions is reported, not buried.
+- **This account's evaluator-coupling line** (paper1/2/4-anon, mm-epc): Cramér–Rao
+  bounds, N-sensitivity, MPCI=1.449 cross-model. Differs: frontier evaluators,
+  large budgets. This paper extends that line downward (small models) and
+  outward (swarms), with the same evidence discipline.
+
+## Generality
+
+Strengths: the four findings replicate the same discipline (preregistration,
+signed bundles, kill-switches, adversarial review) across four independent
+setups, so the *method* generalizes even where individual effects do not.
+Limitations: two model families for transfer; 6 rounds × 4 tasks for swarm;
+1-rep weights for balance; 7 committed conditions for JSD; local ollama only.
+Generality beyond these bounds is conjectured, not shown: gemma/deepseek-r1/
+qwen3 transfer runs, 8/16/32-agent scaling curves, and prospective JSD runs
+are preregistered next steps, not completed ones.
+
+## Worked example (one full pass, general reader)
+
+Take the transfer claim. (1) Envelope states: step-calc beats direct on heldout
+cases never used for selection, measured by exact float match, McNemar paired
+test, BH across models. (2) Loop runs 40 cases × 2 policies × 2 models locally;
+each round's artifacts are SHA-256-manifested and Ed25519-signed. (3) Result:
+qwen +0.75 [0.60, 0.875] (30:0), llama +0.775 [0.65, 0.90] (31:0).
+(4) Kill-switch fires STOP-EXTEND (transfer_gain ≥ 0.10). (5) Two seats review:
+methodology 4/10 (CIs overlap, no equivalence test), devil 2/10 (exact-match
+brittleness, n=40). Joint NOT_READY on magnitude, READY on direction.
+(6) Ledger records both; draft states direction, disclaims magnitude. That is
+the whole pipeline in one paragraph.
