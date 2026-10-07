@@ -1,6 +1,6 @@
 {
   "hypothesis": "step-calc gain is positive on all 8 local instruction-model families, with magnitude varying by family (reasoning-specialized vs general)",
-  "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261006 EVO_MODELS=\"qwen2.5:7b,llama3.1:8b,qwen2:7b,gemma3:4b,deepseek-r1:7b,qwen3:4b,qwen2.5-coder:7b,llama3.2:1b\" python3 /tmp/air-transfer/run_transfer.py",
+  "methods": "RD=\"$PWD\"; cd /tmp/ind-audit/gsm8k-self-evolve && EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261006 EVO_MODELS=\"qwen2.5:7b,llama3.1:8b,qwen2:7b,gemma3:4b,deepseek-r1:7b,qwen3:4b,qwen2.5-coder:7b,llama3.2:1b\" PYTHONPATH=/tmp/ind-audit/gsm8k-self-evolve/examples python3 /tmp/air-transfer/run_transfer.py",
   "max_rounds": 1,
   "max_cost_usd": 0.0,
   "max_wall_hours": 4.0,
@@ -19,8 +19,8 @@
   "required_artifacts": [
     "result.json"
   ],
-  "approved_by": "liuzewen",
-  "approved_at": "2026-10-06T10:55:44.222690+00:00",
+  "approved_by": "liuzewen (blanket 全做 directive 2026-10-06)",
+  "approved_at": "2026-10-07T03:49:28.854281+00:00",
   "seed": 20261006,
   "tension": "Step-calc was established on one model family and replicated on a second (transfer-01: +0.75/+0.775, both p_bh 2e-9). Every citation beyond those two families assumes transfer that was never tested. Eight local families decide whether this is a policy property or a two-model coincidence.",
   "power": {

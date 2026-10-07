@@ -55,13 +55,17 @@ def ask(prompt, cap, timeout=150):
 
 
 def grade(response, expected):
-    """Word-boundary match, not substring: "2" must not match "12"/"200",
-    "yes" must not match "eyes". Numbers compare as numbers when both parse."""
+    """Numeric answers compare against the LAST number in the response (answers
+    come last; the question's own numbers come first -- comparing the first
+    number grades the question stem, not the answer). Non-numeric answers use
+    word boundaries ("yes" must not match "eyes").
+    """
     import re
     low = response.lower()
     exp = expected.lower().strip()
+    nums = re.findall(r"[-+]?\d*\.?\d+", low)
     try:
-        return float(re.findall(r"[-+]?\d*\.?\d+", low)[0]) == float(exp)
+        return float(nums[-1]) == float(exp)
     except (IndexError, ValueError):
         pass
     return re.search(r"\b" + re.escape(exp) + r"\b", low) is not None

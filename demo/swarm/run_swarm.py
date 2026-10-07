@@ -50,22 +50,41 @@ def llm(model, system, user, timeout=120):
         return json.loads(r.read().decode())["response"]
 
 
-def judge(question, out_a, out_b):
-    """Vote A/B or None (abstain). See run_collapse.py for why no defaults."""
+FORCE_DECIDE = os.environ.get("EVO_FORCE_DECIDE", "0") == "1"
+
+
+def judge(question, out_a, out_b, force_seed=None):
+    """Vote A/B or None (abstain). With EVO_FORCE_DECIDE=1, abstentions are
+    re-asked once with forcing language, then decided deterministically and
+    flagged forced=True. This removes the abstention asymmetry between arms:
+    any remaining slope gap cannot come from who-abstains-more."""
     import re
     p = (f"问题：{question}\n回答A：{out_a[:300]}\n回答B：{out_b[:300]}\n"
          f"哪个回答更好？只回答 A 或 B。")
     try:
         r = llm(JUDGE, "你是严格的评审员。", p).strip()
     except Exception:
-        return None
+        return None, False
     for pat in (r"(?:答案|回答|选择|选)\s*[:：]?\s*([AB])\b",
                 r"\b([AB])\s*(?:更好|更优|获胜|胜出)",
                 r"\b([AB])\b"):
         ms = re.findall(pat, r, re.IGNORECASE)
         if ms:
-            return ms[-1].upper()
-    return None
+            return ms[-1].upper(), False
+    if not FORCE_DECIDE:
+        return None, False
+    try:
+        r2 = llm(JUDGE, "你是评审员。必须二选一，不许弃权、不许解释。",
+                 f"问题：{question}\nA：{out_a[:200]}\nB：{out_b[:200]}\n只回答 A 或 B。").strip()
+        for pat in (r"\b([AB])\b",):
+            ms = re.findall(pat, r2, re.IGNORECASE)
+            if ms:
+                return ms[-1].upper(), True
+    except Exception:
+        pass
+    import random
+    rng = random.Random((force_seed or 0) + len(question))
+    return ("A" if rng.random() < 0.5 else "B"), True
 
 
 def pci(w):
@@ -89,6 +108,7 @@ def run_arm(swarm, seed):
     weights = {k: 1.0 / len(STRATEGIES) for k in STRATEGIES}
     traj = [round(pci(weights), 4)]
     traj_n = [swarm]
+    tot_forced = tot_abstained = tot_votes = 0
     for rnd in range(ROUNDS):
         task_q = TASKS[rnd % len(TASKS)]
         cands = []
@@ -120,8 +140,16 @@ def run_arm(swarm, seed):
         # bias, not noise. n_actual records how many executors REALLY ran --
         # the swarm label must not lie about dropped futures.
         best_s, best_o = cands[0]
+        n_forced = n_abstained = 0
         for s, o in cands[1:]:
-            v = judge(task_q, o, best_o)
+            v, forced = judge(task_q, o, best_o)
+            tot_votes += 1
+            if v is None:
+                n_abstained += 1
+                tot_abstained += 1
+                continue
+            n_forced += forced
+            tot_forced += forced
             if v == "A":
                 best_s, best_o = s, o
         weights[best_s] = max(0.01, weights[best_s] + 0.08)
@@ -131,11 +159,12 @@ def run_arm(swarm, seed):
                 weights[k] = max(0.01, weights[k] - 0.01)
         traj.append(round(pci(weights), 4))
         traj_n.append(n_actual)
-        traj_n.append(n_actual)
     slope = round((traj[-1] - traj[0]) / ROUNDS, 4)
     return {"swarm": swarm, "pci_trajectory": traj, "slope": slope,
             "n_actual_per_round": traj_n,
-            "mean_n_actual": round(sum(traj_n) / len(traj_n), 2)}
+            "mean_n_actual": round(sum(traj_n) / len(traj_n), 2),
+            "forced_votes": tot_forced, "abstained_votes": tot_abstained,
+            "total_votes": tot_votes}
 
 
 def run_all(seed):
