@@ -104,32 +104,60 @@ def _release_lock(fd, workdir: Path) -> None:
 
 
 def _eval_kill(rows: list, result: dict):
-    """Evaluate kill-switch rows in order. Returns (action, row) or (CONTINUE, None).
+    """Evaluate kill-switch rows in order. Returns (action, row, unevaluable).
 
     The result dict carries numeric facts (gain, p_value, cost_usd, ...). Each row
     condition is a tiny expression over those names, e.g. "gain >= 0.10".
     Only names present in result are visible; anything else is a failed row, not
     a crash -- a row that cannot be evaluated cannot authorize continuation.
+
+    A row that raises (NameError on a field the artifact never writes) is
+    UNEVALUABLE, and an unevaluable row is returned to the caller instead of
+    being silently skipped. matrix-01 (2026-10-07) shipped a kill-switch on
+    `confirmed == True` while its script emitted no `confirmed` field: the
+    exception was swallowed, no row fired, and the run concluded as
+    STOP-ROUNDS-EXHAUSTED -- a preregistered decision rule that never ran,
+    reported as a clean finish. Silent-skip made status a lie.
     """
     safe = {k: v for k, v in result.items() if isinstance(v, (int, float, bool))}
+    unevaluable = []
     for r in rows:
         try:
             if eval(r["condition"], {"__builtins__": {}}, dict(safe)):  # noqa: S307
-                return r["action"], r
-        except Exception:
+                return r["action"], r, unevaluable
+        except Exception as e:
+            unevaluable.append({"condition": r["condition"],
+                                "error": f"{type(e).__name__}: {e}"})
             continue
-    return "CONTINUE", None
+    return "CONTINUE", None, unevaluable
 
 
 def _run_round(env: Envelope, workdir: Path, rnd: int, st: dict) -> dict:
     rd = workdir / f"round-{rnd:02d}"
     (rd / "artifacts").mkdir(parents=True, exist_ok=True)
     t0 = time.monotonic()
-    proc = subprocess.run(env.methods, shell=True, cwd=rd, capture_output=True,
-                          text=True, timeout=int(env.max_wall_hours * 3600))
+    # A wall-clock kill must not crash the loop: matrix-01 (2026-10-07) hit
+    # subprocess.TimeoutExpired AFTER its script had already written a complete
+    # artifacts/result.json, and the uncaught exception left state["status"] at
+    # RUNNING forever -- an unsupervised run that can never conclude is worse
+    # than a failed one, because status lies. Timeouts are now a recorded
+    # round state (timed_out=True, exit_code=-1), not an exception.
+    timed_out = False
+    returncode = -1
+    out, err = "", ""
+    try:
+        proc = subprocess.run(env.methods, shell=True, cwd=rd, capture_output=True,
+                              text=True, timeout=int(env.max_wall_hours * 3600))
+        out, err, returncode = proc.stdout or "", proc.stderr or "", proc.returncode
+    except subprocess.TimeoutExpired as e:
+        timed_out = True
+        out = (e.stdout or "") if isinstance(e.stdout, str) else (e.stdout or b"").decode("utf-8", "replace")
+        err = (e.stderr or "") if isinstance(e.stderr, str) else (e.stderr or b"").decode("utf-8", "replace")
+        err = (err + f"\n[loop] wall-clock limit "
+                      f"{env.max_wall_hours}h reached; process killed").strip()
     elapsed = time.monotonic() - t0
-    (rd / "stdout.txt").write_text(proc.stdout or "", encoding="utf-8")
-    (rd / "stderr.txt").write_text(proc.stderr or "", encoding="utf-8")
+    (rd / "stdout.txt").write_text(out, encoding="utf-8")
+    (rd / "stderr.txt").write_text(err, encoding="utf-8")
     result_path = rd / "artifacts" / "result.json"
     result = {}
     if result_path.exists():
@@ -137,8 +165,10 @@ def _run_round(env: Envelope, workdir: Path, rnd: int, st: dict) -> dict:
             result = json.loads(result_path.read_text(encoding="utf-8"))
         except Exception as e:
             result = {"_parse_error": str(e)}
-    result.setdefault("exit_code", proc.returncode)
+    result.setdefault("exit_code", returncode)
     result.setdefault("wall_s", round(elapsed, 1))
+    if timed_out:
+        result["timed_out"] = True
     # Cost accrual: the methods command reports spend via result.json
     # "cost_usd" (LLM API meter) or a cost_usd.txt sidecar. Without either,
     # spend is unknown and the budget gate cannot protect: record that.
@@ -154,7 +184,7 @@ def _run_round(env: Envelope, workdir: Path, rnd: int, st: dict) -> dict:
     result["round_cost_usd"] = float(cost or 0.0)
     missing = [a for a in env.required_artifacts if not (rd / "artifacts" / a).exists()]
     return {"round": rnd, "dir": str(rd), "result": result, "missing": missing,
-            "exit_code": proc.returncode}
+            "exit_code": returncode, "timed_out": timed_out}
 
 
 def cmd_run(args):
@@ -229,12 +259,31 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
             json.dumps(envl, indent=2) + "\n", encoding="utf-8")
         # 5. kill-switch (notes pass through: a verdict without its reason
         # is unactionable, and the earlier dict comprehension dropped them)
-        action, row = _eval_kill(
+        action, row, uneval = _eval_kill(
             [{"condition": r.condition, "action": r.action, "note": r.note}
              for r in env.kill_switch],
             rr["result"])
+        # fail-closed: a preregistered rule that cannot be evaluated cannot be
+        # reported as "nothing fired". Either a row decides, or the run stops
+        # as STOP-KILL-UNEVALUABLE and names the rows that never ran.
+        if uneval and action == "CONTINUE":
+            action = "STOP-KILL-UNEVALUABLE"
+            row = {"condition": "; ".join(u["condition"] for u in uneval),
+                   "action": "STOP-KILL-UNEVALUABLE",
+                   "note": ("kill-switch rows unevaluable against this artifact: "
+                            + "; ".join(f"{u['condition']} ({u['error']})"
+                                        for u in uneval)
+                            + " -- preregistered decision rule did not run")}
         rec = {**rr, "bundle": envl["bundle"]["bundle_id"],
                "kill_row": (row["condition"] if row else None)}
+        # A completed-but-killed round is still signed evidence; if no
+        # kill-switch row claimed it, the wall clock is the reason and the run
+        # must terminate as STOP-TIME rather than pretend it may continue.
+        if rr.get("timed_out") and action == "CONTINUE":
+            action = "STOP-TIME"
+            row = {"condition": f"wall_s >= {int(env.max_wall_hours * 3600)}",
+                   "note": "wall-clock limit reached; artifacts preserved and signed",
+                   "action": "STOP-TIME"}
         # cost accrues here, once per counted round, from the round's own report
         st["cost_usd"] = round(st.get("cost_usd", 0.0)
                                + float(rr["result"].get("round_cost_usd", 0.0)), 6)
@@ -403,6 +452,100 @@ def cmd_amend(args):
     return 0
 
 
+def cmd_finalize(args):
+    """Complete bookkeeping for a round whose artifacts already exist on disk.
+
+    matrix-01 (2026-10-07) wrote a complete artifacts/result.json and was then
+    killed by the wall clock before the loop could sign it, evaluate the
+    kill-switch, or set a terminal status. The data was real; only the
+    bookkeeping was missing. Re-running `run` would refuse (artifacts present,
+    budget and time already spent) and hand-editing state.json would forge the
+    audit trail. This command signs the untouched artifacts, evaluates the
+    envelope's kill-switch against them, and appends the round to state.
+
+    It never touches artifact bytes and never invents a verdict: no envelope
+    kill-switch row firing means CONTINUE -> STOP-ROUNDS-EXHAUSTED, and a
+    missing or unparseable result.json is refused.
+    """
+    workdir = Path(args.workdir)
+    env = Envelope.load(args.envelope)
+    problems = env.validate()
+    if problems:
+        print("refusing to finalize: envelope not executable:")
+        for p in problems:
+            print(f"  - {p}")
+        return 1
+    if _load_state(workdir)["status"] not in ("READY", "RUNNING"):
+        print("run already concluded; nothing to finalize")
+        return 1
+    lock_fd = _acquire_lock(workdir)
+    if lock_fd is None:
+        return 1
+    try:
+        st = _load_state(workdir)
+        if not st.get("key_priv"):
+            priv, pub = EV.generate_keypair()
+            st["key_priv"], st["key_pub"] = priv.hex(), pub.hex()
+        priv = bytes.fromhex(st["key_priv"])
+        pub = bytes.fromhex(st["key_pub"])
+        rnd = len(st["rounds"]) + 1
+        rd = workdir / f"round-{rnd:02d}"
+        result_path = rd / "artifacts" / "result.json"
+        if not result_path.exists():
+            print(f"refusing to finalize: no artifacts at {result_path}")
+            return 1
+        try:
+            result = json.loads(result_path.read_text(encoding="utf-8"))
+        except Exception as e:
+            print(f"refusing to finalize: result.json unparseable ({e})")
+            return 1
+        missing = [a for a in env.required_artifacts
+                   if not (rd / "artifacts" / a).exists()]
+        if missing:
+            print(f"refusing to finalize: missing artifacts {missing}")
+            return 1
+        result.setdefault("finalized_from_disk", True)
+        envl = EV.sign_round(rd / "artifacts", priv, signer="ai-researcher-loop",
+                             round_id=f"r{rnd:02d}")
+        chk = EV.verify_round(rd / "artifacts", envl["bundle"], envl["envelope"], pub)
+        if not chk["valid"]:
+            print(f"refusing to finalize: verification failed ({chk['reason']})")
+            return 1
+        (rd / "envelope.json").write_text(json.dumps(envl, indent=2) + "\n",
+                                          encoding="utf-8")
+        action, row, uneval = _eval_kill(
+            [{"condition": r.condition, "action": r.action, "note": r.note}
+             for r in env.kill_switch], result)
+        if uneval and action == "CONTINUE":
+            action = "STOP-KILL-UNEVALUABLE"
+            row = {"condition": "; ".join(u["condition"] for u in uneval),
+                   "action": "STOP-KILL-UNEVALUABLE",
+                   "note": ("kill-switch rows unevaluable against this artifact: "
+                            + "; ".join(f"{u['condition']} ({u['error']})"
+                                        for u in uneval)
+                            + " -- preregistered decision rule did not run")}
+        if action == "CONTINUE":
+            action = "STOP-ROUNDS-EXHAUSTED"
+        rec = {"round": rnd, "dir": str(rd), "result": result, "missing": [],
+               "exit_code": result.get("exit_code", -1), "timed_out": False,
+               "finalized": True,
+               "bundle": envl["bundle"]["bundle_id"],
+               "kill_row": (row["condition"] if row else None),
+               "verdict": action,
+               "reason": (row.get("note") if row else
+                          "artifacts signed after wall-clock kill; no kill row fired")}
+        st["cost_usd"] = round(st.get("cost_usd", 0.0)
+                               + float(result.get("round_cost_usd", 0.0)), 6)
+        st["rounds"].append(rec)
+        st["status"] = action
+        _save_state(workdir, st)
+        print(f"finalized round-{rnd:02d}: {action} "
+              f"bundle={envl['bundle']['bundle_id'][:18]}")
+        return 0
+    finally:
+        _release_lock(lock_fd, workdir)
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(prog="ai-researcher.loop")
@@ -412,11 +555,14 @@ def main(argv=None):
     s = sub.add_parser("status"); s.add_argument("workdir")
     v = sub.add_parser("verify"); v.add_argument("workdir")
     p = sub.add_parser("publish"); p.add_argument("workdir"); p.add_argument("--tier", required=True); p.add_argument("--paper", required=True)
+    fi = sub.add_parser("finalize")
+    fi.add_argument("envelope"); fi.add_argument("--workdir", required=True)
     am = sub.add_parser("amend"); am.add_argument("workdir"); am.add_argument("--round", required=True); am.add_argument("--note", required=True); am.add_argument("--apriori", default="no")
     a = ap.parse_args(argv)
     return {"approve": cmd_approve, "run": cmd_run,
             "status": cmd_status, "verify": cmd_verify,
-            "publish": cmd_publish, "amend": cmd_amend}[a.cmd](a)
+            "publish": cmd_publish, "amend": cmd_amend,
+            "finalize": cmd_finalize}[a.cmd](a)
 
 
 if __name__ == "__main__":

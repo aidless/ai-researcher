@@ -139,9 +139,10 @@ magnitude here is pilot-grade (n=40, 6 rounds, 1-rep weights) and must not be
 cited as an effect size.
 Proposed action: replicate the exact procedures (commands in Reproduce below)
 before citing; extend, do not port, the numbers.
-Transfer limits: two model families for transfer; one evaluator pair for swarm;
-committed weights only for JSD; local ollama only throughout. Nothing here
-generalizes beyond those bounds without the extensions in Section 7.
+Transfer limits: eight model families on ONE task domain (not breadth across
+tasks); one evaluator pair for swarm; committed weights only for JSD; local
+ollama only throughout. Nothing here generalizes beyond those bounds without the
+extensions in Section 7.
 
 ## Reproduce
 ```bash
@@ -221,6 +222,36 @@ DeepSeek-R1; Kimi K2.5/K2.6 Agent Swarm reports.
   large budgets. This paper extends that line downward (small models) and
   outward (swarms), with the same evidence discipline.
 
+## Breadth across model families (8/8, sign test p=0.004)
+
+The transfer effect was re-measured on a 40-item held-out set across eight local
+model families spanning 1B-8B and general/reasoning/coder lineages.
+
+| family | direct | step-calc | gain | fail->pass | pass->fail |
+|---|---|---|---|---|---|
+| qwen2.5:7b | 0.125 | 0.825 | +0.700 | 28 | 0 |
+| llama3.1:8b | 0.025 | 0.400 | +0.375 | 15 | 0 |
+| qwen2:7b | 0.025 | 0.450 | +0.425 | 18 | 1 |
+| gemma3:4b | 0.025 | 0.800 | +0.775 | 31 | 0 |
+| deepseek-r1:7b | 0.225 | 0.925 | +0.700 | 29 | 1 |
+| qwen3:4b | 0.725 | 0.875 | +0.150 | 7 | 1 |
+| qwen2.5-coder:7b | 0.300 | 0.900 | +0.600 | 24 | 0 |
+| llama3.2:1b | 0.000 | 0.525 | +0.525 | 21 | 0 |
+
+Every family improves (8/8, sign test p = 0.004; pooled paired McNemar 173:3,
+p = 1.9e-47). Gain tracks headroom rather than size: qwen3:4b has the highest
+baseline and the smallest gain, llama3.2:1b a zero baseline and +0.525. This
+retires the two-family limit on the transfer arm. It does **not** establish
+breadth across task domains -- the held-out set is one GSM8K-style collection,
+so the claim is breadth across *models*, not across *tasks*, and the devil seat
+scored this arm 3/10 for exactly that reason.
+
+One caveat, recorded rather than smoothed: this run's kill-switch keyed on a
+`confirmed` field the script never emitted, and the loop's kill evaluator
+swallowed the resulting NameError, filing the run as a clean finish. The STOP-
+EXTEND verdict for this arm is analyst-assigned rather than preregistered. The
+loop now fails closed on unevaluable rules; see Appendix A.
+
 ## Generality
 
 Strengths: the four findings replicate the same discipline (preregistration,
@@ -228,9 +259,11 @@ signed bundles, kill-switches, adversarial review) across four independent
 setups, so the *method* generalizes even where individual effects do not.
 Limitations: two model families for transfer; 6 rounds × 4 tasks for swarm;
 1-rep weights for balance; 7 committed conditions for JSD; local ollama only.
-Generality beyond these bounds is conjectured, not shown: gemma/deepseek-r1/
-qwen3 transfer runs, 8/16/32-agent scaling curves, and prospective JSD runs
-are preregistered next steps, not completed ones.
+Generality beyond these bounds is conjectured, not shown: a second held-out set
+from a different task family, 8/16/32-agent scaling curves, and prospective JSD
+runs are preregistered next steps, not completed ones. The gemma/deepseek-r1/
+qwen3 transfer runs are no longer missing -- they are in the eight-family table
+above.
 
 ## Worked example (one full pass, general reader)
 
@@ -244,3 +277,30 @@ methodology 4/10 (CIs overlap, no equivalence test), devil 2/10 (exact-match
 brittleness, n=40). Joint NOT_READY on magnitude, READY on direction.
 (6) Ledger records both; draft states direction, disclaims magnitude. That is
 the whole pipeline in one paragraph.
+
+## Appendix A: two supervision bugs this project paid for
+
+Recorded because both produced clean-looking states that were false, and both
+were found by checking a status against the artifacts rather than trusting it.
+
+1. **Wall-clock kill left status RUNNING.** The loop ran experiments via
+   `subprocess.run(timeout=...)` and did not catch `TimeoutExpired`. matrix-01
+   wrote a complete result set and was then killed at the limit; the uncaught
+   exception aborted the loop before it could sign, judge, or terminate, and the
+   run reported RUNNING indefinitely. An unsupervised run that can never conclude
+   is worse than a failed one, because status lies. Timeouts are now a recorded
+   round state with signed artifacts, and a completed-but-killed round can be
+   finalized (`loop finalize`) without re-spending budget or touching artifact
+   bytes.
+2. **An unevaluable kill-switch was reported as a clean finish.** `_eval_kill`
+   caught every exception from a preregistered condition and continued, so a rule
+   keyed on a field the artifact never wrote evaluated to nothing and the run
+   closed as STOP-ROUNDS-EXHAUSTED. The preregistration had not run. Conditions
+   are now surfaced: if no rule fires and any rule is unevaluable, the run stops
+   STOP-KILL-UNEVALUABLE and names the rules that never executed.
+
+Both were the same shape of error, seen three times in this project: a missing
+value silently becoming a zero, a lenient parse becoming a pass, a swallowed
+exception becoming a null result. The defense is structural rather than
+attentional -- unknown must never read as neutral, and every terminal state must
+be reachable only by an explicit, recorded decision.
