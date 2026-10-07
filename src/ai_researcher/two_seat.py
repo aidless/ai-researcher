@@ -108,7 +108,34 @@ def _parse(raw: str) -> dict:
     if raw.startswith("```"):
         raw = re.sub(r"^```[a-zA-Z]*\n?", "", raw)
         raw = re.sub(r"\n?```$", "", raw)
-    return json.loads(raw)
+    # Models append trailing prose after the JSON ("Hope this helps!...").
+    # Extract the first balanced {...} instead of parsing the whole string.
+    start = raw.find("{")
+    if start < 0:
+        return json.loads(raw)  # raise the honest error
+    depth, end = 0, None
+    instr = False
+    esc = False
+    for i, ch in enumerate(raw[start:], start):
+        if instr:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                instr = False
+        elif ch == '"':
+            instr = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                end = i + 1
+                break
+    if end is None:
+        return json.loads(raw)  # raise the honest error
+    return json.loads(raw[start:end])
 
 
 import re  # noqa: E402  (kept at bottom: the module must import even on old Pythons)

@@ -169,8 +169,15 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             out.append((cid, ok, "ok" if ok else "no reproduce entrypoint mentioned"))
         elif cid.endswith("ci-present"):
             import re
-            n_claims = max(1, len([r for r in ledger_rows
-                                   if isinstance(r.get("value"), (int, float))]))
+            # Only magnitude claims need intervals: gains, accuracies, PCIs,
+            # slopes, rates. Counts, ranks, seeds, indices, and config numbers
+            # are exact by construction -- demanding CIs for them is noise.
+            MAGNITUDE_HINT = ("gain", "acc", "pci", "slope", "excess", "rate",
+                              "hit_rate", "mean", "diff")
+            quants = [r for r in ledger_rows
+                      if isinstance(r.get("value"), (int, float))
+                      and any(h in r.get("id", "").lower() for h in MAGNITUDE_HINT)]
+            n_claims = max(1, len(quants))
             # Word boundaries: bare-substring "ci" matches social/special/species.
             # Bayesian analyses report posteriors/credible intervals/Bayes factors
             # instead of frequentist CIs; those count.

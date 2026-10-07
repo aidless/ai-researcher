@@ -41,11 +41,22 @@ def _walk_numbers(obj: object, prefix: str = "", depth: int = 0,
     """
     SKIP_KEYS = {"id", "round", "n", "seed", "exit_code", "wall_s", "lat",
                  "len", "size", "count", "total", "elapsed", "duration",
-                 "round_cost_usd", "cost_usd_known", "caps"}
+                 "round_cost_usd", "cost_usd_known", "caps",
+                 # containers whose leaves are data, not claims: trajectories,
+                 # per-case detail, per-round bookkeeping, arm/rep structures.
+                 # Summaries computed FROM them (gain, slope, excess, hit_rate)
+                 # live at shallower paths and are the actual claims.
+                 "trajectory", "detail", "per_round", "n_actual_per_round",
+                 "arms", "reps", "models", "policies", "families", "questions",
+                 "pairs", "paired"}
     found = []
     if isinstance(obj, dict):
         for k, v in obj.items():
             if k in SKIP_KEYS or len(found) >= _limit:
+                continue
+            # Depth cap: claim summaries live at depth <= 2 (gain, slope_excess,
+            # hit_rate). Deeper numerics are components, not claims.
+            if depth >= 2 and isinstance(v, (dict, list)):
                 continue
             found += _walk_numbers(v, f"{prefix}.{k}" if prefix else str(k),
                                    depth + 1)
