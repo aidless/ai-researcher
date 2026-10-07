@@ -31,10 +31,18 @@ ERROR_PATTERNS = (
 )
 
 
-def _is_error_text(t: str, min_chars: int = 20) -> bool:
-    low = (t or "").lower()
-    if len(t or "") < min_chars:
+def _is_error_text(t: str) -> bool:
+    """Empty output or a provider error string. Brevity alone is NOT an error.
+
+    A blanket length floor misfired on its first use: a legitimate two-character
+    reply was rejected as an error, which would have been scored as an
+    infrastructure failure on a model that answered correctly. Task-specific
+    substance requirements belong to the caller (min_chars), and truncation is
+    detected from ollama's done_reason rather than guessed from length.
+    """
+    if not (t or "").strip():
         return True
+    low = t.lower()
     return any(p in low[:300] for p in ERROR_PATTERNS)
 
 
@@ -75,8 +83,14 @@ def _release_lock(fd) -> None:
 
 
 def call(model: str, prompt: str, timeout: int = 150, num_predict: int = None,
-         temperature: float = 0.0) -> str:
-    """One locked, validated ollama call. Raises on infra failure."""
+         temperature: float = 0.0, min_chars: int = 0) -> str:
+    """One locked, validated ollama call. Raises on infra failure.
+
+    Raises RuntimeError for provider error strings, empty replies, and replies
+    truncated at num_predict (ollama reports done_reason="length"). A truncated
+    code response cannot be scored fairly -- the model may have been correct
+    past the cap -- so it is an infrastructure event, not a model failure.
+    """
     opts = {"temperature": temperature}
     if num_predict:
         opts["num_predict"] = num_predict
@@ -87,10 +101,17 @@ def call(model: str, prompt: str, timeout: int = 150, num_predict: int = None,
         req = urllib.request.Request(OLLAMA, data=body,
                                      headers={"Content-Type": "application/json"})
         with urllib.request.urlopen(req, timeout=timeout) as r:
-            text = json.loads(r.read().decode())["response"]
+            payload = json.loads(r.read().decode())
+        text = payload.get("response", "")
+        done_reason = payload.get("done_reason", "")
     finally:
         _release_lock(fd)
     if _is_error_text(text):
         raise RuntimeError(f"ollama returned error-text ({len(text)} chars): "
                            f"{text[:120]!r}")
+    if done_reason == "length":
+        raise RuntimeError(f"truncated at num_predict={num_predict} "
+                           f"({len(text)} chars); unscorable as a model failure")
+    if min_chars and len(text.strip()) < min_chars:
+        raise RuntimeError(f"reply too short: {len(text.strip())} < {min_chars}")
     return text
