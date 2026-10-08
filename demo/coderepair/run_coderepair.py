@@ -44,6 +44,34 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2] / "demo/share
 from ollama_guard import call  # noqa: E402
 
 MODELS = ["qwen2.5:7b", "qwen2.5-coder:7b", "gemma3:4b", "llama3.2:3b"]
+
+
+def available_models() -> set:
+    """Model tags ollama actually has. Preflight, not a post-hoc correction."""
+    import urllib.request as _u
+    with _u.urlopen("http://127.0.0.1:11434/api/tags", timeout=15) as r:
+        return {m["name"] for m in json.loads(r.read().decode()).get("models", [])}
+
+
+def resolve_models(requested=None) -> list:
+    """Drop requested tags ollama does not have, loudly.
+
+    coderepair-01 requested llama3.2:3b, which is not installed locally (only
+    llama3.2:1b). Every call returned HTTP 404, the harness caught the exception
+    and recorded it as a model failure, so a missing model scored 0.00/0.00 --
+    an absent thing read as a negative result, the sixth time this project has
+    made that substitution. A nonexistent tag is an environment fact, so it is
+    now excluded before any measurement and named in the output.
+    """
+    requested = list(requested or MODELS)
+    have = available_models()
+    kept, missing = [], []
+    for m in requested:
+        (kept if m in have else missing).append(m)
+    if missing:
+        print(f"[preflight] not installed, excluded before measurement: {missing}")
+        print(f"[preflight] available: {sorted(have)}")
+    return kept
 OUT = pathlib.Path(os.environ.get("EVO_OUT", "artifacts"))
 TESTS = [
     # (bug class, buggy source, hidden tests [(args, expected)], defect hinted?)
@@ -248,6 +276,13 @@ def selftest() -> int:
         problems.append("extract_code failed on a bare def block")
     if extract_code("I cannot help with that") is not None:
         problems.append("extract_code invented code from a refusal")
+    try:
+        if "definitely-not-a-real-model:9b" not in available_models():
+            kept = resolve_models(["definitely-not-a-real-model:9b", MODELS[0]])
+            if "definitely-not-a-real-model:9b" in kept:
+                problems.append("preflight kept a model ollama does not have")
+    except Exception as e:
+        print(f"  [SELFTEST SKIP] model preflight unreachable: {type(e).__name__}")
     items = build_items(int(os.environ.get("EVO_SEED", "20261007")))
     if len(items) != 40:
         problems.append(f"item bank produced {len(items)} items, expected 40")
@@ -264,12 +299,16 @@ def selftest() -> int:
 def main():
     seed = int(os.environ.get("EVO_SEED", "20261007"))
     OUT.mkdir(parents=True, exist_ok=True)
+    models_to_run = resolve_models(
+        [m for m in os.environ.get("EVO_MODELS", "").split(",") if m] or None)
+    if not models_to_run:
+        raise SystemExit("no requested models are installed; refusing to run")
     items = build_items(seed)
     (OUT / "items.json").write_text(
         json.dumps([{k: v for k, v in it.items() if k != "tests"} | {
             "n_tests": len(it["tests"])} for it in items], indent=1) + "\n")
     models, detail_all = {}, {}
-    for model in MODELS:
+    for model in models_to_run:
         detail, acc = {}, {}
         for pol, instr in POLICIES.items():
             passed, rows = 0, []
@@ -317,6 +356,8 @@ def main():
     npos = sum(1 for g in gains.values() if g > 0)
     res = {
         "domain": "code_repair",
+        "models_requested": MODELS,
+        "models_measured": models_to_run,
         "n_items": len(items), "models": models, "gain": gains,
         "gain_mean": round(sum(gains.values()) / len(gains), 4) if gains else 0.0,
         "families_positive": f"{npos}/{len(gains)}",

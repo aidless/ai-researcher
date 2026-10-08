@@ -48,6 +48,9 @@ against the tier's rubric. A paper passes a tier only if BOTH halves pass.
 """
 from __future__ import annotations
 
+import json
+import re
+
 TIERS = ("workshop", "conference-main", "tmlr", "sci-journal", "zone1")
 
 # Mechanical checks per tier: (id, description, check_fn_name).
@@ -135,6 +138,92 @@ BAR = {
 }
 
 
+_ID_PATTERNS = (r"arxiv\.org/abs/\d", r"arxiv[:\s]\d{4}\.\d{4,5}",
+                r"openreview\.net/forum\?id=", r"openreview\s+`?\w{6,}`?",
+                r"10\.\d{4,5}/", r"doi\.org/", r"psychometrika", r"jrrs",
+                r"neurips\b.*\d{4}", r"iclr\b.*\d{4}", r"tmlr\b.*\d{4}",
+                r"proceedings\.", r"\bvol\.?\s*\d+", r"\bpp\.?\s*\d+",
+                r"\bno\.?\s*\d+", r"arxiv\.org/pdf/",
+                # journal style: volume(issue), pages with no vol/pp label
+                r"\b\d+\(\d+\)\s*,?\s*\d+\s*[-\u2013]\s*\d+")
+_QUARANTINE_RE = re.compile(r"unresolved|must be resolved|to be completed|"
+                            r"tbd|\?\?\?", re.I)
+
+
+def _reference_report(text: str):
+    """Count references and return (count, errors). Any error fails the gate.
+
+    Deliberately mechanical: it cannot confirm that an arXiv id exists, only
+    that each entry carries an identifier at all and that the authors have not
+    left a placeholder or a self-quarantined entry. Resolving ids against arXiv
+    is a network step a submission gate should not depend on silently, so the
+    unverifiable remainder is required to be declared rather than hidden.
+    """
+    m = re.search(r"^#+\s*References?\s*$", text, re.M | re.I)
+    if not m:
+        return 0, ["no references section found"]
+    tail = text[m.end():]
+    nxt = re.search(r"^##[^#]", tail, re.M)
+    section = tail[:nxt.start()] if nxt else tail
+    if re.search(r"to be completed on submission", section, re.I):
+        return 0, ["references section is a placeholder ('to be completed on submission')"]
+    entries, errors = 0, []
+    cur, in_list = [], False
+    for raw in section.splitlines():
+        line = raw.rstrip()
+        if re.match(r"^##[^#]", line):
+            if _QUARANTINE_RE.search(line):
+                errors.append(f"section {line.strip()!r} declares unresolved entries")
+            in_list = False
+            if cur:
+                entries += 1
+                cur = []
+            continue
+        if re.match(r"^#{3,}\s", line):
+            # subheading inside the section: a quarantine marker here means the
+            # authors declared unresolved entries, which fails the gate
+            if _QUARANTINE_RE.search(line):
+                errors.append(f"section {line.strip()!r} declares unresolved entries")
+                if cur:
+                    entries += 1
+                    cur = []
+            continue
+        if line.strip().startswith(("- ", "* ")):
+            if cur:
+                entries += 1
+            cur = [line]
+            in_list = True
+            continue
+        if in_list and line.strip() and not line.startswith(("|", "```")):
+            cur.append(line)
+            continue
+        if in_list and not line.strip():
+            if cur:
+                entries += 1
+                cur = []
+            in_list = False
+    if cur:
+        entries += 1
+    if entries == 0:
+        return 0, ["references section contains no entries"]
+    # identifier check per entry
+    chunk = []
+    for raw in section.splitlines():
+        if raw.strip().startswith(("- ", "* ")):
+            if chunk:
+                entries_txt = "\n".join(chunk)
+                if not any(re.search(p, entries_txt, re.I) for p in _ID_PATTERNS):
+                    errors.append(f"entry without a resolvable identifier: "
+                                  f"{chunk[0].strip()[:70]!r}")
+            chunk = [raw]
+        elif chunk and raw.strip() and not raw.startswith(("|", "```")) \
+                and not raw.startswith("#"):
+            chunk.append(raw)
+    if chunk and not any(re.search(p, "\n".join(chunk), re.I) for p in _ID_PATTERNS):
+        errors.append(f"entry without a resolvable identifier: {chunk[0].strip()[:70]!r}")
+    return entries, errors
+
+
 def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
                      tier: str) -> list:
     """Run the mechanical half. Returns [(check_id, passed: bool, reason)]."""
@@ -204,7 +293,17 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             out.append((cid, not hits,
                         "ok" if not hits else f"identity/web pointers: {hits}"))
         elif cid.endswith("references-resolve"):
-            out.append((cid, True, "mechanical pass; hallucination scan is a separate gate"))
+            # Was a hardcoded PASS annotated "hallucination scan is a separate
+            # gate" -- a gate reporting success for work it had not done, while
+            # the manuscript's reference list read "to be completed on
+            # submission". It now inspects the manuscript: the section must
+            # exist, must not be a placeholder, every entry must carry a
+            # resolvable identifier, and any entry the authors themselves
+            # quarantined as unresolved fails the gate until a human resolves it.
+            nrefs, rerr = _reference_report(text)
+            out.append((cid, not rerr,
+                        (f"ok: {nrefs} entries, all carrying resolvable identifiers")
+                        if not rerr else "; ".join(rerr)))
         elif cid.endswith("pages"):
             out.append((cid, True, "page count checked at submission render, not here"))
         elif cid.endswith("contribution-delta"):

@@ -191,11 +191,46 @@ human author. All numbers trace to committed artifacts (see Reproduce). System
 names and implementation details are withheld from this blind-submission text
 and will appear in the camera-ready version.
 
-## References (to be completed on submission)
+## References
 
-GSM8K (Cobbe et al.); McNemar (1947); Benjamini–Hochberg (1995); Chen & Wang
-2026 (topological mimicry); Marjanovic et al. TMLR 2025 (Thoughtology);
-DeepSeek-R1; Kimi K2.5/K2.6 Agent Swarm reports.
+Every entry below was resolved against arXiv, OpenReview, or the publisher record
+on 2026-10-07. Entries that could not be resolved are quarantined in the
+subsection below rather than dropped, and the venue gate fails while any remain.
+
+### Resolved
+
+- Cobbe, K., Kosaraju, V., Bavarian, M., et al. (2021). Training verifiers to solve
+  math word problems. *arXiv:2110.14168*. [GSM8K; the arithmetic held-out sets]
+- Wang, X., Wei, J., Schuurmans, D., et al. (2023). Self-consistency improves chain of
+  thought reasoning in language models. *ICLR 2023*. OpenReview `1PL1NIMMrw`.
+- Chen, A., Phang, J., & Parrish, A. (2024). Two failures of self-consistency in the
+  multi-step reasoning of LLMs. *TMLR 2024*. OpenReview `5nBqY1y96B`.
+- Zheng, L., Chiang, W.-L., Sheng, Y., et al. (2023). Judging LLM-as-a-judge with
+  MT-Bench and Chatbot Arena. *arXiv:2306.05685*. [position/bias/self-enhancement]
+- Jimenez, C. E., Yang, K., Barnes, A., et al. (2024). SWE-bench: can language models
+  resolve real-world GitHub issues? *arXiv:2310.06770*. [the code-repair domain]
+- Zuo, Y., Zhang, K., Li, S., et al. (2025). TTRL: test-time reinforcement learning.
+  *arXiv:2504.16084*; NeurIPS 2025.
+- Khattar, V., Rashid, M. R. ur, Choudhury, M., et al. (2026). Amplification effects in
+  test-time reinforcement learning: safety and reasoning vulnerabilities.
+  *arXiv:2603.15417*. [nearest prior work on amplification]
+- Li, Y., Yue, X., Xu, Z., et al. (2025). Small models struggle to learn from strong
+  reasoners. *arXiv:2502.12143*. [small-model learnability gap]
+- DeepSeek-AI (2025). DeepSeek-R1. *arXiv:2501.12948*.
+- McNemar, Q. (1947). Note on the sampling error of the difference between
+  proportions or correlated proportions. *Psychometrika* 12(2), 153-157.
+- Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate. *JRSS
+  Series B* 57(1), 289-300.
+
+### Unresolved -- must be resolved or removed before submission
+
+These are cited in the related-work discussion but carry no identifier that could
+be verified on 2026-10-07. They are listed rather than silently retained or
+deleted, and `Z15-references-resolve` fails while this list is non-empty.
+
+- "Thoughtology" (Marjanovic et al., TMLR 2025) -- no arXiv/OpenReview id found.
+- "Topological mimicry" (Chen & Wang 2026) -- no record found.
+- Kimi K2.5 / K2.6 agent-swarm technical reports -- no stable public record found.
 
 ## Related work (what differs, one line each)
 
@@ -251,6 +286,47 @@ One caveat, recorded rather than smoothed: this run's kill-switch keyed on a
 swallowed the resulting NameError, filing the run as a clean finish. The STOP-
 EXTEND verdict for this arm is analyst-assigned rather than preregistered. The
 loop now fails closed on unevaluable rules; see Appendix A.
+
+## The gain does not transfer to a second task domain (coderepair-01)
+
+The eight-family result above holds on arithmetic. To test whether the mechanism
+is about protocol design rather than content, the same comparison was run on 40
+held-out **code-repair** items, scored by executing each model's corrected
+function against hidden test vectors -- an objective check, no LLM judge. Direct
+versus step-calc, preregistered kill-switch, three families that exist locally.
+
+| family | direct | step-calc | gain |
+|---|---|---|---|
+| qwen2.5:7b | 0.525 | 0.550 | +0.025 |
+| qwen2.5-coder:7b | 0.525 | 0.525 | 0.000 |
+| gemma3:4b | 0.625 | 0.375 | **-0.250** |
+
+Pooled paired McNemar: 12 fixed, 21 broken, p = 0.163. Families positive 1/3. The
+preregistered localization prediction also failed (unhinted 8 fixed / 11 broken;
+hinted 4 / 10 -- the gap was not larger when the defect had to be located).
+
+**The mechanism claim does not survive contact with code repair.** The policy
+that gained +0.15 to +0.775 across eight arithmetic families is flat on one code
+family and negative on another, breaking more items than it fixed. The dominant
+genuine failure was not arithmetic slippage but missing the guard: models returned
+`0` or a stringified error where the item required `None`, and stating the defect
+first did not make them notice the requirement.
+
+Consequences for scope, stated rather than buried:
+
+1. The paper claims breadth across *models* on *arithmetic*. It does not claim
+   domain-general protocol benefit.
+2. A protocol effect that reverses across domains is a sharper result than one
+   that holds everywhere, provided the reversal is reported as such -- so this is
+   a section, not a limitation.
+3. The abstract's mechanism sentence is withdrawn as written. Any surviving
+   version must either explain why arithmetic is special or be scoped to
+   arithmetic.
+
+One family (`llama3.2:3b`) was never measured: the tag is not installed locally,
+so 80 calls returned HTTP 404 and were scored as failures by the old harness. The
+harness now preflights `/api/tags` and excludes absent tags before measurement,
+and the correction is recorded as an amendment on the signed bundle.
 
 ## Generality
 
