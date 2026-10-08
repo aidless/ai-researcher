@@ -200,6 +200,48 @@ def check_judgment_available() -> None:
                      "green as a venue verdict")
 
 
+def check_binding_coverage() -> None:
+    """A harness that records _config must have its envelope declare `expect`.
+
+    The binding is what stopped breadth-02 from certifying the wrong experiment,
+    and `loop approve` silently deleted both `expect` and `power.endpoint` for a
+    while because to_dict did not carry them -- so the binding vanished while
+    everything still looked approved. An unbound harness that records its config
+    is reported here rather than discovered when it matters.
+    """
+    section("config-binding coverage")
+    recording, bound, unbound = [], [], []
+    for art in sorted((ROOT / "demo/runs").glob("*/round-01/artifacts/result.json")):
+        try:
+            cfg = json.loads(art.read_text(encoding="utf-8")).get("_config")
+        except Exception:
+            continue
+        if cfg:
+            recording.append(art.parts[-4])
+    envs = sorted(ROOT.glob("demo/**/*.json"))
+    for e in envs:
+        name = e.name
+        if not (name.startswith("envelope") or name.endswith("_env.json")):
+            continue
+        rel = str(e.relative_to(ROOT))
+        if "round-" in rel or "/evidence/" in rel:
+            continue
+        try:
+            d = json.loads(e.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if isinstance(d.get("expect"), dict) and d["expect"]:
+            bound.append(rel)
+    unbound = [r for r in recording if not any(r in b for b in bound)]
+    print(f"  harnesses recording _config: {len(recording)} ({', '.join(recording) or 'none'})")
+    print(f"  envelopes declaring expect: {len(bound)}")
+    for r in unbound:
+        NOTES.append(f"{r} records _config but its envelope declares no expect, "
+                     f"so nothing binds the run to the declared design")
+    if not recording:
+        NOTES.append("no harness records _config yet: config binding is inert")
+
+
 def check_figures() -> None:
     """Figure captions must quote numbers that still match their data.
 
@@ -248,6 +290,7 @@ def main() -> int:
     check_mechanical_gate()
     check_judgment_available()
     check_figures()
+    check_binding_coverage()
     check_proposals()
     print("\n=== summary ===")
     for n in NOTES:

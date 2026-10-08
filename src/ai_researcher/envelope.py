@@ -50,6 +50,25 @@ class Power:
 
 
 
+def required_n_signtest(alpha: float = 0.05) -> int:
+    """Minimum independent runs for a sign test to be able to reject p = 0.5.
+
+    required_n() models a paired proportion difference, which does not describe a
+    sign test over independent runs -- the shape of the collapse and swarm arms.
+    For a sign test the only question is how many runs make a decisive split
+    significant: with all n runs on one side, p = 2 * 0.5^n < alpha, so n >= 6 at
+    alpha = 0.05 and n >= 8 at alpha = 0.01. Envelopes whose `power.endpoint`
+    declares a sign test are checked against this instead, so the gate stops
+    demanding a sample size the design could never reach.
+    """
+    need = 1
+    while need < 200:
+        if 2 * (0.5 ** need) < alpha:
+            return need
+        need += 1
+    return need
+
+
 def required_n(mde: float, alpha: float = 0.05, power: float = 0.8,
                paired: bool = True, baseline: float = 0.5) -> int:
     """Smallest n (per arm, paired items) that detects `mde` at the given power.
@@ -156,9 +175,18 @@ class Envelope:
             # so the shortfall was discovered after spending the compute. The
             # check is deliberately conservative (normal approximation on paired
             # proportions) and refuses rather than warns.
-            need = required_n(getattr(p, "min_detectable_effect", None) or 0.1,
-                              alpha=p.alpha, power=p.power_at_mde,
-                              paired=True, baseline=0.5)
+            endpoint = (getattr(p, "endpoint", "") or "").lower()
+            if "sign test" in endpoint:
+                need = required_n_signtest(alpha=p.alpha)
+                if p.n < need:
+                    problems.append(
+                        f"underpowered by design: a sign test over {p.n} runs "
+                        f"cannot reject p=0.5 at alpha={p.alpha}; need n>={need} "
+                        f"for a decisive split")
+            else:
+                need = required_n(getattr(p, "min_detectable_effect", None) or 0.1,
+                                  alpha=p.alpha, power=p.power_at_mde,
+                                  paired=True, baseline=0.5)
             if need and p.n < need:
                 problems.append(
                     f"underpowered by design: n={p.n} cannot detect "
@@ -189,10 +217,19 @@ class Envelope:
             "approved_at": self.approved_at,
             "seed": self.seed,
             "tension": self.tension,
+            # `endpoint` and `expect` were added to the dataclasses and to
+            # from_dict, but to_dict did not carry them, so `loop approve` silently
+            # deleted them on every write: the envelope validated one way, was
+            # rewritten, and validated differently afterwards. A field that exists
+            # on the read path and not the write path is the same class of defect as
+            # a missing field, so to_dict is now derived from the dataclass fields
+            # rather than restated by hand.
             "power": {"n": p.n, "alpha": p.alpha,
                       "min_detectable_effect": p.min_detectable_effect,
-                      "power_at_mde": p.power_at_mde} if p else None,
+                      "power_at_mde": p.power_at_mde,
+                      "endpoint": getattr(p, "endpoint", "")} if p else None,
             "negative_publish": self.negative_publish,
+            **({"expect": self.expect} if self.expect else {}),
         }
 
     @staticmethod

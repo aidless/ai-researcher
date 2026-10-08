@@ -1,0 +1,34 @@
+{
+  "hypothesis": "the cross-evaluator collapse excess is reproducible across independent runs, so collapse-01's +0.1994 was a property of the setup rather than one trajectory",
+  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; # 5 independent runs (independent seeds) of the collapse arm; cross_excess per run is the unit of analysis, so the test is over runs\nPYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261011 EVO_RUNS=5 python3 \"$ROOT/demo/collapse/run_collapse_replicated.py\"",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 8.0,
+  "kill_switch": [
+    {
+      "condition": "reproducible == True",
+      "action": "STOP-EXTEND",
+      "note": "the excess replicates across independent runs: extend to more judge pairings"
+    },
+    {
+      "condition": "reproducible == False",
+      "action": "STOP-REFUTED",
+      "note": "the +0.1994 was one trajectory: record collapse-01 as an artifact of a single run, not a finding"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen (blanket 全做; sign-test endpoint, verified to survive the approve round-trip)",
+  "approved_at": "2026-10-08T04:00:18.792254+00:00",
+  "seed": 20261011,
+  "tension": "collapse-01 reported a cross-evaluator excess of +0.1994 and was filed STOP-EXTEND, but it rests on one run of one judge pairing, and the values within a run are a trajectory whose points are not independent samples. No test can be computed from it, so the project has been citing an untestable direction-bearing arm -- one of eight. Either the excess is a property of the setup and survives independent repetition, or it is a property of one trajectory and should be struck. Nothing about a larger number of rounds within the same run can answer that, which is why the earlier arms were not merely underpowered but untestable.",
+  "power": {
+    "n": 10,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.0,
+    "power_at_mde": 0.8,
+    "endpoint": "two-sided exact sign test over 10 independent runs (2 judge pairings x 5 seeds); a decisive split needs n>=6 at alpha=0.05"
+  },
+  "negative_publish": "replication-report"
+}
