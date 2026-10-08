@@ -36,7 +36,7 @@ capability boundary. If it is about protocol, every deployment inherits it.
 Nobody had checked, because checking is unfashionable work: replications,
 boundary conditions, and negative controls.
 
-## 2. Transfer: policy effects cross families
+## 2. Transfer: the one effect that survives correction
 
 Preregistered envelope (hypothesis, exact command, budget $0, kill-switch rows,
 fixed seed, power fields, negative-publication plan). 40 held-out GSM8K-style
@@ -60,7 +60,11 @@ percentage points on exact-match accuracy are visible without statistics; the
 p-values (both p < 1e-8 after BH correction) confirm what the raw differences
 already show rather than rescuing a borderline result.
 
-## 3. Amplification: bias grows with swarm size, and it is not abstention artifact
+## 3. Amplification (exploratory; does not survive project-level correction)
+
+*Status: primary endpoint p_BH = 0.200 across the project. Reported because the
+design is informative and the abstention confound was genuinely excluded, not
+because the effect is established.*
 
 Minimal TTRL loop (4 strategies, 4 tasks, 6 rounds, +0.08/-0.04 updates):
 swarm=1 (sequential) vs swarm=4 (parallel, evaluator picks best per round).
@@ -77,7 +81,9 @@ Remaining weaknesses, stated: n=1 per arm here, 6 rounds, 4 tasks, small
 magnitude. The multi-seed leg carries replication weight; the force-decide leg
 carries mechanism cleanliness. Neither alone suffices.
 
-## 4. Robustness: the published excess survives balancing (mostly)
+## 4. Balancing (exploratory)
+
+*Status: MOSTLY-HOLDS at 82% of subsets; no project-level-surviving endpoint.*
 
 On committed evaluator-collapse weights (11 strategies, 8 text + 3 visual):
 full-set cross PCI 1.619 > self 1.265. All 56 balanced 3+3 subsets enumerated:
@@ -86,7 +92,10 @@ reversed the pattern — an unlucky 18% draw, caught by review, corrected by ful
 enumeration (now automatic via robustness.py). PCI magnitudes across different
 set sizes are not compared (normalization differs); only orderings.
 
-## 5. Early warning: JSD sorts, but misses the extremes
+## 5. Early warning: a diagnosed failure mode, not a capability
+
+*Status: withdrawn as a capability. See the diagnosis section for why the
+misses are structural.*
 
 On 7 committed evaluator conditions (contagion, ds-self, gpt4o-cross, qwen37,
 real-image, multiexecutor, interrupted qwen-partial): leave-one-out rank
@@ -162,11 +171,16 @@ silent gap.
 
 ## Data and code availability
 
-All primary data (per-case results, weight vectors, trajectories) in the signed
-evidence bundles alongside this manuscript; analysis scripts and the autonomous
-loop that produced them at the repository accompanying submission
-(supplementary ZIP for blind review; public link at camera-ready). Model
-digests pinned per round; seeds fixed and recorded.
+Item banks are in the repository, not in temporary storage. This was false until
+2026-10-08: the arithmetic held-out set lived only under `/tmp/ind-audit/`, so the
+evidence for the primary claim was one cleanup away from being unreproducible. It
+is now `demo/transfer/items/heldout40.json` (40 items, with provenance) and
+`demo/transfer/items/confirm160.json` (160 items, verified disjoint from the
+first by `demo/transfer/build_confirm_set.py`, which refuses to write a set that
+fails its own invariants). The code-repair bank is
+`demo/coderepair/run_coderepair.py::TESTS`, covered by an executable self-test.
+Every number in this paper is regenerated from signed bundles by
+`scripts/project_alpha.py` and checked by `scripts/verify_all.py` in CI.
 
 ## Broader impact and ethics
 
@@ -257,16 +271,41 @@ deleted, and `Z15-references-resolve` fails while this list is non-empty.
 The transfer effect was re-measured on a 40-item held-out set across eight local
 model families spanning 1B-8B and general/reasoning/coder lineages.
 
-| family | direct | step-calc | gain | fail->pass | pass->fail |
+| family | direct | step-calc | gain [95% CI] | fail->pass | pass->fail |
 |---|---|---|---|---|---|
-| qwen2.5:7b | 0.125 | 0.825 | +0.700 | 28 | 0 |
-| llama3.1:8b | 0.025 | 0.400 | +0.375 | 15 | 0 |
-| qwen2:7b | 0.025 | 0.450 | +0.425 | 18 | 1 |
-| gemma3:4b | 0.025 | 0.800 | +0.775 | 31 | 0 |
-| deepseek-r1:7b | 0.225 | 0.925 | +0.700 | 29 | 1 |
-| qwen3:4b | 0.725 | 0.875 | +0.150 | 7 | 1 |
-| qwen2.5-coder:7b | 0.300 | 0.900 | +0.600 | 24 | 0 |
-| llama3.2:1b | 0.000 | 0.525 | +0.525 | 21 | 0 |
+| qwen2.5:7b | 0.125 | 0.825 | +0.700 [+0.550, +0.850] | 28 | 0 |
+| llama3.1:8b | 0.025 | 0.400 | +0.375 [+0.225, +0.525] | 15 | 0 |
+| qwen2:7b | 0.025 | 0.450 | +0.425 [+0.250, +0.600] | 18 | 1 |
+| gemma3:4b | 0.025 | 0.800 | +0.775 [+0.650, +0.900] | 31 | 0 |
+| deepseek-r1:7b | 0.225 | 0.925 | +0.700 [+0.550, +0.850] | 29 | 1 |
+| qwen3:4b | 0.725 | 0.875 | +0.150 [+0.025, +0.275] | 7 | 1 |
+| qwen2.5-coder:7b | 0.300 | 0.900 | +0.600 [+0.450, +0.750] | 24 | 0 |
+| llama3.2:1b | 0.000 | 0.525 | +0.525 [+0.375, +0.675] | 21 | 0 |
+
+Intervals are 5000-rep paired bootstrap over items (seed 20261010), computed from
+the per-item flags in the signed bundle rather than from the summary accuracies.
+All eight exclude zero; the narrowest is qwen3:4b at [+0.025, +0.275], which is
+also the family with the least headroom, so the interval and the proposed
+mechanism agree.
+
+One further family, `llama3.2:3b`, is excluded from the table entirely: the tag is
+not installed locally, so 80 of 320 calls returned HTTP 404 and were scored as
+failures by the harness that existed at the time. Its row is shown struck through
+rather than deleted so the exclusion is visible.
+
+The four checkpoint rates in the lineage arm (v2 0.676, v3 0.733, v3b 0.724, v3c
+0.708) carry **no** intervals, deliberately: that arm's verdict was withdrawn as
+infrastructure contamination, the numbers are retained only to document the
+incident that produced `ollama_guard`, and an interval computed around a
+contaminated measurement would lend it a credibility it has not earned.
+
+**Which numbers get intervals, and which deliberately do not.** Intervals are
+reported for estimates of a population quantity: per-family gains and accuracies.
+They are deliberately not reported for the discordant-item counts (28/0, 31/0,
+...), for exact McNemar p-values, or for the number of conditions in the JSD arm.
+A confidence interval around a count of realised items, or around an exact test
+statistic, is not a meaningful quantity; those are reported as the exact integers
+and exact values they are.
 
 Every family improves (8/8, sign test p = 0.004; pooled paired McNemar 173:3,
 p = 1.9e-47). Gain tracks headroom rather than size: qwen3:4b has the highest
@@ -290,13 +329,24 @@ held-out **code-repair** items, scored by executing each model's corrected
 function against hidden test vectors -- an objective check, no LLM judge. Direct
 versus step-calc, preregistered kill-switch, three families that exist locally.
 
-| family | direct | step-calc | gain |
+| family | direct | step-calc | gain [95% CI] |
 |---|---|---|---|
-| qwen2.5:7b | 0.525 | 0.550 | +0.025 |
-| qwen2.5-coder:7b | 0.525 | 0.525 | 0.000 |
-| gemma3:4b | 0.625 | 0.375 | **-0.250** |
+| qwen2.5:7b | 0.525 | 0.550 | +0.025 [-0.175, +0.225] |
+| qwen2.5-coder:7b | 0.525 | 0.525 | 0.000 [-0.125, +0.125] |
+| gemma3:4b | 0.625 | 0.375 | **-0.250 [-0.375, -0.125]** |
+| ~~llama3.2:3b~~ | — | — | not installed; 80 calls returned HTTP 404 |
 
-Pooled paired McNemar: 12 fixed, 21 broken, p = 0.163. Families positive 1/3. The
+Only the gemma3:4b interval excludes zero. At 48 items per family the other two
+are compatible with effects of either sign, so the claim written here is "no
+reliable gain on code repair", not "harmful on code repair" -- the single family
+whose interval excludes zero is one family, and its per-item disagreement with
+the pooled test is itself worth noting rather than averaging away.
+
+Pooled paired McNemar: 12 fixed, 21 broken, p = 0.163. The per-seed excesses in
+the amplification arm are +0.0116, 0.0000, +0.0551, +0.0551, +0.0365
+(mean +0.0317, sd 0.0251, n = 5 seeds); the spread across five seeds is wider than
+the mean, which is why that arm does not survive correction. Families positive
+1/3. The
 preregistered localization prediction also failed (unhinted 8 fixed / 11 broken;
 hinted 4 / 10 -- the gap was not larger when the defect had to be located).
 
@@ -322,6 +372,43 @@ One family (`llama3.2:3b`) was never measured: the tag is not installed locally,
 so 80 calls returned HTTP 404 and were scored as failures by the old harness. The
 harness now preflights `/api/tags` and excludes absent tags before measurement,
 and the correction is recorded as an amendment on the signed bundle.
+
+## Why the early-warning arm fails, and where it fails
+
+The early-warning arm asked whether disagreement between two evaluators predicts
+which conditions collapse. Leave-one-out over seven conditions it ranked the
+severe case correctly 5 of 7 (Wilson 95% [0.359, 0.918]). That number alone is
+uninformative, so we looked at the two failures rather than the hit rate.
+
+Both failures are **rank inversions, and both are underpredictions**:
+
+| held-out condition | predicted rank | true rank |
+|---|---|---|
+| gpt4o-cross | 3 | 6 |
+| multiexecutor | 1 | 3 |
+
+Two consequences follow, and neither is a tuning problem.
+
+1. **No monotone reparameterisation of the feature can help.** A rank inversion
+   is invariant under any strictly increasing transform, so a better formula for
+   the same disagreement statistic cannot fix this. The fix requires different
+   features.
+2. **The failure has a mechanism, and it is the dangerous direction.** Both missed
+   conditions show large collapse with only moderate evaluator disagreement --
+   they are cases where the two evaluators *agree*. A disagreement-based warning
+   signal is structurally blind to shared bias: it measures how far apart two
+   judges are, so when both are wrong in the same direction the signal is quiet
+   precisely when the collapse is worst. Of the seven conditions, the two the
+   predictor missed are cross-evaluator conditions with large gaps.
+
+So the honest statement is not "early warning reaches 5/7". It is: **disagreement
+between evaluators is a weak detector of collapse, and its failures are
+concentrated in the shared-bias regime that matters most.** Any replacement must
+use features that are not agreement-based -- absolute confidence, the margin
+between the top two answers, or the distance between the two evaluators'
+preferred answers -- and that experiment is specified but not yet run
+(`evolve` proposal; see proposals/). Until it is, early warning is reported as a
+diagnosed failure mode rather than a capability, and it is absent from the title.
 
 ## Project-level multiplicity: what survives correcting for the number of arms
 
@@ -368,6 +455,28 @@ run.* The amplification, robustness and early-warning results are exploratory.
 That is a smaller paper. It is also the only version of this paper that a reviewer
 who runs the correction cannot argue with, and the correction is cheap: one script,
 already written, already in CI.
+
+## Primary claim, and why exactly one is claimed
+
+A paper that reports many arms has many opportunities to be wrong, and this one
+had a rule that could not execute: matrix-01's kill-switch keyed on a field its
+harness never emitted, so its verdict was analyst-assigned. Its effect is the
+strongest in the project and it survived project-level correction, which is
+exactly the combination that makes an unpreregistered result dangerous.
+
+So the paper designates one primary claim and demotes everything else:
+
+> **Primary claim.** On held-out arithmetic word problems, a structured
+> step-by-step policy beats direct answering for every local model family tested.
+
+Everything else in Sections 3-6 is secondary or exploratory, and is labelled as
+such. The primary claim is being confirmed **prospectively**: envelope
+`demo/transfer/envelope_transfer_confirmation.json`, 160 held-out items verified
+disjoint from the items that produced the result, 320 paired observations against
+the n=157 that a power calculation requires for a 0.10 effect, seed fixed before
+execution, and a kill-switch on a field the harness provably writes
+(`confirmed`). That arm is the paper's only remaining path from observation to
+finding.
 
 ## Generality
 

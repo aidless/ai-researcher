@@ -267,9 +267,23 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             # are exact by construction -- demanding CIs for them is noise.
             MAGNITUDE_HINT = ("gain", "acc", "pci", "slope", "excess", "rate",
                               "hit_rate", "mean", "diff")
+            # Counts and exact test statistics are not estimates of a population
+            # quantity, so demanding an interval for them is meaningless rather
+            # than rigorous: "28 discordant items" and "p = 1.9e-47" are exact.
+            # Demanding CIs for both made this check unpassable for any paper that
+            # reported a paired test, which is how a gate becomes decoration.
+            NOT_ESTIMANDS = ("paired", "_p", "p_", "pvalue", "fixed", "broke",
+                             "n_", "seeds", "total", "pairs", "abstention",
+                             "committed", "conditions", "escaped", "caught",
+                             # per-round points of a single run are a time series,
+                             # not population estimates; their uncertainty is the
+                             # seed-level spread, reported separately
+                             "trajectory")
             quants = [r for r in ledger_rows
                       if isinstance(r.get("value"), (int, float))
-                      and any(h in r.get("id", "").lower() for h in MAGNITUDE_HINT)]
+                      and any(h in r.get("id", "").lower() for h in MAGNITUDE_HINT)
+                      and not any(h in r.get("id", "").lower()
+                                  for h in NOT_ESTIMANDS)]
             # Denominator is the magnitude claims the MANUSCRIPT actually asserts,
             # not every magnitude row in the ledger. The consolidated ledger holds
             # one row per run per field, so 14 runs produce 14 copies of `gain`
@@ -284,9 +298,19 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             # Word boundaries: bare-substring "ci" matches social/special/species.
             # Bayesian analyses report posteriors/credible intervals/Bayes factors
             # instead of frequentist CIs; those count.
-            n_ci = len(re.findall(r"\bCI\b|\bCIs\b|confidence interval|"
-                                  r"credible interval|posterior|Bayes factor|\bBF\b",
-                                  text))
+            # Coverage, not token count. Counting the literal token "CI" made the
+            # check unsatisfiable for any paper that reports intervals in a table:
+            # an eight-row table with an interval in every cell contains the word
+            # once. Count the intervals themselves -- bracketed numeric ranges and
+            # parenthesised ones -- plus explicit prose mentions, so a table of
+            # intervals counts as the coverage it is.
+            n_ci = (len(re.findall(r"\[\s*[-+]?\d*\.?\d+\s*[,;]\s*[-+]?\d*\.?\d+\s*\]",
+                                   text))
+                    + len(re.findall(r"\(\s*[-+]?\d*\.?\d+\s*,\s*[-+]?\d*\.?\d+\s*\)",
+                                     text))
+                    + len(re.findall(r"\bCI\b|\bCIs\b|confidence interval|"
+                                     r"credible interval|posterior|Bayes factor|\bBF\b",
+                                     text)))
             out.append((cid, n_ci >= n_claims,
                         "ok" if n_ci >= n_claims
                         else f"only {n_ci} interval mentions for {n_claims} numeric claims"))

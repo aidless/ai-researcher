@@ -185,12 +185,42 @@ def primary_escape(run_dir: pathlib.Path):
     if not res.exists():
         return None
     d = json.loads(res.read_text(encoding="utf-8"))
-    planted, escaped = d.get("planted"), d.get("escaped")
-    if not isinstance(planted, int) or not isinstance(escaped, int):
+    planted = d.get("planted")
+    escaped = d.get("escaped")
+    # `escaped` is a LIST of escaped-defect ids in some runs and a count in
+    # others. Requiring an int silently dropped failclosed-01, whose result is
+    # 5 planted / 0 escaped -- a computable exact binomial (p=0.031) that the
+    # audit therefore could not see.
+    if not isinstance(planted, int) or planted <= 0:
         return None
-    return {"p": binom_p_two_sided(escaped, planted, 0.0),
-            "escaped": f"{escaped}/{planted}",
-            "endpoint": "exact binomial, defect escape rate against zero"}
+    n_esc = escaped if isinstance(escaped, int) else (
+        len(escaped) if isinstance(escaped, list) else None)
+    if n_esc is None:
+        return None
+    return {"p": binom_p_two_sided(max(planted - n_esc, n_esc), planted, 0.5),
+            "escaped": f"{n_esc}/{planted}",
+            "endpoint": "exact binomial, defects caught against chance (0.5)"}
+
+
+def primary_pass_count(run_dir: pathlib.Path):
+    """Single-arm hit counts: planted/caught, or passed out of n."""
+    res = run_dir / "round-01" / "artifacts" / "result.json"
+    if not res.exists():
+        return None
+    d = json.loads(res.read_text(encoding="utf-8"))
+    if isinstance(d.get("planted"), int) and isinstance(d.get("caught"), int):
+        n, k = d["planted"], d["caught"]
+        return {"p": binom_p_two_sided(max(k, n - k), n, 0.5),
+                "caught": f"{k}/{n}",
+                "endpoint": "exact binomial, defects caught against chance (0.5)"}
+    if isinstance(d.get("n"), int) and isinstance(d.get("passed"), int):
+        n, k = d["n"], d["passed"]
+        if not n:
+            return None
+        return {"p": binom_p_two_sided(max(k, n - k), n, 0.5),
+                "passed": f"{k}/{n}",
+                "endpoint": "exact binomial, single-arm hit count against chance"}
+    return None
 
 
 WITHDRAWN = {"lineage-01": "v3c regression withdrawn: infrastructure contamination, "
@@ -229,8 +259,10 @@ def collect(runs_dir: pathlib.Path):
                 got = primary_binomial_count(rd, key, label)
                 if got:
                     break
-        if not got:
-            got = primary_escape(rd)
+        for fn2 in (primary_escape, primary_pass_count):
+            if got:
+                break
+            got = fn2(rd)
         if got and got["p"] is not None:
             tests.append((f"{name}:primary", got["p"], name))
             notes.append((name, f"{got['endpoint']}; "
