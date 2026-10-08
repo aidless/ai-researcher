@@ -34,9 +34,13 @@ import sys
 from math import comb
 
 HERE = pathlib.Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parents[1] / "shared"))
-sys.path.insert(0, str(HERE.parents[2] / "src"))
-sys.path.insert(0, str(HERE.parents[1] / "coderepair"))
+REPO = HERE.parents[2]  # sweetspot/ -> demo/ -> repo root
+# parents[1] here resolved to the repo root, so demo/coderepair became
+# <root>/coderepair and the import failed on the first launch. Derive the repo
+# root once, explicitly, instead of counting parents at each use.
+sys.path.insert(0, str(REPO / "src"))
+sys.path.insert(0, str(REPO / "demo" / "shared"))
+sys.path.insert(0, str(REPO / "demo" / "coderepair"))
 
 from run_coderepair import (  # noqa: E402
     TESTS, extract_code, resolve_models, run_tests,

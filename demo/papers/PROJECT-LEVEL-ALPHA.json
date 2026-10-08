@@ -1,5 +1,5 @@
 {
- "family_size": 8,
+ "family_size": 9,
  "alpha": 0.05,
  "surviving": [
   "matrix-01",
@@ -9,35 +9,41 @@
   "swarm-fd2:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 8,
+   "rank": 9,
    "run": "swarm-fd2"
   },
   "swarm-fd:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 7,
+   "rank": 8,
    "run": "swarm-fd"
   },
+  "coderepair-02:primary": {
+   "p_bh": 0.82796,
+   "survives": false,
+   "rank": 7,
+   "run": "coderepair-02"
+  },
   "coderepair-01:primary": {
-   "p_bh": 0.217008,
+   "p_bh": 0.244133,
    "survives": false,
    "rank": 6,
    "run": "coderepair-01"
   },
   "swarm-ms:primary": {
-   "p_bh": 0.2,
+   "p_bh": 0.225,
    "survives": false,
    "rank": 5,
    "run": "swarm-ms"
   },
   "exp-01:primary": {
-   "p_bh": 0.2,
+   "p_bh": 0.225,
    "survives": false,
    "rank": 4,
    "run": "exp-01"
   },
   "failclosed-01:primary": {
-   "p_bh": 0.166667,
+   "p_bh": 0.1875,
    "survives": false,
    "rank": 3,
    "run": "failclosed-01"
@@ -58,7 +64,9 @@
  "non_testable": {
   "balanced-01": "no directional claim: descriptive only",
   "breadth-01": "agreement rate and flip count are descriptive quantities, not a hypothesis test",
+  "breadth-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "coderepair-01": "pooled paired McNemar, direct vs step-calc; fixed=12, broke=21, families=4",
+  "coderepair-02": "pooled paired McNemar, direct vs step-calc; fixed=19, broke=23, families=3",
   "collapse-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "collapse-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "exp-01": "exact binomial, single-arm hit count against chance; passed=4/4",
@@ -76,13 +84,14 @@
   "sweetspot-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "sweetspot-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "sweetspot-03": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "sweetspot-04": "no directional claim: descriptive only",
   "transfer-01": "pooled paired McNemar, direct vs treatment (item data in result.json); fixed=61, broke=0, families=2"
  },
  "withdrawn": {
-  "coderepair-02": "still RUNNING: partial evidence, not in the family",
   "lineage-01": "v3c regression withdrawn: infrastructure contamination, recorded by amendment"
  },
  "untested_directional_claims": [
+  "breadth-02",
   "collapse-01",
   "collapse-02",
   "mimicry-02",

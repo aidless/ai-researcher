@@ -1,6 +1,6 @@
 {
   "hypothesis": "on a larger, harder diff set, at least one real code-review decision flips with the evaluator, so evaluator choice is a deployment variable rather than a cosmetic one",
-  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261008 python3 \"$ROOT/demo/breadth/run_breadth2.py\"",
+  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; # EVO_BREADTH2=1 selects the 24-diff set; without it the script refuses rather than silently running the original 8\nPYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" EVO_BREADTH2=1 EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261008 python3 \"$ROOT/demo/breadth/run_breadth2.py\"",
   "max_rounds": 1,
   "max_cost_usd": 0.0,
   "max_wall_hours": 6.0,
@@ -24,8 +24,8 @@
   "required_artifacts": [
     "result.json"
   ],
-  "approved_by": "liuzewen (blanket 全做 2026-10-08; harder diff set, count endpoint declared)",
-  "approved_at": "2026-10-08T02:27:34.530296+00:00",
+  "approved_by": "liuzewen (blanket 全做; config-bound re-run after the breadth-02 identity defect)",
+  "approved_at": "2026-10-08T03:16:37.872065+00:00",
   "seed": 20261008,
   "tension": "breadth-01 measured pairwise agreement of 0.429 across three local evaluator families with zero observed ship/no-ship flips on eight diffs, so evaluator disagreement was real but its decision relevance was not demonstrated. The practice it describes -- routing diffs through whichever reviewer model is cheapest -- is widespread and unmeasured. Knowing whether disagreement ever changes a decision determines whether evaluator choice deserves a benchmark at all, and eight diffs cannot answer it either way.",
   "power": {

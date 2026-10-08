@@ -236,6 +236,35 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
             st["status"] = "STOP-BUDGET"; break
         if (time.monotonic() - start_wall) / 3600 > env.max_wall_hours:
             st["status"] = "STOP-TIME"; break
+        # 1b. config binding. Signing proves the artifacts were not modified; it
+        # says nothing about whether they are the artifacts the envelope declared.
+        # breadth-02 (2026-10-08) ran the original 8 trivial diffs instead of the
+        # declared 24 because the methods string never set the flag that selects
+        # them, produced a signed bundle, and fired a kill-switch on the result.
+        # An envelope may now declare `expect`, and the harness must record its
+        # effective configuration in result.json under `_config`; a mismatch stops
+        # the run instead of certifying the wrong experiment.
+        exp = getattr(env, "expect", None)
+        if exp:
+            rp = workdir / f"round-{rnd:02d}" / "artifacts" / "result.json"
+            try:
+                got = (json.loads(rp.read_text(encoding="utf-8"))
+                       .get("_config") or {})
+            except Exception as e:
+                st["status"] = "STOP-CONFIG-UNBOUND"
+                st["notes"] = (f"envelope declares expect={sorted(exp)} but "
+                               f"result.json carries no readable _config ({e})")
+                _save_state(workdir, st)
+                break
+            bad = {k: (exp[k], got.get(k)) for k in exp if got.get(k) != exp[k]}
+            if bad:
+                st["status"] = "STOP-CONFIG-MISMATCH"
+                st["notes"] = ("harness ran a different experiment than the "
+                               "envelope declared (key: declared, actual): "
+                               + "; ".join(f"{k}={v}" for k, v in bad.items()))
+                _save_state(workdir, st)
+                print(f"config mismatch: {st['notes']}")
+                break
         # 2-4. run, collect, sign
         rr = _run_round(env, workdir, rnd, st)
         if rr["missing"]:

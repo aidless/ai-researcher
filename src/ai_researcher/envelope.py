@@ -103,6 +103,12 @@ class Envelope:
     seed: int = 0           # fixed seed for the methods command (EVO_SEED); 0 = not fixed
     power: object = None    # Power; None = not declared (refused by validate)
     negative_publish: str = ""  # what happens on refute: "replication-report" | "archive" (must choose)
+    expect: object = None   # optional: {result.json _config key: value} the run
+                            # MUST match. Signing proves artifacts were unmodified;
+                            # it does not prove they are the artifacts this
+                            # envelope declared. breadth-02 produced a signed
+                            # bundle from a different experiment than its envelope
+                            # specified, and the kill-switch fired on it.
     tension: str = ""       # the research tension (oral practice #1 + Hamming):
                             # an unmet operational requirement OR a discrepancy between
                             # theoretical expectation and reported observation, plus what
@@ -205,6 +211,7 @@ class Envelope:
             seed=int(d.get("seed", 0)),
             power=Power(**pd) if isinstance(pd, dict) else None,
             negative_publish=d.get("negative_publish", ""),
+            expect=d.get("expect") if isinstance(d.get("expect"), dict) else None,
             tension=d.get("tension", ""),
         )
 

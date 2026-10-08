@@ -22,6 +22,9 @@ import pathlib
 import urllib.request
 
 OLLAMA = "http://127.0.0.1:11434/api/generate"
+# Above this share of unparseable judgments, the comparator cannot support a
+# decision-level claim and the arm reports measurable=False.
+MAX_ABSTENTION = 0.2
 EVALUATORS = ["qwen2.5:7b", "llama3.1:8b", "deepseek-r1:7b"]
 
 # breadth-02 additions: 16 harder diffs (multi-hunk, subtle semantics,
@@ -130,8 +133,17 @@ def judge(model, diff_id, patch, timeout=150):
 def main():
     out = pathlib.Path(os.environ.get("EVO_OUT", "artifacts"))
     out.mkdir(parents=True, exist_ok=True)
-    if os.environ.get("EVO_BREADTH2"):
-        DIFFS.extend(DIFFS_EXTRA)
+    # Breadth-02 ran the ORIGINAL eight trivial diffs because nothing set
+    # EVO_BREADTH2, produced a signed bundle, and fired a kill-switch on it. So the
+    # arm is now selected by an explicit required flag rather than an opt-in env
+    # var, and the effective configuration is written into result.json for the
+    # loop's config-binding check to verify against the envelope's `expect`.
+    if os.environ.get("EVO_BREADTH2") != "1":
+        raise SystemExit("refusing to run: EVO_BREADTH2=1 is required. Without it "
+                         "this script silently runs the original 8-diff set, which "
+                         "is how a signed bundle came to certify the wrong "
+                         "experiment.")
+    DIFFS.extend(DIFFS_EXTRA)
     votes, abst = {}, 0
     for did, patch, _ in DIFFS:
         votes[did] = {}
@@ -163,13 +175,25 @@ def main():
             if (sum(1 for v in rest if v == "APPROVE") > len(rest) / 2) != full:
                 flips += 1
                 break
+    usable = sum(1 for v in votes.values() for x in v.values() if x)
+    total_judgements = len(DIFFS) * len(EVALUATORS)
+    abstention_rate = round(1 - usable / total_judgements, 3) if total_judgements else 1.0
+    # A comparator where a third of judgments cannot be parsed cannot support a
+    # claim about decision flips. breadth-02 reported flip_cases=0 with 9 of 24
+    # judgments unusable, which reads as "no flips" when it means "not measurable".
+    measurable = abstention_rate <= MAX_ABSTENTION
     res = {"n_diffs": len(DIFFS), "evaluators": EVALUATORS,
+           "_config": {"n_diffs": len(DIFFS), "evaluators": len(EVALUATORS),
+                       "abstention_rate": abstention_rate},
+           "abstention_rate": abstention_rate,
+           "measurable": measurable,
            "votes": votes, "abstentions": abst,
            "pairwise_agreement": round(agree / tot, 3) if tot else None,
            "flip_cases": flips,
-           "confirmed": (agree / tot < 0.8) if tot else False,
+           # confirmed also requires the comparator to be usable
+           "confirmed": bool(tot) and (agree / tot < 0.8) and measurable,
            # breadth-02 additions used by the kill-switch
-           "flip_confirmed": flips >= 1}
+           "flip_confirmed": (flips >= 1) and measurable}
     (out / "result.json").write_text(json.dumps(res, indent=1) + "\n")
     print(json.dumps({"agreement": res["pairwise_agreement"],
                       "flips": flips, "confirmed": res["confirmed"]},

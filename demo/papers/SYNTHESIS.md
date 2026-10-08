@@ -382,17 +382,41 @@ the mean, which is why that arm does not survive correction. Families positive
 preregistered localization prediction also failed (unhinted 8 fixed / 11 broken;
 hinted 4 / 10 -- the gap was not larger when the defect had to be located).
 
-**The mechanism claim does not survive contact with code repair.** The policy
-that gained +0.15 to +0.775 across eight arithmetic families is flat on one code
-family and negative on another, breaking more items than it fixed. The dominant
-genuine failure was not arithmetic slippage but missing the guard: models returned
-`0` or a stringified error where the item required `None`, and stating the defect
-first did not make them notice the requirement.
+**The mechanism claim does not survive contact with code repair**, and a second
+arm shows this is not a fixable policy mismatch. Holding items, scorer, seed and
+models fixed and changing only the reasoning policy (48 items x 3 families = 144
+paired observations, power-checked at mde 0.25):
+
+| policy | gain | fixed | broke | McNemar p | families positive |
+|---|---|---|---|---|---|
+| test-first (state the violated assertion) | -0.028 | 19 | 23 | 0.644 | 1/3 |
+| step-calc (state the defect) | -0.104 | 12 | 27 | 0.024 | 0/3 |
+| spec-first (restate the specification) | **-0.188** | 13 | 40 | 0.0003 | 0/3 |
+
+Two readings survived coderepair-01: the mechanism does not generalise, or
+step-calc asks for the wrong intermediate step when writing code. This arm tested
+the second. **It is refuted** -- neither domain-adapted policy recovers a gain,
+so the boundary is not a policy-domain mismatch.
+
+The preregistered interaction prediction is the informative failure. It predicted
+that a specification-explicit policy would help most on guard-bearing classes,
+because missing guards was the diagnosed cause. The interaction came out at -2:
+on guard classes spec-first still broke more items than it fixed (12 fixed / 28
+broken). Making the requirement explicit did not make the model notice the
+requirement.
+
+One pattern survives, and it is a dose-response rather than a threshold: accuracy
+falls as the demanded pre-answer reasoning grows (test-first -0.028, step-calc
+-0.104, spec-first -0.188), and only the least intrusive variant has an interval
+compatible with zero. When the artifact being produced *is* the answer, as in
+code, intermediate prose is at best overhead. That describes the boundary's
+interior; it does not rescue the arithmetic result.
 
 Consequences for scope, stated rather than buried:
 
 1. The paper claims breadth across *models* on *arithmetic*. It does not claim
-   domain-general protocol benefit.
+   domain-general protocol benefit, and the second code-repair arm removes the
+   excuse that the policy was mismatched to the task.
 2. A protocol effect that reverses across domains is a sharper result than one
    that holds everywhere, provided the reversal is reported as such -- so this is
    a section, not a limitation.
@@ -456,12 +480,13 @@ Benjamini-Hochberg across the project.
 |---|---|---|---|
 | matrix-01 | 1 | <1e-16 | **yes** |
 | transfer-01 | 2 | <1e-16 | **yes** |
-| failclosed-01 | 3 | 0.167 | no |
-| exp-01 | 4 | 0.200 | no |
-| swarm-ms | 5 | 0.200 | no |
-| coderepair-01 | 6 | 0.217 | no |
-| swarm-fd | 7 | 1.000 | no |
-| swarm-fd2 | 8 | 1.000 | no |
+| failclosed-01 | 3 | 0.188 | no |
+| exp-01 | 4 | 0.225 | no |
+| swarm-ms | 5 | 0.225 | no |
+| coderepair-01 | 6 | 0.244 | no |
+| coderepair-02 | 7 | 0.828 | no |
+| swarm-fd | 8 | 1.000 | no |
+| swarm-fd2 | 9 | 1.000 | no |
 
 **Figure 2.** Project-level Benjamini-Hochberg p for every primary endpoint that
 can be recomputed from per-item evidence, log scale, against α = 0.05. The arms
@@ -477,7 +502,7 @@ recomputing it, so figure and audit cannot disagree.
 8 endpoints at α = 0.05; regenerate with
 `PYTHONPATH=src python3 scripts/project_alpha.py` rather than editing it by hand)*
 
-**6 of 8 primary endpoints fail project-level correction. The 2 that survive are
+**7 of 9 primary endpoints fail project-level correction. The 2 that survive are
 the transfer effect, measured twice.**
 
 The amplification result does not survive correcting for the number of arms:
@@ -488,7 +513,7 @@ described as a failure to replicate at project level rather than as a refutation
 
 Two further honesty items, both of which make the numbers above optimistic:
 
-1. **8 arms carry a directional claim with no recomputable test at this n**:
+1. **9 arms carry a directional claim with no recomputable test at this n**:
    `collapse-01`, `collapse-02`, `mimicry-02`, `swarm-01`, `swarm-02`, `sweetspot-01`, `sweetspot-02`, `sweetspot-03`. They are excluded from the family because there is no test
    to correct, which *understates* the multiplicity. If any is cited as evidence,
    the family is larger and every p above is too small.
