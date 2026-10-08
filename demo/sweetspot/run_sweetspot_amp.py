@@ -33,11 +33,22 @@ import random
 import sys
 from math import comb
 
+def _repo_root(start: pathlib.Path) -> pathlib.Path:
+    """Walk up to the directory that holds src/ai_researcher.
+
+    Counting `parents[n]` is how this file failed twice: parents[1] put
+    demo/coderepair at <root>/coderepair, and "fixing" it to parents[2] put the
+    root one level above the repository. A marker directory cannot be miscounted.
+    """
+    d = start.resolve()
+    for cand in [d, *d.parents]:
+        if (cand / "src" / "ai_researcher").is_dir():
+            return cand
+    raise SystemExit(f"no repository root above {start} (no src/ai_researcher)")
+
+
 HERE = pathlib.Path(__file__).resolve().parent
-REPO = HERE.parents[2]  # sweetspot/ -> demo/ -> repo root
-# parents[1] here resolved to the repo root, so demo/coderepair became
-# <root>/coderepair and the import failed on the first launch. Derive the repo
-# root once, explicitly, instead of counting parents at each use.
+REPO = _repo_root(HERE)
 sys.path.insert(0, str(REPO / "src"))
 sys.path.insert(0, str(REPO / "demo" / "shared"))
 sys.path.insert(0, str(REPO / "demo" / "coderepair"))
