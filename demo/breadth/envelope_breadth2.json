@@ -24,10 +24,10 @@
   "required_artifacts": [
     "result.json"
   ],
-  "approved_by": "liuzewen (blanket 全做; expect binding, restored after the to_dict defect)",
-  "approved_at": "2026-10-08T04:00:38.349428+00:00",
+  "approved_by": "liuzewen (全做; binding restored, round-trip now tested)",
+  "approved_at": "2026-10-08T06:09:19.338297+00:00",
   "seed": 20261008,
-  "tension": "breadth-01 measured pairwise agreement of 0.429 across three local evaluator families with zero observed ship/no-ship flips on eight diffs, so evaluator disagreement was real but its decision relevance was not demonstrated. The practice it describes -- routing diffs through whichever reviewer model is cheapest -- is widespread and unmeasured. Knowing whether disagreement ever changes a decision determines whether evaluator choice deserves a benchmark at all, and eight diffs cannot answer it either way.",
+  "tension": "breadth-01 measured pairwise agreement of 0.429 across three local evaluator families with zero observed ship/no-ship flips on eight diffs, so evaluator disagreement was real but its decision relevance was not demonstrated. The practice it describes -- routing diffs through whichever reviewer model is cheapest -- is widespread and unmeasured. Knowing whether disagreement ever changes a decision determines whether evaluator choice deserves a benchmark at all, and eight diffs cannot answer it either way. A methodological note is part of this arm: the third evaluator was replaced after measuring that it cannot return a verdict within any affordable budget, and evaluators are now preflighted so an unusable one is excluded before the arm runs rather than silently consuming a third of the judgments.",
   "power": {
     "n": 24,
     "alpha": 0.05,

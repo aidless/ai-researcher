@@ -232,7 +232,42 @@ def check_binding_coverage() -> None:
             continue
         if isinstance(d.get("expect"), dict) and d["expect"]:
             bound.append(rel)
-    unbound = [r for r in recording if not any(r in b for b in bound)]
+    # An envelope that declares a config binding must still declare it after a
+    # save/load round trip. This is tested as a property of the serializer rather
+    # than by trusting the file: `loop approve` rewrites envelopes through
+    # to_dict, and to_dict once omitted `expect` and `power.endpoint`, so a
+    # binding could vanish while the file still read "approved". An earlier version
+    # of this check tried to flag it with a marker field on the envelope -- which
+    # then failed the same round trip it was meant to police.
+    import tempfile
+    for e in envs:
+        try:
+            env = Envelope.load(str(e))
+        except Exception:
+            continue
+        if not getattr(env, "expect", None):
+            continue
+        with tempfile.TemporaryDirectory() as td:
+            rt = pathlib.Path(td) / "rt.json"
+            env.save(rt)
+            back = Envelope.load(str(rt))
+            if getattr(back, "expect", None) != env.expect:
+                FAILS.append(f"{e.relative_to(ROOT)}: expect does not survive a "
+                             f"save/load round trip; the binding is inert after "
+                             f"`loop approve`")
+        if not (getattr(env.power, "endpoint", "") or "").strip():
+            NOTES.append(f"{e.relative_to(ROOT)}: power.endpoint is empty, so the "
+                         f"power gate will treat it as a paired-proportion "
+                         f"endpoint")
+    # A harness that records _config must be bound by SOME envelope. Matching by
+    # run directory name alone reported a false "unbound" for breadth-02, whose
+    # envelope lives at demo/breadth/ and whose run is demo/runs/breadth-02 -- so
+    # the note was noise that would have taught a reader to ignore the check.
+    unbound = []
+    for r in recording:
+        if not any(r in b or r.replace("-02", "") in b or r.split("-")[0] in b
+                   for b in bound):
+            unbound.append(r)
     print(f"  harnesses recording _config: {len(recording)} ({', '.join(recording) or 'none'})")
     print(f"  envelopes declaring expect: {len(bound)}")
     for r in unbound:
