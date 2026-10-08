@@ -92,7 +92,36 @@ reversed the pattern — an unlucky 18% draw, caught by review, corrected by ful
 enumeration (now automatic via robustness.py). PCI magnitudes across different
 set sizes are not compared (normalization differs); only orderings.
 
-## 5. Early warning: a diagnosed failure mode, not a capability
+## 5. Inference budget: no sweet spot at this scale (sweetspot-04, STOP-REFUTED)
+
+An earlier arm reported a flat-then-cliff accuracy curve across reasoning caps and
+two seats refused it at n = 6 per family. Re-run on 48 code-repair items at caps
+150 / 400 / 1000 with 96 paired observations per cap -- the n a power calculation
+requires for a 0.25 effect -- the cliff does not exist, and neither does its
+opposite:
+
+| model | cap 150 | cap 400 | cap 1000 | cap400 fixed | cap1000 broke | McNemar p |
+|---|---|---|---|---|---|---|
+| qwen2.5:7b | 0.583 | 0.583 | 0.583 | 0 | 0 | 1.000 |
+| deepseek-r1:7b | 0.000 | 0.083 | 0.271 | 9 | 0 | 0.0039 |
+
+Pooled 9:0 (p = 0.0039), but in the opposite direction from the hypothesis:
+**zero of two families degrade at cap 1000.** Zero truncations in every cell, so
+the budget was delivered rather than clipped.
+
+The two behaviours are different rather than a shared curve. One family is flat --
+its fixes are short enough that the budget is not the binding constraint. The
+other is monotonically increasing, and at cap 150 it cannot complete a fix at all,
+which is what produced the original "cliff" appearance on a different item set: at
+150 tokens the model simply does not finish.
+
+This does not contradict Thoughtology (Marjanovic et al., TMLR 2026), which
+reports a sweet spot on the full DeepSeek-R1 with an internally controlled budget.
+It does not reproduce it at 7B. Whether the phenomenon is scale-dependent is
+outside what this hardware can test, and the paper says so rather than implying
+either result. The sweet-spot claim is dropped.
+
+## 6. Early warning: a diagnosed failure mode, not a capability
 
 *Status: withdrawn as a capability. See the diagnosis section for why the
 misses are structural.*
@@ -107,7 +136,7 @@ holdouts. JSD is a coarse sorter for low/mid-collapse conditions, not an
 extreme predictor. Both statements are in the ledger; neither is rounded up
 to "confirmed" as a practical claim.
 
-## 6. Limitations (stated, not buried)
+## 7. Limitations (stated, not buried)
 
 - Sample scales are pilot-grade throughout (n=40, 6 rounds, 4 tasks, 1-rep
   weights). Every magnitude claim awaits the preregistered extensions.
@@ -121,7 +150,7 @@ to "confirmed" as a practical claim.
 - JSD analysis is retrospective on committed weights; prospective validation
   (predict-then-run) is future work with its own envelope.
 
-## 7. What would change each section
+## 8. What would change each section
 
 - Transfer: 200-item heldout + McNemar matrix across 8 local families (matrix
   envelope approved, queued).
@@ -393,6 +422,19 @@ paired observations, power-checked at mde 0.25):
 | step-calc (state the defect) | -0.104 | 12 | 27 | 0.024 | 0/3 |
 | spec-first (restate the specification) | **-0.188** | 13 | 40 | 0.0003 | 0/3 |
 
+Per family, with the best policy for each (95% paired bootstrap over the 48 items,
+computed from the per-item flags in the signed bundle):
+
+| family | direct | step-calc | spec-first | test-first | best gain [95% CI] |
+|---|---|---|---|---|---|
+| qwen2.5:7b | 0.583 | 0.583 | 0.521 | 0.604 | test-first +0.021 [-0.146, +0.167] |
+| qwen2.5-coder:7b | 0.583 | 0.583 | 0.333 | 0.583 | none: +0.000 [+0.000, +0.000] |
+| gemma3:4b | 0.667 | 0.354 | 0.417 | 0.562 | none: +0.000 [+0.000, +0.000] |
+
+Only qwen2.5:7b has any policy that improves at all, and its interval spans zero.
+The other two families are best served by no policy, so the dose-response reading
+rests on one family rather than three.
+
 Two readings survived coderepair-01: the mechanism does not generalise, or
 step-calc asks for the wrong intermediate step when writing code. This arm tested
 the second. **It is refuted** -- neither domain-adapted policy recovers a gain,
@@ -466,6 +508,17 @@ preferred answers -- and that experiment is specified but not yet run
 (`evolve` proposal; see proposals/). Until it is, early warning is reported as a
 diagnosed failure mode rather than a capability, and it is absent from the title.
 
+**Arms this paper asserts.** `matrix-01` and `transfer-01` (the primary claim,
+with per-family intervals), `coderepair-01` and `coderepair-02` (the second-domain
+result and the policy-adaptation refutation, with per-family intervals), and
+`swarm-ms` (the amplification arm, exploratory, with the across-seed spread
+reported). Every other run is named in this paper either as superseded
+(`swarm-01`, `swarm-02` by the five-seed `swarm-ms`), as withdrawn (`lineage-01`),
+as untestable at its n (the nine-arm disclosure below), or as a diagnosed failure
+mode (`jsd-02`), and none of them is claimed as evidence for anything.
+
+*Asserted arms: matrix-01, transfer-01, coderepair-01, coderepair-02, swarm-ms*
+
 ## Project-level multiplicity: what survives correcting for the number of arms
 
 Each arm in this paper was analysed on its own, so the family-wise error rate is
@@ -476,17 +529,18 @@ thing a careful reviewer asks and the last thing a self-interested author runs.
 evidence -- no p-value is taken on trust from a summary field -- and applies
 Benjamini-Hochberg across the project.
 
-| arm | rank | p (BH, project) | survives |
-|---|---|---|---|
-| matrix-01 | 1 | <1e-16 | **yes** |
-| transfer-01 | 2 | <1e-16 | **yes** |
-| failclosed-01 | 3 | 0.188 | no |
-| exp-01 | 4 | 0.225 | no |
-| swarm-ms | 5 | 0.225 | no |
-| coderepair-01 | 6 | 0.244 | no |
-| coderepair-02 | 7 | 0.828 | no |
-| swarm-fd | 8 | 1.000 | no |
-| swarm-fd2 | 9 | 1.000 | no |
+| arm | rank | p (BH, project) | survives | direction vs its own hypothesis |
+|---|---|---|---|---|
+| matrix-01 | 1 | <1e-16 | **yes** | aligns |
+| transfer-01 | 2 | <1e-16 | **yes** | aligns |
+| sweetspot-04 | 3 | 0.013 | **yes** | **CONTRADICTS** |
+| failclosed-01 | 4 | 0.156 | no | aligns |
+| exp-01 | 5 | 0.208 | no | unstated |
+| swarm-ms | 6 | 0.208 | no | aligns |
+| coderepair-01 | 7 | 0.233 | no | aligns |
+| coderepair-02 | 8 | 0.805 | no | aligns |
+| swarm-fd | 9 | 1.000 | no | aligns |
+| swarm-fd2 | 10 | 1.000 | no | aligns |
 
 **Figure 2.** Project-level Benjamini-Hochberg p for every primary endpoint that
 can be recomputed from per-item evidence, log scale, against α = 0.05. The arms
@@ -498,11 +552,19 @@ so every value plotted is optimistic. Generated from
 `demo/papers/figures/fig_project_alpha/`, which reads the audit output rather than
 recomputing it, so figure and audit cannot disagree.
 
+**Surviving is not the same as supporting.** One of the three survivors,
+`sweetspot-04`, is a *refutation that happens to be resolvable*: its preregistered
+expectation was that accuracy falls at the largest budget, its measured endpoint is
+that accuracy **rises** (9 fixed, 0 broken), and that rise is what clears the
+correction. Reporting "3 of 10 survive" without the direction column would let a
+refutation read as a finding, so the audit carries a per-endpoint direction
+annotation (`demo/papers/endpoint-direction.json`) and the table above reports it.
+
 *(table generated from `demo/papers/PROJECT-LEVEL-ALPHA.json`, family of
 8 endpoints at α = 0.05; regenerate with
 `PYTHONPATH=src python3 scripts/project_alpha.py` rather than editing it by hand)*
 
-**7 of 9 primary endpoints fail project-level correction. The 2 that survive are
+**7 of 10 primary endpoints fail project-level correction. 2 of the 3 that survive support the claim they were preregistered for.** The 2 that survive are
 the transfer effect, measured twice.**
 
 The amplification result does not survive correcting for the number of arms:
@@ -513,8 +575,7 @@ described as a failure to replicate at project level rather than as a refutation
 
 Two further honesty items, both of which make the numbers above optimistic:
 
-1. **9 arms carry a directional claim with no recomputable test at this n**:
-   `collapse-01`, `collapse-02`, `mimicry-02`, `swarm-01`, `swarm-02`, `sweetspot-01`, `sweetspot-02`, `sweetspot-03`. They are excluded from the family because there is no test
+1. **8 arms carry a directional claim with no recomputable test at this n**: `collapse-01`, `collapse-02`, `mimicry-02`, `swarm-01`, `swarm-02`, `sweetspot-01`, `sweetspot-02`, `sweetspot-03`. They are excluded from the family because there is no test
    to correct, which *understates* the multiplicity. If any is cited as evidence,
    the family is larger and every p above is too small.
 2. One arm (lineage-01) is excluded because its verdict was withdrawn for

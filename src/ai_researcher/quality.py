@@ -283,7 +283,12 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
                              # per-round points of a single run are a time series,
                              # not population estimates; their uncertainty is the
                              # seed-level spread, reported separately
-                             "trajectory")
+                             "trajectory",
+                             # per-realisation rows of a single run are a sample,
+                             # not estimates: the five swarm excesses are reported
+                             # as a set with its mean and spread, which is the
+                             # estimand; each value separately is not
+                             "excesses[", "arms[", "pci[")
             quants = [r for r in ledger_rows
                       if isinstance(r.get("value"), (int, float))
                       and any(h in r.get("id", "").lower() for h in MAGNITUDE_HINT)
@@ -295,9 +300,25 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             # that no paper would cite; scoring CI coverage against those made the
             # check unpassable as the ledger grew, which is how a gate becomes
             # decoration. A run the manuscript never names is not a claim it makes.
-            named = [r for r in quants if r.get("run") and r["run"] in text]
-            if named:
-                quants = sorted(named, key=lambda r: (str(r.get("run", "")),
+            #
+            # But neither is a run it names only to disclose that the run is
+            # untestable. The untested-arms list is exactly that: nine arms are
+            # named in one sentence precisely because no interval can be given for
+            # them, and counting their magnitude rows as claims made Z2
+            # unsatisfiable for the wrong reason -- the third time this
+            # denominator has been set wrongly. So the manuscript declares which
+            # arms it asserts and the denominator is that list; absent the
+            # declaration the behaviour falls back to "named anywhere".
+            # tolerate markdown emphasis around the label
+            asserted = re.search(r"^\**\s*Asserted arms:\s*(.+)$", text, re.M)
+            if asserted:
+                arms = {a.strip().strip("`").strip()
+                        for a in asserted.group(1).split(",") if a.strip().strip("`")}
+                scoped = [r for r in quants if r.get("run") in arms]
+            else:
+                scoped = [r for r in quants if r.get("run") and r["run"] in text]
+            if scoped:
+                quants = sorted(scoped, key=lambda r: (str(r.get("run", "")),
                                                       str(r.get("id", ""))))
             n_claims = max(1, len(quants))
             # Word boundaries: bare-substring "ci" matches social/special/species.

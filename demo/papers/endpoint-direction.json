@@ -1,0 +1,15 @@
+{
+ "_comment": "Expected sign of each primary endpoint relative to the hypothesis that motivated it. 'aligns' means the endpoint surviving project-level correction supports the claim as stated; 'contradicts' means it survives while pointing the other way, which is a refutation rather than a finding; 'unstated' means the arm made no directional promise, so survival is descriptive only. Without this, 'survives project-level BH' reads as 'supports us', which sweetspot-04 shows is wrong: its endpoint survives at p=0.013 and refutes the sweet spot.",
+ "endpoints": {
+  "matrix-01":     {"direction": "aligns",     "claim": "step-calc beats direct on arithmetic, all families"},
+  "transfer-01":   {"direction": "aligns",     "claim": "step-calc beats direct on arithmetic, 2 families"},
+  "sweetspot-04":  {"direction": "contradicts","claim": "preregistered: accuracy DROPS at cap 1000; measured: it RISES (9:0)"},
+  "swarm-ms":      {"direction": "aligns",     "claim": "bias excess grows with swarm size"},
+  "coderepair-01": {"direction": "aligns",     "claim": "the gain does not transfer to code repair (a null that refutes)"},
+  "coderepair-02": {"direction": "aligns",     "claim": "no adapted reasoning policy recovers the gain on code repair"},
+  "failclosed-01": {"direction": "aligns",     "claim": "seeded defects are caught, escape rate 0"},
+  "exp-01":        {"direction": "unstated",   "claim": "exploratory"},
+  "swarm-fd":      {"direction": "aligns",     "claim": "excess persists with disagreement held fixed"},
+  "swarm-fd2":     {"direction": "aligns",     "claim": "excess persists with forced decisions"}
+ }
+}

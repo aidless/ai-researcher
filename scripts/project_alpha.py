@@ -231,6 +231,7 @@ DESCRIPTIVE = {"breadth-01": "agreement rate and flip count are descriptive "
 
 def collect(runs_dir: pathlib.Path):
     tests, notes, excluded, untested = [], [], [], []
+    inflight = []
     for rd in sorted(runs_dir.glob("*")):
         if not rd.is_dir() or not (rd / "state.json").exists():
             continue
@@ -240,7 +241,9 @@ def collect(runs_dir: pathlib.Path):
             # An in-flight run has partial item files. Counting it would put a
             # half-finished arm into the family and let its provisional p-value
             # correct the finished ones.
-            excluded.append((name, "still RUNNING: partial evidence, not in the family"))
+            inflight.append(name)
+            notes.append((name, "still RUNNING: partial evidence, excluded from "
+                                "the family and not a withdrawal"))
             continue
         if name in WITHDRAWN:
             excluded.append((name, WITHDRAWN[name]))
@@ -286,12 +289,12 @@ def collect(runs_dir: pathlib.Path):
                                  "no directional claim: descriptive only")))
             if carries:
                 untested.append(name)
-    return tests, notes, excluded, untested
+    return tests, notes, excluded, untested, inflight
 
 
 def main() -> int:
     runs = ROOT / "demo/runs"
-    tests, notes, excluded, untested = collect(runs)
+    tests, notes, excluded, untested, inflight = collect(runs)
     print(f"project-level multiplicity over {len(tests)} testable primary endpoints "
           f"(+{len(notes)} non-testable, {len(excluded)} withdrawn)\n")
     bh = benjamini_hochberg(tests)
@@ -299,8 +302,32 @@ def main() -> int:
         p_bh, ok, rank, run = bh[label]
         print(f"  {run:16s} rank {rank:2d}  p_bh={p_bh:.2e}  "
               f"{'SURVIVES' if ok else 'does not survive'} project-level BH")
+    # A surviving endpoint is not a supporting result. sweetspot-04's endpoint
+    # survives at p_BH = 0.013 while pointing the OPPOSITE way from its own
+    # preregistered hypothesis, so it is a refutation that happens to be
+    # statistically distinguishable from zero. Reporting "N of M survive"
+    # without the direction would let that read as a finding.
+    dir_path = ROOT / "demo/papers/endpoint-direction.json"
+    try:
+        dirs = json.loads(dir_path.read_text(encoding="utf-8"))["endpoints"]
+    except Exception:
+        dirs = {}
+    aligned = [k for k, v in bh.items()
+               if v[1] and dirs.get(v[3], {}).get("direction") == "aligns"]
+    contradicted = [k for k, v in bh.items()
+                    if v[1] and dirs.get(v[3], {}).get("direction") == "contradicts"]
+    unstated = [k for k, v in bh.items()
+                if v[1] and dirs.get(v[3], {}).get("direction") == "unstated"]
     n_surv = sum(1 for v in bh.values() if v[1])
     print(f"\n  {n_surv}/{len(bh)} primary endpoints survive BH at 0.05 across the project")
+    print(f"  of those, {len(aligned)} SUPPORT the claim they were preregistered for")
+    if contradicted:
+        print(f"  and {len(contradicted)} point the OPPOSITE way from their own "
+              f"hypothesis (a refutation that happens to be resolvable): "
+              f"{', '.join(k.split(':')[0] for k in contradicted)}")
+    if unstated:
+        print(f"  {len(unstated)} made no directional promise, so survival is "
+              f"descriptive only: {', '.join(k.split(':')[0] for k in unstated)}")
     print("\n=== recomputed endpoint detail ===")
     for name, detail in notes:
         print(f"  {name:16s} {detail}")
@@ -311,14 +338,21 @@ def main() -> int:
     print("\n=== excluded from the family ===")
     for name, why in excluded:
         print(f"  {name:16s} {why}")
+    if inflight:
+        print(f"  in flight (not withdrawals): {', '.join(inflight)}")
     out = {
         "family_size": len(bh),
+        "surviving_supporting_claim": sorted(k.split(":")[0] for k in aligned),
+        "surviving_contradicting_claim": sorted(k.split(":")[0] for k in contradicted),
+        "surviving_direction_unstated": sorted(k.split(":")[0] for k in unstated),
+        "directions": dirs,
         "alpha": 0.05,
         "surviving": sorted(k.split(":")[0] for k, v in bh.items() if v[1]),
         "endpoints": {k: {"p_bh": v[0], "survives": v[1], "rank": v[2], "run": v[3]}
                       for k, v in bh.items()},
         "non_testable": {n: d for n, d in notes},
         "withdrawn": {n: w for n, w in excluded},
+        "in_flight": inflight,
         "untested_directional_claims": untested,
     }
     p = ROOT / "demo/papers/PROJECT-LEVEL-ALPHA.json"

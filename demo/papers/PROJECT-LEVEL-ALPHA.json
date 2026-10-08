@@ -1,52 +1,109 @@
 {
- "family_size": 9,
+ "family_size": 10,
+ "surviving_supporting_claim": [
+  "matrix-01",
+  "transfer-01"
+ ],
+ "surviving_contradicting_claim": [
+  "sweetspot-04"
+ ],
+ "surviving_direction_unstated": [],
+ "directions": {
+  "matrix-01": {
+   "direction": "aligns",
+   "claim": "step-calc beats direct on arithmetic, all families"
+  },
+  "transfer-01": {
+   "direction": "aligns",
+   "claim": "step-calc beats direct on arithmetic, 2 families"
+  },
+  "sweetspot-04": {
+   "direction": "contradicts",
+   "claim": "preregistered: accuracy DROPS at cap 1000; measured: it RISES (9:0)"
+  },
+  "swarm-ms": {
+   "direction": "aligns",
+   "claim": "bias excess grows with swarm size"
+  },
+  "coderepair-01": {
+   "direction": "aligns",
+   "claim": "the gain does not transfer to code repair (a null that refutes)"
+  },
+  "coderepair-02": {
+   "direction": "aligns",
+   "claim": "no adapted reasoning policy recovers the gain on code repair"
+  },
+  "failclosed-01": {
+   "direction": "aligns",
+   "claim": "seeded defects are caught, escape rate 0"
+  },
+  "exp-01": {
+   "direction": "unstated",
+   "claim": "exploratory"
+  },
+  "swarm-fd": {
+   "direction": "aligns",
+   "claim": "excess persists with disagreement held fixed"
+  },
+  "swarm-fd2": {
+   "direction": "aligns",
+   "claim": "excess persists with forced decisions"
+  }
+ },
  "alpha": 0.05,
  "surviving": [
   "matrix-01",
+  "sweetspot-04",
   "transfer-01"
  ],
  "endpoints": {
   "swarm-fd2:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 9,
+   "rank": 10,
    "run": "swarm-fd2"
   },
   "swarm-fd:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 8,
+   "rank": 9,
    "run": "swarm-fd"
   },
   "coderepair-02:primary": {
-   "p_bh": 0.82796,
+   "p_bh": 0.804961,
    "survives": false,
-   "rank": 7,
+   "rank": 8,
    "run": "coderepair-02"
   },
   "coderepair-01:primary": {
-   "p_bh": 0.244133,
+   "p_bh": 0.232508,
    "survives": false,
-   "rank": 6,
+   "rank": 7,
    "run": "coderepair-01"
   },
   "swarm-ms:primary": {
-   "p_bh": 0.225,
+   "p_bh": 0.208333,
    "survives": false,
-   "rank": 5,
+   "rank": 6,
    "run": "swarm-ms"
   },
   "exp-01:primary": {
-   "p_bh": 0.225,
+   "p_bh": 0.208333,
    "survives": false,
-   "rank": 4,
+   "rank": 5,
    "run": "exp-01"
   },
   "failclosed-01:primary": {
-   "p_bh": 0.1875,
+   "p_bh": 0.15625,
    "survives": false,
-   "rank": 3,
+   "rank": 4,
    "run": "failclosed-01"
+  },
+  "sweetspot-04:primary": {
+   "p_bh": 0.013021,
+   "survives": true,
+   "rank": 3,
+   "run": "sweetspot-04"
   },
   "transfer-01:primary": {
    "p_bh": 0.0,
@@ -64,7 +121,7 @@
  "non_testable": {
   "balanced-01": "no directional claim: descriptive only",
   "breadth-01": "agreement rate and flip count are descriptive quantities, not a hypothesis test",
-  "breadth-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "breadth-02": "still RUNNING: partial evidence, excluded from the family and not a withdrawal",
   "coderepair-01": "pooled paired McNemar, direct vs step-calc; fixed=12, broke=21, families=4",
   "coderepair-02": "pooled paired McNemar, direct vs step-calc; fixed=19, broke=23, families=3",
   "collapse-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
@@ -84,14 +141,18 @@
   "sweetspot-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "sweetspot-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "sweetspot-03": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
-  "sweetspot-04": "no directional claim: descriptive only",
-  "transfer-01": "pooled paired McNemar, direct vs treatment (item data in result.json); fixed=61, broke=0, families=2"
+  "sweetspot-04": "pooled paired McNemar, direct vs step-calc; fixed=0, broke=9, families=2",
+  "transfer-01": "pooled paired McNemar, direct vs treatment (item data in result.json); fixed=61, broke=0, families=2",
+  "transfer-confirmation": "still RUNNING: partial evidence, excluded from the family and not a withdrawal"
  },
  "withdrawn": {
   "lineage-01": "v3c regression withdrawn: infrastructure contamination, recorded by amendment"
  },
- "untested_directional_claims": [
+ "in_flight": [
   "breadth-02",
+  "transfer-confirmation"
+ ],
+ "untested_directional_claims": [
   "collapse-01",
   "collapse-02",
   "mimicry-02",

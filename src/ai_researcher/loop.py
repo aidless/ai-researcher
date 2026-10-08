@@ -236,6 +236,9 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
             st["status"] = "STOP-BUDGET"; break
         if (time.monotonic() - start_wall) / 3600 > env.max_wall_hours:
             st["status"] = "STOP-TIME"; break
+        # 2-4. run, collect, sign
+        rr = _run_round(env, workdir, rnd, st)
+
         # 1b. config binding. Signing proves the artifacts were not modified; it
         # says nothing about whether they are the artifacts the envelope declared.
         # breadth-02 (2026-10-08) ran the original 8 trivial diffs instead of the
@@ -265,8 +268,34 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
                 _save_state(workdir, st)
                 print(f"config mismatch: {st['notes']}")
                 break
-        # 2-4. run, collect, sign
-        rr = _run_round(env, workdir, rnd, st)
+        # 1c. An artifact that disclaims its own measurement cannot produce a
+        # verdict. breadth-02 (2026-10-08, second attempt) ran the declared 24
+        # diffs and set measurable=False because 34.7% of judgments were
+        # unparseable -- then a kill-switch row fired on the unusable comparison
+        # and the run was filed STOP-EXTEND. A harness saying "this cannot support
+        # the claim" must stop the loop, unless a kill row explicitly addresses
+        # the measurability flag.
+        _probe = {}
+        _rp0 = workdir / f"round-{rnd:02d}" / "artifacts" / "result.json"
+        if _rp0.exists():
+            try:
+                _probe = json.loads(_rp0.read_text(encoding="utf-8"))
+            except Exception:
+                _probe = {}
+        if _probe.get("measurable") is False:
+            rows_txt = " ".join(
+                f"{r.condition} {r.action} {r.note}".lower()
+                for r in env.kill_switch)
+            if "measurable" not in rows_txt and "abstention" not in rows_txt:
+                st["status"] = "STOP-UNMEASURABLE"
+                st["notes"] = (
+                    f"artifact declares measurable=False "
+                    f"(abstention_rate={_probe.get('abstention_rate')}); no "
+                    f"kill-switch row addresses measurability, so no decision may "
+                    f"be taken from it")
+                _save_state(workdir, st)
+                print(f"unmeasurable artifact: {st['notes']}")
+                break
         if rr["missing"]:
             st["rounds"].append({**rr, "verdict": "ROUND-INVALID",
                                  "reason": f"missing artifacts: {rr['missing']}"})

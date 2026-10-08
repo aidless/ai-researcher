@@ -34,6 +34,7 @@ from raw_data import DATA  # noqa: E402
 
 BLUE = "#0F4D92"
 RED = "#B03A2E"
+AMBER = "#B8860B"
 GREY = "#5A5A5A"
 LIGHT = "#D9D9D9"
 
@@ -63,7 +64,15 @@ def main() -> None:
 
     ax.axvline(DATA["alpha"], color=GREY, lw=1.0, ls=(0, (4, 3)), zorder=1)
     for y, r in zip(ypos, rows):
-        colour = BLUE if r["survives"] else RED
+        # A surviving endpoint whose direction contradicts its own hypothesis is
+        # not a finding, and must not be painted like one. sweetspot-04 clears the
+        # line while refuting the sweet spot.
+        if not r["survives"]:
+            colour = RED
+        elif r["direction"] == "contradicts":
+            colour = AMBER
+        else:
+            colour = BLUE
         ax.plot([1e-18, r["plot_p"]], [y, y], color=LIGHT, lw=1.0, zorder=2)
         ax.plot([r["plot_p"]], [y], "o", color=colour, ms=6.5, zorder=3,
                 markeredgecolor="white", markeredgewidth=0.7)
@@ -83,24 +92,32 @@ def main() -> None:
 
     handles = [
         plt.Line2D([], [], color=BLUE, marker="o", ms=6.5, lw=0,
-                   label=f"survives correction ({DATA['n_surviving']}/"
-                         f"{DATA['family_size']})"),
+                   label=f"survives, supports its claim ({DATA['n_supporting']})"),
+        plt.Line2D([], [], color=AMBER, marker="o", ms=6.5, lw=0,
+                   label=f"survives but CONTRADICTS its hypothesis "
+                         f"({DATA['n_contradicting']})"),
         plt.Line2D([], [], color=RED, marker="o", ms=6.5, lw=0,
-                   label="does not survive"),
+                   label=f"does not survive ({DATA['family_size'] - DATA['n_surviving']})"),
     ]
     ax.legend(handles=handles, loc="lower left", bbox_to_anchor=(0.0, 1.01),
-              ncol=2, fontsize=8, handlelength=1.2, borderaxespad=0.0,
-              columnspacing=1.8)
+              ncol=3, fontsize=7.6, handlelength=1.2, borderaxespad=0.0,
+              columnspacing=1.4)
 
     fig.tight_layout(rect=(0, 0.10, 1, 0.93), pad=1.2)
     n_untested = len(DATA["untested_directional_claims"])
     fig.text(0.012, 0.012,
-             f"Both survivors are the arithmetic transfer effect. "
+             f"{DATA['n_supporting']} of {DATA['n_surviving']} survivors support "
+             "the claim they were preregistered for. "
              f"{n_untested} further arms carry a directional claim with no "
              "recomputable test and therefore sit outside this family, so every "
              "value shown is optimistic;\n"
              f"{len(DATA['withdrawn'])} arm is excluded as withdrawn "
-             f"({', '.join(DATA['withdrawn']) or 'none'}).",
+             f"({', '.join(DATA['withdrawn']) or 'none'})"
+             + (f"; {len(DATA['in_flight'])} still in flight "
+                f"({', '.join(DATA['in_flight'])})" if DATA['in_flight'] else "")
+             + ". "
+             "Amber marks an endpoint that survives while pointing opposite to "
+             "its own preregistered hypothesis -- a refutation, not a result.",
              fontsize=7.4, color=GREY, ha="left", va="bottom")
     out = HERE / "fig2_project_alpha"
     for ext in ("png", "pdf"):

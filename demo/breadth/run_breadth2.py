@@ -25,7 +25,39 @@ OLLAMA = "http://127.0.0.1:11434/api/generate"
 # Above this share of unparseable judgments, the comparator cannot support a
 # decision-level claim and the arm reports measurable=False.
 MAX_ABSTENTION = 0.2
-EVALUATORS = ["qwen2.5:7b", "llama3.1:8b", "deepseek-r1:7b"]
+# deepseek-r1:7b was replaced after measurement, not preference. It abstained on
+# 24 of 24 diffs across two runs. Cause, measured directly rather than guessed:
+# at num_predict=150 the reply is EMPTY, at 400 still empty, at 1200 it finally
+# emits 2806 characters containing the verdict and still reports
+# done_reason=length. It reasons at length regardless of an explicit
+# "state the verdict first" instruction. Under a 72-judgment arm that is not an
+# affordable evaluator, and "the reasoning model abstains" was never the finding.
+EVALUATORS = ["qwen2.5:7b", "llama3.1:8b", "gemma3:4b"]
+
+# Preflight: an evaluator that cannot return a parseable verdict within budget is
+# excluded BEFORE the arm runs and recorded in _config. breadth-01 and the first
+# breadth-02 both spent a third of their judgments producing nothing measurable
+# and the number only surfaced at the end, where it invalidated the arm. The
+# general lesson is the same one the config binding exists for: a precondition
+# that can be checked up front should be, and a silently unusable component
+# should not be allowed to reach the statistics.
+PREFLIGHT_PROBE = "```python\ndef f(x):\n    return x[1:]\n```"
+
+
+def preflight(evaluators, budget=400):
+    ok, dropped = [], {}
+    for ev in evaluators:
+        try:
+            v = judge(ev, "preflight", PREFLIGHT_PROBE, num_predict=budget)
+        except Exception as e:
+            v = None
+            dropped[ev] = f"{type(e).__name__}: {str(e)[:70]}"
+        if v:
+            ok.append(ev)
+        else:
+            dropped[ev] = dropped.get(ev, "unparseable verdict at "
+                                      f"num_predict={budget}")
+    return ok, dropped
 
 # breadth-02 additions: 16 harder diffs (multi-hunk, subtle semantics,
 # performance-with-tradeoffs, security-relevant, API/typing changes). breadth-01's
@@ -111,23 +143,61 @@ DIFFS = [
 ]
 
 
-def judge(model, diff_id, patch, timeout=150):
+def _verdict(text: str):
+    """Verdict or None. Extracted so it can be unit-tested without a model."""
+    t = (text or "").strip().upper()
+    head = "\n".join((text or "").strip().splitlines()[:4])
+    if not (("APPROVE" in head.upper()) or ("REQUEST" in head.upper())):
+        # verdict-first prompting usually puts it in the first line; if a reasoning
+        # model still front-loads analysis, search the whole reply rather than
+        # discarding a judgement that is present but late.
+        head = (text or "").strip()
+    norm = head.upper().replace(" ", "_").replace("-", "_")
+    has_req = "REQUEST_CHANGES" in norm
+    has_app = "APPROVE" in norm
+    if has_req and not has_app:
+        return "REQUEST_CHANGES"
+    if has_app and not has_req:
+        return "APPROVE"
+    first = head.split("\n")[0].strip().upper() if head else ""
+    if first.startswith("APPROVE"):
+        return "APPROVE"
+    if first.startswith("REQUEST"):
+        return "REQUEST_CHANGES"
+    return None
+
+
+# Diagnosis, 2026-10-08: deepseek-r1:7b abstained on all 24 diffs. The cause is
+# NOT the parser (widening it was still correct -- a model prefixing prose would
+# have been missed -- but it was not this). Measured directly: at num_predict=150
+# the response is EMPTY, and at 500 it is TRUNCATED after 798 characters of
+# reasoning. The model spends its whole budget thinking and never reaches a
+# verdict. So the abstention rate was measuring a reasoning model's budget
+# behaviour, not its judgement.
+#
+# The fix is to make the verdict the first token rather than to spend more budget
+# hoping it appears: a reasoning model that is told to state its verdict before
+# explaining emits it immediately, and the reasoning that follows cannot swallow
+# it. A larger budget is kept as a backstop.
+PROMPT = ("Reply with exactly one line: APPROVE or REQUEST_CHANGES, followed by a "
+          "colon and one sentence of reason.\n"
+          "State the verdict word FIRST, before any analysis. Do not reason before "
+          "answering.\n\n"
+          "Code review this diff ({diff_id}):\n{patch}")
+
+
+def judge(model, diff_id, patch, timeout=200, num_predict=400):
     body = json.dumps({
         "model": model,
-        "prompt": (f"Code review this diff ({diff_id}):\n{patch}\n\n"
-                   f"Reply with exactly one line: APPROVE or REQUEST_CHANGES, "
-                   f"followed by a colon and one sentence of reason."),
+        "prompt": PROMPT.format(diff_id=diff_id, patch=patch),
         "stream": False,
-        "options": {"temperature": 0, "num_predict": 150}}).encode()
+        "options": {"temperature": 0, "num_predict": num_predict}}).encode()
     req = urllib.request.Request(OLLAMA, data=body,
                                  headers={"Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
-        t = json.loads(r.read().decode())["response"].strip().upper()
-    if t.startswith("APPROVE"):
-        return "APPROVE"
-    if "REQUEST_CHANGES" in t[:40] or t.startswith("REQUEST"):
-        return "REQUEST_CHANGES"
-    return None
+        text = json.loads(r.read().decode())["response"]
+    t = text.strip().upper()
+    return _verdict(text)
 
 
 def main():
@@ -144,10 +214,17 @@ def main():
                          "is how a signed bundle came to certify the wrong "
                          "experiment.")
     DIFFS.extend(DIFFS_EXTRA)
+    evaluators, dropped = preflight(EVALUATORS)
+    if dropped:
+        print(f"[preflight] evaluators excluded before measurement: {dropped}")
+    if len(evaluators) < 2:
+        raise SystemExit(f"only {len(evaluators)} evaluator(s) returned a "
+                         f"parseable verdict; refusing to run an arm whose "
+                         f"agreement statistic needs at least two")
     votes, abst = {}, 0
     for did, patch, _ in DIFFS:
         votes[did] = {}
-        for ev in EVALUATORS:
+        for ev in evaluators:
             try:
                 v = judge(ev, did, patch)
             except Exception:
@@ -176,14 +253,15 @@ def main():
                 flips += 1
                 break
     usable = sum(1 for v in votes.values() for x in v.values() if x)
-    total_judgements = len(DIFFS) * len(EVALUATORS)
+    total_judgements = len(DIFFS) * len(evaluators)
     abstention_rate = round(1 - usable / total_judgements, 3) if total_judgements else 1.0
     # A comparator where a third of judgments cannot be parsed cannot support a
     # claim about decision flips. breadth-02 reported flip_cases=0 with 9 of 24
     # judgments unusable, which reads as "no flips" when it means "not measurable".
     measurable = abstention_rate <= MAX_ABSTENTION
-    res = {"n_diffs": len(DIFFS), "evaluators": EVALUATORS,
-           "_config": {"n_diffs": len(DIFFS), "evaluators": len(EVALUATORS),
+    res = {"n_diffs": len(DIFFS), "evaluators": evaluators,
+           "evaluators_dropped_by_preflight": dropped,
+           "_config": {"n_diffs": len(DIFFS), "evaluators": len(evaluators),
                        "abstention_rate": abstention_rate},
            "abstention_rate": abstention_rate,
            "measurable": measurable,
