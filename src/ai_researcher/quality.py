@@ -145,7 +145,12 @@ _ID_PATTERNS = (r"arxiv\.org/abs/\d", r"arxiv[:\s]\d{4}\.\d{4,5}",
                 r"proceedings\.", r"\bvol\.?\s*\d+", r"\bpp\.?\s*\d+",
                 r"\bno\.?\s*\d+", r"arxiv\.org/pdf/",
                 # journal style: volume(issue), pages with no vol/pp label
-                r"\b\d+\(\d+\)\s*,?\s*\d+\s*[-\u2013]\s*\d+")
+                r"\b\d+\(\d+\)\s*,?\s*\d+\s*[-\u2013]\s*\d+",
+                # a repository or project URL is a resolvable target too: the Moonshot
+                # K2.5 tech report is cited only by its repository, and treating a
+                # bare github.com path as unresolvable failed a correctly cited entry
+                r"github\.com/[\w.-]+/[\w.-]+", r"huggingface\.co/",
+                r"kimi\.com/", r"openreview\.net/")
 _QUARANTINE_RE = re.compile(r"unresolved|must be resolved|to be completed|"
                             r"tbd|\?\?\?", re.I)
 
@@ -319,6 +324,19 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             # including anonymous repositories -- supplementary goes in the ZIP.
             # So this check flags every web pointer, and data-code-available
             # accepts "see supplementary" as satisfying availability.
+            #
+            # The References section is excluded: a bibliographic target is not an
+            # anonymity leak in the way "our code is at ..." is, and leaving it in
+            # would mean the same document could satisfy references-resolve and
+            # fail double-blind on the same string. Author-owned repositories are
+            # still caught, because the pattern matches the path, not the host.
+            refs_m = re.search(r"^#+\s*References?\s*$", text, re.M | re.I)
+            if refs_m:
+                tail = text[refs_m.end():]
+                nxt = re.search(r"^##[^#]", tail, re.M)
+                text = text[:refs_m.end()] + (
+                    tail[:nxt.start()] if nxt else tail) + (
+                    tail[nxt.start():] if nxt else "")
             low = text.lower()
             hits = [w for w in ("liuzewen", "liu zewen", "aidless", "acknowledg",
                                 "github.com/", "anonymous github", "huggingface.co/",

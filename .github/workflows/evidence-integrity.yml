@@ -49,6 +49,11 @@ jobs:
           print('contract checks ok')
           "
 
+      - name: figure caption consistency
+        env:
+          PYTHONPATH: src
+        run: python3 demo/papers/figures/check_consistency.py
+
       - name: evidence and gate sweep
         # Reports the mechanical half of the venue gate and states plainly that
         # the judgment half did NOT run: no review key in CI. A green mechanical

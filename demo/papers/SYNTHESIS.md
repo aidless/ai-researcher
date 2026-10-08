@@ -202,20 +202,29 @@ and will appear in the camera-ready version.
 
 ## References
 
-Every entry below was resolved against arXiv, OpenReview, or the publisher record
-on 2026-10-07. Entries that could not be resolved are quarantined in the
-subsection below rather than dropped, and the venue gate fails while any remain.
-
-### Resolved
+Every entry was resolved against arXiv, OpenReview, the publisher record or a
+project repository on 2026-10-08. One earlier entry, "topological mimicry
+(Chen & Wang 2026)", could not be resolved to any record and was **removed
+rather than retained**; the removal is recorded here because a citation that
+cannot be found is a defect in the paper, not a formatting inconvenience.
 
 - Cobbe, K., Kosaraju, V., Bavarian, M., et al. (2021). Training verifiers to solve
-  math word problems. *arXiv:2110.14168*. [GSM8K; the arithmetic held-out sets]
+  math word problems. *arXiv:2110.14168*. [GSM8K; the arithmetic item banks]
 - Wang, X., Wei, J., Schuurmans, D., et al. (2023). Self-consistency improves chain of
   thought reasoning in language models. *ICLR 2023*. OpenReview `1PL1NIMMrw`.
 - Chen, A., Phang, J., & Parrish, A. (2024). Two failures of self-consistency in the
   multi-step reasoning of LLMs. *TMLR 2024*. OpenReview `5nBqY1y96B`.
+- Marjanovic, S. V., Patel, A., Adlakha, V., et al. (2026). DeepSeek-R1 Thoughtology:
+  let's think about LLM reasoning. *TMLR*, accepted 12 Jan 2026.
+  *arXiv:2504.07128*; OpenReview `BZwKsiRnJI`.
+  **Nearest prior work for the inference-length arm** -- see Related work.
+- Zhou, E., et al. (2025). Landscape of thoughts: visualizing the reasoning process of
+  large language models. *arXiv:2503.22165*. [TMLR; verifier-weighted path voting]
+- Zhang, Y., et al. (2024). Topologies of reasoning: demystifying chains, trees, and
+  graphs of thoughts. *arXiv:2401.14295*. [replaces the unresolvable citation noted
+  above; it is the real work on reasoning topologies]
 - Zheng, L., Chiang, W.-L., Sheng, Y., et al. (2023). Judging LLM-as-a-judge with
-  MT-Bench and Chatbot Arena. *arXiv:2306.05685*. [position/bias/self-enhancement]
+  MT-Bench and Chatbot Arena. *arXiv:2306.05685*. [position bias and self-enhancement]
 - Jimenez, C. E., Yang, K., Barnes, A., et al. (2024). SWE-bench: can language models
   resolve real-world GitHub issues? *arXiv:2310.06770*. [the code-repair domain]
 - Zuo, Y., Zhang, K., Li, S., et al. (2025). TTRL: test-time reinforcement learning.
@@ -224,22 +233,18 @@ subsection below rather than dropped, and the venue gate fails while any remain.
   test-time reinforcement learning: safety and reasoning vulnerabilities.
   *arXiv:2603.15417*. [nearest prior work on amplification]
 - Li, Y., Yue, X., Xu, Z., et al. (2025). Small models struggle to learn from strong
-  reasoners. *arXiv:2502.12143*. [small-model learnability gap]
+  reasoners. *arXiv:2502.12143*. [the small-model learnability gap]
+- Moonshot AI (2026). Kimi-K2.5 technical report.
+  `github.com/MoonshotAI/Kimi-K2.5/blob/master/tech_report.pdf`;
+  Agent Swarm documentation, kimi.com/en-cn/help/agent/agent-swarm.
+  [K2.5 released 27 Jan 2026 with Agent Swarm at up to 100 sub-agents; K2.6 on
+  20 Apr 2026 at up to 300. The vendor states the swarm "creates the conditions
+  for productive disagreement ... avoids groupthink structurally."]
 - DeepSeek-AI (2025). DeepSeek-R1. *arXiv:2501.12948*.
 - McNemar, Q. (1947). Note on the sampling error of the difference between
   proportions or correlated proportions. *Psychometrika* 12(2), 153-157.
 - Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate. *JRSS
   Series B* 57(1), 289-300.
-
-### Unresolved -- must be resolved or removed before submission
-
-These are cited in the related-work discussion but carry no identifier that could
-be verified on 2026-10-07. They are listed rather than silently retained or
-deleted, and `Z15-references-resolve` fails while this list is non-empty.
-
-- "Thoughtology" (Marjanovic et al., TMLR 2025) -- no arXiv/OpenReview id found.
-- "Topological mimicry" (Chen & Wang 2026) -- no record found.
-- Kimi K2.5 / K2.6 agent-swarm technical reports -- no stable public record found.
 
 ## Related work (what differs, one line each)
 
@@ -254,13 +259,29 @@ deleted, and `Z15-references-resolve` fails while this list is non-empty.
   progress as the two failure modes. Differs: evaluates agents on engineering
   tasks, not evaluator bias. Our loop's state machine + resume + evidence-over-
   self-report answers both failure modes directly; scoped as external validation.
-- **Thoughtology** (Marjanovic et al., TMLR 2025): reasoning sweet spot and
-  rumination on frontier R1. Differs: single family, frontier scale. Our
-  sweetspot replication tests the same curve on small local models; floor
-  effects reported honestly rather than worked around silently.
-- **Chen & Wang 2026** (topological mimicry): diagnose spinning-wheel traces
-  without providing a detector. Differs: observation only. Our S1+S2 probe is
-  the detector they lack; its refutation on 3 questions is reported, not buried.
+- **Thoughtology** (Marjanovic et al., TMLR 2026, arXiv:2504.07128): the nearest
+  prior work to our inference-length arm. They report that DeepSeek-R1 has a
+  "sweet spot of reasoning, where extra inference time can impair model
+  performance", plus rumination on previously explored formulations. Differs in
+  three ways we can state precisely: they study frontier R1 with a thinking
+  budget the model controls internally, we vary an external token budget on
+  7B-8B local models; their sweet spot is a property of one model family, ours is
+  asked whether it survives at small scale; and their budget cannot be set by
+  prompting, which is exactly the confound our cap sweep holds fixed. Our arm is
+  therefore a replication at a different scale with an externally controlled
+  budget, and it is reported as *suggestive only* -- n=6 per family did not
+  survive two-seat review, and the amplification that meets the power gate is
+  queued rather than claimed.
+- **Kimi Agent Swarm** (Moonshot AI, K2.5 tech report and Agent Swarm docs): the
+  vendor states the swarm "creates the conditions for productive disagreement --
+  for independent agents to arrive at different conclusions, then force a
+  reconciliation" and that it "avoids groupthink structurally". Differs: our
+  amplification arm measures what happens when independent samples *converge* on a
+  shared bias and a vote then amplifies it, which is the failure mode that
+  design principle is meant to exclude and which our data suggests is not
+  excluded in practice. This is a scale (1-8 agents, local models) versus a
+  system-scale claim, so we frame it as a question the vendor's premise raises
+  rather than as a refutation of their system.
 - **This account's evaluator-coupling line** (paper1/2/4-anon, mm-epc): Cramér–Rao
   bounds, N-sensitivity, MPCI=1.449 cross-model. Differs: frontier evaluators,
   large budgets. This paper extends that line downward (small models) and
@@ -281,6 +302,17 @@ model families spanning 1B-8B and general/reasoning/coder lineages.
 | qwen3:4b | 0.725 | 0.875 | +0.150 [+0.025, +0.275] | 7 | 1 |
 | qwen2.5-coder:7b | 0.300 | 0.900 | +0.600 [+0.450, +0.750] | 24 | 0 |
 | llama3.2:1b | 0.000 | 0.525 | +0.525 [+0.375, +0.675] | 21 | 0 |
+
+
+**Figure 1.** Per-family transfer gain with 95% paired-bootstrap intervals, ordered
+by gain. Points are step-by-step minus direct accuracy on 40 held-out arithmetic
+items; grey bars connect each family's direct and step-by-step accuracies. All
+eight intervals exclude zero. The family with the highest direct baseline
+(qwen3:4b, 0.725) has the smallest gain (+0.150, [+0.025, +0.275]) and the family
+with a zero baseline (llama3.2:1b) gains +0.525 — the ordering the headroom account
+predicts. Generated by `demo/papers/figures/fig_transfer_forest/` from the signed
+bundle; `raw_data.py` recomputes every value, so an amendment to the bundle
+invalidates the figure rather than silently desynchronising it.
 
 Intervals are 5000-rep paired bootstrap over items (seed 20261010), computed from
 the per-item flags in the signed bundle rather than from the summary accuracies.
@@ -422,25 +454,42 @@ Benjamini-Hochberg across the project.
 
 | arm | rank | p (BH, project) | survives |
 |---|---|---|---|
-| matrix-01 (8 families, arithmetic) | 1 | <1e-16 | **yes** |
-| transfer-01 (2 families, arithmetic) | 2 | <1e-16 | **yes** |
-| swarm-ms (amplification, multi-seed) | 3 | 0.244 | no |
-| coderepair-01 (code repair, refutation) | 4 | 0.244 | no |
-| swarm-fd (amplification, fixed disagreement) | 5 | 1.000 | no |
-| swarm-fd2 (amplification, forced decisions) | 6 | 1.000 | no |
+| matrix-01 | 1 | <1e-16 | **yes** |
+| transfer-01 | 2 | <1e-16 | **yes** |
+| failclosed-01 | 3 | 0.167 | no |
+| exp-01 | 4 | 0.200 | no |
+| swarm-ms | 5 | 0.200 | no |
+| coderepair-01 | 6 | 0.217 | no |
+| swarm-fd | 7 | 1.000 | no |
+| swarm-fd2 | 8 | 1.000 | no |
 
-**2 of 6 primary endpoints survive project-level correction, and both are the
-transfer effect.** The amplification claim that gives this paper its title does
-not survive correcting for the number of arms: swarm-ms was reported with a
+**Figure 2.** Project-level Benjamini-Hochberg p for every primary endpoint that
+can be recomputed from per-item evidence, log scale, against α = 0.05. The arms
+that earlier drafts of this paper reported as findings -- swarm amplification, its
+two fixed-disagreement variants, and the code-repair refutation -- sit to the right
+of the line. The annotation is not decoration: eight further arms carry a
+directional claim with no recomputable test and therefore lie outside this family,
+so every value plotted is optimistic. Generated from
+`demo/papers/figures/fig_project_alpha/`, which reads the audit output rather than
+recomputing it, so figure and audit cannot disagree.
+
+*(table generated from `demo/papers/PROJECT-LEVEL-ALPHA.json`, family of
+8 endpoints at α = 0.05; regenerate with
+`PYTHONPATH=src python3 scripts/project_alpha.py` rather than editing it by hand)*
+
+**6 of 8 primary endpoints fail project-level correction. The 2 that survive are
+the transfer effect, measured twice.**
+
+The amplification result does not survive correcting for the number of arms:
+swarm-ms was reported with a
 nominal 95% interval of [0.001, 0.063] on five seeds, which is inside-run evidence
 and not more. The code-repair refutation does not survive either, so it should be
 described as a failure to replicate at project level rather than as a refutation.
 
 Two further honesty items, both of which make the numbers above optimistic:
 
-1. **Ten arms carry a directional claim with no recomputable test at this n**
-   (collapse-01/02, exp-01, failclosed-01, mimicry-02, swarm-01/02,
-   sweetspot-01/02/03). They are excluded from the family because there is no test
+1. **8 arms carry a directional claim with no recomputable test at this n**:
+   `collapse-01`, `collapse-02`, `mimicry-02`, `swarm-01`, `swarm-02`, `sweetspot-01`, `sweetspot-02`, `sweetspot-03`. They are excluded from the family because there is no test
    to correct, which *understates* the multiplicity. If any is cited as evidence,
    the family is larger and every p above is too small.
 2. One arm (lineage-01) is excluded because its verdict was withdrawn for

@@ -200,6 +200,31 @@ def check_judgment_available() -> None:
                      "green as a venue verdict")
 
 
+def check_figures() -> None:
+    """Figure captions must quote numbers that still match their data.
+
+    A caption is prose, so it goes stale silently when a bundle is amended or the
+    multiplicity audit is re-run, and a figure whose caption disagrees with its own
+    data is worse than no figure because it is checked by eye and believed.
+    """
+    section("figure / caption consistency")
+    script = ROOT / "demo/papers/figures/check_consistency.py"
+    if not script.exists():
+        NOTES.append("no figure consistency checker present")
+        print("  no checker")
+        return
+    import subprocess
+    r = subprocess.run([sys.executable, str(script)], capture_output=True,
+                       text=True, cwd=str(ROOT),
+                       env={**os.environ, "PYTHONPATH": str(ROOT / "src")})
+    tail = [ln for ln in (r.stdout or "").splitlines() if ln.strip()][-6:]
+    for ln in tail:
+        print(f"  {ln}")
+    if r.returncode != 0:
+        FAILS.append("figure caption disagrees with its data; see "
+                     "demo/papers/figures/figure_check.md")
+
+
 def check_proposals() -> None:
     section("self-evolution proposal loop")
     from ai_researcher.evolve import propose_next
@@ -222,6 +247,7 @@ def main() -> int:
     check_envelopes()
     check_mechanical_gate()
     check_judgment_available()
+    check_figures()
     check_proposals()
     print("\n=== summary ===")
     for n in NOTES:
