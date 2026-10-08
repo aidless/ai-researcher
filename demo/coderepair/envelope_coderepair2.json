@@ -1,0 +1,39 @@
+{
+  "hypothesis": "the refuted code-repair result was a policy-domain mismatch, not a broken mechanism: a reasoning policy that makes the specification explicit (spec-first) recovers the gain on guard-bearing bug classes",
+  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared:$ROOT/demo/coderepair\" python3 \"$ROOT/demo/coderepair/run_coderepair2.py\" --selftest && PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared:$ROOT/demo/coderepair\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261008 python3 \"$ROOT/demo/coderepair/run_coderepair2.py\"",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 6.0,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "a spec-explicit policy recovers the gain and its help concentrates on guard classes: the mechanism is policy-task matching, extend to more bug classes and a fourth family"
+    },
+    {
+      "condition": "confirmed == False and best_policy == 'step-calc'",
+      "action": "STOP-REFUTED-REVERSE",
+      "note": "neither adaptation helps and the original policy wins: the arithmetic gain does not survive code repair under any tested policy"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "no code-domain reasoning policy recovers a resolvable gain; the mechanism claim stays scoped to arithmetic"
+    }
+  ],
+  "required_artifacts": [
+    "result.json",
+    "items.json"
+  ],
+  "approved_by": "liuzewen (blanket 全做 directive 2026-10-08; policy-adaptation arm, power pre-checked at n=144 for mde=0.25)",
+  "approved_at": "2026-10-08T02:13:58.871327+00:00",
+  "seed": 20261008,
+  "tension": "coderepair-01 refuted the domain-general claim, but its failure profile named a specific cause: models missed guards rather than slipping on arithmetic, and stating the defect first did not make them notice the requirement. Two readings remain live. Either the mechanism does not generalise and step-calc was the wrong intermediate step for writing code, or step-calc's value depends on matching the task's structure. Testing the same policy again cannot separate them; only changing the policy can. Answering it decides whether the paper contributes a bounded mechanism with a stated boundary or a domain-general protocol effect, and it is the only remaining lever on the two dimensions the venue reviewer scores lowest.",
+  "power": {
+    "n": 144,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.25,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}

@@ -1,0 +1,33 @@
+{
+  "hypothesis": "Re-run lineage-01 without the confound its amendment names",
+  "methods": "# TODO(confound_audit): exact command for lineage-01",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 4.0,
+  "seed": 0,
+  "power": {
+    "n": 80,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.2,
+    "power_at_mde": 0.8
+  },
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "the original observation survives the clean re-run"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "the original observation was the artifact; record it as a lesson rather than a finding"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "negative_publish": "replication-report",
+  "approved_by": "",
+  "approved_at": "",
+  "tension": "The amendment records that the round's conclusion cannot be separated from an infrastructure or procedural artifact. The claim is neither supported nor refuted, so the direction is unknown, and an unknown direction is not a result. Re-running with the confound removed is the only way to learn whether the original observation was ever about the model."
+}

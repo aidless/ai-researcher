@@ -1,0 +1,18 @@
+# Envelopes that predate the power pre-check (added 2026-10-08). They already ran;
+# their numbers stand as reported, but they can no longer be approved or re-approved
+# because `loop approve` now refuses them. Listed here so CI can distinguish a
+# historical shortfall from a regression -- a permanently red CI trains people to
+# ignore red, which is the failure mode this project keeps paying for.
+#
+# Two of these (demo/collapse, demo/mimicry) were declared with n=8 and n=9. Those
+# runs cannot have detected what they claimed; their results are reported as
+# inconclusive and were never used to support a claim.
+demo/envelope.json
+demo/collapse/envelope.json
+demo/mimicry/envelope.json
+demo/lineage/envelope_lineage.json
+demo/coderepair/envelope_coderepair.json
+demo/sweetspot/envelope.json
+demo/swarm/envelope.json
+demo/transfer/envelope_matrix.json
+demo/transfer/envelope_transfer.json

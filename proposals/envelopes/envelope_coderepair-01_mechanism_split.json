@@ -1,0 +1,33 @@
+{
+  "hypothesis": "Discriminate the two readings of coderepair-01",
+  "methods": "# TODO(mechanism_split): exact command for coderepair-01",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 4.0,
+  "seed": 0,
+  "power": {
+    "n": 144,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.25,
+    "power_at_mde": 0.8
+  },
+  "kill_switch": [
+    {
+      "condition": "interaction_detected == True",
+      "action": "STOP-EXTEND",
+      "note": "the interaction identifies which reading holds"
+    },
+    {
+      "condition": "interaction_detected == False",
+      "action": "STOP-INCONCLUSIVE",
+      "note": "no interaction at this n: the two readings remain open and the claim must stay conditional"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "negative_publish": "replication-report",
+  "approved_by": "",
+  "approved_at": "",
+  "tension": "The result is mixed across families. Two readings survive: the effect requires capability the smaller families lack, or it requires something about the task. A bigger sample would not separate them; only a design that varies one of the two would."
+}

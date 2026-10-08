@@ -1,0 +1,34 @@
+{
+  "hypothesis": "on calibrated discriminative code items, accuracy at reasoning cap 1000 is lower than at cap 400 by a margin resolvable at n>=79 (exact binomial on the paired discordants)",
+  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261008 python3 \"$ROOT/demo/sweetspot/run_sweetspot_amp.py\"",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 6.0,
+  "kill_switch": [
+    {
+      "condition": "cliff_confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "the cap-1000 cliff replicates at adequate n: extend to a second code set and to intermediate caps"
+    },
+    {
+      "condition": "cliff_confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "the sweetspot-03 shape was noise at adequate n: drop the sweet-spot claim entirely"
+    }
+  ],
+  "required_artifacts": [
+    "result.json",
+    "items.json"
+  ],
+  "approved_by": "liuzewen (blanket 全做 2026-10-08; amplification at the n the power gate requires)",
+  "approved_at": "2026-10-08T02:26:05.702656+00:00",
+  "seed": 20261008,
+  "tension": "sweetspot-03 showed a flat-then-cliff shape in the code family across reasoning caps (0.833, 0.833, 0.333) but both seats refused it at n=6 per family as indistinguishable from noise. The shape is theoretically motivated -- longer budgets should help until they do not -- yet no arm has tested it at an n that can resolve it. Answering it decides whether an inference-length sweet spot is a citable finding of this project or an artefact of six items.",
+  "power": {
+    "n": 80,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.25,
+    "power_at_mde": 0.8
+  },
+  "negative_publish": "replication-report"
+}

@@ -20,6 +20,7 @@ continue past any violated bound. There is no override flag by design.
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -39,6 +40,53 @@ class Power:
     alpha: float = 0.05
     min_detectable_effect: float = 0.0   # smallest effect worth detecting
     power_at_mde: float = 0.0            # must be >= 0.8 to be executable
+    # What the power block is actually about. `required_n` computes a paired
+    # proportion difference, which does not describe every endpoint: a
+    # "does at least one decision flip" endpoint is a count, and forcing it into
+    # the paired formula produced a nonsense mde (breadth-02: 0.6 flips of a
+    # proportion). Declaring the endpoint keeps the mismatch visible instead of
+    # letting a wrong-shaped claim pass as if it were checked.
+    endpoint: str = ""
+
+
+
+def required_n(mde: float, alpha: float = 0.05, power: float = 0.8,
+               paired: bool = True, baseline: float = 0.5) -> int:
+    """Smallest n (per arm, paired items) that detects `mde` at the given power.
+
+    Normal approximation on paired proportions with worst-case discordance:
+    var = (b + c - (b - c) ** 2 / n) / n, maximised over the discordant fraction at
+    b + c = 2 * mde-ish scale, which for a two-sided paired test at baseline 0.5 is
+    approximately var = 2 * p_disc / n with p_disc = 2 * mde. Solved for n.
+
+    Returns 0 when mde is unusable. Intentionally conservative: it over-estimates
+    n slightly, because over-collecting is recoverable and under-collecting is
+    the failure this project kept paying for.
+    """
+    try:
+        mde = float(mde)
+        alpha = float(alpha)
+        power = float(power)
+    except (TypeError, ValueError):
+        return 0
+    if not (0 < mde < 1) or not (0 < power < 1):
+        return 0
+    z_a = {0.05: 1.959964, 0.01: 2.575829}.get(round(alpha, 2), 1.959964)
+    # normal quantile for the requested power
+    z_b = {0.80: 0.841621, 0.85: 1.036433, 0.90: 1.281552, 0.95: 1.644854}.get(
+        round(power, 2))
+    if z_b is None:  # crude interpolation for unusual targets
+        z_b = 0.841621 + (power - 0.80) * 3.0
+    if paired:
+        # McNemar: n >= (z_a + z_b)^2 * p_disc / mde^2 with p_disc ~ 2*mde
+        p_disc = min(1.0, 2.0 * mde)
+        n = ((z_a + z_b) ** 2) * p_disc / (mde ** 2)
+    else:
+        p = min(max(baseline + mde, 1e-6), 1 - 1e-6)
+        pbar = min(max(baseline + mde / 2.0, 1e-6), 1 - 1e-6)
+        var = p * (1 - p) + pbar * (1 - pbar)
+        n = ((z_a + z_b) ** 2) * 2.0 * var / (mde ** 2)
+    return int(math.ceil(n))
 
 
 @dataclass
@@ -96,6 +144,21 @@ class Envelope:
                                 f"raise n (now {p.n}) or narrow the claim")
             if p.alpha not in (0.05, 0.01):
                 problems.append(f"alpha={p.alpha}: use 0.05 or 0.01 unless preregistered otherwise")
+            # Power pre-check: the declared n must actually detect the declared
+            # minimum effect. Every two-seat review in this project eventually
+            # said the same thing -- "n=40 cannot resolve a 1-2 point difference" --
+            # so the shortfall was discovered after spending the compute. The
+            # check is deliberately conservative (normal approximation on paired
+            # proportions) and refuses rather than warns.
+            need = required_n(getattr(p, "min_detectable_effect", None) or 0.1,
+                              alpha=p.alpha, power=p.power_at_mde,
+                              paired=True, baseline=0.5)
+            if need and p.n < need:
+                problems.append(
+                    f"underpowered by design: n={p.n} cannot detect "
+                    f"mde={getattr(p, 'min_detectable_effect', None)} at alpha={p.alpha} "
+                    f"with power={p.power_at_mde}; need n>={need}. Either raise n or "
+                    f"declare a larger min_detectable_effect (i.e. promise less)")
         if self.negative_publish not in ("replication-report", "archive"):
             problems.append("negative_publish must be 'replication-report' or 'archive': "
                             "a refute without a publication plan is publication bias by design")

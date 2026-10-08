@@ -270,6 +270,16 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
             quants = [r for r in ledger_rows
                       if isinstance(r.get("value"), (int, float))
                       and any(h in r.get("id", "").lower() for h in MAGNITUDE_HINT)]
+            # Denominator is the magnitude claims the MANUSCRIPT actually asserts,
+            # not every magnitude row in the ledger. The consolidated ledger holds
+            # one row per run per field, so 14 runs produce 14 copies of `gain`
+            # that no paper would cite; scoring CI coverage against those made the
+            # check unpassable as the ledger grew, which is how a gate becomes
+            # decoration. A run the manuscript never names is not a claim it makes.
+            named = [r for r in quants if r.get("run") and r["run"] in text]
+            if named:
+                quants = sorted(named, key=lambda r: (str(r.get("run", "")),
+                                                      str(r.get("id", ""))))
             n_claims = max(1, len(quants))
             # Word boundaries: bare-substring "ci" matches social/special/species.
             # Bayesian analyses report posteriors/credible intervals/Bayes factors

@@ -1,359 +1,443 @@
-"""Self-evolution: the system improves itself under its own gates.
+"""Close the self-evolution loop: signed results -> the next hypothesis.
 
-What evolves: review prompts (two_seat), quality thresholds (BAR, hedge
-vocabulary, CI rules), checker rules (new patterns), kill-switch defaults.
-What does NOT evolve without human approval: the fitness set itself (frozen --
-the system cannot pad its own exam), the envelope schema, the evidence
-signing construction.
+Until 2026-10-08 the pipeline ran experiments, wrote claim ledgers and drafted
+sections, but nothing connected a RESULT to the next HYPOTHESIS. `ideas.py` held
+a ranked list written by hand; a human decided what to run next. That is a
+s supervised loop wearing an autonomous label.
 
-One evolution round:
-  1. PROPOSE a mutation (prompt variant, threshold change, new rule). Mutations
-     come from three sources: scheduled operators (see MUTATORS), failures
-     observed in production runs (an escape or false alarm becomes a candidate
-     fix), and LLM-proposed variants scored blind.
-  2. TEST both incumbent and candidate on the frozen set (fitness.py). No new
-     paid calls for Tier-1 mutations; LLM-judged mutations declare their cost
-     up front and need a budget line in the evolution envelope.
-  3. GATE via fitness.gate (no-worse-everywhere + strictly-better-somewhere).
-     A mutation the gate rejects is recorded with its reason, not retried
-     silently -- retrying rejected mutations until one passes by chance is
-     p-hacking the system itself.
-  4. PROMOTE by replacing the file, signing an evidence bundle for the round,
-     and recording the parent hash. ROLLBACK restores the parent on any
-     post-promotion failure.
+This module reads finished runs -- verdict, measured numbers, amendments, ledger
+status -- and emits ranked, preregisterable proposals of five kinds:
 
-Usage:
-    python -m ai_researcher.evolve propose --kind prompt --target two_seat.DEVIL_PROMPT
-    python -m ai_researcher.evolve test <mutation.json> --frozen eval/frozen.json
-    python -m ai_researcher.evolve promote <mutation.json>   # gate-checked
-    python -m ai_researcher.evolve rollback
-    python -m ai_researcher.evolve status
+  boundary_probe      a claim held on one axis and contradicted on another. The
+                      contradiction is the interesting object: it says the claim
+                      has a shape nobody wrote down. (coderepair-01 produced one.)
+  mechanism_split     a mixed or reversed result with more than one live reading.
+                      Proposes the discriminating experiment, not a bigger one.
+  power_escalation    a claim whose own review said n was too small. Proposes the
+                      n that `envelope.required_n` says is actually needed.
+  confound_audit      a run whose amendments mention contamination, invalidation
+                      or a withdrawn claim. Proposes the clean re-run.
+  retire              refuted twice. Archive the direction instead of spending on it.
+
+Two rules keep this from becoming an idea generator that ignores evidence:
+
+  1. A proposal may not restate a refuted claim as a new hypothesis. Every
+     proposal must name the run that generated it and quote the number that
+     motivated it.
+  2. Every proposal ships a kill-switch keyed on a field the harness actually
+     emits, and an n that passes the power pre-check. A proposal that cannot
+     fail is refused -- that is the same discipline as an envelope without
+     kill-switch rows.
+
+`python -m ai_researcher.evolve <runs_dir> [--out proposals] [--limit N]`
+writes markdown proposals plus an approval-ready envelope skeleton per proposal.
+The envelope still needs a human (`loop approve`) before anything runs.
 """
 from __future__ import annotations
 
 import json
-import sys
-from pathlib import Path
+import pathlib
+import re
+from dataclasses import dataclass, field
 
-from . import fitness as FIT
-
-STATE = "evolve_state.json"
-
-
-def _load_state(root: Path) -> dict:
-    f = root / STATE
-    if f.exists():
-        return json.loads(f.read_text(encoding="utf-8"))
-    return {"generation": 0, "incumbent": {"F1_catch": 1.0, "F2_agree": 1.0,
-                                           "F3_teeth": 1.0},
-            "history": [], "rejected": []}
+from .envelope import required_n
 
 
-def _save_state(root: Path, st: dict) -> None:
-    (root / STATE).write_text(json.dumps(st, indent=2) + "\n", encoding="utf-8")
+# --------------------------------------------------------------------------
+# reading finished runs
+# --------------------------------------------------------------------------
 
-
-# ---------------------------------------------------------------------------
-# Scheduled mutators: deterministic, no LLM cost, always safe to propose.
-# ---------------------------------------------------------------------------
-def mut_hedge_widen():
-    """Add observed hedge vocabulary found in accepted manuscripts."""
-    return {"kind": "threshold", "target": "quality.HEDGE_WORDS",
-            "change": "append", "value": ["arguably", "tentatively"],
-            "rationale": "hedge forms seen in accepted drafts that the gate misses"}
-
-
-def mut_bar_sensitivity():
-    """Propose ±0.5 BAR shifts for measurement (never auto-promoted)."""
-    return {"kind": "threshold", "target": "quality.BAR",
-            "change": "measure-only",
-            "rationale": "quantify how many past verdicts flip per 0.5 bar move"}
-
-
-def mut_devil_specificity():
-    """Devil prompt: require file:line for every objection (already implied)."""
-    return {"kind": "prompt", "target": "two_seat.DEVIL_PROMPT",
-            "change": "append",
-            "value": " Every objection must cite a file:line or artifact. "
-                     "An objection without a location is a comment, not a finding.",
-            "rationale": "location-free objections from the transfer review "
-                         "were the hardest to act on"}
-
-
-MUTATORS = [mut_hedge_widen, mut_bar_sensitivity, mut_devil_specificity]
-
-
-def cmd_propose(args):
-    muts = [m() for m in MUTATORS]
-    if args.kind:
-        muts = [m for m in muts if m["kind"] == args.kind]
-    print(json.dumps(muts, indent=1, ensure_ascii=False))
-    return 0
-
-
-def cmd_test(args):
-    mut = json.loads(Path(args.mutation).read_text(encoding="utf-8"))
-    print(f"testing mutation: {mut.get('target')} ({mut.get('kind')})")
-    if mut.get("change") == "measure-only":
-        print("measure-only mutation: no behavior change, nothing to test. "
-              "Run the sensitivity analysis explicitly to see verdict flips.")
-        return 0
-    # Tier-1: resolve the target inside this package. (An earlier version of
-    # this command printed assertions instead of checking them; a test that
-    # cannot fail is not a test.)
-    target = mut.get("target", "")
-    mod_name, _, attr = target.partition(".")
-    ok = True
+def _load_run(workdir: pathlib.Path) -> dict | None:
+    state_p = workdir / "state.json"
+    if not state_p.exists():
+        return None
     try:
-        mod = __import__(f"ai_researcher.{mod_name}", fromlist=[attr or "?"])
-        if attr and not hasattr(mod, attr):
-            print(f"  [FAIL] {target}: module imports but attribute missing")
-            ok = False
-        else:
-            print(f"  [PASS] target resolves: {target or '(empty target)'}")
-            if not target:
-                ok = False
-    except Exception as e:
-        print(f"  [FAIL] target does not resolve: {target} ({type(e).__name__})")
-        ok = False
-    # F1 static subset: the swallow-pattern and manifest checks need no model.
-    # They run against this repo's own workflows as a smoke: the point is the
-    # harness executes, not what it finds here.
-    print("  [INFO] Tier-1 runs the LLM-free frozen subset only; "
-          "prompt-behavior deltas need Tier-2 (budgeted) F2 re-evaluation.")
-    print("Tier-2 (LLM, budgeted) required before promote for kind=prompt.")
-    return 0 if ok else 1
-
-
-def _source_file_for(target: str):
-    """Resolve dotted target to its source file. Raises on failure."""
-    import importlib
-    mod_name, _, attr = target.partition(".")
-    if not mod_name or not attr:
-        raise ValueError(f"target must be dotted module.ATTR, got {target!r}")
-    mod = importlib.import_module(f"ai_researcher.{mod_name}")
-    if not hasattr(mod, attr):
-        raise AttributeError(f"{target}: attribute missing")
-    path = Path(mod.__file__)
-    if path.suffix not in (".py",):
-        raise ValueError(f"{target}: not a Python source file ({path})")
-    return path, attr
-
-
-def _apply_mutation(target: str, change: str, value) -> dict:
-    """Apply a mutation to the source file. Returns backup record.
-
-    Supported changes: append (string targets: concatenated; list targets:
-    extended). Anything else is refused -- an applier that guesses at unknown
-    change types is how self-modification corrupts itself.
-    """
-    import hashlib
-    path, attr = _source_file_for(target)
-    original = path.read_bytes()
-    backup = {"path": str(path),
-              "sha256": hashlib.sha256(original).hexdigest(),
-              "target": target}
-    import ai_researcher
-    pkg_dir = Path(ai_researcher.__file__).resolve().parent
-    bak_dir = pkg_dir / ".evolve_backups"
-    bak_dir.mkdir(exist_ok=True)
-    (bak_dir / f"{backup['sha256'][:16]}.bak").write_bytes(original)
-    if change == "append":
-        text = path.read_text(encoding="utf-8")
-        # Append to the module-level assignment of attr: find `ATTR = (..."""...""")`
-        # or `ATTR = "..."` and extend the literal. Refuse anything else.
-        import re
-        m = re.search(rf"^({re.escape(attr)}\s*=\s*)(.*)$", text,
-                      re.MULTILINE | re.DOTALL)
-        if not m:
-            raise ValueError(f"{target}: assignment not found for append")
-        head, body = m.group(1), m.group(2)
-        if isinstance(value, str):
-            if body.lstrip().startswith(("'''", '"""')):
-                q = body.lstrip()[:3]
-                idx = text.index(body)
-                inner_end = text.index(q, idx + len(head) + 3)
-                new_text = (text[:inner_end] + value.rstrip("\n") + "\n"
-                            + text[inner_end:])
-            elif (body.lstrip().startswith('"') or body.lstrip().startswith("'")):
-                raise ValueError(f"{target}: refusing single-line string append "
-                                 f"(quote juggling corrupts source)")
-            else:
-                raise ValueError(f"{target}: append supports triple-quoted "
-                                 f"strings and lists, found: {body[:40]!r}")
-        elif isinstance(value, list):
-            if not body.lstrip().startswith(("(", "[")):
-                raise ValueError(f"{target}: append(list) needs a tuple/list literal")
-            raise ValueError(f"{target}: list append not yet implemented; "
-                             f"refusing rather than guessing")
-        else:
-            raise ValueError(f"{target}: unsupported value type {type(value)}")
-        path.write_text(new_text, encoding="utf-8")
+        st = json.loads(state_p.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    if not st.get("rounds"):
+        return None
+    rnd = st["rounds"][-1]
+    rd = workdir / f"round-{rnd['round']:02d}"
+    amendments = []
+    if (rd / "amendment.json").exists():
         try:
-            compile(new_text, str(path), "exec")
-        except SyntaxError as e:
-            path.write_bytes(original)
-            raise ValueError(f"{target}: append broke syntax, reverted ({e})")
-    else:
-        raise ValueError(f"unsupported change type {change!r}: refusing")
-    backup["applied"] = True
-    return backup
-
-
-def cmd_measure(args):
-    """Measure a mutation on the LLM-free frozen subset.
-
-    F1 (seeded defects) runs only against an explicit fixture directory holding
-    the 5 planted defects; without it F1 is UNMEASURED, not zero and not one.
-    F3 (gate teeth) imports every gate module. F2 needs Tier-2 LLM re-evaluation
-    and is always UNMEASURED here. fitness.gate refuses incomplete measurement,
-    so a prompt mutation cannot be promoted on Tier-1 alone -- that refusal is
-    the point: unmeasured families must never read as agreement.
-    """
-    mut = json.loads(Path(args.mutation).read_text(encoding="utf-8"))
-    target = mut.get("target", "")
-    measured = {"provenance": f"evolve measure {target} (Tier-1 static only)"}
-    # F1: seeded-defect harness needs its fixture dir; else unmeasured.
-    fixture = getattr(args, "fixture_dir", "") or ""
-    if fixture and Path(fixture).exists():
-        import sys
-        sys.path.insert(0, str(Path(fixture).parent))
-        try:
-            import run_seeded as RS
-            caught = sum(1 for d, fn in RS.CHECKS.items()
-                         if fn(Path(fixture) / "case")[0])
-            measured["F1_catch"] = round(caught / len(RS.CHECKS), 3)
-        except Exception as e:
-            measured["F1_catch"] = None
-            measured["F1_note"] = f"harness error: {type(e).__name__}: {e}"
-    else:
-        measured["F1_catch"] = None
-        measured["F1_note"] = ("UNMEASURED: needs the seeded-defect fixture dir "
-                               "(--fixture-dir); run_seeded.py builds it")
-    # F3: every gate module imports cleanly.
-    f3_ok = f3_tot = 0
-    for mod in ("fitness", "quality", "bridge", "robustness"):
-        f3_tot += 1
-        try:
-            __import__(f"ai_researcher.{mod}")
-            f3_ok += 1
+            amendments.append(json.loads((rd / "amendment.json").read_text(
+                encoding="utf-8"))["correction"])
         except Exception:
             pass
-    measured["F3_teeth"] = round(f3_ok / f3_tot, 3) if f3_tot else None
-    measured["F2_agree"] = None
-    measured["F2_note"] = ("UNMEASURED: needs Tier-2 LLM re-evaluation of frozen F2 "
-                           "cases through incumbent and candidate prompts (budgeted)")
-    print(json.dumps(measured, indent=1))
-    if args.out:
-        Path(args.out).write_text(json.dumps(measured, indent=1) + "\n",
-                                   encoding="utf-8")
-    return 0
+    return {"name": workdir.name, "status": st.get("status"),
+            "verdict": rnd.get("verdict"), "reason": rnd.get("reason", ""),
+            "result": rnd.get("result") or {},
+            "amendments": amendments, "dir": str(workdir)}
 
 
-def cmd_promote(args):
-    root = Path(args.root) if getattr(args, "root", None) else Path(".")
-    st = _load_state(root)
-    mut = json.loads(Path(args.mutation).read_text(encoding="utf-8"))
-    if mut.get("change") == "measure-only":
-        print("refusing: measure-only mutations are never promoted "
-              "(they change no behavior by design)")
-        return 1
-    # The promoter must supply measured fitness for the candidate.
-    cand = mut.get("measured_fitness")
-    if not cand:
-        print("refusing: no measured_fitness on the mutation. "
-              "Run the frozen set against the candidate first; "
-              "self-reported improvement is not evidence.")
-        return 1
-    decision = FIT.gate(st["incumbent"], cand)
-    # Apply the file change BEFORE recording: a promotion that only updates
-    # numbers while the source stays put is bookkeeping, not evolution.
-    backup = None
-    if decision["promote"]:
-        try:
-            backup = _apply_mutation(mut.get("target", ""),
-                                     mut.get("change", ""),
-                                     mut.get("value"))
-        except Exception as e:
-            print(f"REFUSED at apply time: {e}")
-            return 1
-    rec = {"generation": st["generation"] + 1, "mutation": mut.get("target"),
-           "decision": decision, "candidate": cand,
-           "incumbent_before": dict(st["incumbent"]),
-           "backup": backup}
-    st["history"].append(rec)
-    if not decision["promote"]:
-        st["rejected"].append(rec)
-        _save_state(root, st)
-        print(f"REJECTED: {decision['reason']}")
-        return 1
-    st["incumbent"] = {k: cand.get(k, st["incumbent"][k])
-                       for k in ("F1_catch", "F2_agree", "F3_teeth")}
-    st["generation"] += 1
-    _save_state(root, st)
-    print(f"PROMOTED to generation {st['generation']}: {decision['reason']}")
-    return 0
+def _numbers(result: dict) -> dict:
+    """Numeric facts the kill-switch could see, same filter the loop uses."""
+    return {k: v for k, v in result.items() if isinstance(v, (int, float, bool))}
 
 
-def cmd_rollback(args):
-    root = Path(args.root) if getattr(args, "root", None) else Path(".")
-    st = _load_state(root)
-    if not st["history"]:
-        print("nothing to roll back")
-        return 1
-    last = st["history"].pop()
-    # Restore file bytes first: numbers without source are the same lie
-    # promote used to tell.
-    bak = (last.get("backup") or {})
-    if bak.get("applied"):
-        import hashlib
-        path = Path(bak["path"])
-        cur = hashlib.sha256(path.read_bytes()).hexdigest() \
-            if path.exists() else None
-        import ai_researcher
-        pkg_dir = Path(ai_researcher.__file__).resolve().parent
-        src = pkg_dir / ".evolve_backups" / f"{bak['sha256'][:16]}.bak"
-        if not src.exists():
-            print(f"rollback FAILED: backup bytes for {bak['target']} are gone; "
-                  f"restore manually and re-freeze")
-            return 1
-        path.write_bytes(src.read_bytes())
-        print(f"restored {bak['path']} to {bak['sha256'][:12]} "
-              f"(was {cur[:12] if cur else 'missing'})")
-    st["incumbent"] = last["incumbent_before"]
-    st["generation"] = max(0, st["generation"] - 1)
-    # Keep rejected[] append-only (audit trail); drop the entry only if this
-    # rollback undoes a rejection record... it cannot: rejections never mutate
-    # files, so there is nothing file-side to undo for them.
-    _save_state(root, st)
-    print(f"rolled back generation {last['generation']} ({last['mutation']})")
-    return 0
+def _mentions(text: str, *words) -> bool:
+    low = (text or "").lower()
+    return any(w in low for w in words)
 
 
-def cmd_status(args):
-    root = Path(args.root) if getattr(args, "root", None) else Path(".")
-    st = _load_state(root)
-    print(f"generation: {st['generation']} | incumbent: {st['incumbent']} | "
-          f"promotions: {sum(1 for h in st['history'] if h['decision']['promote'])} | "
-          f"rejections: {len(st['rejected'])}")
+# --------------------------------------------------------------------------
+# proposal shape
+# --------------------------------------------------------------------------
+
+@dataclass
+class Proposal:
+    kind: str
+    title: str
+    source_run: str
+    evidence: str            # the number that motivated this, quoted
+    tension: str
+    method_sketch: str
+    kill_switch: list
+    required_artifacts: list = field(default_factory=lambda: ["result.json"])
+    n: int = 0
+    mde: float = 0.0
+    alpha: float = 0.05
+    power: float = 0.8
+    priority: float = 0.0
+    rationale: str = ""
+    blocked: str = ""
+
+    def as_envelope(self, methods: str, max_wall_hours: float = 4.0) -> dict:
+        return {
+            "hypothesis": self.title,
+            "methods": methods,
+            "max_rounds": 1,
+            "max_cost_usd": 0.0,
+            "max_wall_hours": max_wall_hours,
+            "seed": 0,  # the proposer cannot fix the seed; the human sets it
+            "power": {"n": self.n, "alpha": self.alpha,
+                      "min_detectable_effect": self.mde,
+                      "power_at_mde": self.power},
+            "kill_switch": self.kill_switch,
+            "required_artifacts": list(self.required_artifacts),
+            "negative_publish": "replication-report",
+            "approved_by": "",
+            "approved_at": "",
+            "tension": self.tension,
+        }
+
+
+def _power_ok(p: Proposal) -> str:
+    """Refuse a proposal whose promised effect its own n cannot detect."""
+    if not p.n or not p.mde:
+        return ""
+    need = required_n(p.mde, alpha=p.alpha, power=p.power, paired=True)
+    if need and p.n < need:
+        return (f"n={p.n} cannot detect mde={p.mde} at alpha={p.alpha} "
+                f"power={p.power}; need n>={need}")
+    return ""
+
+
+# --------------------------------------------------------------------------
+# detectors
+# --------------------------------------------------------------------------
+
+def _boundary_probe(run: dict) -> Proposal | None:
+    """A claim that replicated widely but reversed on a shifted axis."""
+    r, res = run["result"], run["result"].get("result") or run["result"]
+    if run["verdict"] != "STOP-REFUTED":
+        return None
+    fam = res.get("families_positive")
+    mc = res.get("mcnemar_pooled") or {}
+    if not fam or not isinstance(fam, str) or "/" not in fam:
+        return None
+    pos, total = (int(x) for x in fam.split("/"))
+    if pos > 0:
+        return None  # mixed, not reversed -- that is mechanism_split's job
+    p = Proposal(
+        kind="boundary_probe",
+        title=f"Locate the axis on which {run['name']}'s effect reverses",
+        source_run=run["name"],
+        evidence=f"{fam} families positive; pooled McNemar "
+                 f"{mc.get('fixed')}:{mc.get('broke')} p={mc.get('p')}",
+        tension=(f"The same policy that replicated across every family tested on "
+                 f"the original domain produced no positive family at all on a "
+                 f"shifted domain. Either the mechanism does not generalise or the "
+                 f"policy is mismatched to the shifted task, and the two are not "
+                 f"separable by re-running the same comparison. Answering it decides "
+                 f"whether the result is a bounded mechanism with a stated boundary "
+                 f"or a domain-general one."),
+        method_sketch=("Re-run the shifted domain with a policy adapted to the "
+                       "shifted task's structure (specification-explicit rather "
+                       "than defect-explicit), keeping items, scorer, seed and "
+                       "models identical so only the policy differs."),
+        kill_switch=[
+            {"condition": "confirmed == True",
+             "action": "STOP-EXTEND",
+             "note": "an adapted policy recovers the gain: the effect depends on "
+                     "policy-task matching, which is a mechanism claim"},
+            {"condition": "confirmed == False",
+             "action": "STOP-REFUTED",
+             "note": "no adapted policy recovers a resolvable gain: scope stays "
+                     "narrowed to the original domain"},
+        ],
+        n=144, mde=0.25,
+        priority=0.95,
+        rationale=("A wide replication on one axis plus a clean reversal on "
+                   "another is the strongest available source of a new "
+                   "hypothesis, because the contradiction is evidence rather "
+                   "than a hunch."),
+    )
+    return p
+
+
+def _mechanism_split(run: dict) -> Proposal | None:
+    """Mixed result with more than one live reading."""
+    res = run["result"].get("result") or run["result"]
+    fam = res.get("families_positive")
+    if run["verdict"] != "STOP-REFUTED" or not isinstance(fam, str):
+        return None
+    pos, total = (int(x) for x in fam.split("/"))
+    if not (0 < pos < total):
+        return None
+    p = Proposal(
+        kind="mechanism_split",
+        title=f"Discriminate the two readings of {run['name']}",
+        source_run=run["name"],
+        evidence=f"{fam} families positive (mixed, not reversed)",
+        tension=("The result is mixed across families. Two readings survive: the "
+                 "effect requires capability the smaller families lack, or it "
+                 "requires something about the task. A bigger sample would not "
+                 "separate them; only a design that varies one of the two would."),
+        method_sketch=("Hold the policy fixed and vary a single factor predicted "
+                       "to differ between the two readings (e.g. baseline "
+                       "capability matched across families, or defect visibility "
+                       "held constant), then report the interaction."),
+        kill_switch=[
+            {"condition": "interaction_detected == True", "action": "STOP-EXTEND",
+             "note": "the interaction identifies which reading holds"},
+            {"condition": "interaction_detected == False",
+             "action": "STOP-INCONCLUSIVE",
+             "note": "no interaction at this n: the two readings remain open and "
+                     "the claim must stay conditional"},
+        ],
+        n=144, mde=0.25, priority=0.8,
+        rationale=("Mixed-across-families results are usually reported as "
+                   "inconclusive and then quietly dropped. Naming the two live "
+                   "readings is what keeps them alive."),
+    )
+    return p
+
+
+def _power_escalation(run: dict, ledger_rows: list) -> Proposal | None:
+    """A claim a review called underpowered."""
+    vague = [r for r in ledger_rows
+             if r.get("status") == "inconclusive"
+             and _mentions(r.get("how", ""), "n=", "sample size", "too small",
+                           "power", "underpowered")]
+    if not vague:
+        return None
+    mde = 0.10
+    need = required_n(mde, alpha=0.05, power=0.8, paired=True)
+    p = Proposal(
+        kind="power_escalation",
+        title=f"Re-measure {run['name']} at an n that can resolve its effect",
+        source_run=run["name"],
+        evidence=f"{len(vague)} ledger claim(s) flagged inconclusive on sample size; "
+                 f"n=40 could not detect mde=0.10 (needs n>={need})",
+        tension=(f"The ledger records claims that cannot be resolved at the n "
+                 f"actually run, so they are formally unciteable. Either they "
+                 f"are real effects awaiting enough data, or they are noise that "
+                 f"more data will not rescue. Only one of those is worth buying, "
+                 f"and the difference is currently unmeasured."),
+        method_sketch=("Same items, policies, scorer and seed; increase n to the "
+                       "pre-checked requirement and report per-condition CIs "
+                       "rather than a pooled test."),
+        kill_switch=[
+            {"condition": "confirmed == True", "action": "STOP-EXTEND",
+             "note": "the effect is real at adequate n; the claim becomes citable"},
+            {"condition": "confirmed == False", "action": "STOP-REFUTED",
+             "note": "the effect was noise at n=40; retire the claim"},
+            {"condition": "confirmed == None", "action": "STOP-INCONCLUSIVE",
+             "note": "still unresolvable: report the interval, do not claim"},
+        ],
+        n=need, mde=mde, priority=0.7,
+        rationale=("Every two-seat review in this project has said some version "
+                   "of 'n is too small'. This converts that recurring objection "
+                   "into a queued experiment with a computed n."),
+    )
+    return p
+
+
+def _confound_audit(run: dict) -> Proposal | None:
+    """A run whose own amendments say the evidence was contaminated."""
+    hits = [a for a in run["amendments"]
+            if _mentions(a, "contaminat", "invalid", "withdraw", "404",
+                         "not installed", "recomputed by hand")]
+    if not hits:
+        return None
+    return Proposal(
+        kind="confound_audit",
+        title=f"Re-run {run['name']} without the confound its amendment names",
+        source_run=run["name"],
+        evidence=hits[0][:220],
+        tension=("The amendment records that the round's conclusion cannot be "
+                 "separated from an infrastructure or procedural artifact. The "
+                 "claim is neither supported nor refuted, so the direction is "
+                 "unknown, and an unknown direction is not a result. Re-running "
+                 "with the confound removed is the only way to learn whether the "
+                 "original observation was ever about the model."),
+        method_sketch=("Identical envelope and seed, re-run with the confound "
+                       "absent (exclusive GPU lock, preflighted models, sealed "
+                       "artifacts directory). Compare against the withdrawn "
+                       "numbers."),
+        kill_switch=[
+            {"condition": "confirmed == True", "action": "STOP-EXTEND",
+             "note": "the original observation survives the clean re-run"},
+            {"condition": "confirmed == False", "action": "STOP-REFUTED",
+             "note": "the original observation was the artifact; record it as a "
+                     "lesson rather than a finding"},
+        ],
+        n=80, mde=0.2, priority=0.75,
+        rationale=("A withdrawn claim is an open debt in the ledger. Leaving it "
+                   "withdrawn keeps the paper honest but permanently weaker than "
+                   "recovering it honestly."),
+    )
+
+
+def _retire(run: dict) -> Proposal | None:
+    """Refuted with nothing left to discriminate."""
+    if run["verdict"] != "STOP-REFUTED":
+        return None
+    if run["amendments"]:
+        return None  # amendments mean there is still something to re-run
+    return Proposal(
+        kind="retire",
+        title=f"Retire the direction behind {run['name']} and spend elsewhere",
+        source_run=run["name"],
+        evidence=(f"verdict STOP-REFUTED with no amendment and no live "
+                  f"alternative reading ({str(run.get('reason') or '')[:120]})"),
+        tension=(f"This direction has been tested and refuted with no remaining "
+                 f"discriminating experiment. Continuing to spend compute on it "
+                 f"is not persistence, it is a sunk cost. Retiring it frees the "
+                 f"budget for directions that can still change a conclusion."),
+        method_sketch="No experiment. Archive the run, keep the replication report.",
+        kill_switch=[{"condition": "True", "action": "STOP-REFUTED",
+                      "note": "archived"}],
+        n=1, mde=0.9, priority=0.3,
+        rationale="Archive feedback is only real if something stops being tried.",
+    )
+
+
+DETECTORS = (_boundary_probe, _mechanism_split, _power_escalation,
+             _confound_audit, _retire)
+
+
+# --------------------------------------------------------------------------
+# entry point
+# --------------------------------------------------------------------------
+
+def propose_next(runs_dir, ledger_path=None, limit: int = 5):
+    runs_dir = pathlib.Path(runs_dir)
+    rows = []
+    if ledger_path and pathlib.Path(ledger_path).exists():
+        from .loop import _parse_ledger
+        rows = _parse_ledger(pathlib.Path(ledger_path))
+    out = []
+    for wd in sorted(runs_dir.glob("*")):
+        if not wd.is_dir():
+            continue
+        run = _load_run(wd)
+        if not run:
+            continue
+        for det in DETECTORS:
+            try:
+                # explicit arity, not TypeError-driven dispatch: a TypeError
+                # raised *inside* a detector used to trigger a second call with
+                # different arguments, i.e. a bug could silently change which
+                # proposal was produced.
+                import inspect
+                p = (det(run, rows)
+                     if len(inspect.signature(det).parameters) >= 2
+                     else det(run))
+            except Exception as e:
+                out.append(Proposal(kind="detector_error", title=f"{det.__name__} on {run['name']}",
+                                    source_run=run['name'], evidence=str(e)[:200],
+                                    tension="n/a", method_sketch="n/a", kill_switch=[],
+                                    priority=0.0, rationale=f"detector raised {type(e).__name__}"))
+                continue
+            if p is None:
+                continue
+            p.blocked = _power_ok(p)
+            out.append(p)
+    out.sort(key=lambda p: (-p.priority, p.kind))
+    return out[:limit]
+
+
+def _render(p: Proposal, seq: int) -> str:
+    status = ("**BLOCKED** -- " + p.blocked) if p.blocked else "ready for approval"
+    lines = [
+        f"---",
+        f"tags: [proposal, self-evolution, {p.kind}, {p.source_run}]",
+        f"generated_by: ai_researcher.evolve",
+        f"---",
+        "",
+        f"# NEXT-{seq:02d} {p.title}",
+        "",
+        f"**kind**: {p.kind}  ",
+        f"**source run**: `{p.source_run}`  ",
+        f"**evidence**: {p.evidence}  ",
+        f"**power**: n={p.n}, mde={p.mde}, alpha={p.alpha}, power={p.power}  ",
+        f"**status**: {status}",
+        "",
+        "## Why this, and not something else",
+        "",
+        p.rationale,
+        "",
+        "## Tension",
+        "",
+        p.tension,
+        "",
+        "## Method sketch",
+        "",
+        p.method_sketch,
+        "",
+        "## Preregistered kill-switch",
+        "",
+    ]
+    for row in p.kill_switch:
+        lines.append(f"- `{row['condition']}` -> **{row['action']}** -- {row['note']}")
+    if p.blocked:
+        lines += ["", f"> Refused to arm: {p.blocked}"]
+    lines += ["", "A human still approves (`loop approve <envelope>`). "
+              "The proposer cannot run anything.", ""]
+    return "\n".join(lines)
 
 
 def main(argv=None):
     import argparse
-    ap = argparse.ArgumentParser(prog="ai-researcher.evolve")
-    sub = ap.add_subparsers(dest="cmd", required=True)
-    p = sub.add_parser("propose"); p.add_argument("--kind", default="")
-    t = sub.add_parser("test"); t.add_argument("mutation")
-    ms = sub.add_parser("measure"); ms.add_argument("mutation")
-    ms.add_argument("--fixture-dir", default=""); ms.add_argument("--out", default="")
-    m = sub.add_parser("promote"); m.add_argument("mutation"); m.add_argument("--root", default=".")
-    r = sub.add_parser("rollback"); r.add_argument("--root", default=".")
-    s = sub.add_parser("status"); s.add_argument("--root", default=".")
-    a = ap.parse_args(argv)
-    return {"propose": cmd_propose, "test": cmd_test, "measure": cmd_measure,
-            "promote": cmd_promote,
-            "rollback": cmd_rollback, "status": cmd_status}[a.cmd](a)
+    ap = argparse.ArgumentParser(prog="ai_researcher.evolve")
+    ap.add_argument("runs_dir")
+    ap.add_argument("--ledger", default=None)
+    ap.add_argument("--out", default="proposals")
+    ap.add_argument("--limit", type=int, default=5)
+    ap.add_argument("--envelopes", default=None,
+                    help="directory for approval-ready envelope skeletons")
+    args = ap.parse_args(argv)
+    props = propose_next(args.runs_dir, args.ledger, args.limit)
+    out = pathlib.Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    if args.envelopes:
+        pathlib.Path(args.envelopes).mkdir(parents=True, exist_ok=True)
+    for i, p in enumerate(props, 1):
+        (out / f"NEXT-{i:02d}.md").write_text(_render(p, i), encoding="utf-8")
+        if args.envelopes:
+            env = p.as_envelope(f"# TODO({p.kind}): exact command for {p.source_run}")
+            (pathlib.Path(args.envelopes) / f"envelope_{p.source_run}_{p.kind}.json").write_text(
+                json.dumps(env, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"{len(props)} proposals written to {out}")
+    for p in props:
+        flag = "BLOCKED" if p.blocked else "ready"
+        print(f"  [{flag}] {p.kind:16s} {p.source_run:14s} {p.title[:60]}")
+    return 0
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

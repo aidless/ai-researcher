@@ -1,0 +1,1219 @@
+{
+  "report": {
+    "total": 56,
+    "by_verdict": {
+      "executable": 14,
+      "blocked": 41,
+      "needs_human": 1
+    },
+    "verdict_sum_matches": true,
+    "every_executable_has_four_parts": true,
+    "every_blocked_says_what_is_missing": true,
+    "no_invented_text": true
+  },
+  "items": [
+    {
+      "arxiv_id": "2212.10496v1",
+      "verdict": "blocked",
+      "open_problem": "每query一次LLM生成，延迟贵；假设文档错得离谱时瓶颈兜不兜得住未剖。",
+      "gap_types": [
+        "not_generalized",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "代码仓库/制品",
+        "数据标注",
+        "成本/延迟/算力",
+        "检索/排序/召回",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "一次",
+        "延迟"
+      ],
+      "why_now": "origin：B线若上query expansion，HyDE是必引原点；其“生成错细节但检索对”的机理正是DESA协同设计的思想源头。 T02-G07之2。做法: HyDE假设文档嵌入（零样本稠密检索，破标注限）。开口: 假设偏；零样本泛",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 6.3
+    },
+    {
+      "arxiv_id": "2403.09629v2",
+      "verdict": "blocked",
+      "open_problem": "推理开销大（后被Fast Quiet-STaR治）；零样本绝对值仍低。",
+      "gap_types": [
+        "data_labeling",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "成本/延迟/算力",
+        "推理/自进化/RL"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "开销",
+        "Token"
+      ],
+      "why_now": "origin类：STaR系向通用推理的推广，A线思想谱系必引；其开销问题与CROP/TokenSkip efficiency线汇合。 T10-G09之3。做法: Quiet-STaR默想（字里行间隐式思考token，说前先想）。开口: 默想",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 6.2
+    },
+    {
+      "arxiv_id": "2503.09567v5",
+      "verdict": "blocked",
+      "open_problem": "综述口径；R1系之后的新形态覆盖待补。",
+      "gap_types": [
+        "missing_real_experiment",
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "推理/自进化/RL"
+      ],
+      "criterion_hints": [
+        "待补",
+        "覆盖"
+      ],
+      "observe_hints": [],
+      "why_now": "survey锚点：A线“长链是否值得”的理论 backstop，overthinking争议的引用源。 T10-G08之2。做法: 长CoT综述（o1/R1时代长链全景）。开口: 综述时效；深度限。与C1-C3: C1长CoT全景证据；C2",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 5.9
+    },
+    {
+      "arxiv_id": "2404.01318v5",
+      "verdict": "executable",
+      "open_problem": "100行为覆盖限；榜维护持续性。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "代码仓库/制品",
+        "攻击者/防御/安全",
+        "代理/工具调用链",
+        "推理/自进化/RL"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [
+        "覆盖限"
+      ],
+      "why_now": "origin：越狱评测的标准靶（C线安全评测默认基座），列P2（仓库已给），必引。 C线越狱评测标准靶。world-sota-C batch-r22。 T19-G06之4。做法: JailbreakBench开源鲁棒基准（200行为+100越狱提示+持续提交）。开口: 静态集；时效。与C1-C3: C1开源基准gap证据；C2开源模板；C3安全agent评测。与HarmBench仲裁：开源榜单vs",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 5.8
+    },
+    {
+      "arxiv_id": "2503.01763v2",
+      "verdict": "blocked",
+      "open_problem": "工具描述质量决定上限；训练集分布外泛化待验。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "模型/权重",
+        "检索/排序/召回",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "待验",
+        "外泛化",
+        "覆盖"
+      ],
+      "observe_hints": [],
+      "why_now": "基准支撑：C线工具调用轴的检索子问题已有专用基准，R2记为C候选今落实；其“IR强者跨域拉胯”警告C线：通用检索数字不可直接搬进工具场景。 T07-G08之1。做法: ToolRet工具检索基准（检索模型不tool-savvy，上下文限下选",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 5.8
+    },
+    {
+      "arxiv_id": "2402.06457v2",
+      "verdict": "executable",
+      "open_problem": "verifier分布外泛化待验；多轮成本未细报。",
+      "gap_types": [
+        "not_generalized",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "成本/延迟/算力",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "待验",
+        "外泛化"
+      ],
+      "observe_hints": [
+        "成本"
+      ],
+      "why_now": "可借鉴：A线LLM-judge选prompt与V-STaR verifier同构，其“错解亦有用+DPO训判别器”可直接搬进A线judge升级，数字可比。 T10-G09之4。做法: V-STaR验证器（用错解训verifier，废液里捞信息）。开口: 错解噪；验证器泛化。与C1-C3: C1错解浪费gap证据；C2验证器模板；C3自举闭环。与STaR仲裁：生成vs验证，无重。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 5.7
+    },
+    {
+      "arxiv_id": "2307.02483v1",
+      "verdict": "blocked",
+      "open_problem": "分类覆盖；新attacks",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "代码仓库/制品",
+        "攻击者/防御/安全",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [],
+      "why_now": "C1机理gap证据；C2归因模板；C3安全agent。T19-G02之1-5齐（GCG/PAIR/AutoDAN/Crescendo/机理）。与Crescendo仲裁：机理归因vs攻击构造，无重。全库查重干净。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 5.4
+    },
+    {
+      "arxiv_id": "2503.14376v3",
+      "verdict": "blocked",
+      "open_problem": "核优化限；xLSTM泛化",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "代码仓库/制品",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "C1核效率gap证据；C2分块模板；C3高效agent。与GDN仲裁：核vs规则，无重。全库查重干净。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 5.4
+    },
+    {
+      "arxiv_id": "2609.08279v1",
+      "verdict": "blocked",
+      "open_problem": "单一作者的审计框架；覆盖",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "代码仓库/制品"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [],
+      "why_now": "C1遗忘副作用gap证据；C2反事实审计模板；C3记忆治理审计。与FSFM仲裁：审计vs机制，无重。全库查重干净。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 4.8
+    },
+    {
+      "arxiv_id": "2507.20534v2",
+      "verdict": "blocked",
+      "open_problem": "MuonClip泛化；万亿成本",
+      "gap_types": [
+        "not_generalized",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "代码仓库/制品",
+        "成本/延迟/算力",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "2 M",
+        "成本"
+      ],
+      "why_now": "C1开放agent gap证据；C2 MuonClip模板；C3开源agent旗舰。2506.13560直取证伪（银河系文，记忆第80错）。全库查重干净。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 4.1
+    },
+    {
+      "arxiv_id": "2309.01431v2",
+      "verdict": "blocked",
+      "open_problem": "中英双语外泛化待补；静态快照",
+      "gap_types": [
+        "missing_real_experiment",
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "检索/排序/召回",
+        "代理/工具调用链",
+        "翻译/跨语言迁移"
+      ],
+      "criterion_hints": [
+        "待补",
+        "外泛化"
+      ],
+      "observe_hints": [],
+      "why_now": "C1检索增强三gap证据；C2四维拆解模板；C3 RAG-agent落地的短板清单。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 3.6
+    },
+    {
+      "arxiv_id": "2504.02605v1",
+      "verdict": "executable",
+      "open_problem": "七语言外泛化待补；实例标注成本",
+      "gap_types": [
+        "missing_real_experiment",
+        "not_generalized",
+        "data_labeling",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "代码仓库/制品",
+        "数据标注",
+        "成本/延迟/算力",
+        "翻译/跨语言迁移"
+      ],
+      "criterion_hints": [
+        "待补",
+        "外泛化",
+        "跨语言"
+      ],
+      "observe_hints": [
+        "七语",
+        "成本"
+      ],
+      "why_now": "C1多语issue解决gap证据；C2跨语言评测模板；C3全球软件生态部署指南。与SWE-PolyBench仲裁：彼仓库级执行（之2），此issue解决多语（之3），维度不同无重。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 3.5
+    },
+    {
+      "arxiv_id": "2504.08703v3",
+      "verdict": "executable",
+      "open_problem": "四语言外泛化待补；仓库搭建成本",
+      "gap_types": [
+        "missing_real_experiment",
+        "not_generalized",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "代码仓库/制品",
+        "成本/延迟/算力",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "待补",
+        "外泛化"
+      ],
+      "observe_hints": [
+        "四语",
+        "成本"
+      ],
+      "why_now": "C1多语代码agent gap证据；C2仓库级执行评测模板；C3非Python生态部署指南。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 3.5
+    },
+    {
+      "arxiv_id": "2312.11361v3",
+      "verdict": "executable",
+      "open_problem": "判断任务非端到端；18语外泛化待补",
+      "gap_types": [
+        "missing_real_experiment",
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "模型/权重"
+      ],
+      "criterion_hints": [
+        "待补",
+        "外泛化"
+      ],
+      "observe_hints": [
+        "18语"
+      ],
+      "why_now": "C1多语RAG鲁棒gap证据；C2知不知双指标模板；C3小模型多语部署的警示。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 3.0
+    },
+    {
+      "arxiv_id": "2502.17387v1",
+      "verdict": "blocked",
+      "open_problem": "质量-规模权衡；RL泛化",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "模型/权重",
+        "代码仓库/制品",
+        "推理/自进化/RL",
+        "数学/符号求解"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "规模"
+      ],
+      "why_now": "C1 RL数据gap证据；C2大规模质检模板；C3数学RL。2502.17371直取证伪（温室文，记忆第50错）。全库查重干净。R285云端全量重核：标题按API更正（原标题不完整/过时），id校验无误。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 3.0
+    },
+    {
+      "arxiv_id": "2412.06464v3",
+      "verdict": "blocked",
+      "open_problem": "门控Delta成本；检索泛化",
+      "gap_types": [
+        "not_generalized",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "代码仓库/制品",
+        "成本/延迟/算力",
+        "检索/排序/召回",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "成本"
+      ],
+      "why_now": "C1检索gap证据；C2门控Delta模板；C3长窗agent。全库查重干净。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 2.9
+    },
+    {
+      "arxiv_id": "2406.06769v2",
+      "verdict": "executable",
+      "open_problem": "文本模拟非真实验；120任务覆盖限",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [
+        "120任务",
+        "覆盖限"
+      ],
+      "why_now": "C1发现全循环gap证据；C2三度量评测模板；C3科学agent的训练场。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 2.4
+    },
+    {
+      "arxiv_id": "2404.07413v1",
+      "verdict": "executable",
+      "open_problem": "评测覆盖限；0.1M成本难独立复核",
+      "gap_types": [
+        "data_labeling",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "成本/延迟/算力"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [
+        "0.1M",
+        "成本",
+        "覆盖限"
+      ],
+      "why_now": "C1 MoE降本gap证据（0.1M达Llama2）；C2低成本混合语料模板；C3草根MoE路线。与T20仲裁：彼稠密SLM（Phi/Gemma），此MoE-SLM归T06，无重。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 2.3
+    },
+    {
+      "arxiv_id": "2412.01769v1",
+      "verdict": "executable",
+      "open_problem": "库规格编写成本；单测覆盖上限",
+      "gap_types": [
+        "data_labeling",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "代码仓库/制品",
+        "成本/延迟/算力"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [
+        "成本"
+      ],
+      "why_now": "C1从零实现gap证据；C2规格+单测评测模板；C3生成式开发的试金石。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 2.3
+    },
+    {
+      "arxiv_id": "2305.11747v3",
+      "verdict": "blocked",
+      "open_problem": "识别≠生成抑制；标注成本",
+      "gap_types": [
+        "data_labeling",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "数据标注",
+        "成本/延迟/算力",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "成本"
+      ],
+      "why_now": "C1幻觉识别gap证据；C2生成+标注双源方法论；C3 agent可信度的上游尺。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 2.1
+    },
+    {
+      "arxiv_id": "2606.08275v1",
+      "verdict": "executable",
+      "open_problem": "单作者；重放成本随轨迹长涨；真实agent验证待补。",
+      "gap_types": [
+        "missing_real_experiment",
+        "cost_scale"
+      ],
+      "object_candidates": [
+        "代码仓库/制品",
+        "成本/延迟/算力",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "待补"
+      ],
+      "observe_hints": [
+        "14%",
+        "成本"
+      ],
+      "why_now": "方法支撑+警示：C线W3归因若用LLM-judge只有14%级，必须走干预/重放路线；CAR开源可跑，是C线未来归因gate的候选实现。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 2.1
+    },
+    {
+      "arxiv_id": "2503.12029v2",
+      "verdict": "executable",
+      "open_problem": "4任务覆盖窄；变体增益未量化到点。",
+      "gap_types": [
+        "not_generalized",
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [
+        "两篇",
+        "4任务",
+        "窄"
+      ],
+      "why_now": "debate第二证人：SWE-Debate（定位+MCTS）+本篇（编码通用），C线W2 debate模式“何时灵何时不灵”必须两篇对照写。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 1.9
+    },
+    {
+      "arxiv_id": "2307.06962v1",
+      "verdict": "blocked",
+      "open_problem": "局限生成多样性；复制边界",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "模型/权重",
+        "代码仓库/制品"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "C1复制机制gap证据（★小模型gap的机制层解释）；C2词汇约束模板；C3生成机制理解。全库查重干净（base口径）。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.8
+    },
+    {
+      "arxiv_id": "2401.12926v1",
+      "verdict": "blocked",
+      "open_problem": "datamodel估计；选择泛化",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "模型/权重",
+        "代码仓库/制品"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "C1质量观gap证据；C2模型感知模板；C3高效训练。T13-G04之1-5齐（LESS/SemDeDup/DataComp/DoReMi/DsDm）。全库查重干净。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.8
+    },
+    {
+      "arxiv_id": "2403.04307v3",
+      "verdict": "blocked",
+      "open_problem": "野外样本采集偏；判分一致性",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准"
+      ],
+      "criterion_hints": [
+        "一致性"
+      ],
+      "observe_hints": [],
+      "why_now": "C1野外幻觉gap证据；C2野外基准构造模板；C3真实部署幻觉的上游尺。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.8
+    },
+    {
+      "arxiv_id": "2407.00079v4",
+      "verdict": "blocked",
+      "open_problem": "跨级缓存一致；Kimi内验证外泛化待验",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [],
+      "criterion_hints": [
+        "待验",
+        "外泛化"
+      ],
+      "observe_hints": [
+        "2 K"
+      ],
+      "why_now": "C1工业级分离gap证据；C2 KV中心调度模板；C3生产serving的标杆。TetriInfer无arXiv记录弃用。",
+      "blocked_reason": "缺对象（笔记里找不到任何可指认的评测集/模型/数据集/机制）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.8
+    },
+    {
+      "arxiv_id": "2502.12663v2",
+      "verdict": "blocked",
+      "open_problem": "PRM语言覆盖；RL验证限",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "推理/自进化/RL"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [],
+      "why_now": "C1多语言PRM gap证据；C2祛魅分析模板；C3多语言RL上游。T10-G06之1-5齐（MGSM/xCoT/CLP/AdaMCoT/祛魅）。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.8
+    },
+    {
+      "arxiv_id": "2407.13168v1",
+      "verdict": "blocked",
+      "open_problem": "子域覆盖待扩；判分依赖执行环境",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "代码仓库/制品",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [],
+      "why_now": "C1科研代码gap证据；C2科学家策展方法论；C3跨学科agent评测。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.6
+    },
+    {
+      "arxiv_id": "2605.24022v1",
+      "verdict": "blocked",
+      "open_problem": "重排正确性证明待补；硬件限定。",
+      "gap_types": [
+        "missing_real_experiment"
+      ],
+      "object_candidates": [
+        "检索/排序/召回"
+      ],
+      "criterion_hints": [
+        "待补"
+      ],
+      "observe_hints": [],
+      "why_now": "复用纪律：C线“能复用不重算”的保序+异步两件，P3候选。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.6
+    },
+    {
+      "arxiv_id": "2107.03374v2",
+      "verdict": "blocked",
+      "open_problem": "Python单语；164题量小易过拟合",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "代码仓库/制品",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "164题",
+        "题量"
+      ],
+      "why_now": "C1代码评测源头；C2执行式正确性模板；C3一切代码agent评测的祖父。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2112.08542v2",
+      "verdict": "blocked",
+      "open_problem": "组件多，复现链长；融合权重经验性。",
+      "gap_types": [
+        "reproducibility"
+      ],
+      "object_candidates": [
+        "模型/权重",
+        "代码仓库/制品"
+      ],
+      "criterion_hints": [
+        "复现"
+      ],
+      "observe_hints": [],
+      "why_now": "范式参照：B线忠实度若走QA式（问题生成+答），QAFactEval是组件清单；其“两范式互补”支持B线P3搞融合指标。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2310.00741v2",
+      "verdict": "blocked",
+      "open_problem": "标注贵，规模受限；数学推理错类待细。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "数据标注",
+        "推理/自进化/RL",
+        "数学/符号求解"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "规模"
+      ],
+      "why_now": "元评测：B线若引LLM judge，FELM是“judge的judge”的第一参照，judge选型必须过FELM式检验，评测章节必引。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2405.07551v1",
+      "verdict": "executable",
+      "open_problem": "两阶段顺序依赖性未消融；解释器依赖限制部署。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "代码仓库/制品"
+      ],
+      "criterion_hints": [
+        "差距"
+      ],
+      "observe_hints": [
+        "8K"
+      ],
+      "why_now": "GSM8K参照锚：工具（解释器）+数据增强双路线83.8到90.7，A线纯prompt路线必须标出与此锚的差距；代码嵌套合成法可抄（主计A）。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2410.23912v2",
+      "verdict": "blocked",
+      "open_problem": "理论假设强，离实证约束有距离；未指导超参。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "理论背书：A线论文若涉“为何自改进有效”，此文是唯一理论引用；审稿理论追问时的挡箭牌，但不可超其假设引用。",
+      "blocked_reason": "缺对象（笔记里找不到任何可指认的评测集/模型/数据集/机制）；缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2412.09722v2",
+      "verdict": "executable",
+      "open_problem": "需开权重模型的梯度，白盒限制；跨模型家族迁移边界未细测。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "模型/权重",
+        "代码仓库/制品",
+        "翻译/跨语言迁移"
+      ],
+      "criterion_hints": [
+        "比较"
+      ],
+      "observe_hints": [
+        "8K"
+      ],
+      "why_now": "最强对立基线之一：“真梯度 vs 文本梯度”路线之争，A线（文本路线）必须在GSM8K上与其数字对打，related work需正面比较。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2502.14187v1",
+      "verdict": "blocked",
+      "open_problem": "翻译单任务；young2017translation噪声设定经验性。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "数据标注",
+        "翻译/跨语言迁移"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "KTO证据（非原文）：A线偏好算法二选一（DPO vs KTO）时，非独立同分布/噪声场景选KTO有据；KTO原文未收，引用时标注此篇为应用证据非原点。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2503.00061v2",
+      "verdict": "blocked",
+      "open_problem": "攻击者能力假设强；8防线版本时效。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "攻击者/防御/安全"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "对抗证据：C线安全门上线前必须过自适应攻击检验，否则MELON/SecAlign数字皆不可信；P4对抗审稿的攻击手册。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2504.19754v1",
+      "verdict": "blocked",
+      "open_problem": "只比两种，未含自适应选块；下游任务面窄。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "检索/排序/召回"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "窄"
+      ],
+      "why_now": "支撑：B线分块消融的直接参照（效率-质量权衡已有定量结论），B线选固定分块+混合检索的路线可引用其权衡曲线辩护。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2507.10593v3",
+      "verdict": "blocked",
+      "open_problem": "工程库非学术评测，数字自报；大注册表披露只到BM25F级。",
+      "gap_types": [
+        "eval_not_comparable"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "代码仓库/制品",
+        "检索/排序/召回"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "infra参照：C线工具轴若要“可跑”，ToolRegistry是注册表+分发层的现成答案；其近零依赖core与三线轻量哲学同构，P2可直接分析。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2509.14285v4",
+      "verdict": "blocked",
+      "open_problem": "只在两小模型验；0%绝对数外推需谨慎（hedge：攻击集自造）。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "模型/权重",
+        "攻击者/防御/安全"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "0%"
+      ],
+      "why_now": "多智能体防线例：C线W2若有安全分支，此为“专职安全员”模式参照；数字降级使用。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2601.07880v1",
+      "verdict": "needs_human",
+      "open_problem": "单域（ISPM）；生产数据不可公开，复现门槛高。",
+      "gap_types": [
+        "reproducibility"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "代码仓库/制品"
+      ],
+      "criterion_hints": [
+        "复现"
+      ],
+      "observe_hints": [],
+      "why_now": "范例：C线W1“真实环境+证据背书答案”正是此形，其“可验证证据背书”是C线trace_id链的产品形态参照，单域但形态正。",
+      "blocked_reason": "",
+      "needs_human_reason": "涉及生产数据/授权/合规，必须人拍后才能定实验",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2608.30597v1",
+      "verdict": "blocked",
+      "open_problem": "2026新法，复验零；噪声模型假设待验。",
+      "gap_types": [
+        "not_generalized",
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "模型/权重",
+        "数据标注",
+        "检索/排序/召回"
+      ],
+      "criterion_hints": [
+        "待验"
+      ],
+      "observe_hints": [],
+      "why_now": "噪声盾：A线自生偏好数据必脏，PLC是“脏数据也能训”的候选，P3候选。 [2026-10-02 上游复算] 该条 claim 标题与上游 arXiv 题名不一致（分类 wrong-id）。三种检索形态（整句 ti / 主标题 ti / 最",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.4
+    },
+    {
+      "arxiv_id": "2301.13379v3",
+      "verdict": "executable",
+      "open_problem": "求解器覆盖域有限，翻译错即全错",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "模型/权重",
+        "成本/延迟/算力",
+        "翻译/跨语言迁移",
+        "数学/符号求解"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [
+        "成本",
+        "有限"
+      ],
+      "why_now": "C2神经符号分工范式（PAL的忠实版），C1提示小模型做翻译比做求解更可靠，C3求解器零成本的精度增益。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 1.3
+    },
+    {
+      "arxiv_id": "2503.01935v1",
+      "verdict": "blocked",
+      "open_problem": "科研场景为主；拓扑结论泛化待验",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "模型/权重"
+      ],
+      "criterion_hints": [
+        "待验"
+      ],
+      "observe_hints": [],
+      "why_now": "C1协作质量度量证据；C2里程碑KPI+拓扑对照模板；C3小模型协作部署的拓扑指南。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 1.3
+    },
+    {
+      "arxiv_id": "2404.19733v3",
+      "verdict": "blocked",
+      "open_problem": "仅训练集样本，未外取数据。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "推理/自进化/RL"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "胜步律：A线自进化若整条轨迹偏好是粗的，胜/负推理步骤偏好是现成器，P3必引。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2504.00914v1",
+      "verdict": "blocked",
+      "open_problem": "BFCL子集，覆盖面受限；扰动自然度见仁见智。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [],
+      "why_now": "评测约束：C线工具调用轴若只报BFCL精度不报扰动稳健性，就是半张卷；其“近邻工具混入”可直接写进C线工具gate。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2505.14183v1",
+      "verdict": "blocked",
+      "open_problem": "两模型路由，多种模型待扩；regret估计噪声大。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "模型/权重"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "L2自适应活例：A线“按难易花算力”的最小实现，regret predictor可抄进A线做prompt路线选择器（难题上重路线、易题上轻路线）。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2505.19764v2",
+      "verdict": "executable",
+      "open_problem": "三域 curated 基准，泛化待验；预测器自身失配风险未量化。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "待验"
+      ],
+      "observe_hints": [
+        "三域"
+      ],
+      "why_now": "方法候选：C线W3“经验”若要从记录进化到预测，Agentic Predictor是第一个可抄的架构（多视角编码+预训练），列为C线P3候选gate。",
+      "blocked_reason": "",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2505.22037v1",
+      "verdict": "blocked",
+      "open_problem": "JHU/亚麻逊系；蒸馏偏差。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "攻击者/防御/安全"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "基准保鲜：C线安全基准若怕饱和污染，JBDistill可更新管线是现成答案，P3候选。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2505.23419v2",
+      "verdict": "blocked",
+      "open_problem": "只覆盖issue修复类任务；活更新带来纵向可比性维护负担。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "覆盖范围（语种/任务/域）",
+        "代码仓库/制品"
+      ],
+      "criterion_hints": [
+        "覆盖",
+        "复现"
+      ],
+      "observe_hints": [],
+      "why_now": "基准设计模板：C线W1环境支柱要的正是“活+可复现+抗污染”，其Docker-per-task与自动curation可直接抄进C线环境spec。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2509.18658v1",
+      "verdict": "blocked",
+      "open_problem": "交换性假设；区间宽实用待验。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "评测集/基准"
+      ],
+      "criterion_hints": [
+        "待验"
+      ],
+      "observe_hints": [],
+      "why_now": "跨线（主计A，batch8 conformal回链）：A线judge分数必须带区间，单点分不可信，P3评测必引。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2601.19280v1",
+      "verdict": "blocked",
+      "open_problem": "2026新框架，复验零；难度分类器噪声。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "成本/延迟/算力",
+        "推理/自进化/RL"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "10%"
+      ],
+      "why_now": "采样最优：A线“预算花哪”的RL版答案，与HS/AdaSTaR同列采样三候选，+10%数字可比。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2605.01664v1",
+      "verdict": "blocked",
+      "open_problem": "pilot仅25查询，100%数字是小样本天花板效应，不可当基准引用；工程栈重（Bedrock/S3/OpenSearch）。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [
+        "100%"
+      ],
+      "why_now": "可借鉴：claim级接地评估法可直接搬进B线做忠实度第二指标，但其100%数字B线论文中只能当“pilot现象”引用，诚实口径已在此记死。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2605.19576v3",
+      "verdict": "blocked",
+      "open_problem": "只在代码任务验证；治理超参与消融未完全正交。",
+      "gap_types": [
+        "not_generalized"
+      ],
+      "object_candidates": [
+        "代码仓库/制品",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "支撑：A线多轮prompt进化同样面临候选库漂移，可借鉴“有界活跃集+贡献归因”治理，下一个A线challenger可引入候选生命周期管理。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2606.06959v1",
+      "verdict": "blocked",
+      "open_problem": "2026新基准，采用率待起；标注口径一家之言。",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "评测集/基准",
+        "代码仓库/制品",
+        "数据标注"
+      ],
+      "criterion_hints": [],
+      "observe_hints": [],
+      "why_now": "基准候选：B线P3四选一若要比检测器，OpenHalDet是现成擂台，列P2实分析（先看代码可跑性）。",
+      "blocked_reason": "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.9
+    },
+    {
+      "arxiv_id": "2406.18518v1",
+      "verdict": "blocked",
+      "open_problem": "单轮调用为主，多轮agent链覆盖少；执行校验依赖沙箱",
+      "gap_types": [
+        "data_labeling"
+      ],
+      "object_candidates": [
+        "覆盖范围（语种/任务/域）",
+        "模型/权重",
+        "代理/工具调用链"
+      ],
+      "criterion_hints": [
+        "覆盖"
+      ],
+      "observe_hints": [],
+      "why_now": "C2可验证合成数据是小模型登顶的关键，C1 1B级的gap关闭强度罕见。",
+      "blocked_reason": "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验",
+      "needs_human_reason": "",
+      "score": 0.8
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "hypothesis": "Re-measure balanced-01 at an n that can resolve its effect",
+  "methods": "# TODO(power_escalation): exact command for balanced-01",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 4.0,
+  "seed": 0,
+  "power": {
+    "n": 157,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.1,
+    "power_at_mde": 0.8
+  },
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "the effect is real at adequate n; the claim becomes citable"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "the effect was noise at n=40; retire the claim"
+    },
+    {
+      "condition": "confirmed == None",
+      "action": "STOP-INCONCLUSIVE",
+      "note": "still unresolvable: report the interval, do not claim"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "negative_publish": "replication-report",
+  "approved_by": "",
+  "approved_at": "",
+  "tension": "The ledger records claims that cannot be resolved at the n actually run, so they are formally unciteable. Either they are real effects awaiting enough data, or they are noise that more data will not rescue. Only one of those is worth buying, and the difference is currently unmeasured."
+}
