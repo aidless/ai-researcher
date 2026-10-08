@@ -1,0 +1,69 @@
+name: evidence-integrity
+
+# Every bundle in this project had been verified by hand, on demand, by one person
+# who remembered to. Two were found invalid during a manual sweep -- one
+# hand-edited, one with an unsigned file written into a signed directory -- and
+# neither was noticed when it happened. This workflow is the control.
+#
+# It fails on: a bundle that does not verify, an unsigned file inside a signed
+# artifacts directory, a ledger that parses to zero claims, a new envelope-contract
+# violation, or the self-evolution loop producing nothing.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: install
+        run: |
+          python -m pip install --upgrade pip
+          pip install cryptography pytest
+
+      - name: unit tests
+        run: python -m pytest tests/ -q
+
+      - name: preregistration contract
+        # The power pre-check and the emit contract are the two gates that stop a
+        # run from being approved on a promise it cannot keep.
+        run: |
+          PYTHONPATH=src python3 -c "
+          from ai_researcher.envelope import Envelope, required_n
+          assert required_n(0.10) > 40, 'power pre-check regressed'
+          import ai_researcher.protocols as P
+          for name in ('paired-transfer', 'boundary-probe', 'judge-agreement', 'confound-audit'):
+              assert not P.check_emits(name), f'{name} emit contract broken'
+          print('contract checks ok')
+          "
+
+      - name: evidence and gate sweep
+        # Reports the mechanical half of the venue gate and states plainly that
+        # the judgment half did NOT run: no review key in CI. A green mechanical
+        # result must never be readable as a venue verdict.
+        env:
+          PYTHONPATH: src
+        run: python3 scripts/verify_all.py
+
+      - name: summary
+        if: always()
+        run: |
+          {
+            echo "### evidence-integrity"
+            echo
+            echo "- bundle signatures, unsigned files in signed dirs, ledger parseability, envelope contracts, the mechanical venue gate and the proposal loop are checked by \`scripts/verify_all.py\`."
+            echo "- the judgment half of the gate is **not** run here (no review API key in CI). Green is not a venue verdict."
+            echo "- legacy envelopes predating the power pre-check are listed in \`demo/legacy_envelopes.txt\` and reported as notes, so CI stays meaningful instead of permanently red."
+          } >> "$GITHUB_STEP_SUMMARY"
