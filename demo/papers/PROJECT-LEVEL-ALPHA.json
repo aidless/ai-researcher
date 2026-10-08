@@ -1,0 +1,85 @@
+{
+ "family_size": 6,
+ "alpha": 0.05,
+ "surviving": [
+  "matrix-01",
+  "transfer-01"
+ ],
+ "endpoints": {
+  "swarm-fd2:primary": {
+   "p_bh": 1.0,
+   "survives": false,
+   "rank": 6,
+   "run": "swarm-fd2"
+  },
+  "swarm-fd:primary": {
+   "p_bh": 1.0,
+   "survives": false,
+   "rank": 5,
+   "run": "swarm-fd"
+  },
+  "coderepair-01:primary": {
+   "p_bh": 0.244133,
+   "survives": false,
+   "rank": 4,
+   "run": "coderepair-01"
+  },
+  "swarm-ms:primary": {
+   "p_bh": 0.244133,
+   "survives": false,
+   "rank": 3,
+   "run": "swarm-ms"
+  },
+  "transfer-01:primary": {
+   "p_bh": 0.0,
+   "survives": true,
+   "rank": 2,
+   "run": "transfer-01"
+  },
+  "matrix-01:primary": {
+   "p_bh": 0.0,
+   "survives": true,
+   "rank": 1,
+   "run": "matrix-01"
+  }
+ },
+ "non_testable": {
+  "balanced-01": "no directional claim: descriptive only",
+  "breadth-01": "agreement rate and flip count are descriptive quantities, not a hypothesis test",
+  "coderepair-01": "pooled paired McNemar, direct vs step-calc; fixed=12, broke=21, families=4",
+  "collapse-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "collapse-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "exp-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "failclosed-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "jsd-01": "no directional claim: descriptive only",
+  "jsd-02": "no directional claim: descriptive only",
+  "matrix-01": "pooled paired McNemar, direct vs treatment (item data in result.json); fixed=173, broke=3, families=8",
+  "mimicry-01": "no directional claim: descriptive only",
+  "mimicry-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "swarm-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "swarm-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "swarm-fd": "seed-level sign test on excess over majority-vote baseline; positive_seeds=1/1",
+  "swarm-fd2": "seed-level sign test on excess over majority-vote baseline; positive_seeds=1/1",
+  "swarm-ms": "seed-level sign test on excess over majority-vote baseline; positive_seeds=4/5",
+  "sweetspot-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "sweetspot-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "sweetspot-03": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "transfer-01": "pooled paired McNemar, direct vs treatment (item data in result.json); fixed=61, broke=0, families=2"
+ },
+ "withdrawn": {
+  "coderepair-02": "still RUNNING: partial evidence, not in the family",
+  "lineage-01": "v3c regression withdrawn: infrastructure contamination, recorded by amendment"
+ },
+ "untested_directional_claims": [
+  "collapse-01",
+  "collapse-02",
+  "exp-01",
+  "failclosed-01",
+  "mimicry-02",
+  "swarm-01",
+  "swarm-02",
+  "sweetspot-01",
+  "sweetspot-02",
+  "sweetspot-03"
+ ]
+}

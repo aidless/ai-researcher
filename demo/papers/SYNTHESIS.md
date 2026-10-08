@@ -1,33 +1,28 @@
-# Evaluator Bias in Small Models: Transfer, Amplification, Robustness, and Early Warning
+# Structured Reasoning Policies in Small Models: One Transfer Effect That Survives Correction
+
+*Earlier drafts of this work claimed amplification, robustness and early warning. Project-level multiplicity correction (Section: p_BH across all arms) leaves a single surviving effect, and the paper is scoped to it.*
 
 ## Abstract
 
-Evaluator-preference collapse was established on frontier models. We ask whether
-it survives the move to small local models, and what its boundaries are. Four
-preregistered studies, all with signed evidence bundles, claim ledgers, and
-two-seat adversarial review:
+A structured reasoning policy -- state the defect, then answer -- is widely assumed
+to help because reasoning-before-answering helps in general. We test that
+assumption on local models from 1B to 8B, across general, reasoning and coder
+lineages, with preregistered envelopes, signed evidence bundles and adversarial
+review at every step.
 
-1. **Transfer**: step-calc prompting gains +0.75, 95% CI [0.60, 0.875] on qwen2.5:7b
-   (McNemar 30:0, p_bh 2.0e-9) and +0.775, 95% CI [0.65, 0.90] on llama3.1:8b
-   (McNemar 31:0, p_bh 2.0e-9), n=40 held-out cases each. Policy effects cross
-   families. Magnitude equivalence not claimed (CIs overlap; McNemar is
-   within-model-only).
-2. **Amplification**: in a minimal TTRL loop, evaluator-preferred strategies
-   concentrate faster with 4 parallel executors than 1 (slope 0.0765 vs 0.0400,
-   excess 0.0365), replicated across 4/5 seeds (excesses 0.012/0.0/0.055/0.055/
-   0.037). A force-decide control arm rules out abstention-mechanism
-   interaction (zero abstentions, gap persists at 0.0163).
-3. **Robustness**: the published cross-model PCI excess (1.619 vs 1.265) survives
-   strategy-set balancing in 46/56 subsets (82%, MOSTLY-HOLDS). Magnitude
-   comparisons across set sizes are invalid and not made.
-4. **Early warning**: evaluator-pair JSD predicts collapse ordering at 5/7
-   leave-one-out hits (0.714) on committed weights, extended from 3/5. Misses
-   concentrate on the high-collapse extremes that define the phenomenon: JSD is
-   a coarse sorter, not an extreme predictor.
+On held-out arithmetic the policy beats direct answering in **8 of 8 model
+families** (sign test p = 0.004; pooled paired McNemar 173:3), with gains that
+track available headroom rather than model size. Applying Benjamini-Hochberg across
+all arms of this project, **this is the only primary endpoint that survives**: the
+swarm-amplification, balancing and early-warning results, and the code-repair
+refutation, do not (p_BH = 0.244 to 1.000). We also report that the same policy
+fails to transfer to code repair, where it is flat on one family and negative on
+another; and that ten further arms carry directional claims with no test that can
+be corrected at the n used, which makes even the surviving p-values optimistic.
 
-No single leg is publication-grade alone. Together they triangulate: the
-phenomenon exists at small scale, grows with parallelism, survives balancing,
-and is coarsely predictable from evaluator disagreement.
+The contribution is therefore narrower than the framing we started from: one
+effect, replicated across every model family tested, with an explicit account of
+the multiplicity that would have been needed to find it by accident.
 
 ## 1. Tension
 
@@ -327,6 +322,52 @@ One family (`llama3.2:3b`) was never measured: the tag is not installed locally,
 so 80 calls returned HTTP 404 and were scored as failures by the old harness. The
 harness now preflights `/api/tags` and excludes absent tags before measurement,
 and the correction is recorded as an amendment on the signed bundle.
+
+## Project-level multiplicity: what survives correcting for the number of arms
+
+Each arm in this paper was analysed on its own, so the family-wise error rate is
+0.05 per arm times the number of arms. Only the two-family transfer arm was ever
+corrected across anything. Across the whole project nothing was, which is the first
+thing a careful reviewer asks and the last thing a self-interested author runs.
+`scripts/project_alpha.py` recomputes each primary endpoint from its per-item
+evidence -- no p-value is taken on trust from a summary field -- and applies
+Benjamini-Hochberg across the project.
+
+| arm | rank | p (BH, project) | survives |
+|---|---|---|---|
+| matrix-01 (8 families, arithmetic) | 1 | <1e-16 | **yes** |
+| transfer-01 (2 families, arithmetic) | 2 | <1e-16 | **yes** |
+| swarm-ms (amplification, multi-seed) | 3 | 0.244 | no |
+| coderepair-01 (code repair, refutation) | 4 | 0.244 | no |
+| swarm-fd (amplification, fixed disagreement) | 5 | 1.000 | no |
+| swarm-fd2 (amplification, forced decisions) | 6 | 1.000 | no |
+
+**2 of 6 primary endpoints survive project-level correction, and both are the
+transfer effect.** The amplification claim that gives this paper its title does
+not survive correcting for the number of arms: swarm-ms was reported with a
+nominal 95% interval of [0.001, 0.063] on five seeds, which is inside-run evidence
+and not more. The code-repair refutation does not survive either, so it should be
+described as a failure to replicate at project level rather than as a refutation.
+
+Two further honesty items, both of which make the numbers above optimistic:
+
+1. **Ten arms carry a directional claim with no recomputable test at this n**
+   (collapse-01/02, exp-01, failclosed-01, mimicry-02, swarm-01/02,
+   sweetspot-01/02/03). They are excluded from the family because there is no test
+   to correct, which *understates* the multiplicity. If any is cited as evidence,
+   the family is larger and every p above is too small.
+2. One arm (lineage-01) is excluded because its verdict was withdrawn for
+   contamination, and one (coderepair-02) because it was still running.
+
+The conclusion this forces is narrower than the abstract currently is. The
+defensible claim is: *on arithmetic word problems, a structured reasoning policy
+beats direct answering across every model family tested, and this is the only
+effect in this project that survives correction for the number of experiments
+run.* The amplification, robustness and early-warning results are exploratory.
+
+That is a smaller paper. It is also the only version of this paper that a reviewer
+who runs the correction cannot argue with, and the correction is cheap: one script,
+already written, already in CI.
 
 ## Generality
 
