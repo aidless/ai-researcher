@@ -1,28 +1,43 @@
-# Structured Reasoning Policies in Small Models: One Transfer Effect That Survives Correction
+# Structured Reasoning Policies in Local Models: A Transfer Effect, Prospectively Confirmed
+
+*One finding survives project-level multiplicity correction and has been confirmed
+prospectively on a fresh, disjoint item set with a preregistered rule that executed.
+The arms that did not survive -- amplification, balancing, inference budget, and the
+transfer effect outside arithmetic -- are reported as such.*
 
 *Earlier drafts of this work claimed amplification, robustness and early warning. Project-level multiplicity correction (Section: p_BH across all arms) leaves a single surviving effect, and the paper is scoped to it.*
 
 ## Abstract
 
-A structured reasoning policy -- state the defect, then answer -- is widely assumed
-to help because reasoning-before-answering helps in general. We test that
-assumption on local models from 1B to 8B, across general, reasoning and coder
-lineages, with preregistered envelopes, signed evidence bundles and adversarial
-review at every step.
+A structured reasoning policy -- state the reasoning, then answer -- is widely
+assumed to help because reasoning-before-answering helps in general. We test that
+on local models from 1B to 8B across general, reasoning and coder lineages, with
+preregistered envelopes, Ed25519-signed evidence bundles, adversarial review at
+every step, and a project-level correction for the number of experiments run.
 
-On held-out arithmetic the policy beats direct answering in **8 of 8 model
-families** (sign test p = 0.004; pooled paired McNemar 173:3), with gains that
-track available headroom rather than model size. Applying Benjamini-Hochberg across
-all arms of this project, **this is the only primary endpoint that survives**: the
-swarm-amplification, balancing and early-warning results, and the code-repair
-refutation, do not (p_BH = 0.244 to 1.000). We also report that the same policy
-fails to transfer to code repair, where it is flat on one family and negative on
-another; and that ten further arms carry directional claims with no test that can
-be corrected at the n used, which makes even the surviving p-values optimistic.
+**The primary claim is confirmed prospectively.** On 160 held-out arithmetic items
+verified disjoint from the items that first produced the effect, a step-by-step
+policy beats direct answering in 2 of 2 model families tested (gains +0.244
+[+0.163, +0.325] and +0.519 [+0.431, +0.606]; pooled paired McNemar 133:11), at
+320 paired observations against the n = 157 a power calculation requires. The
+original estimate on 40 items was +0.700 for one of those families, so the
+direction, the family coverage and the mechanism all replicated while the magnitude
+did not.
 
-The contribution is therefore narrower than the framing we started from: one
-effect, replicated across every model family tested, with an explicit account of
-the multiplicity that would have been needed to find it by accident.
+Applying Benjamini-Hochberg across all 10 recomputable primary endpoints in the
+project, **2 of 10 survive and both are this effect**. What does not survive is
+reported rather than dropped: swarm amplification, subset balancing, the
+inference-length sweet spot (refuted at adequate power -- budget helps
+monotonically on a 7B reasoning model and does nothing on a 7B non-reasoning one),
+and the transfer itself outside arithmetic, where no reasoning-first policy
+recovers a gain across two task-domain replications. Nine further arms carry
+directional claims with no test computable at their n, which makes even the
+surviving p-values optimistic. A seventh finding concerns measurement rather than
+models: across three local evaluators, 16 of 24 realistic code diffs change
+ship/no-ship verdict when one evaluator is dropped.
+
+The contribution is one confirmed effect with an explicit account of everything
+that did not confirm, and of the multiplicity that would otherwise have hidden it.
 
 ## 1. Tension
 
@@ -519,6 +534,61 @@ mode (`jsd-02`), and none of them is claimed as evidence for anything.
 
 *Asserted arms: matrix-01, transfer-01, coderepair-01, coderepair-02, swarm-ms*
 
+## Prospective confirmation of the primary claim (transfer-confirmation)
+
+The primary claim was measured on 40 held-out arithmetic items, and its earlier
+verdict was analyst-assigned because the preregistered kill-switch keyed on a field
+the harness never emitted. It has now been confirmed **prospectively**: a fresh
+item bank, verified disjoint from the 40 that produced the result; a seed fixed
+before execution; 320 paired observations against the n = 157 a power calculation
+requires for a 0.10 effect; and a kill-switch on `confirmed`, a field the harness
+provably writes -- which fired.
+
+| family | direct | step-by-step | gain [95% CI] | fixed | broken |
+|---|---|---|---|---|---|
+| qwen2.5:7b | 0.1875 | 0.4313 | +0.2438 [+0.163, +0.325] | 45 | 6 |
+| gemma3:4b | 0.1062 | 0.6250 | +0.5188 [+0.431, +0.606] | 88 | 5 |
+
+Pooled paired McNemar 133 fixed / 11 broken (p < 1e-16); 2 of 2 families positive;
+`confirmed = True`; verdict STOP-EXTEND from the envelope's own rule.
+
+Three properties matter more than the effect size here.
+
+1. **The items are new.** `build_confirm_set.py` refuses to write a bank that
+   overlaps heldout40 by question text or 40-character prefix, whose gold answers
+   do not parse, or that contains single-step items; 160 of 1216 disjoint
+   candidates were drawn with a seed fixed in advance. This is not a re-run of the
+   items that produced the finding.
+2. **The rule executed.** matrix-01's verdict came from the absence of a decision.
+   This one came from a row that fired. That difference is the entire distance
+   between an observation and a finding, and it is now a property of the pipeline
+   rather than of the author's diligence.
+3. **The gain is smaller than the original estimate on the same family.**
+   qwen2.5:7b gained +0.700 on 40 items and +0.244 on 160. The direction, the
+   family coverage and the mechanism all hold; the magnitude did not. Both numbers
+   are reported, and the honest reading is that the 40-item estimate was optimistic
+   -- which is what a power calculation that was not run until after the fact will
+   do.
+
+## Evaluator choice moves review decisions (breadth-02)
+
+The earlier agreement arm measured a 0.429 inter-rater agreement with no observed
+ship/no-ship flips on eight single-line diffs, and could not say whether that
+meant the disagreements were stylistic. Re-run on 24 diffs including multi-hunk,
+semantic and performance-with-tradeoff cases, with an evaluator preflight that
+excludes any model unable to return a parseable verdict within budget:
+
+- pairwise agreement **0.500** over 3 evaluators x 24 diffs
+- **16 of 24 diffs show a ship/no-ship flip**: dropping one evaluator changes the
+  majority verdict
+- abstention rate **0.000** (the preflight removed a reasoning model that spent its
+  entire budget thinking and never emitted a verdict, which had silently consumed a
+  third of the earlier run's judgments)
+
+So evaluator choice does move deployment decisions on realistic diffs, which is the
+claim the eight-diff arm could not reach. The caveat is scale: three local models
+and synthetic-but-realistic diffs, not production pull requests.
+
 ## Project-level multiplicity: what survives correcting for the number of arms
 
 Each arm in this paper was analysed on its own, so the family-wise error rate is
@@ -532,15 +602,16 @@ Benjamini-Hochberg across the project.
 | arm | rank | p (BH, project) | survives | direction vs its own hypothesis |
 |---|---|---|---|---|
 | matrix-01 | 1 | <1e-16 | **yes** | aligns |
-| transfer-01 | 2 | <1e-16 | **yes** | aligns |
-| sweetspot-04 | 3 | 0.013 | **yes** | **CONTRADICTS** |
-| failclosed-01 | 4 | 0.156 | no | aligns |
-| exp-01 | 5 | 0.208 | no | unstated |
-| swarm-ms | 6 | 0.208 | no | aligns |
-| coderepair-01 | 7 | 0.233 | no | aligns |
-| coderepair-02 | 8 | 0.805 | no | aligns |
-| swarm-fd | 9 | 1.000 | no | aligns |
-| swarm-fd2 | 10 | 1.000 | no | aligns |
+| transfer-confirmation | 2 | <1e-16 | **yes** | unstated |
+| transfer-01 | 3 | <1e-16 | **yes** | aligns |
+| sweetspot-04 | 4 | 0.011 | **yes** | **CONTRADICTS** |
+| failclosed-01 | 5 | 0.138 | no | aligns |
+| exp-01 | 6 | 0.196 | no | unstated |
+| swarm-ms | 7 | 0.196 | no | aligns |
+| coderepair-01 | 8 | 0.224 | no | aligns |
+| coderepair-02 | 9 | 0.787 | no | aligns |
+| swarm-fd | 10 | 1.000 | no | aligns |
+| swarm-fd2 | 11 | 1.000 | no | aligns |
 
 **Figure 2.** Project-level Benjamini-Hochberg p for every primary endpoint that
 can be recomputed from per-item evidence, log scale, against α = 0.05. The arms
@@ -564,7 +635,7 @@ annotation (`demo/papers/endpoint-direction.json`) and the table above reports i
 8 endpoints at α = 0.05; regenerate with
 `PYTHONPATH=src python3 scripts/project_alpha.py` rather than editing it by hand)*
 
-**7 of 10 primary endpoints fail project-level correction. 2 of the 3 that survive support the claim they were preregistered for.** The 2 that survive are
+**7 of 11 primary endpoints fail project-level correction. 2 of the 4 that survive support the claim they were preregistered for.** The 2 that survive are
 the transfer effect, measured twice.**
 
 The amplification result does not survive correcting for the number of arms:
@@ -575,7 +646,7 @@ described as a failure to replicate at project level rather than as a refutation
 
 Two further honesty items, both of which make the numbers above optimistic:
 
-1. **8 arms carry a directional claim with no recomputable test at this n**: `collapse-01`, `collapse-02`, `mimicry-02`, `swarm-01`, `swarm-02`, `sweetspot-01`, `sweetspot-02`, `sweetspot-03`. They are excluded from the family because there is no test
+1. **9 arms carry a directional claim with no recomputable test at this n** (breadth-02, collapse-01, collapse-02, mimicry-02, swarm-01, swarm-02, sweetspot-01, sweetspot-02, sweetspot-03). They are excluded from the family because there is no test
    to correct, which *understates* the multiplicity. If any is cited as evidence,
    the family is larger and every p above is too small.
 2. One arm (lineage-01) is excluded because its verdict was withdrawn for

@@ -1,5 +1,5 @@
 {
- "family_size": 10,
+ "family_size": 11,
  "surviving_supporting_claim": [
   "matrix-01",
   "transfer-01"
@@ -54,62 +54,69 @@
  "surviving": [
   "matrix-01",
   "sweetspot-04",
-  "transfer-01"
+  "transfer-01",
+  "transfer-confirmation"
  ],
  "endpoints": {
   "swarm-fd2:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 10,
+   "rank": 11,
    "run": "swarm-fd2"
   },
   "swarm-fd:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 9,
+   "rank": 10,
    "run": "swarm-fd"
   },
   "coderepair-02:primary": {
-   "p_bh": 0.804961,
+   "p_bh": 0.787073,
    "survives": false,
-   "rank": 8,
+   "rank": 9,
    "run": "coderepair-02"
   },
   "coderepair-01:primary": {
-   "p_bh": 0.232508,
+   "p_bh": 0.223789,
    "survives": false,
-   "rank": 7,
+   "rank": 8,
    "run": "coderepair-01"
   },
   "swarm-ms:primary": {
-   "p_bh": 0.208333,
+   "p_bh": 0.196429,
    "survives": false,
-   "rank": 6,
+   "rank": 7,
    "run": "swarm-ms"
   },
   "exp-01:primary": {
-   "p_bh": 0.208333,
+   "p_bh": 0.196429,
    "survives": false,
-   "rank": 5,
+   "rank": 6,
    "run": "exp-01"
   },
   "failclosed-01:primary": {
-   "p_bh": 0.15625,
+   "p_bh": 0.1375,
    "survives": false,
-   "rank": 4,
+   "rank": 5,
    "run": "failclosed-01"
   },
   "sweetspot-04:primary": {
-   "p_bh": 0.013021,
+   "p_bh": 0.010742,
    "survives": true,
-   "rank": 3,
+   "rank": 4,
    "run": "sweetspot-04"
   },
   "transfer-01:primary": {
    "p_bh": 0.0,
    "survives": true,
-   "rank": 2,
+   "rank": 3,
    "run": "transfer-01"
+  },
+  "transfer-confirmation:primary": {
+   "p_bh": 0.0,
+   "survives": true,
+   "rank": 2,
+   "run": "transfer-confirmation"
   },
   "matrix-01:primary": {
    "p_bh": 0.0,
@@ -121,11 +128,12 @@
  "non_testable": {
   "balanced-01": "no directional claim: descriptive only",
   "breadth-01": "agreement rate and flip count are descriptive quantities, not a hypothesis test",
-  "breadth-02": "still RUNNING: partial evidence, excluded from the family and not a withdrawal",
+  "breadth-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "coderepair-01": "pooled paired McNemar, direct vs step-calc; fixed=12, broke=21, families=4",
   "coderepair-02": "pooled paired McNemar, direct vs step-calc; fixed=19, broke=23, families=3",
   "collapse-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "collapse-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "collapse-replication": "still RUNNING: partial evidence, excluded from the family and not a withdrawal",
   "exp-01": "exact binomial, single-arm hit count against chance; passed=4/4",
   "failclosed-01": "exact binomial, defects caught against chance (0.5); escaped=0/5",
   "jsd-01": "no directional claim: descriptive only",
@@ -143,16 +151,16 @@
   "sweetspot-03": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "sweetspot-04": "pooled paired McNemar, direct vs step-calc; fixed=0, broke=9, families=2",
   "transfer-01": "pooled paired McNemar, direct vs treatment (item data in result.json); fixed=61, broke=0, families=2",
-  "transfer-confirmation": "still RUNNING: partial evidence, excluded from the family and not a withdrawal"
+  "transfer-confirmation": "pooled paired McNemar, direct vs step-calc; fixed=133, broke=11, families=2"
  },
  "withdrawn": {
   "lineage-01": "v3c regression withdrawn: infrastructure contamination, recorded by amendment"
  },
  "in_flight": [
-  "breadth-02",
-  "transfer-confirmation"
+  "collapse-replication"
  ],
  "untested_directional_claims": [
+  "breadth-02",
   "collapse-01",
   "collapse-02",
   "mimicry-02",
