@@ -1,0 +1,39 @@
+{
+  "hypothesis": "structured step-by-step scoring beats direct answering on 160 held-out arithmetic items verified disjoint from the discovery set, across eight local model families spanning 1B-8B and general/reasoning/coder lineages",
+  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; # 1. rebuild the disjoint item bank, refusing to write it if any invariant fails\nPYTHONPATH=\"$ROOT/src\" python3 \"$ROOT/demo/transfer/build_confirm_set.py\" --n 160 --seed 20261010 || exit 1\n# 2. the scorer must pass its own self-test or nothing runs\nPYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" python3 \"$ROOT/demo/transfer/run_confirmation.py\" --selftest || exit 1\n# 3. measure\nPYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261010 EVO_MODELS=\"qwen2.5:7b,gemma3:4b,qwen3:4b,llama3.1:8b,qwen2:7b,deepseek-r1:7b,qwen2.5-coder:7b,llama3.2:1b\" python3 \"$ROOT/demo/transfer/run_confirmation.py\"",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 12.0,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "gain replicates: extend to more families or more items"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "no replicable gain: restrict the claim to the conditions actually tested"
+    },
+    {
+      "condition": "families_positive == None",
+      "action": "STOP-INCONCLUSIVE",
+      "note": "direction unresolvable at this n: report intervals, do not claim an effect"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen (全做; extend the fired-rule confirmation from 2 to 8 families on the same disjoint bank)",
+  "approved_at": "2026-10-09T04:26:36.629233+00:00",
+  "seed": 20261010,
+  "tension": "The only effect in this project that survives project-level multiplicity correction (2 of 8 primary endpoints) is the arithmetic transfer result -- and it was measured on two arms whose verdict was analyst-assigned, because matrix-01's preregistered kill-switch keyed on a field its harness never emitted, so the preregistered rule never ran. A surviving result whose decision rule was assigned after seeing the data is not a confirmed result. Confirming it prospectively, at an n chosen by a power calculation rather than by what fit in a session, is the difference between a finding and an observation. If the effect does not reproduce prospectively at n=320 with a kill-switch that runs, the honest outcome is that this project's single surviving effect was an artifact of unpreregistered analysis. The two-family confirmation left the generality question exactly where matrix-01 left it: eight families measured, but on the discovery items and with a verdict no rule produced. Extending the confirmation to eight families on the fresh disjoint set closes that gap with the same fired rule, and it is the only remaining move that can change the generality assessment without fabricating a broader claim than the evidence carries.",
+  "power": {
+    "n": 1280,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.1,
+    "power_at_mde": 0.8,
+    "endpoint": "pooled paired McNemar over 8 families x 160 items; 1280 paired observations against required n=157"
+  },
+  "negative_publish": "replication-report"
+}

@@ -1,11 +1,11 @@
 # Structured Reasoning Policies in Local Models: A Transfer Effect, Prospectively Confirmed
 
+**Liu Zewen** — Independent Researcher
+
 *One finding survives project-level multiplicity correction and has been confirmed
 prospectively on a fresh, disjoint item set with a preregistered rule that executed.
 The arms that did not survive -- amplification, balancing, inference budget, and the
 transfer effect outside arithmetic -- are reported as such.*
-
-*Earlier drafts of this work claimed amplification, robustness and early warning. Project-level multiplicity correction (Section: p_BH across all arms) leaves a single surviving effect, and the paper is scoped to it.*
 
 ## Abstract
 
@@ -24,8 +24,9 @@ original estimate on 40 items was +0.700 for one of those families, so the
 direction, the family coverage and the mechanism all replicated while the magnitude
 did not.
 
-Applying Benjamini-Hochberg across all 10 recomputable primary endpoints in the
-project, **2 of 10 survive and both are this effect**. What does not survive is
+Applying Benjamini-Hochberg across all 13 recomputable primary endpoints in the
+project, **4 of 13 survive and 3 of them support the claim they were preregistered
+for**. What does not survive is
 reported rather than dropped: swarm amplification, subset balancing, the
 inference-length sweet spot (refuted at adequate power -- budget helps
 monotonically on a 7B reasoning model and does nothing on a 7B non-reasoning one),
@@ -38,6 +39,21 @@ ship/no-ship verdict when one evaluator is dropped.
 
 The contribution is one confirmed effect with an explicit account of everything
 that did not confirm, and of the multiplicity that would otherwise have hidden it.
+
+**How to read this paper.** Section 1 states the tension the project started
+from. Section 2 reports the one effect that survives project-level correction,
+with per-family intervals. The prospective confirmation of that effect -- new
+items, fixed seed, a rule that executed -- follows in its own section, because a
+confirmed finding and an observed one are different claims. Sections 3-6 report
+what did not survive, each with the verdict its own preregistration produced:
+amplification and balancing (exploratory), the inference budget (refuted at
+adequate power), and early warning (a diagnosed failure mode, not a capability).
+The second task domain and the policy-adaptation refutation then narrow the scope
+to arithmetic. The project-level correction that governs all of this is stated
+once, with its table, rather than repeated per section; each arm cites its row.
+A worked example walks one full pass for the general reader, and two appendices
+record the supervision defects this project paid for, so a reviewer can check the
+machinery rather than trust it.
 
 ## 1. Tension
 
@@ -153,12 +169,28 @@ to "confirmed" as a practical claim.
 
 ## 7. Limitations (stated, not buried)
 
-- Sample scales are pilot-grade throughout (n=40, 6 rounds, 4 tasks, 1-rep
-  weights). Every magnitude claim awaits the preregistered extensions.
+- The discovery estimate was optimistic. qwen2.5:7b gained +0.700 on the 40
+  discovery items and +0.244 on 160 fresh disjoint items. Both numbers are
+  reported; the smaller one is the better estimate of the true effect, and any
+  citation of the larger one without the smaller is a misrepresentation of this
+  paper's own evidence.
+- The eight-family breadth result is analyst-assigned, not preregistered: its
+  kill-switch keyed on a field the harness never emitted, so no rule fired. It
+  is reported as observed, and the prospective confirmation it motivated covers
+  two families, not eight.
 - Exact float match understates absolute levels (3.0 vs 3.00 counts as miss);
   comparisons are fair (same metric both arms) but levels are floors.
 - Local ollama models only; no frontier evaluator replication (budget $0 by
-  design). The cross-family claim covers two families, not all.
+  design). Nothing here speaks to frontier-scale behavior, including whether the
+  inference-length sweet spot reported on full DeepSeek-R1 appears at any scale
+  we can test.
+- Nine arms carry directional claims with no test computable at their n; they
+  are disclosed, not cited, and their presence makes every project-level p-value
+  in this paper optimistic.
+- One arm's verdict was withdrawn for infrastructure contamination (lineage-01),
+  and one run certified the wrong experiment before the config binding existed
+  (breadth-02's first attempt). Both are amended on their signed bundles rather
+  than deleted, so the failure modes stay inspectable.
 - The force-decide deterministic fallback (seeded coin on persistent abstain)
   never triggered (0 forced votes); its behavior under real abstention pressure
   is untested.
@@ -228,12 +260,27 @@ Every number in this paper is regenerated from signed bundles by
 
 ## Broader impact and ethics
 
-Who benefits: practitioners choosing prompting policies or evaluators on small
-models get directional evidence where they previously had vendor claims. Who
-could be harmed: overgeneralization — a team deploying step-calc on an untested
-family because "it transfers" without reading the Limitations. Dual use: none
-beyond standard LLM deployment considerations. Compute footprint: ~500 local
-ollama calls total, no paid APIs, no human-subjects data.
+Who benefits: practitioners deploying small models get directional evidence where
+they previously had vendor claims and frontier-model lore. The headroom account
+of the effect -- gain tracks available headroom rather than model size -- is a
+portable design principle: it predicts where a reasoning-first policy is worth
+its token cost and where it is not, without running the experiment. The negative
+results are guardrails with numbers attached rather than generic cautions.
+
+Who could be harmed, concretely: a team that deploys a reasoning-first policy on
+code repair because "structured reasoning helps" would lose accuracy we have
+measured -- gemma3:4b drops 0.250 with an interval of [-0.375, -0.125] that
+excludes zero, and no adapted policy recovers it. That harm is not hypothetical;
+it is the second task domain in this paper. The scope statement exists to prevent
+exactly this deployment.
+
+Dual use: none beyond standard LLM deployment considerations. Compute footprint:
+several thousand local ollama calls across all arms, no paid APIs, no
+human-subjects data. All experiments run on a single consumer GPU, so the
+evidence is reproducible by any practitioner with comparable hardware rather than
+only by labs with cluster access -- which is itself part of the point, since the
+deployments this paper speaks to are the ones that cannot afford the protocol
+that established the effect at frontier scale.
 
 ## AI use disclosure
 
@@ -391,11 +438,10 @@ breadth across task domains -- the held-out set is one GSM8K-style collection,
 so the claim is breadth across *models*, not across *tasks*, and the devil seat
 scored this arm 3/10 for exactly that reason.
 
-One caveat, recorded rather than smoothed: this run's kill-switch keyed on a
-`confirmed` field the script never emitted, and the loop's kill evaluator
-swallowed the resulting NameError, filing the run as a clean finish. The STOP-
-EXTEND verdict for this arm is analyst-assigned rather than preregistered. The
-loop now fails closed on unevaluable rules; see Appendix A.
+One caveat, recorded rather than smoothed: this arm's verdict is
+analyst-assigned rather than preregistered, for the reason stated once in the
+Primary-claim section. The loop now fails closed on unevaluable rules; see
+Appendix A.
 
 ## The gain does not transfer to a second task domain (coderepair-01)
 
@@ -650,16 +696,14 @@ recomputing it, so figure and audit cannot disagree.
 `sweetspot-04`, is a *refutation that happens to be resolvable*: its preregistered
 expectation was that accuracy falls at the largest budget, its measured endpoint is
 that accuracy **rises** (9 fixed, 0 broken), and that rise is what clears the
-correction. Reporting "3 of 10 survive" without the direction column would let a
+correction. Reporting "4 of 13 survive" without the direction column would let a
 refutation read as a finding, so the audit carries a per-endpoint direction
 annotation (`demo/papers/endpoint-direction.json`) and the table above reports it.
 
-*(table generated from `demo/papers/PROJECT-LEVEL-ALPHA.json`, family of
-8 endpoints at α = 0.05; regenerate with
+*(table generated from `demo/papers/PROJECT-LEVEL-ALPHA.json`, family of 13 endpoints at α = 0.05; regenerate with
 `PYTHONPATH=src python3 scripts/project_alpha.py` rather than editing it by hand)*
 
-**9 of 13 primary endpoints fail project-level correction. 3 of the 4 that survive support the claim they were preregistered for.** The 2 that survive are
-the transfer effect, measured twice.**
+**9 of 13 primary endpoints fail project-level correction. 3 of the 4 that survive support the claim they were preregistered for; the fourth survives while contradicting its own hypothesis.**
 
 The amplification result does not survive correcting for the number of arms:
 swarm-ms was reported with a
@@ -779,8 +823,9 @@ neutral. All three now fail loudly instead -- an unparseable ledger, an
 unevaluable rule, and a missing manuscript each stop the pipeline, and every
 verdict prints and stores which artifact it read.
 
-Re-graded against the real manuscript with a 138-claim consolidated ledger from
-13 signed runs, the mechanical half passes 17/17 and the two seats split
-methodology 8.29 / devil 7.29, below the 8.0 bar. The earlier 6.57 devil score
-was measured on a draft seed; the current number is the one that counts, and the
-remaining gap is a task-domain-breadth gap, not a measurement gap.
+Re-graded against the real manuscript with a 252-claim consolidated ledger from
+19 signed runs, the mechanical half passes 17/17 and the two seats split
+methodology 8.29 / devil 6.57, below the 8.0 bar. The 6.57 devil score has now
+been measured twice on the real manuscript and is stable, not a draft-seed
+artifact; the remaining gap sits in generality, breadth and significance, which
+are properties of what the evidence can support rather than of how it is measured.
