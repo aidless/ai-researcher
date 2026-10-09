@@ -1,8 +1,9 @@
 {
- "family_size": 11,
+ "family_size": 13,
  "surviving_supporting_claim": [
   "matrix-01",
-  "transfer-01"
+  "transfer-01",
+  "transfer-confirmation"
  ],
  "surviving_contradicting_claim": [
   "sweetspot-04"
@@ -48,6 +49,18 @@
   "swarm-fd2": {
    "direction": "aligns",
    "claim": "excess persists with forced decisions"
+  },
+  "transfer-confirmation": {
+   "direction": "aligns",
+   "claim": "step-calc beats direct on 160 fresh disjoint arithmetic items, 2/2 families, kill-switch fired"
+  },
+  "seed6-01": {
+   "direction": "aligns",
+   "claim": "sixth-seed swarm replication did not reproduce the excess (a null, reported as such)"
+  },
+  "collapse-replication": {
+   "direction": "aligns",
+   "claim": "the +0.1994 excess is not reproducible across independent runs (a null, reported as such)"
   }
  },
  "alpha": 0.05,
@@ -61,47 +74,59 @@
   "swarm-fd2:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 11,
+   "rank": 13,
    "run": "swarm-fd2"
   },
   "swarm-fd:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 10,
+   "rank": 12,
    "run": "swarm-fd"
   },
-  "coderepair-02:primary": {
-   "p_bh": 0.787073,
+  "collapse-replication:primary": {
+   "p_bh": 1.0,
    "survives": false,
-   "rank": 9,
+   "rank": 11,
+   "run": "collapse-replication"
+  },
+  "coderepair-02:primary": {
+   "p_bh": 0.83716,
+   "survives": false,
+   "rank": 10,
    "run": "coderepair-02"
   },
+  "seed6-01:primary": {
+   "p_bh": 0.541667,
+   "survives": false,
+   "rank": 9,
+   "run": "seed6-01"
+  },
   "coderepair-01:primary": {
-   "p_bh": 0.223789,
+   "p_bh": 0.264478,
    "survives": false,
    "rank": 8,
    "run": "coderepair-01"
   },
   "swarm-ms:primary": {
-   "p_bh": 0.196429,
+   "p_bh": 0.232143,
    "survives": false,
    "rank": 7,
    "run": "swarm-ms"
   },
   "exp-01:primary": {
-   "p_bh": 0.196429,
+   "p_bh": 0.232143,
    "survives": false,
    "rank": 6,
    "run": "exp-01"
   },
   "failclosed-01:primary": {
-   "p_bh": 0.1375,
+   "p_bh": 0.1625,
    "survives": false,
    "rank": 5,
    "run": "failclosed-01"
   },
   "sweetspot-04:primary": {
-   "p_bh": 0.010742,
+   "p_bh": 0.012695,
    "survives": true,
    "rank": 4,
    "run": "sweetspot-04"
@@ -133,7 +158,7 @@
   "coderepair-02": "pooled paired McNemar, direct vs step-calc; fixed=19, broke=23, families=3",
   "collapse-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "collapse-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
-  "collapse-replication": "still RUNNING: partial evidence, excluded from the family and not a withdrawal",
+  "collapse-replication": "seed-level sign test on excess over majority-vote baseline; positive_seeds=0/10",
   "exp-01": "exact binomial, single-arm hit count against chance; passed=4/4",
   "failclosed-01": "exact binomial, defects caught against chance (0.5); escaped=0/5",
   "jsd-01": "no directional claim: descriptive only",
@@ -141,6 +166,7 @@
   "matrix-01": "pooled paired McNemar, direct vs treatment (item data in result.json); fixed=173, broke=3, families=8",
   "mimicry-01": "no directional claim: descriptive only",
   "mimicry-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "seed6-01": "seed-level sign test on excess over majority-vote baseline; positive_seeds=4/6",
   "swarm-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "swarm-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "swarm-fd": "seed-level sign test on excess over majority-vote baseline; positive_seeds=1/1",
@@ -156,9 +182,7 @@
  "withdrawn": {
   "lineage-01": "v3c regression withdrawn: infrastructure contamination, recorded by amendment"
  },
- "in_flight": [
-  "collapse-replication"
- ],
+ "in_flight": [],
  "untested_directional_claims": [
   "breadth-02",
   "collapse-01",

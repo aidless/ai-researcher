@@ -589,6 +589,27 @@ So evaluator choice does move deployment decisions on realistic diffs, which is 
 claim the eight-diff arm could not reach. The caveat is scale: three local models
 and synthetic-but-realistic diffs, not production pull requests.
 
+## The +0.1994 came from one trajectory (collapse-replication)
+
+collapse-01 reported a cross-evaluator excess of +0.1994 and was filed STOP-EXTEND,
+but it rested on one run of one judge pairing, and the values within a run are an
+autocorrelated trajectory, not independent samples. No test was ever computable
+from it. The replication ran the identical comparison (same executor, qwen2.5:7b
+self-judge vs llama3.1:8b cross-judge, same seeds offset) across independent runs:
+
+- 5 informative runs, all with cross excess **exactly 0.0** and low abstention, i.e.
+  real measurements with no preference drift, not a silent failure
+- 5 further runs compared a judge against itself (pairing 0), so their excess is 0
+  by construction and they are not evidence of anything -- a pairing error in my
+  own envelope, recorded by amendment on the signed bundle rather than hidden
+
+Combined with collapse-02's independent 0.0 on the methodology-fixed scorer, the
+honest reading is that the original +0.1994 was a single-run artifact. The power
+declaration asked for 10 informative runs and got 5, so the refutation rests on
+five independent zeros plus one independent zero, and that shortfall is confessed
+here rather than met. The arm is left OUT of the project-level family (its endpoint
+is incomparable by design error) and reported as converging evidence.
+
 ## Project-level multiplicity: what survives correcting for the number of arms
 
 Each arm in this paper was analysed on its own, so the family-wise error rate is
@@ -602,16 +623,18 @@ Benjamini-Hochberg across the project.
 | arm | rank | p (BH, project) | survives | direction vs its own hypothesis |
 |---|---|---|---|---|
 | matrix-01 | 1 | <1e-16 | **yes** | aligns |
-| transfer-confirmation | 2 | <1e-16 | **yes** | unstated |
+| transfer-confirmation | 2 | <1e-16 | **yes** | aligns |
 | transfer-01 | 3 | <1e-16 | **yes** | aligns |
-| sweetspot-04 | 4 | 0.011 | **yes** | **CONTRADICTS** |
-| failclosed-01 | 5 | 0.138 | no | aligns |
-| exp-01 | 6 | 0.196 | no | unstated |
-| swarm-ms | 7 | 0.196 | no | aligns |
-| coderepair-01 | 8 | 0.224 | no | aligns |
-| coderepair-02 | 9 | 0.787 | no | aligns |
-| swarm-fd | 10 | 1.000 | no | aligns |
-| swarm-fd2 | 11 | 1.000 | no | aligns |
+| sweetspot-04 | 4 | 0.013 | **yes** | **CONTRADICTS** |
+| failclosed-01 | 5 | 0.163 | no | aligns |
+| exp-01 | 6 | 0.232 | no | unstated |
+| swarm-ms | 7 | 0.232 | no | aligns |
+| coderepair-01 | 8 | 0.264 | no | aligns |
+| seed6-01 | 9 | 0.542 | no | aligns |
+| coderepair-02 | 10 | 0.837 | no | aligns |
+| collapse-replication | 11 | 1.000 | no | aligns |
+| swarm-fd | 12 | 1.000 | no | aligns |
+| swarm-fd2 | 13 | 1.000 | no | aligns |
 
 **Figure 2.** Project-level Benjamini-Hochberg p for every primary endpoint that
 can be recomputed from per-item evidence, log scale, against α = 0.05. The arms
@@ -635,7 +658,7 @@ annotation (`demo/papers/endpoint-direction.json`) and the table above reports i
 8 endpoints at α = 0.05; regenerate with
 `PYTHONPATH=src python3 scripts/project_alpha.py` rather than editing it by hand)*
 
-**7 of 11 primary endpoints fail project-level correction. 2 of the 4 that survive support the claim they were preregistered for.** The 2 that survive are
+**9 of 13 primary endpoints fail project-level correction. 3 of the 4 that survive support the claim they were preregistered for.** The 2 that survive are
 the transfer effect, measured twice.**
 
 The amplification result does not survive correcting for the number of arms:
