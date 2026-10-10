@@ -56,6 +56,10 @@
     "confirmation-8fam-r2": {
       "direction": "aligns",
       "claim": "7/8 families positive on 160 fresh disjoint items (1280 paired obs), signed bundle, kill-switch fired; unanimity fails informatively at qwen3:4b"
+    },
+    "prompt-ablation": {
+      "direction": "aligns",
+      "claim": "all four wording variants beat direct in all three families (wording-robustness, preregistered scope condition, not the core phenomenon itself)"
     }
   }
 }

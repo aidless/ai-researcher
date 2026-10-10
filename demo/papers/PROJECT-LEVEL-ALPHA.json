@@ -1,5 +1,5 @@
 {
- "family_size": 14,
+ "family_size": 15,
  "families": {
   "confirmatory": {
    "definition": "preregistered hypothesis about the core phenomenon, rule fired, direction pre-specified",
@@ -40,71 +40,78 @@
   },
   "exploratory": {
    "definition": "everything else testable; BH is descriptive, survival is not a finding",
-   "size": 11,
+   "size": 12,
    "notable": [
     "matrix-01",
+    "prompt-ablation",
     "sweetspot-04"
    ],
    "endpoints": {
     "swarm-fd2:primary": {
      "q": 1.0,
      "notable": false,
-     "rank": 11,
+     "rank": 12,
      "run": "swarm-fd2"
     },
     "swarm-fd:primary": {
      "q": 1.0,
      "notable": false,
-     "rank": 10,
+     "rank": 11,
      "run": "swarm-fd"
     },
     "collapse-replication:primary": {
      "q": 1.0,
      "notable": false,
-     "rank": 9,
+     "rank": 10,
      "run": "collapse-replication"
     },
     "coderepair-02:primary": {
-     "q": 0.885457,
+     "q": 0.858625,
      "notable": false,
-     "rank": 8,
+     "rank": 9,
      "run": "coderepair-02"
     },
     "seed6-01:primary": {
-     "q": 0.589286,
+     "q": 0.5625,
      "notable": false,
-     "rank": 7,
+     "rank": 8,
      "run": "seed6-01"
     },
     "coderepair-01:primary": {
-     "q": 0.298385,
+     "q": 0.27901,
      "notable": false,
-     "rank": 6,
+     "rank": 7,
      "run": "coderepair-01"
     },
     "swarm-ms:primary": {
-     "q": 0.275,
+     "q": 0.25,
      "notable": false,
-     "rank": 5,
+     "rank": 6,
      "run": "swarm-ms"
     },
     "exp-01:primary": {
-     "q": 0.275,
+     "q": 0.25,
      "notable": false,
-     "rank": 4,
+     "rank": 5,
      "run": "exp-01"
     },
     "failclosed-01:primary": {
-     "q": 0.229167,
+     "q": 0.1875,
      "notable": false,
-     "rank": 3,
+     "rank": 4,
      "run": "failclosed-01"
     },
     "sweetspot-04:primary": {
-     "q": 0.021484,
+     "q": 0.015625,
+     "notable": true,
+     "rank": 3,
+     "run": "sweetspot-04"
+    },
+    "prompt-ablation:primary": {
+     "q": 0.000209,
      "notable": true,
      "rank": 2,
-     "run": "sweetspot-04"
+     "run": "prompt-ablation"
     },
     "matrix-01:primary": {
      "q": 0.0,
@@ -187,6 +194,7 @@
  "surviving": [
   "confirmation-8fam-r2",
   "matrix-01",
+  "prompt-ablation",
   "sweetspot-04",
   "transfer-01",
   "transfer-confirmation"
@@ -195,62 +203,68 @@
   "swarm-fd2:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 14,
+   "rank": 15,
    "run": "swarm-fd2"
   },
   "swarm-fd:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 13,
+   "rank": 14,
    "run": "swarm-fd"
   },
   "collapse-replication:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 12,
+   "rank": 13,
    "run": "collapse-replication"
   },
   "coderepair-02:primary": {
-   "p_bh": 0.819597,
+   "p_bh": 0.804961,
    "survives": false,
-   "rank": 11,
+   "rank": 12,
    "run": "coderepair-02"
   },
   "seed6-01:primary": {
-   "p_bh": 0.525,
+   "p_bh": 0.511364,
    "survives": false,
-   "rank": 10,
+   "rank": 11,
    "run": "seed6-01"
   },
   "coderepair-01:primary": {
-   "p_bh": 0.253175,
+   "p_bh": 0.244133,
    "survives": false,
-   "rank": 9,
+   "rank": 10,
    "run": "coderepair-01"
   },
   "swarm-ms:primary": {
-   "p_bh": 0.21875,
+   "p_bh": 0.208333,
    "survives": false,
-   "rank": 8,
+   "rank": 9,
    "run": "swarm-ms"
   },
   "exp-01:primary": {
-   "p_bh": 0.21875,
+   "p_bh": 0.208333,
    "survives": false,
-   "rank": 7,
+   "rank": 8,
    "run": "exp-01"
   },
   "failclosed-01:primary": {
-   "p_bh": 0.145833,
+   "p_bh": 0.133929,
    "survives": false,
-   "rank": 6,
+   "rank": 7,
    "run": "failclosed-01"
   },
   "sweetspot-04:primary": {
-   "p_bh": 0.010937,
+   "p_bh": 0.009766,
+   "survives": true,
+   "rank": 6,
+   "run": "sweetspot-04"
+  },
+  "prompt-ablation:primary": {
+   "p_bh": 0.000104,
    "survives": true,
    "rank": 5,
-   "run": "sweetspot-04"
+   "run": "prompt-ablation"
   },
   "transfer-01:primary": {
    "p_bh": 0.0,
@@ -295,6 +309,7 @@
   "matrix-01": "pooled paired McNemar, direct vs treatment (item data in result.json); fixed=173, broke=3, families=8",
   "mimicry-01": "no directional claim: descriptive only",
   "mimicry-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
+  "prompt-ablation": "pooled paired McNemar, direct vs step-calc; fixed=24, broke=63, families=3",
   "seed6-01": "seed-level sign test on excess over majority-vote baseline; positive_seeds=4/6",
   "swarm-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "swarm-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",

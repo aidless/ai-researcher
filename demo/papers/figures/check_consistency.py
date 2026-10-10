@@ -71,8 +71,15 @@ def main():
         if want not in text:
             problems.append(f"Fig2: manuscript does not state {want!r}")
     checked += 3
+    WORDS = {"1": "one", "2": "two", "3": "three", "4": "four", "5": "five",
+               "6": "six", "7": "seven", "8": "eight", "9": "nine", "10": "ten",
+               "11": "eleven", "12": "twelve", "13": "thirteen", "14": "fourteen"}
     n_untested = len(audit.get("untested_directional_claims", []))
-    if n_untested and not any(w in text for w in (f"{n_untested} further arms", f"{n_untested} arms")):
+    w = WORDS.get(str(n_untested), str(n_untested))
+    low = text.lower()
+    if n_untested and not any(x in low for x in
+                              (f"{n_untested} further arms", f"{n_untested} arms",
+                               f"{w} further arms", f"{w} arms")):
         problems.append(f"Fig2: the {n_untested} untested arms are not disclosed, so the figure would overstate coverage")
 
     figs = sorted(FIGDIR.glob("*/*.png"))

@@ -25,8 +25,7 @@ direction, the family coverage and the mechanism all replicated while the magnit
 did not.
 
 Applying Benjamini-Hochberg across all 14 recomputable primary endpoints in the
-project, **5 of 14 survive and 4 of them support the claim they were preregistered for
-(9 of 14 fail).** What does not survive is
+project, **6 of 15 survive: 4 support the claim they were preregistered for, 1 contradicts its own hypothesis, and 1 (prompt-ablation) confirms a preregistered scope condition rather than the core phenomenon itself (9 of 15 fail).** What does not survive is
 reported rather than dropped: swarm amplification, subset balancing, the
 inference-length sweet spot (refuted at adequate power -- budget helps
 monotonically on a 7B reasoning model and does nothing on a 7B non-reasoning one),
@@ -730,6 +729,30 @@ its primary claim on the largest samples (160 fresh items, 1280 paired
 observations) and reports every 40-item number as a discovery estimate with its
 successor beside it, rather than as a quantity that replicates exactly.
 
+## The effect is the policy, not the phrasing (prompt-ablation, STOP-EXTEND)
+
+Step-calc is one specific wording, and the transfer effect could have lived or
+died on that phrasing rather than on reasoning-before-answering as such. Three
+pre-specified variants plus the canonical wording, 80 fixed confirm160 items,
+three local models, common direct control (1200 calls, power-checked at
+mde 0.25), kill-switch on `confirmed` -- which fired:
+
+| variant | gain (mean) | fixed | broke | McNemar p | families positive |
+|---|---|---|---|---|---|
+| v0-canonical (the tested wording) | +0.396 | 101 | 6 | <1e-16 | 3/3 |
+| v1-terse ("show your work") | +0.600 | 149 | 5 | <1e-16 | 3/3 |
+| v2-verbose (explain each calculation) | +0.646 | 158 | 3 | <1e-16 | 3/3 |
+| v3-numbers (equations only, no words) | +0.233 | 71 | 15 | <1e-16 | 3/3 |
+
+Every variant beats direct in every family. The ordering is itself informative:
+more explicit reasoning helps more (verbose +0.646 > terse +0.600 > canonical
++0.396 > equations-only +0.233), while even bare equations with no prose still
+help everywhere. That gradient is inconsistent with "one lucky phrasing" and
+consistent with a policy effect whose size scales with how much reasoning the
+prompt elicits -- which also rhymes with the code-repair dose-response, where
+more demanded reasoning hurt more, in the opposite direction for a domain where
+the artifact is the answer.
+
 ## Project-level multiplicity: two families, corrected separately
 
 Endpoints are divided by preregistration status, not by outcome. A rule firing is
@@ -756,16 +779,17 @@ not a finding):
 | arm | rank | q (BH, exploratory, descriptive) | notable |
 |---|---|---|---|
 | matrix-01 | 1 | <1e-16 | notable (not a finding) |
-| sweetspot-04 | 2 | 0.021 | notable (not a finding) |
-| failclosed-01 | 3 | 0.229 | no |
-| exp-01 | 4 | 0.275 | no |
-| swarm-ms | 5 | 0.275 | no |
-| coderepair-01 | 6 | 0.298 | no |
-| seed6-01 | 7 | 0.589 | no |
-| coderepair-02 | 8 | 0.885 | no |
-| collapse-replication | 9 | 1.000 | no |
-| swarm-fd | 10 | 1.000 | no |
-| swarm-fd2 | 11 | 1.000 | no |
+| prompt-ablation | 2 | 0.000 | notable (not a finding) |
+| sweetspot-04 | 3 | 0.016 | notable (not a finding) |
+| failclosed-01 | 4 | 0.188 | no |
+| exp-01 | 5 | 0.250 | no |
+| swarm-ms | 6 | 0.250 | no |
+| coderepair-01 | 7 | 0.279 | no |
+| seed6-01 | 8 | 0.562 | no |
+| coderepair-02 | 9 | 0.859 | no |
+| collapse-replication | 10 | 1.000 | no |
+| swarm-fd | 11 | 1.000 | no |
+| swarm-fd2 | 12 | 1.000 | no |
 
 Notable in the exploratory sense: matrix-01, sweetspot-04. Notably,
 matrix-01's numbers are the strongest in the project and they buy it nothing
