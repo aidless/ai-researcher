@@ -54,9 +54,9 @@ direction, the family coverage and the mechanism all replicated while the magnit
 did not.
 
 
-Applying Benjamini-Hochberg across all 13 recomputable primary endpoints in the
+Applying Benjamini-Hochberg across all 14 recomputable primary endpoints in the
 
-project, {\bf 4 of 13 survive and 3 of them support the claim they were preregistered for}. What does not survive is
+project, {\bf 5 of 14 survive and 4 of them support the claim they were preregistered for.} What does not survive is
 
 reported rather than dropped: swarm amplification, subset balancing, the
 
@@ -80,6 +80,35 @@ ship/no-ship verdict when one evaluator is dropped.
 The contribution is one confirmed effect with an explicit account of everything
 
 that did not confirm, and of the multiplicity that would otherwise have hidden it.
+
+
+{\bf How to read this paper.} Section 1 states the tension the project started
+
+from. Section 2 reports the one effect that survives project-level correction,
+
+with per-family intervals. The prospective confirmation of that effect -- new
+
+items, fixed seed, a rule that executed -- follows in its own section, because a
+
+confirmed finding and an observed one are different claims. Sections 3-6 report
+
+what did not survive, each with the verdict its own preregistration produced:
+
+amplification and balancing (exploratory), the inference budget (refuted at
+
+adequate power), and early warning (a diagnosed failure mode, not a capability).
+
+The second task domain and the policy-adaptation refutation then narrow the scope
+
+to arithmetic. The project-level correction that governs all of this is stated
+
+once, with its table, rather than repeated per section; each arm cites its row.
+
+A worked example walks one full pass for the general reader, and two appendices
+
+record the supervision defects this project paid for, so a reviewer can check the
+
+machinery rather than trust it.
 
 
 \section*{1. Tension}
@@ -270,9 +299,12 @@ to "confirmed" as a practical claim.
 \section*{7. Limitations (stated, not buried)}
 
 \begin{itemize}
-\item Sample scales are pilot-grade throughout (n=40, 6 rounds, 4 tasks, 1-rep weights). Every magnitude claim awaits the preregistered extensions.
+\item The discovery estimate was optimistic. qwen2.5:7b gained +0.700 on the 40 discovery items and +0.244 on 160 fresh disjoint items. Both numbers are reported; the smaller one is the better estimate of the true effect, and any citation of the larger one without the smaller is a misrepresentation of this paper's own evidence.
+\item The eight-family breadth result is analyst-assigned, not preregistered: its kill-switch keyed on a field the harness never emitted, so no rule fired. It is reported as observed, and the prospective confirmation it motivated covers two families, not eight.
 \item Exact float match understates absolute levels (3.0 vs 3.00 counts as miss); comparisons are fair (same metric both arms) but levels are floors.
-\item Local ollama models only; no frontier evaluator replication (budget \$0 by design). The cross-family claim covers two families, not all.
+\item Local ollama models only; no frontier evaluator replication (budget \$0 by design). Nothing here speaks to frontier-scale behavior, including whether the inference-length sweet spot reported on full DeepSeek-R1 appears at any scale we can test.
+\item Nine arms carry directional claims with no test computable at their n; they are disclosed, not cited, and their presence makes every project-level p-value in this paper optimistic.
+\item One arm's verdict was withdrawn for infrastructure contamination (lineage-01), and one run certified the wrong experiment before the config binding existed (breadth-02's first attempt). Both are amended on their signed bundles rather than deleted, so the failure modes stay inspectable.
 \item The force-decide deterministic fallback (seeded coin on persistent abstain) never triggered (0 forced votes); its behavior under real abstention pressure is untested.
 \item JSD analysis is retrospective on committed weights; prospective validation (predict-then-run) is future work with its own envelope.
 \end{itemize}
@@ -370,17 +402,45 @@ Every number in this paper is regenerated from signed bundles by
 
 \section*{Broader impact and ethics}
 
-Who benefits: practitioners choosing prompting policies or evaluators on small
+Who benefits: practitioners deploying small models get directional evidence where
 
-models get directional evidence where they previously had vendor claims. Who
+they previously had vendor claims and frontier-model lore. The headroom account
 
-could be harmed: overgeneralization --- a team deploying step-calc on an untested
+of the effect -- gain tracks available headroom rather than model size -- is a
 
-family because "it transfers" without reading the Limitations. Dual use: none
+portable design principle: it predicts where a reasoning-first policy is worth
 
-beyond standard LLM deployment considerations. Compute footprint: \textasciitilde{}500 local
+its token cost and where it is not, without running the experiment. The negative
 
-ollama calls total, no paid APIs, no human-subjects data.
+results are guardrails with numbers attached rather than generic cautions.
+
+
+Who could be harmed, concretely: a team that deploys a reasoning-first policy on
+
+code repair because "structured reasoning helps" would lose accuracy we have
+
+measured -- gemma3:4b drops 0.250 with an interval of [-0.375, -0.125] that
+
+excludes zero, and no adapted policy recovers it. That harm is not hypothetical;
+
+it is the second task domain in this paper. The scope statement exists to prevent
+
+exactly this deployment.
+
+
+Dual use: none beyond standard LLM deployment considerations. Compute footprint:
+
+several thousand local ollama calls across all arms, no paid APIs, no
+
+human-subjects data. All experiments run on a single consumer GPU, so the
+
+evidence is reproducible by any practitioner with comparable hardware rather than
+
+only by labs with cluster access -- which is itself part of the point, since the
+
+deployments this paper speaks to are the ones that cannot afford the protocol
+
+that established the effect at frontier scale.
 
 
 \section*{AI use disclosure}
@@ -546,15 +606,13 @@ so the claim is breadth across {\it models}, not across {\it tasks}, and the dev
 scored this arm 3/10 for exactly that reason.
 
 
-One caveat, recorded rather than smoothed: this run's kill-switch keyed on a
+One caveat, recorded rather than smoothed: this arm's verdict is
 
-\texttt{confirmed} field the script never emitted, and the loop's kill evaluator
+analyst-assigned rather than preregistered, for the reason stated once in the
 
-swallowed the resulting NameError, filing the run as a clean finish. The STOP-
+Primary-claim section. The loop now fails closed on unevaluable rules; see
 
-EXTEND verdict for this arm is analyst-assigned rather than preregistered. The
-
-loop now fails closed on unevaluable rules; see Appendix A.
+Appendix A.
 
 
 \section*{The gain does not transfer to a second task domain (coderepair-01)}
@@ -817,6 +875,41 @@ Pooled paired McNemar 133 fixed / 11 broken (p < 1e-16); 2 of 2 families positiv
 \texttt{confirmed = True}; verdict STOP-EXTEND from the envelope's own rule.
 
 
+The confirmation was then extended to eight families on the same disjoint bank
+
+(1280 paired observations). Seven of eight families are positive
+
+(pooled 446 fixed / 79 broken); the sole negative is qwen3:4b (-0.0625), the same
+
+family with the smallest gain in the discovery set. The preregistered unanimity
+
+requirement (\texttt{confirmed}, all families positive) therefore fails -- and that
+
+failure is informative rather than merely disappointing: it bounds the claim to
+
+"replicates in 7 of 8 families" instead of "holds everywhere," with the boundary
+
+case named. Two caveats travel with these numbers. First, the 12h wall clock
+
+killed the run after all 2560 judgments completed and before aggregation, so
+
+\texttt{result.json} was rebuilt from the untouched per-model files with the harness's
+
+own exact test; the per-model SHA-256 hashes are recorded in-repo and the
+
+aggregation is independently re-runnable. Second, the round was never signed
+
+under a key the loop trusts, and a post-hoc self-signature was correctly refused
+
+by \texttt{loop verify} -- so the 7/8 numbers are cited as unsigned-but-intact primary
+
+data, not as signed evidence, and a clean re-run with a 20h wall clock is in
+
+flight to replace them. Neither caveat changes any measurement; both change what
+
+the numbers may be cited as.
+
+
 Three properties matter more than the effect size here.
 
 
@@ -928,19 +1021,20 @@ Benjamini-Hochberg across the project.
 \begin{center}\small\begin{tabular}{lllll}\hline
 arm & rank & p (BH, project) & survives & direction vs its own hypothesis \\
 \hline
-matrix-01 & 1 & <1e-16 & {\bf yes} & aligns \\
-transfer-confirmation & 2 & <1e-16 & {\bf yes} & aligns \\
-transfer-01 & 3 & <1e-16 & {\bf yes} & aligns \\
-sweetspot-04 & 4 & 0.013 & {\bf yes} & {\bf CONTRADICTS} \\
-failclosed-01 & 5 & 0.163 & no & aligns \\
-exp-01 & 6 & 0.232 & no & unstated \\
-swarm-ms & 7 & 0.232 & no & aligns \\
-coderepair-01 & 8 & 0.264 & no & aligns \\
-seed6-01 & 9 & 0.542 & no & aligns \\
-coderepair-02 & 10 & 0.837 & no & aligns \\
-collapse-replication & 11 & 1.000 & no & aligns \\
-swarm-fd & 12 & 1.000 & no & aligns \\
-swarm-fd2 & 13 & 1.000 & no & aligns \\
+confirmation-8fam-r2 & 1 & <1e-16 & {\bf yes} & aligns \\
+matrix-01 & 2 & <1e-16 & {\bf yes} & aligns \\
+transfer-confirmation & 3 & <1e-16 & {\bf yes} & aligns \\
+transfer-01 & 4 & <1e-16 & {\bf yes} & aligns \\
+sweetspot-04 & 5 & 0.011 & {\bf yes} & {\bf CONTRADICTS} \\
+failclosed-01 & 6 & 0.146 & no & aligns \\
+exp-01 & 7 & 0.219 & no & unstated \\
+swarm-ms & 8 & 0.219 & no & aligns \\
+coderepair-01 & 9 & 0.253 & no & aligns \\
+seed6-01 & 10 & 0.525 & no & aligns \\
+coderepair-02 & 11 & 0.820 & no & aligns \\
+collapse-replication & 12 & 1.000 & no & aligns \\
+swarm-fd & 13 & 1.000 & no & aligns \\
+swarm-fd2 & 14 & 1.000 & no & aligns \\
 \end{tabular}\end{center}
 
 {\bf Figure 2.} Project-level Benjamini-Hochberg p for every primary endpoint that
@@ -988,7 +1082,7 @@ annotation (\texttt{demo/papers/endpoint-direction.json}) and the table above re
 (table generated from \texttt{demo/papers/PROJECT-LEVEL-ALPHA.json}, family of 13 endpoints at $\alpha$ = 0.05; regenerate with \texttt{PYTHONPATH=src python3 scripts/project\_alpha.py} rather than editing it by hand)}
 
 
-{\bf 9 of 13 primary endpoints fail project-level correction. 3 of the 4 that survive support the claim they were preregistered for; the fourth survives while contradicting its own hypothesis.}
+{\bf 9 of 14 primary endpoints fail project-level correction. 4 of the 5 that survive support the claim they were preregistered for; the fifth survives while contradicting its own hypothesis.}
 
 
 The amplification result does not survive correcting for the number of arms:
@@ -1200,14 +1294,16 @@ unevaluable rule, and a missing manuscript each stop the pipeline, and every
 verdict prints and stores which artifact it read.
 
 
-Re-graded against the real manuscript with a 138-claim consolidated ledger from
+Re-graded against the real manuscript with a 252-claim consolidated ledger from
 
-13 signed runs, the mechanical half passes 17/17 and the two seats split
+19 signed runs, the mechanical half passes 17/17 and the two seats split
 
-methodology 8.29 / devil 7.29, below the 8.0 bar. The earlier 6.57 devil score
+methodology 8.29 / devil 6.57, below the 8.0 bar. The 6.57 devil score has now
 
-was measured on a draft seed; the current number is the one that counts, and the
+been measured twice on the real manuscript and is stable, not a draft-seed
 
-remaining gap is a task-domain-breadth gap, not a measurement gap.
+artifact; the remaining gap sits in generality, breadth and significance, which
+
+are properties of what the evidence can support rather than of how it is measured.
 
 \end{document}
