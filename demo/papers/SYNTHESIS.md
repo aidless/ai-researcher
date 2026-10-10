@@ -598,6 +598,24 @@ provably writes -- which fired.
 Pooled paired McNemar 133 fixed / 11 broken (p < 1e-16); 2 of 2 families positive;
 `confirmed = True`; verdict STOP-EXTEND from the envelope's own rule.
 
+The confirmation was then extended to eight families on the same disjoint bank
+(1280 paired observations). Seven of eight families are positive
+(pooled 446 fixed / 79 broken); the sole negative is qwen3:4b (-0.0625), the same
+family with the smallest gain in the discovery set. The preregistered unanimity
+requirement (`confirmed`, all families positive) therefore fails -- and that
+failure is informative rather than merely disappointing: it bounds the claim to
+"replicates in 7 of 8 families" instead of "holds everywhere," with the boundary
+case named. Two caveats travel with these numbers. First, the 12h wall clock
+killed the run after all 2560 judgments completed and before aggregation, so
+`result.json` was rebuilt from the untouched per-model files with the harness's
+own exact test; the per-model SHA-256 hashes are recorded in-repo and the
+aggregation is independently re-runnable. Second, the round was never signed
+under a key the loop trusts, and a post-hoc self-signature was correctly refused
+by `loop verify` -- so the 7/8 numbers are cited as unsigned-but-intact primary
+data, not as signed evidence, and a clean re-run with a 20h wall clock is in
+flight to replace them. Neither caveat changes any measurement; both change what
+the numbers may be cited as.
+
 Three properties matter more than the effect size here.
 
 1. **The items are new.** `build_confirm_set.py` refuses to write a bank that
