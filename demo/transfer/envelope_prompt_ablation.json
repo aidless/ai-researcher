@@ -1,0 +1,40 @@
+{
+  "hypothesis": "the arithmetic transfer effect is the policy, not the phrasing: three pre-specified wording variants of step-calc all beat direct answering",
+  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared:$ROOT/demo/transfer\" python3 \"$ROOT/demo/transfer/run_prompt_ablation.py\" --selftest && PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared:$ROOT/demo/transfer\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261011 EVO_MODELS=\"qwen2.5:7b,gemma3:4b,llama3.1:8b\" python3 \"$ROOT/demo/transfer/run_prompt_ablation.py\"",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 8.0,
+  "kill_switch": [
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": "all variants beat direct: the effect is the policy, report it as such"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "at least one variant fails: the effect is wording-sensitive, narrow the claim to the canonical phrasing"
+    }
+  ],
+  "required_artifacts": [
+    "result.json",
+    "items.json"
+  ],
+  "approved_by": "liuzewen (全做 P1; wording-robustness of the central effect, power-checked)",
+  "approved_at": "2026-10-10T09:19:03.215070+00:00",
+  "seed": 20261011,
+  "tension": "Step-calc is one specific wording, and the entire transfer effect could live or die on that phrasing rather than on reasoning-before-answering as such. No arm has varied the wording while holding everything else fixed, so whether the paper's central claim describes a policy or a prompt is unmeasured. Answering it decides if the claim generalizes across phrasings or must be narrowed to the exact tested wording.",
+  "power": {
+    "n": 240,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.25,
+    "power_at_mde": 0.8,
+    "endpoint": ""
+  },
+  "negative_publish": "replication-report",
+  "expect": {
+    "n_items": 80,
+    "models": 3,
+    "variants": 4
+  }
+}
