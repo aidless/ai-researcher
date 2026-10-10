@@ -1,5 +1,120 @@
 {
  "family_size": 14,
+ "families": {
+  "confirmatory": {
+   "definition": "preregistered hypothesis about the core phenomenon, rule fired, direction pre-specified",
+   "size": 3,
+   "surviving": [
+    "confirmation-8fam-r2",
+    "transfer-01",
+    "transfer-confirmation"
+   ],
+   "endpoints": {
+    "transfer-01:primary": {
+     "q": 0.0,
+     "survives": true,
+     "rank": 3,
+     "run": "transfer-01"
+    },
+    "transfer-confirmation:primary": {
+     "q": 0.0,
+     "survives": true,
+     "rank": 2,
+     "run": "transfer-confirmation"
+    },
+    "confirmation-8fam-r2:primary": {
+     "q": 0.0,
+     "survives": true,
+     "rank": 1,
+     "run": "confirmation-8fam-r2"
+    }
+   }
+  },
+  "sensitivity_worst_case": {
+   "definition": "untestable arms as p=1.0 inside confirmatory; survival here means the conclusion does not depend on the exclusion",
+   "surviving": [
+    "confirmation-8fam-r2",
+    "transfer-01",
+    "transfer-confirmation"
+   ]
+  },
+  "exploratory": {
+   "definition": "everything else testable; BH is descriptive, survival is not a finding",
+   "size": 11,
+   "notable": [
+    "matrix-01",
+    "sweetspot-04"
+   ],
+   "endpoints": {
+    "swarm-fd2:primary": {
+     "q": 1.0,
+     "notable": false,
+     "rank": 11,
+     "run": "swarm-fd2"
+    },
+    "swarm-fd:primary": {
+     "q": 1.0,
+     "notable": false,
+     "rank": 10,
+     "run": "swarm-fd"
+    },
+    "collapse-replication:primary": {
+     "q": 1.0,
+     "notable": false,
+     "rank": 9,
+     "run": "collapse-replication"
+    },
+    "coderepair-02:primary": {
+     "q": 0.885457,
+     "notable": false,
+     "rank": 8,
+     "run": "coderepair-02"
+    },
+    "seed6-01:primary": {
+     "q": 0.589286,
+     "notable": false,
+     "rank": 7,
+     "run": "seed6-01"
+    },
+    "coderepair-01:primary": {
+     "q": 0.298385,
+     "notable": false,
+     "rank": 6,
+     "run": "coderepair-01"
+    },
+    "swarm-ms:primary": {
+     "q": 0.275,
+     "notable": false,
+     "rank": 5,
+     "run": "swarm-ms"
+    },
+    "exp-01:primary": {
+     "q": 0.275,
+     "notable": false,
+     "rank": 4,
+     "run": "exp-01"
+    },
+    "failclosed-01:primary": {
+     "q": 0.229167,
+     "notable": false,
+     "rank": 3,
+     "run": "failclosed-01"
+    },
+    "sweetspot-04:primary": {
+     "q": 0.021484,
+     "notable": true,
+     "rank": 2,
+     "run": "sweetspot-04"
+    },
+    "matrix-01:primary": {
+     "q": 0.0,
+     "notable": true,
+     "rank": 1,
+     "run": "matrix-01"
+    }
+   }
+  }
+ },
  "surviving_supporting_claim": [
   "confirmation-8fam-r2",
   "matrix-01",

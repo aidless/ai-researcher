@@ -225,6 +225,15 @@ def primary_pass_count(run_dir: pathlib.Path):
 
 WITHDRAWN = {"lineage-01": "v3c regression withdrawn: infrastructure contamination, "
                            "recorded by amendment"}
+# Confirmatory vs exploratory, by preregistration status -- not by outcome.
+# A rule firing is necessary but not sufficient: the hypothesis must have been
+# specified BEFORE the run as a test of the paper's core phenomenon, with a
+# direction and a decision rule. matrix-01 stated a hypothesis but its rule keyed
+# on a field the harness never emitted, so no rule fired and its verdict was
+# analyst-assigned: it is exploratory no matter how strong its numbers. The
+# confirmatory family is therefore exactly the three arms that tested the
+# arithmetic transfer hypothesis with a rule that executed.
+CONFIRMATORY = {"transfer-01", "transfer-confirmation", "confirmation-8fam-r2"}
 # A run superseded by a clean re-run: the original stays on disk with its
 # amendment, but the family uses the replacement. confirmation-8fam produced
 # genuine measurements that were never signed (wall clock killed it before
@@ -310,37 +319,49 @@ def main() -> int:
     tests, notes, excluded, untested, inflight = collect(runs)
     print(f"project-level multiplicity over {len(tests)} testable primary endpoints "
           f"(+{len(notes)} non-testable, {len(excluded)} withdrawn)\n")
+    # Two families, corrected separately. Mixing preregistered confirmatory
+    # endpoints with exploratory ones lets the exploratory count dilute (or
+    # inflate) the confirmatory inference, and lets a strong exploratory result
+    # borrow confirmatory status. matrix-01 is the reason this separation exists:
+    # its numbers are the strongest in the project and its verdict was
+    # analyst-assigned, so admitting it to the confirmatory family would launder
+    # an observation into a finding.
+    conf_tests = [t for t in tests if t[2] in CONFIRMATORY]
+    expl_tests = [t for t in tests if t[2] not in CONFIRMATORY]
+    bh_conf = benjamini_hochberg(conf_tests)
+    bh_expl = benjamini_hochberg(expl_tests)
+    # Sensitivity: the untestable arms sit outside every family, which flatters
+    # every reported q-value. Worst case, treat each as a failed endpoint
+    # (p = 1.0) inside the confirmatory family and re-correct. If the
+    # confirmatory survivors survive that too, the conclusion does not depend on
+    # the exclusion.
+    worst = list(conf_tests) + [("untestable-%d" % i, 1.0, "untestable-%d" % i)
+                                for i in range(len(untested))]
+    bh_worst = benjamini_hochberg(worst)
+    print(f"\nSENSITIVITY (untestable arms as worst-case p=1.0 inside confirmatory):")
+    for label in sorted(bh_worst, key=lambda k: bh_worst[k][0]):
+        p_bh, ok, rank, run = bh_worst[label]
+        if run.startswith("untestable"):
+            continue
+        print(f"  {run:16s} rank {rank:2d}  q={p_bh:.2e}  "
+              f"{'SURVIVES' if ok else 'does not survive'}")
+    print(f"CONFIRMATORY family ({len(conf_tests)} preregistered endpoints, "
+          f"rules fired):")
+    for label in sorted(bh_conf, key=lambda k: bh_conf[k][0]):
+        p_bh, ok, rank, run = bh_conf[label]
+        print(f"  {run:16s} rank {rank:2d}  q={p_bh:.2e}  "
+              f"{'SURVIVES' if ok else 'does not survive'}")
+    print(f"\nEXPLORATORY family ({len(expl_tests)} endpoints, descriptive BH):")
+    for label in sorted(bh_expl, key=lambda k: bh_expl[k][0]):
+        p_bh, ok, rank, run = bh_expl[label]
+        print(f"  {run:16s} rank {rank:2d}  q={p_bh:.2e}  "
+              f"{'notable' if ok else 'not notable'} (exploratory: not a finding)")
+    # Combined family retained ONLY for backward-compatible JSON output and for
+    # the figure, which plots every endpoint with its direction marked. It is NOT
+    # printed as a verdict anymore: printing "5/14 survive" alongside the split
+    # families would let a reader cite the pooled number, which is exactly the
+    # mixing this split exists to prevent.
     bh = benjamini_hochberg(tests)
-    for label in sorted(bh, key=lambda k: bh[k][0]):
-        p_bh, ok, rank, run = bh[label]
-        print(f"  {run:16s} rank {rank:2d}  p_bh={p_bh:.2e}  "
-              f"{'SURVIVES' if ok else 'does not survive'} project-level BH")
-    # A surviving endpoint is not a supporting result. sweetspot-04's endpoint
-    # survives at p_BH = 0.013 while pointing the OPPOSITE way from its own
-    # preregistered hypothesis, so it is a refutation that happens to be
-    # statistically distinguishable from zero. Reporting "N of M survive"
-    # without the direction would let that read as a finding.
-    dir_path = ROOT / "demo/papers/endpoint-direction.json"
-    try:
-        dirs = json.loads(dir_path.read_text(encoding="utf-8"))["endpoints"]
-    except Exception:
-        dirs = {}
-    aligned = [k for k, v in bh.items()
-               if v[1] and dirs.get(v[3], {}).get("direction") == "aligns"]
-    contradicted = [k for k, v in bh.items()
-                    if v[1] and dirs.get(v[3], {}).get("direction") == "contradicts"]
-    unstated = [k for k, v in bh.items()
-                if v[1] and dirs.get(v[3], {}).get("direction") == "unstated"]
-    n_surv = sum(1 for v in bh.values() if v[1])
-    print(f"\n  {n_surv}/{len(bh)} primary endpoints survive BH at 0.05 across the project")
-    print(f"  of those, {len(aligned)} SUPPORT the claim they were preregistered for")
-    if contradicted:
-        print(f"  and {len(contradicted)} point the OPPOSITE way from their own "
-              f"hypothesis (a refutation that happens to be resolvable): "
-              f"{', '.join(k.split(':')[0] for k in contradicted)}")
-    if unstated:
-        print(f"  {len(unstated)} made no directional promise, so survival is "
-              f"descriptive only: {', '.join(k.split(':')[0] for k in unstated)}")
     print("\n=== recomputed endpoint detail ===")
     for name, detail in notes:
         print(f"  {name:16s} {detail}")
@@ -353,12 +374,52 @@ def main() -> int:
         print(f"  {name:16s} {why}")
     if inflight:
         print(f"  in flight (not withdrawals): {', '.join(inflight)}")
+    # Direction annotation, computed over the combined endpoints for backward
+    # compatibility with the figure and the paper table. The verdict-relevant
+    # numbers are the per-family ones printed above; these exist so nothing
+    # downstream breaks.
+    dir_path = ROOT / "demo/papers/endpoint-direction.json"
+    try:
+        _dirs = json.loads(dir_path.read_text(encoding="utf-8"))["endpoints"]
+    except Exception:
+        _dirs = {}
+    aligned = [k for k, v in bh.items()
+               if v[1] and _dirs.get(v[3], {}).get("direction") == "aligns"]
+    contradicted = [k for k, v in bh.items()
+                    if v[1] and _dirs.get(v[3], {}).get("direction") == "contradicts"]
+    unstated = [k for k, v in bh.items()
+                if v[1] and _dirs.get(v[3], {}).get("direction") == "unstated"]
     out = {
         "family_size": len(bh),
+        "families": {
+            "confirmatory": {
+                "definition": "preregistered hypothesis about the core phenomenon, "
+                              "rule fired, direction pre-specified",
+                "size": len(bh_conf),
+                "surviving": sorted(k.split(":")[0] for k, v in bh_conf.items() if v[1]),
+                "endpoints": {k: {"q": v[0], "survives": v[1], "rank": v[2], "run": v[3]}
+                              for k, v in bh_conf.items()},
+            },
+            "sensitivity_worst_case": {
+                "definition": "untestable arms as p=1.0 inside confirmatory; "
+                              "survival here means the conclusion does not "
+                              "depend on the exclusion",
+                "surviving": sorted(k.split(":")[0] for k, v in bh_worst.items()
+                                    if v[1] and not k.startswith("untestable")),
+            },
+            "exploratory": {
+                "definition": "everything else testable; BH is descriptive, "
+                              "survival is not a finding",
+                "size": len(bh_expl),
+                "notable": sorted(k.split(":")[0] for k, v in bh_expl.items() if v[1]),
+                "endpoints": {k: {"q": v[0], "notable": v[1], "rank": v[2], "run": v[3]}
+                              for k, v in bh_expl.items()},
+            },
+        },
         "surviving_supporting_claim": sorted(k.split(":")[0] for k in aligned),
         "surviving_contradicting_claim": sorted(k.split(":")[0] for k in contradicted),
         "surviving_direction_unstated": sorted(k.split(":")[0] for k in unstated),
-        "directions": dirs,
+        "directions": _dirs,
         "alpha": 0.05,
         "surviving": sorted(k.split(":")[0] for k, v in bh.items() if v[1]),
         "endpoints": {k: {"p_bh": v[0], "survives": v[1], "rank": v[2], "run": v[3]}
