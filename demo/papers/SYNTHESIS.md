@@ -24,9 +24,8 @@ original estimate on 40 items was +0.700 for one of those families, so the
 direction, the family coverage and the mechanism all replicated while the magnitude
 did not.
 
-Applying Benjamini-Hochberg across all 13 recomputable primary endpoints in the
-project, **4 of 13 survive and 3 of them support the claim they were preregistered
-for**. What does not survive is
+Applying Benjamini-Hochberg across all 14 recomputable primary endpoints in the
+project, **5 of 14 survive and 4 of them support the claim they were preregistered for.** What does not survive is
 reported rather than dropped: swarm amplification, subset balancing, the
 inference-length sweet spot (refuted at adequate power -- budget helps
 monotonically on a 7B reasoning model and does nothing on a 7B non-reasoning one),
@@ -686,19 +685,20 @@ Benjamini-Hochberg across the project.
 
 | arm | rank | p (BH, project) | survives | direction vs its own hypothesis |
 |---|---|---|---|---|
-| matrix-01 | 1 | <1e-16 | **yes** | aligns |
-| transfer-confirmation | 2 | <1e-16 | **yes** | aligns |
-| transfer-01 | 3 | <1e-16 | **yes** | aligns |
-| sweetspot-04 | 4 | 0.013 | **yes** | **CONTRADICTS** |
-| failclosed-01 | 5 | 0.163 | no | aligns |
-| exp-01 | 6 | 0.232 | no | unstated |
-| swarm-ms | 7 | 0.232 | no | aligns |
-| coderepair-01 | 8 | 0.264 | no | aligns |
-| seed6-01 | 9 | 0.542 | no | aligns |
-| coderepair-02 | 10 | 0.837 | no | aligns |
-| collapse-replication | 11 | 1.000 | no | aligns |
-| swarm-fd | 12 | 1.000 | no | aligns |
-| swarm-fd2 | 13 | 1.000 | no | aligns |
+| confirmation-8fam-r2 | 1 | <1e-16 | **yes** | aligns |
+| matrix-01 | 2 | <1e-16 | **yes** | aligns |
+| transfer-confirmation | 3 | <1e-16 | **yes** | aligns |
+| transfer-01 | 4 | <1e-16 | **yes** | aligns |
+| sweetspot-04 | 5 | 0.011 | **yes** | **CONTRADICTS** |
+| failclosed-01 | 6 | 0.146 | no | aligns |
+| exp-01 | 7 | 0.219 | no | unstated |
+| swarm-ms | 8 | 0.219 | no | aligns |
+| coderepair-01 | 9 | 0.253 | no | aligns |
+| seed6-01 | 10 | 0.525 | no | aligns |
+| coderepair-02 | 11 | 0.820 | no | aligns |
+| collapse-replication | 12 | 1.000 | no | aligns |
+| swarm-fd | 13 | 1.000 | no | aligns |
+| swarm-fd2 | 14 | 1.000 | no | aligns |
 
 **Figure 2.** Project-level Benjamini-Hochberg p for every primary endpoint that
 can be recomputed from per-item evidence, log scale, against α = 0.05. The arms
@@ -721,7 +721,9 @@ annotation (`demo/papers/endpoint-direction.json`) and the table above reports i
 *(table generated from `demo/papers/PROJECT-LEVEL-ALPHA.json`, family of 13 endpoints at α = 0.05; regenerate with
 `PYTHONPATH=src python3 scripts/project_alpha.py` rather than editing it by hand)*
 
-**9 of 13 primary endpoints fail project-level correction. 3 of the 4 that survive support the claim they were preregistered for; the fourth survives while contradicting its own hypothesis.**
+**9 of 14 primary endpoints fail project-level correction. 4 of the 5 that survive
+support the claim they were preregistered for; the fifth survives while
+contradicting its own hypothesis.**
 
 The amplification result does not survive correcting for the number of arms:
 swarm-ms was reported with a

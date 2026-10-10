@@ -32,6 +32,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]  # scripts/ -> repo root
 sys.path.insert(0, str(ROOT / "src"))
 
 from ai_researcher.evidence import verify_round  # noqa: E402
+from ai_researcher import keystore as KS  # noqa: E402
 from ai_researcher.envelope import Envelope  # noqa: E402
 from ai_researcher.loop import _parse_ledger  # noqa: E402
 from ai_researcher.quality import mechanical_check  # noqa: E402
@@ -44,41 +45,194 @@ def section(title: str) -> None:
     print(f"\n=== {title} ===")
 
 
+# Runs superseded by a clean re-run: the original stays on disk with its amendment,
+# but its failures are expected-and-documented rather than actionable. Without this,
+# two FAILs on confirmation-8fam would stay lit forever -- not because anything is
+# newly wrong, but because a superseded round will never be re-signed. A permanent
+# red that cannot clear trains people to ignore red.
+SUPERSEDED_RUNS = {
+    "confirmation-8fam": "superseded by confirmation-8fam-r2 (identical design, "
+                          "signed bundle, same boundary family)",
+}
+
+
 def check_bundles(runs_dir: pathlib.Path) -> None:
     section("evidence bundles")
-    ok = bad = 0
+    # Trust comes from keys/ pinned OUTSIDE every run directory (2026-10-09). Before
+    # this, this sweep took the pubkey from the run's own state.json -- the same file
+    # that stored the private key -- so tampering an artifact and re-signing it in place
+    # printed "valid" here too. The denominator is now the round list in state.json,
+    # which also closes the old gap where deleting envelope.json made a round simply
+    # not appear (an absent signature is a failure, not a skip).
+    ok = bad = legacy = missing = 0
     invalid = []
-    for rd in sorted(runs_dir.glob("*/round-*")):
-        ep = rd / "envelope.json"
-        if not ep.exists():
+    for st_file in sorted(runs_dir.glob("*/state.json")):
+        run = st_file.parent
+        state = json.loads(st_file.read_text(encoding="utf-8"))
+        declared = len(state.get("rounds", []))
+        if declared == 0:
             continue
-        state = json.loads((rd.parent / "state.json").read_text(encoding="utf-8"))
-        if not state.get("key_pub"):
+        if KS.root_pub(KS.default_root_dir()) is None:
+            FAILS.append(f"{run.name}: no pinned trust root at "
+                         f"{KS.default_root_dir() / KS.ROOT_PUB} -- this is NOT_VERIFIABLE, "
+                         f"not a pass")
             continue
-        envl = json.loads(ep.read_text(encoding="utf-8"))
-        pub = bytes.fromhex(state["key_pub"])
-        # sign_round returns {"bundle":..., "envelope":...}; verify_round wants the
-        # inner envelope, which is where payload/signature live.
-        signed = envl.get("envelope", envl)
-        res = verify_round(rd / "artifacts", envl["bundle"], signed, pub)
-        if res["valid"]:
-            ok += 1
-        else:
-            bad += 1
-            invalid.append((rd.parent.name, res["reason"]))
-    print(f"  {ok} valid, {bad} invalid")
-    for name, reason in invalid:
+        res = KS.verify_run(run)
+        seen = len(res["rounds"])
+        if seen < declared:
+            missing += declared - seen
+            invalid.append((run.name, None,
+                            f"state.json declares {declared} round(s) but only {seen} carry "
+                            f"an envelope.json -- a deleted signature is not a verified round"))
+        for r in res["rounds"]:
+            if r["valid"]:
+                ok += 1
+                if "legacy era" in r["reason"]:
+                    legacy += 1
+            else:
+                bad += 1
+                invalid.append((run.name, r["round"], r["reason"]))
+    print(f"  {ok} valid, {bad} invalid, {missing} signature-file missing")
+    if legacy:
+        NOTES.append(f"{legacy}/{ok} valid bundles are legacy-era (pre-trust-root keys "
+                     f"pinned in {KS.LEGACY}). They prove the files were not edited after "
+                     f"signing; they do NOT prove a human approved the run -- green here is "
+                     f"not authorship")
+    for name, rdir, reason in invalid:
         line = f"{name}: {reason}"
-        # A bundle invalid because a human edited a signed artifact is a
-        # documented, intentional state in this repo (swarm-fd). It is reported
-        # loudly and allowed only when an amendment explains it.
-        amd = (runs_dir / name / "round-01" / "amendment.json")
-        if amd.exists():
+        if name in SUPERSEDED_RUNS:
+            NOTES.append(f"{line} -- SUPERSEDED: {SUPERSEDED_RUNS[name]}")
+            continue
+        # An amendment excuses exactly one thing: the artifacts directory changed after
+        # signing (swarm-fd -- a human edited a signed result.json, the chain broke, and
+        # the ledger says so). It was unconditional before 2026-10-09, which a fixture
+        # proved: with ANY amendment file present, a deleted envelope and a
+        # tamper-then-re-sign both printed "no failures" and exited 0. A signature
+        # failure, a missing signature file, or a run-dir key rewrite is never
+        # "documented state" -- those FAIL. The lookup follows the round that actually
+        # failed (it used to be hardcoded round-01, so a round-02 break found the wrong
+        # round's paperwork). Known limit, not yet closed: this checks that the round
+        # carries an amendment, not that the amendment text describes this edit.
+        amd = (runs_dir / name / (rdir or "round-??") / "amendment.json")
+        if rdir is not None and amd.exists() and "hash mismatch" in reason:
             NOTES.append(f"{line} -- documented by amendment, expected")
         else:
             FAILS.append(line)
-    if bad:
-        print("  invalid bundles listed above; those without an amendment FAIL")
+    if bad or missing:
+        print("  invalid/missing bundles listed above; those without an amendment FAIL")
+
+
+REVIEW_FIX_DATE = "2026-10-09"  # superseded: the criterion below is loop_schema, not a date
+SCHEMA_REQUIRES_REVIEW = 2      # loop.LOOP_SCHEMA from which a review record is mandatory
+
+
+def check_signing_power(runs_dir: pathlib.Path) -> None:
+    """Invariant: no run directory holds signing power.
+
+    loop.py nulls `key_priv` before it ever saves state, but that is a *writer*
+    guarantee -- it says nothing about files that arrive by another route (an
+    older checkout, a hand-built state.json, a resumed copy). The trust root only
+    means something if the audited object cannot also be the signer, so the
+    invariant is checked on the bytes, not asserted from the code path.
+    """
+    section("no run dir holds a signing key")
+    pinned = set()
+    pinf = ROOT / "demo" / "legacy_unreviewed.txt"
+    rk = ROOT / "demo" / "evidence" / "line_registry.jsonl"
+    if rk.exists():
+        for line in rk.read_text(encoding="utf-8").splitlines():
+            try:
+                pinned.add(str(json.loads(line).get("key_pub") or ""))
+            except Exception:
+                continue
+    legacy = ROOT / "src" / "ai_researcher" / "legacy_pubkeys.jsonl"
+    if legacy.exists():
+        for line in legacy.read_text(encoding="utf-8").splitlines():
+            try:
+                pinned.add(str(json.loads(line).get("key_pub") or ""))
+            except Exception:
+                continue
+    offenders = 0
+    for st_file in sorted(runs_dir.glob("*/state.json")):
+        try:
+            st = json.loads(st_file.read_text(encoding="utf-8"))
+        except Exception as e:                       # unreadable state is not "clean"
+            FAILS.append(f"{st_file.parent.name}: state.json unparseable ({e}) -- "
+                         "signing-power check cannot run")
+            continue
+        priv = st.get("key_priv")
+        if priv in (None, "", 0):
+            continue
+        offenders += 1
+        pub = str(st.get("key_pub") or "")
+        where = "在注册表/固定表里" if pub in pinned else "不在任何固定表里（任何人都能拿它对任意产物重新签名后再覆盖 key_pub）"
+        FAILS.append(
+            f"{st_file.parent.name}: state.json 里带着可用私钥 key_priv={str(priv)[:12]}… "
+            f"（{where}；status={st.get('status')} loop_schema={st.get('loop_schema')}）"
+            " -- 被审对象自己持有签名权力，信任根等于没有")
+    if not offenders:
+        print(f"  ok: {len(list(runs_dir.glob('*/state.json')))} 份 state.json 无一持有私钥")
+    else:
+        print(f"  {offenders} 份 state.json 持有私钥")
+
+
+def check_review_coverage(runs_dir: pathlib.Path) -> None:
+    section("judgment stage reachability")
+    # Two fixes live here and the second one is about this check itself.
+    # (a) The cadence trigger (rnd % 2 == 0) could never fire for envelopes with
+    #     max_rounds=1 -- 0 of 27 historical rounds carried a review.
+    # (b) The review stage then sat AFTER the terminal branch's break, so seed6-01 --
+    #     the first run of the repaired loop, STOP-REFUTED at n=6 -- reached a final
+    #     verdict with review=None, and this check did not flag it, because it compared
+    #     started_at against "2026-10-09" while the stamp is UTC (18:23Z on the 8th) and
+    #     the local clock already read the 9th. A date-gate that mis-fires on its own
+    #     first case is not a gate. The criterion is now the code marker loop_schema.
+    reviewed = errored = exempt = pre_schema = 0
+    exempt_names = set()
+    exf = ROOT / "demo" / "legacy_unreviewed.txt"
+    if exf.exists():
+        # the file is "name<TAB>reason"; taking the whole line was my first attempt and it
+        # made the exemption silently never match (the gate then FAILED on the run the
+        # exemption was written for -- a broken allowlist is loud only because a fixture
+        # made it loud)
+        exempt_names = {l.split("\t")[0].strip() for l in
+                        exf.read_text(encoding="utf-8").splitlines()
+                        if l.strip() and not l.startswith("#")}
+    for st_file in sorted(runs_dir.glob("*/state.json")):
+        state = json.loads(st_file.read_text(encoding="utf-8"))
+        rounds = state.get("rounds", [])
+        if not rounds:
+            continue
+        with_review = [r for r in rounds if isinstance(r.get("review"), dict)]
+        schema = int(state.get("loop_schema", 1) or 1)
+        # key_era == "root" is the other handle on "produced by the repaired code": it was
+        # written by cmd_run from the trust-root commit onward, and seed6-01 carries it
+        # while predating the loop_schema field. Either marker triggers the requirement.
+        post_fix = schema >= SCHEMA_REQUIRES_REVIEW or state.get("key_era") == "root"
+        name = st_file.parent.name
+        if with_review:
+            reviewed += 1
+            if any("error" in r["review"] for r in with_review):
+                errored += 1
+        elif post_fix:
+            if name in exempt_names:
+                exempt += 1
+            else:
+                why = (f"loop_schema={schema}" if schema >= SCHEMA_REQUIRES_REVIEW
+                       else "key_era=root (post-trust-root, schema field absent)")
+                FAILS.append(f"{name}: {why} marks this run as produced by the repaired "
+                             f"loop, which requires a review record on the terminal round; "
+                             f"none exists -- the judgment stage is unreachable again")
+        else:
+            pre_schema += 1
+    if exempt:
+        NOTES.append(f"{exempt} schema>=2 run(s) carry no review but are listed in "
+                     f"demo/legacy_unreviewed.txt (created before the 5c placement fix)")
+    NOTES.append(f"{reviewed} run(s) carry a review record"
+                 + (f", {errored} of which record an error in the reviewer call "
+                    f"(an attempted review with no review key is NOT a review)" if errored else "")
+                 + f"; {pre_schema} pre-schema-{SCHEMA_REQUIRES_REVIEW} run(s) have none, "
+                 f"which is the structural gap that was fixed, not a new defect")
 
 
 def check_unsigned_extras(runs_dir: pathlib.Path) -> None:
@@ -319,7 +473,9 @@ def check_proposals() -> None:
 def main() -> int:
     print(f"ai-researcher integrity sweep: {ROOT}")
     check_bundles(ROOT / "demo/runs")
+    check_signing_power(ROOT / "demo/runs")
     check_unsigned_extras(ROOT / "demo/runs")
+    check_review_coverage(ROOT / "demo/runs")
     check_ledger(ROOT / "demo/papers/CLAIM_LEDGER.md")
     check_envelopes()
     check_mechanical_gate()

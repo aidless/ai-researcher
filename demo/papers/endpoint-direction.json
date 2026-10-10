@@ -52,6 +52,10 @@
     "collapse-replication": {
       "direction": "aligns",
       "claim": "the +0.1994 excess is not reproducible across independent runs (a null, reported as such)"
+    },
+    "confirmation-8fam-r2": {
+      "direction": "aligns",
+      "claim": "7/8 families positive on 160 fresh disjoint items (1280 paired obs), signed bundle, kill-switch fired; unanimity fails informatively at qwen3:4b"
     }
   }
 }

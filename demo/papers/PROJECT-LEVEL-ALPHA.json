@@ -1,6 +1,7 @@
 {
- "family_size": 13,
+ "family_size": 14,
  "surviving_supporting_claim": [
+  "confirmation-8fam-r2",
   "matrix-01",
   "transfer-01",
   "transfer-confirmation"
@@ -61,10 +62,15 @@
   "collapse-replication": {
    "direction": "aligns",
    "claim": "the +0.1994 excess is not reproducible across independent runs (a null, reported as such)"
+  },
+  "confirmation-8fam-r2": {
+   "direction": "aligns",
+   "claim": "7/8 families positive on 160 fresh disjoint items (1280 paired obs), signed bundle, kill-switch fired; unanimity fails informatively at qwen3:4b"
   }
  },
  "alpha": 0.05,
  "surviving": [
+  "confirmation-8fam-r2",
   "matrix-01",
   "sweetspot-04",
   "transfer-01",
@@ -74,80 +80,86 @@
   "swarm-fd2:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 13,
+   "rank": 14,
    "run": "swarm-fd2"
   },
   "swarm-fd:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 12,
+   "rank": 13,
    "run": "swarm-fd"
   },
   "collapse-replication:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 11,
+   "rank": 12,
    "run": "collapse-replication"
   },
   "coderepair-02:primary": {
-   "p_bh": 0.83716,
+   "p_bh": 0.819597,
    "survives": false,
-   "rank": 10,
+   "rank": 11,
    "run": "coderepair-02"
   },
   "seed6-01:primary": {
-   "p_bh": 0.541667,
+   "p_bh": 0.525,
    "survives": false,
-   "rank": 9,
+   "rank": 10,
    "run": "seed6-01"
   },
   "coderepair-01:primary": {
-   "p_bh": 0.264478,
+   "p_bh": 0.253175,
    "survives": false,
-   "rank": 8,
+   "rank": 9,
    "run": "coderepair-01"
   },
   "swarm-ms:primary": {
-   "p_bh": 0.232143,
+   "p_bh": 0.21875,
    "survives": false,
-   "rank": 7,
+   "rank": 8,
    "run": "swarm-ms"
   },
   "exp-01:primary": {
-   "p_bh": 0.232143,
+   "p_bh": 0.21875,
    "survives": false,
-   "rank": 6,
+   "rank": 7,
    "run": "exp-01"
   },
   "failclosed-01:primary": {
-   "p_bh": 0.1625,
+   "p_bh": 0.145833,
    "survives": false,
-   "rank": 5,
+   "rank": 6,
    "run": "failclosed-01"
   },
   "sweetspot-04:primary": {
-   "p_bh": 0.012695,
+   "p_bh": 0.010937,
    "survives": true,
-   "rank": 4,
+   "rank": 5,
    "run": "sweetspot-04"
   },
   "transfer-01:primary": {
    "p_bh": 0.0,
    "survives": true,
-   "rank": 3,
+   "rank": 4,
    "run": "transfer-01"
   },
   "transfer-confirmation:primary": {
    "p_bh": 0.0,
    "survives": true,
-   "rank": 2,
+   "rank": 3,
    "run": "transfer-confirmation"
   },
   "matrix-01:primary": {
    "p_bh": 0.0,
    "survives": true,
-   "rank": 1,
+   "rank": 2,
    "run": "matrix-01"
+  },
+  "confirmation-8fam-r2:primary": {
+   "p_bh": 0.0,
+   "survives": true,
+   "rank": 1,
+   "run": "confirmation-8fam-r2"
   }
  },
  "non_testable": {
@@ -159,6 +171,8 @@
   "collapse-01": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "collapse-02": "DIRECTIONAL CLAIM WITH NO RECOMPUTABLE TEST at this n -- counted as untested, not dropped",
   "collapse-replication": "seed-level sign test on excess over majority-vote baseline; positive_seeds=0/10",
+  "confirmation-8fam": "SUPERSEDED: superseded by confirmation-8fam-r2: identical design, signed bundle, 7/8 with the same boundary family (qwen3:4b)",
+  "confirmation-8fam-r2": "pooled paired McNemar, direct vs step-calc; fixed=439, broke=69, families=8",
   "exp-01": "exact binomial, single-arm hit count against chance; passed=4/4",
   "failclosed-01": "exact binomial, defects caught against chance (0.5); escaped=0/5",
   "jsd-01": "no directional claim: descriptive only",
@@ -180,6 +194,7 @@
   "transfer-confirmation": "pooled paired McNemar, direct vs step-calc; fixed=133, broke=11, families=2"
  },
  "withdrawn": {
+  "confirmation-8fam": "superseded by confirmation-8fam-r2: identical design, signed bundle, 7/8 with the same boundary family (qwen3:4b)",
   "lineage-01": "v3c regression withdrawn: infrastructure contamination, recorded by amendment"
  },
  "in_flight": [],

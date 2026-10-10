@@ -1,0 +1,8 @@
+# Runs produced by loop_schema >= 2 that carry no review record, exempted with a reason.
+# This list exists so the gate stays meaningful instead of permanently red -- the same
+# convention as demo/legacy_envelopes.txt for pre-power-gate envelopes. Add a line ONLY
+# with a reason; an unexplained entry here is worse than no gate.
+#
+# Format: run-name<TAB>reason
+seed6-01	created 2026-10-08T18:23Z, after the trust-root commit (144abb3, 17:57Z) but BEFORE the 5c placement fix that moved the two-seat review ahead of the terminal break; the run therefore stamped loop_schema=2 yet ended STOP-REFUTED with review=None. Its own verdict is unaffected (the kill-switch evaluated on the artifact); only the independent read is missing. Not retrofillable without re-running: the reviewer needs a review API key (SILICONFLOW_API_KEY), which is absent on this machine.
+confirmation-8fam	killed by wall clock before the review stage; superseded by confirmation-8fam-r2 which carries a review record

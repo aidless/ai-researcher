@@ -225,6 +225,15 @@ def primary_pass_count(run_dir: pathlib.Path):
 
 WITHDRAWN = {"lineage-01": "v3c regression withdrawn: infrastructure contamination, "
                            "recorded by amendment"}
+# A run superseded by a clean re-run: the original stays on disk with its
+# amendment, but the family uses the replacement. confirmation-8fam produced
+# genuine measurements that were never signed (wall clock killed it before
+# aggregation); confirmation-8fam-r2 repeated the identical design with a 20h
+# wall clock and a properly signed bundle. Counting both would double-count one
+# experiment.
+SUPERSEDED = {"confirmation-8fam": "superseded by confirmation-8fam-r2: identical "
+                                   "design, signed bundle, 7/8 with the same "
+                                   "boundary family (qwen3:4b)"}
 DESCRIPTIVE = {"breadth-01": "agreement rate and flip count are descriptive "
                              "quantities, not a hypothesis test"}
 
@@ -247,6 +256,10 @@ def collect(runs_dir: pathlib.Path):
             continue
         if name in WITHDRAWN:
             excluded.append((name, WITHDRAWN[name]))
+            continue
+        if name in SUPERSEDED:
+            notes.append((name, "SUPERSEDED: " + SUPERSEDED[name]))
+            excluded.append((name, SUPERSEDED[name]))
             continue
         if name in DESCRIPTIVE:
             notes.append((name, DESCRIPTIVE[name]))
