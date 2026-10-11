@@ -1,5 +1,8 @@
+# Evidence bundles are the project's primary asset. They were gitignored here until
+# 2026-10-11, when a local wipe deleted 18 signed runs that existed nowhere else --
+# the single worst failure mode for a project whose entire claim is that its
+# evidence chain cannot be lost or forged. Evidence now travels with the code.
 __pycache__/
 *.py[co]
 *.egg-info/
 .venv/
-runs/
