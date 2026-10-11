@@ -35,7 +35,12 @@ import pathlib
 import sys
 from math import comb
 
-HERE = pathlib.Path(__file__).resolve().parent
+# __file__ must NOT be passed through resolve(): this working tree's
+# absolute path contains a literal backslash (F:\deepseek), and resolve()
+# doubles it, so every derived path then fails an existence check on a
+# file that is present. Read __file__ as-is and build paths from that.
+_HERE_RAW = pathlib.Path(__file__)
+HERE = _HERE_RAW.parent
 
 
 def _repo_root(start: pathlib.Path) -> pathlib.Path:
@@ -46,7 +51,8 @@ def _repo_root(start: pathlib.Path) -> pathlib.Path:
     raise SystemExit(f"no repository root above {start}")
 
 
-REPO = _repo_root(HERE)
+from ai_researcher import canonical
+REPO = pathlib.Path(canonical.repo_root())
 sys.path.insert(0, str(REPO / "src"))
 sys.path.insert(0, str(REPO / "demo" / "shared"))
 sys.path.insert(0, str(REPO / "demo" / "transfer"))

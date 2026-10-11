@@ -24,6 +24,7 @@ Invariants, all executable:
 Usage: python3 demo/transfer/build_confirm_set.py [--n 160] [--seed 20261010]
 """
 from __future__ import annotations
+import os
 
 import argparse
 import json
@@ -31,8 +32,14 @@ import pathlib
 import random
 import re
 
-HERE = pathlib.Path(__file__).resolve().parent
-ROOT = HERE.parents[1]
+# __file__ must NOT be passed through resolve(): this working tree's
+# absolute path contains a literal backslash (F:\deepseek), and resolve()
+# doubles it, so every derived path then fails an existence check on a
+# file that is present. Read __file__ as-is and build paths from that.
+_HERE_RAW = pathlib.Path(__file__)
+HERE = _HERE_RAW.parent
+from ai_researcher import canonical
+ROOT = pathlib.Path(canonical.repo_root())
 GSM = ROOT / "data" / "gsm8k" / "test.jsonl"
 HELD = HERE / "items" / "heldout40.json"
 OUT = HERE / "items" / "confirm160.json"
@@ -83,11 +90,11 @@ def main() -> int:
     ap.add_argument("--out", default=str(OUT))
     args = ap.parse_args()
 
-    if not GSM.exists():
+    if not os.path.isfile(str(GSM)):
         print(f"FATAL: {GSM} missing. The confirmation set cannot be built "
               f"without an in-repo item source.")
         return 1
-    if not HELD.exists():
+    if not os.path.isfile(str(HELD)):
         print(f"FATAL: {HELD} missing. Disjointness cannot be verified.")
         return 1
 

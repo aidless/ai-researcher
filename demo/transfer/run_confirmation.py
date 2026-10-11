@@ -30,14 +30,20 @@ import re
 import sys
 from math import comb
 
-HERE = pathlib.Path(__file__).resolve().parent
-ROOT = HERE.parents[1]
+# __file__ must NOT be passed through resolve(): this working tree's
+# absolute path contains a literal backslash (F:\deepseek), and resolve()
+# doubles it, so every derived path then fails an existence check on a
+# file that is present. Read __file__ as-is and build paths from that.
+_HERE_RAW = pathlib.Path(__file__)
+HERE = _HERE_RAW.parent
+from ai_researcher import canonical
+ROOT = pathlib.Path(canonical.repo_root())
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "demo/shared"))
 
 from ollama_guard import call  # noqa: E402
 
-ITEMS = HERE / "items" / "confirm160.json"
+ITEMS = pathlib.Path(canonical.join("demo", "transfer", "items", "confirm160.json"))
 NUM = re.compile(r"-?\d[\d,]*\.?\d*")
 MODELS = ["qwen2.5:7b", "gemma3:4b"]
 
