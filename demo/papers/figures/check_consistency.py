@@ -5,13 +5,13 @@ no figure, because it is checked by eye and believed. This script recomputes eve
 number the two figure captions quote and fails if any disagrees with the artifact
 it came from.
 
-Three ways to drift:
-  1. a bundle is amended        -> raw_data.py recomputes, caption goes stale
-  2. the audit is re-run        -> PROJECT-LEVEL-ALPHA.json changes, caption goes stale
-  3. the figure is re-plotted    -> caption goes stale
+Three sources, three ways to drift:
+  1. the bundle is amended  -> raw_data.py recomputes, caption goes stale
+  2. the audit is re-run     -> PROJECT-LEVEL-ALPHA.json changes, caption goes stale
+  3. the figure is re-plotted -> caption goes stale
 
-So the caption is checked against recomputed values, not against the image.
-Writes figure_check.md.
+So the caption is checked against the recomputed values, not against the figure
+file. Writes figure_check.md with the verdict.
 
 Run: PYTHONPATH=src python3 demo/papers/figures/check_consistency.py
 """
@@ -22,13 +22,13 @@ import json
 import pathlib
 import sys
 
-ROOT = pathlib.Path(__file__).resolve().parents[3]  # figures/ -> papers/ -> demo/ -> repo root
+ROOT = pathlib.Path(__file__).resolve().parents[2]
 FIGDIR = ROOT / "demo/papers/figures"
 MANUSCRIPT = ROOT / "demo/papers/SYNTHESIS.md"
 REPORT = FIGDIR / "figure_check.md"
 
 
-def load(mod_name, path):
+def load(mod_name: str, path: pathlib.Path):
     spec = importlib.util.spec_from_file_location(mod_name, path)
     mod = importlib.util.module_from_spec(spec)
     sys.modules[mod_name] = mod
@@ -36,67 +36,78 @@ def load(mod_name, path):
     return mod
 
 
-def fmt(v):
+def fmt(v: float) -> str:
     return f"{v:.3f}".lstrip("0") if abs(v) < 1 else f"{v:.3f}"
 
 
-def main():
+def main() -> int:
     text = MANUSCRIPT.read_text(encoding="utf-8")
-    problems, checked = [], 0
+    problems: list[str] = []
+    checked = 0
 
     f1 = load("fig1_raw", FIGDIR / "fig_transfer_forest" / "raw_data.py")
     for r in f1.DATA["rows"]:
         if r["family"] not in text:
-            problems.append(f"Fig1: family {r['family']} plotted but never named in the manuscript")
+            problems.append(f"Fig1: family {r['family']} is plotted but never "
+                            f"named in the manuscript")
         for key in ("gain", "ci_lo", "ci_hi"):
             v = fmt(r[key])
             if v not in text:
-                problems.append(f"Fig1: {r['family']} {key}={v} absent from the manuscript")
+                problems.append(
+                    f"Fig1: {r['family']} {key}={v} not found in the manuscript")
             checked += 1
         if r["gain"] <= 0:
-            problems.append(f"Fig1: {r['family']} gain is not positive, so 'all families improve' would be false")
+            problems.append(f"Fig1: {r['family']} gain is not positive, so the "
+                            f"'all families improve' caption would be false")
     if f"{f1.DATA['n_families']}/{f1.DATA['n_families']}" not in text:
         problems.append("Fig1: the all-families-improve count is not stated")
     if str(f1.DATA["n_items"]) not in text:
         problems.append("Fig1: per-family item count is not stated")
 
     f2 = load("fig2_raw", FIGDIR / "fig_project_alpha" / "raw_data.py")
-    audit = json.loads((ROOT / "demo/papers/PROJECT-LEVEL-ALPHA.json").read_text(encoding="utf-8"))
+    audit = json.loads((ROOT / "demo/papers/PROJECT-LEVEL-ALPHA.json")
+                       .read_text(encoding="utf-8"))
     if f2.DATA["family_size"] != audit["family_size"]:
-        problems.append(f"Fig2: figure family_size {f2.DATA['family_size']} != audit {audit['family_size']}")
+        problems.append(f"Fig2: figure family_size {f2.DATA['family_size']} != "
+                        f"audit {audit['family_size']}")
     n_surv = len(audit["surviving"])
     if f2.DATA["n_surviving"] != n_surv:
         problems.append("Fig2: surviving count disagrees with the audit")
-    for want in (f"{audit['family_size'] - n_surv} of {audit['family_size']}", str(audit["family_size"])):
+    for want in (f"{audit['family_size'] - n_surv} of {audit['family_size']}",
+                 str(audit["family_size"])):
         if want not in text:
             problems.append(f"Fig2: manuscript does not state {want!r}")
     checked += 3
-    WORDS = {"1": "one", "2": "two", "3": "three", "4": "four", "5": "five",
-               "6": "six", "7": "seven", "8": "eight", "9": "nine", "10": "ten",
-               "11": "eleven", "12": "twelve", "13": "thirteen", "14": "fourteen"}
     n_untested = len(audit.get("untested_directional_claims", []))
-    w = WORDS.get(str(n_untested), str(n_untested))
-    low = text.lower()
-    if n_untested and not any(x in low for x in
-                              (f"{n_untested} further arms", f"{n_untested} arms",
-                               f"{w} further arms", f"{w} arms")):
-        problems.append(f"Fig2: the {n_untested} untested arms are not disclosed, so the figure would overstate coverage")
+    if n_untested and not any(
+            w in text for w in (f"{n_untested} further arms",
+                                f"{n_untested} arms")):
+        problems.append(f"Fig2: the {n_untested} untested arms are not disclosed "
+                        f"in the manuscript, so the figure would overstate coverage")
 
     figs = sorted(FIGDIR.glob("*/*.png"))
     if len(figs) < 2:
         problems.append(f"expected 2 rendered figures, found {len(figs)}")
 
-    lines = ["---", "tags: [figure, consistency, check]", "---", "",
-             "# Figure consistency check", "",
-             f"- values checked: {checked}",
-             f"- rendered figures: {', '.join(f.relative_to(ROOT).as_posix() for f in figs)}",
-             f"- verdict: **{'PASS' if not problems else 'FAIL'}**", ""]
+    lines = [
+        "---",
+        "tags: [figure, consistency, check]",
+        "---",
+        "",
+        "# Figure consistency check",
+        "",
+        f"- values checked: {checked}",
+        f"- rendered figures: {', '.join(f.relative_to(ROOT).as_posix() for f in figs)}",
+        f"- verdict: **{'PASS' if not problems else 'FAIL'}**",
+        "",
+    ]
     if problems:
         lines += ["## Problems", ""] + [f"- {p}" for p in problems] + [""]
     else:
-        lines += ["Every number the captions quote was recomputed from the signed bundle or the "
-                  "audit output and matched. Re-run after any amendment or any re-run of "
-                  "`scripts/project_alpha.py`; the captions are what goes stale silently.", ""]
+        lines += ["Every number the captions quote was recomputed from the signed "
+                  "bundle or the audit output and matched. Re-run this after any "
+                  "amendment to a bundle or any re-run of `scripts/project_alpha.py`; "
+                  "the captions are the part that goes stale silently.", ""]
     REPORT.write_text("\n".join(lines), encoding="utf-8")
     print("\n".join(lines))
     return 1 if problems else 0
