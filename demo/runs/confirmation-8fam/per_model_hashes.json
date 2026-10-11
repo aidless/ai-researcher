@@ -1,0 +1,66 @@
+{
+ "out_deepseek-r1_7b_direct.jsonl": {
+  "sha256": "4280ea38b21ba975cc00101159557f20f819bcdcd05bfb904bf6e0bc79d24e7a",
+  "rows": 160
+ },
+ "out_deepseek-r1_7b_step-calc.jsonl": {
+  "sha256": "503c9e1579656b7366cb9f8e61c53d29dad10bbe3aa43294819aa6468c72d678",
+  "rows": 160
+ },
+ "out_gemma3_4b_direct.jsonl": {
+  "sha256": "17e718e4d33f97b3a0a75695617c586bdab639ca61def4ab76cce15cd2cd8b0c",
+  "rows": 160
+ },
+ "out_gemma3_4b_step-calc.jsonl": {
+  "sha256": "25312549e3c65a40a8d20313c47f97346b7b991ac61ae2ee4691655997705c0e",
+  "rows": 160
+ },
+ "out_llama3.1_8b_direct.jsonl": {
+  "sha256": "024a51d4a4f479192db36f446e7155f736a8fc9cc39c9775d72756f7d348d20a",
+  "rows": 160
+ },
+ "out_llama3.1_8b_step-calc.jsonl": {
+  "sha256": "0421fc216eea0e0a8f4069c340bdc4384811f490e55e85f4109132aa2d51f41e",
+  "rows": 160
+ },
+ "out_llama3.2_1b_direct.jsonl": {
+  "sha256": "faa3c3474c39f7d7b37917e585f660c8880d4b5418ab44fa5560844d7b0ee000",
+  "rows": 160
+ },
+ "out_llama3.2_1b_step-calc.jsonl": {
+  "sha256": "987ff251e838ebb36c524ac65c4f37c8307a763cdb99c9a5c7904f0f969810b6",
+  "rows": 160
+ },
+ "out_qwen2.5-coder_7b_direct.jsonl": {
+  "sha256": "8b3dee5ee28c8f49e7541eb5595412382ef5f08303fecd633e590174054c74d5",
+  "rows": 160
+ },
+ "out_qwen2.5-coder_7b_step-calc.jsonl": {
+  "sha256": "1d3ce8658deff900e2724c05e0b4ec5f549fbab3ee7b0a172fb801cae9b85c71",
+  "rows": 160
+ },
+ "out_qwen2.5_7b_direct.jsonl": {
+  "sha256": "9b19e61cb7507ad568624fa619fb1d968f9ea5c8c5eebdd952c33b787c240f83",
+  "rows": 160
+ },
+ "out_qwen2.5_7b_step-calc.jsonl": {
+  "sha256": "118b4697166606bf65cd6a4bd46fc0387c3cf4976de0fcd22c22d5b6bb924aa6",
+  "rows": 160
+ },
+ "out_qwen2_7b_direct.jsonl": {
+  "sha256": "6d0f55474fb6b4cf6d456b4dc22ad05a61b4617541f330bb616f95b9f9448d09",
+  "rows": 160
+ },
+ "out_qwen2_7b_step-calc.jsonl": {
+  "sha256": "43f5cb4ade02d0ddacc5f529d35bd2dedba78bb093e24123907c83fc11426154",
+  "rows": 160
+ },
+ "out_qwen3_4b_direct.jsonl": {
+  "sha256": "5a32f05f0fb26e5e1278ceed6c53a87ec741780340213b029c4014009f8b3f6d",
+  "rows": 160
+ },
+ "out_qwen3_4b_step-calc.jsonl": {
+  "sha256": "f696561b12a15a0ae7062edf0722612b97fb4ed0b05e13ef3df06edae2c67d74",
+  "rows": 160
+ }
+}

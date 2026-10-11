@@ -243,6 +243,16 @@ CONFIRMATORY = {"transfer-01", "transfer-confirmation", "confirmation-8fam-r2"}
 SUPERSEDED = {"confirmation-8fam": "superseded by confirmation-8fam-r2: identical "
                                    "design, signed bundle, 7/8 with the same "
                                    "boundary family (qwen3:4b)"}
+# Runs re-executed after the 2026-10-11 local wipe. They are the SAME experiment
+# as their original, so counting both would double-count one endpoint in the BH
+# family. The audit uses the re-run's endpoint and records the original as
+# superseded; the paper cites the re-run with the disclosure of its provenance.
+RERUN_OF = {
+    "confirmation-8fam-r2-rerun": ("confirmation-8fam-r2", "re-run after the 2026-10-11 local wipe"),
+    "cross-dataset-rerun": ("cross-dataset", "re-run after the 2026-10-11 local wipe"),
+    "prompt-ablation-rerun": ("prompt-ablation", "re-run after the 2026-10-11 local wipe"),
+    "transfer-confirmation-rerun": ("transfer-confirmation", "re-run after the 2026-10-11 local wipe"),
+}
 DESCRIPTIVE = {"breadth-01": "agreement rate and flip count are descriptive "
                              "quantities, not a hypothesis test"}
 
@@ -265,6 +275,12 @@ def collect(runs_dir: pathlib.Path):
             continue
         if name in WITHDRAWN:
             excluded.append((name, WITHDRAWN[name]))
+            continue
+        if name in RERUN_OF:
+            orig, why = RERUN_OF[name]
+            notes.append((name, f"RE-RUN of {orig} ({why}): counted as that "
+                                f"endpoint, not a new one"))
+            excluded.append((name, f"re-run of {orig}: {why}"))
             continue
         if name in SUPERSEDED:
             notes.append((name, "SUPERSEDED: " + SUPERSEDED[name]))

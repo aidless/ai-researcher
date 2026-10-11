@@ -693,6 +693,32 @@ five independent zeros plus one independent zero, and that shortfall is confesse
 here rather than met. The arm is left OUT of the project-level family (its endpoint
 is incomparable by design error) and reported as converging evidence.
 
+## Evidence loss on 2026-10-11, and what was re-run
+
+Eighteen signed runs under `demo/runs/` were deleted when the local working tree
+was wiped, and they existed nowhere else: `.gitignore` listed `runs/`, so the
+evidence chain had exactly one copy, on the same disk as everything else. The
+code, harnesses, envelopes, figures and tests were recovered from the remote
+clone. The runs were not.
+
+The project's central claim is that evidence cannot be silently lost or forged.
+The mechanism that claim rested on -- Ed25519 signatures plus SHA-256 manifests
+-- defends against tampering and against drift, and does nothing about deletion.
+The gitignore rule made deletion routine. `.gitignore` no longer ignores `runs/`;
+evidence now travels with the code, and every run below was committed to the
+remote within minutes of completing.
+
+Results labelled **re-run** were produced after the loss. They are independent
+replications with new bundle ids and new timestamps, not restorations of the
+originals: the original bundles no longer exist and their numbers are no longer
+verifiable. What re-establishes them is that every re-run is reproducible from a
+committed envelope, a fixed seed, and a committed item bank -- the property the
+project claims, tested by the one event that could have destroyed it.
+
+The claim structure is unchanged. The evidence for it was re-acquired rather than
+recovered, and the distinction is stated here rather than left for a reader to
+discover by finding that no bundle predates the loss.
+
 ## Data mapping: every number traces to a bank, a run, and a verdict
 
 | bank | file | n | source and overlap | used by | preregistration and rule | models | policies | scorer |
