@@ -1,0 +1,46 @@
+{
+ "models": {},
+ "n": 160,
+ "seed": 20261010,
+ "models_requested": [
+  "qwen2.5:7b",
+  "gemma3:4b"
+ ],
+ "models_measured": [
+  "qwen2.5:7b",
+  "gemma3:4b"
+ ],
+ "item_bank": "demo/transfer/items/confirm160.json",
+ "per_model": {
+  "qwen2.5:7b": {
+   "policies": {
+    "direct": 0.1875,
+    "step-calc": 0.4313
+   },
+   "gain": 0.2438,
+   "fixed": 45,
+   "broke": 6,
+   "p": 0.0
+  },
+  "gemma3:4b": {
+   "policies": {
+    "direct": 0.1062,
+    "step-calc": 0.625
+   },
+   "gain": 0.5188,
+   "fixed": 88,
+   "broke": 5,
+   "p": 0.0
+  }
+ },
+ "gain_mean": 0.3813,
+ "families_positive": "2/2",
+ "mcnemar_pooled": {
+  "fixed": 133,
+  "broke": 11,
+  "p": 0.0
+ },
+ "paired_observations": 320,
+ "confirmed": true,
+ "sign_test_p": 0.25
+}

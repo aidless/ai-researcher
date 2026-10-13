@@ -1,0 +1,1 @@
+{"self_final": 0.0, "cross_final": 0.0, "excess": 0.0, "confirmed": false}

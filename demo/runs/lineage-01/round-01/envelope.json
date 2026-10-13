@@ -1,0 +1,46 @@
+{
+  "bundle": {
+    "bundle_id": "r01@66414d95f45f",
+    "sha256": "66414d95f45f456b02a1740106fce95be3999122c52b8f68ca385e5322131328",
+    "manifest": {
+      "files": {
+        "out_v1.jsonl": "0903f5e8d4492bcee663db8d82ac90e8d8d41e31b25b658737f96a00a7af4852",
+        "out_v2.jsonl": "fa3b3847eaeda4d56464208640c95d745950a50025c21c1f106e736bc3c0d900",
+        "out_v3.jsonl": "e92afd9295c2fe97b95f184578e2285984099255d002ccdaba18128da53d6296",
+        "out_v3b.jsonl": "8bd831486c3ae8f1980edda1a81cea74bd250310ee70cd09bf4783d935509f1d",
+        "out_v3c.jsonl": "cf409e31bb7adb99f8b217c9c6183dd72b3365e867e66b14cc1b257a67eecc5b",
+        "pred_v1.jsonl": "a58fd0dd0b6f5918e189e2a1832d4875d40e7274595060caec2cee17e50bab0d",
+        "pred_v2.jsonl": "77fc8aa8355799e08e8d310c67eafef1b7d0fa535bedf1da0a6ff9580be7e87b",
+        "pred_v3.jsonl": "e34425990b2af2539254950253f8c7ea52794b893cbe44d9eddf8e34b9ff182e",
+        "pred_v3b.jsonl": "a6533ac71943eacbbdd159b48099331d300cf2e70e3e8686e7e1ef2d80bacaca",
+        "pred_v3c.jsonl": "3941356aa4e8556d439b69ce54d4e3128d3bc721a28c538b0175c9198c408cfa",
+        "result.json": "dd498f94adf89989956b6fb89ea6af25611cdfea2e4c49741b8d4da8f34aaedf",
+        "sum_v1.json": "70677dd48a6c17a81395af8041b8f858b1aeaf974f4c9798202e466b5d4da624",
+        "sum_v2.json": "58dd0f30a08aa45359d1c99cfedf173884ace0373b8c808093e3d8ed030c819e",
+        "sum_v3.json": "36db6bd416b3ce4f48a00d048bfc77b6217421f6862eae2089950969bf9a832d",
+        "sum_v3b.json": "66ad9e42b299d85363cb12b12c538845039d5e1949734b0458b16658acffe5d3",
+        "sum_v3c.json": "c92d528d8b9a13ee9b492c39ec3e62fc9f6178b75bcd059b05d7e2082d5ac58d"
+      },
+      "environment": {
+        "ollama_model": "",
+        "ollama_base_digest": "unknown",
+        "python": "3.12.3",
+        "numpy": "2.5.2",
+        "scipy": "1.18.1",
+        "seed": "unset"
+      },
+      "sha256": "66414d95f45f456b02a1740106fce95be3999122c52b8f68ca385e5322131328"
+    }
+  },
+  "envelope": {
+    "payload": {
+      "bundle_id": "r01@66414d95f45f",
+      "bundle_sha256": "66414d95f45f456b02a1740106fce95be3999122c52b8f68ca385e5322131328",
+      "signer": "ai-researcher-loop",
+      "signed_at": "2026-10-07T08:43:58.963574+00:00",
+      "expires_at": "2027-10-06T00:00:00+00:00"
+    },
+    "signature": "ASCe/aVAh3pBFjLWLD9+fZoSjy+4ZdmCUrhqaYEGfK5syK0CvcvdGQLLe6V9LRvY5kCM8uYjkXnkOwJ/gSt7AA==",
+    "algorithm": "Ed25519"
+  }
+}

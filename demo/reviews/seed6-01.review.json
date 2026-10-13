@@ -1,0 +1,54 @@
+{
+ "reviewed_at": "2026-10-09T03:10:34.510825+00:00",
+ "run": "seed6-01",
+ "bundle_id": "r01@74120dd6a31b",
+ "claim": "The evaluator-bias amplification claim replicates across independent seeds: with the evaluator and task held fixed, at least 5 of 6 independent swarm seeds show a swarm=4 vs swarm=1 PCI slope excess of >= 0.01/round.",
+ "evidence_sent": {
+  "n_seeds": 6,
+  "n_positive": 4,
+  "confirmed": false,
+  "excesses": [
+   0.0116,
+   0.0,
+   0.0551,
+   0.0551,
+   0.0292,
+   -0.0176
+  ],
+  "n_distinct_now": null,
+  "verdict": "STOP-REFUTED",
+  "kill_row": "confirmed == False",
+  "bundle_id": "r01@74120dd6a31b",
+  "producer_models": null
+ },
+ "verdicts": {
+  "methodology": {
+   "score": 4,
+   "verdict": "NOT_READY",
+   "strongest_objection": "The claim of replicability is undermined by the presence of a single 'negative' result (excess=-0.0176) among the 6 independent seeds.",
+   "evidence_refs": [
+    "evidence.json",
+    "excess=-0.0176"
+   ]
+  },
+  "devil": {
+   "score": 2,
+   "verdict": "NOT_READY",
+   "strongest_objection": "The claim relies on a single metric (PCI slope excess) without providing a clear understanding of its significance or relevance to the task at hand.",
+   "evidence_refs": [
+    "evidence.json:excesses"
+   ]
+  },
+  "contradiction": false,
+  "joint": "NOT_READY",
+  "model": "llama3.1:8b",
+  "reviewer": {
+   "model": "llama3.1:8b",
+   "endpoint": "http://127.0.0.1:11434/v1/chat/completions",
+   "endpoint_class": "local",
+   "review_is_not_authorship": true,
+   "cross_family": true
+  }
+ },
+ "status_of_this_record": "outside the signed bundle on purpose: re-reviewing a finished run must not touch signed artifacts"
+}

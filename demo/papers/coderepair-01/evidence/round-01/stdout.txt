@@ -1,0 +1,6 @@
+  [SELFTEST OK] 12 classes, 40 items, 3 known-good cases, extraction 3/3
+qwen2.5:7b: {'direct': 0.525, 'step-calc': 0.55}
+qwen2.5-coder:7b: {'direct': 0.525, 'step-calc': 0.525}
+gemma3:4b: {'direct': 0.625, 'step-calc': 0.375}
+llama3.2:3b: {'direct': 0.0, 'step-calc': 0.0}
+{"gain_mean": -0.0563, "families_positive": "1/4", "mcnemar_pooled": {"fixed": 12, "broke": 21, "p": 0.16275565745308995}, "confirmed": false, "sign_test_p": 1.0}

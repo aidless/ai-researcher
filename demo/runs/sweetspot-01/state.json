@@ -1,0 +1,57 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/sweetspot-01/round-01",
+   "result": {
+    "model": "deepseek-r1:7b",
+    "caps": [
+     150,
+     400,
+     1000
+    ],
+    "families": {
+     "math": {
+      "acc": [
+       0.3333,
+       0.6667,
+       0.8333
+      ],
+      "nonmonotonic": false
+     },
+     "code": {
+      "acc": [
+       0.5,
+       0.6667,
+       0.6667
+      ],
+      "nonmonotonic": false
+     },
+     "logic": {
+      "acc": [
+       0.0,
+       0.0,
+       0.1667
+      ],
+      "nonmonotonic": false
+     }
+    },
+    "any_sweet_spot": false,
+    "confirmed": false,
+    "exit_code": 0,
+    "wall_s": 3117.6
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@c7724bcbcf09",
+   "kill_row": "confirmed == False",
+   "verdict": "STOP-REFUTED",
+   "reason": null
+  }
+ ],
+ "status": "STOP-REFUTED",
+ "started_at": "2026-10-06T10:02:06.695253+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "473ac2077c41b534f69c40a5a668c685fd2e0cb42efd9e12da9caff9f8e7e4de",
+ "key_priv": null
+}

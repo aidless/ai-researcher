@@ -1,0 +1,152 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/collapse-replication/round-01",
+   "result": {
+    "runs": [
+     {
+      "pairing": 0,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "qwen2.5:7b",
+      "seed": 20261011,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 6
+     },
+     {
+      "pairing": 0,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "qwen2.5:7b",
+      "seed": 20261012,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 0
+     },
+     {
+      "pairing": 0,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "qwen2.5:7b",
+      "seed": 20261013,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 2
+     },
+     {
+      "pairing": 0,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "qwen2.5:7b",
+      "seed": 20261014,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 0
+     },
+     {
+      "pairing": 0,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "qwen2.5:7b",
+      "seed": 20261015,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 0
+     },
+     {
+      "pairing": 1,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "llama3.1:8b",
+      "seed": 20262011,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 0
+     },
+     {
+      "pairing": 1,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "llama3.1:8b",
+      "seed": 20262012,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 0
+     },
+     {
+      "pairing": 1,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "llama3.1:8b",
+      "seed": 20262013,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 1
+     },
+     {
+      "pairing": 1,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "llama3.1:8b",
+      "seed": 20262014,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 0
+     },
+     {
+      "pairing": 1,
+      "self_judge": "qwen2.5:7b",
+      "cross_judge": "llama3.1:8b",
+      "seed": 20262015,
+      "self_final": 0.0,
+      "cross_final": 0.0,
+      "cross_excess": 0.0,
+      "abstained": 0
+     }
+    ],
+    "n_usable": 10,
+    "excesses": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "measurable": true,
+    "usable_note": "10 usable paired runs; a decisive sign split needs >= 6",
+    "positive": 0,
+    "negative": 0,
+    "sign_test_p": 1.0,
+    "reproducible": false,
+    "_config": {
+     "runs": 10,
+     "usable": 10,
+     "pairings": 2
+    },
+    "exit_code": 0,
+    "wall_s": 5939.3,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "timed_out": false,
+   "bundle": "r01@efca41bb6919",
+   "kill_row": "reproducible == False",
+   "verdict": "STOP-REFUTED",
+   "reason": "the +0.1994 was one trajectory: record collapse-01 as an artifact of a single run, not a finding"
+  }
+ ],
+ "status": "STOP-REFUTED",
+ "started_at": "2026-10-08T06:03:24.646196+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "caf1ccd6766daa5de0e709a6cc4db63228e8b78891813196966ce20a9e594a77",
+ "key_priv": null
+}

@@ -1,0 +1,12 @@
+  [SELFTEST OK] excess arithmetic + sign test
+  pair 1/10 seed=20261011: 0.0
+  pair 2/10 seed=20261012: 0.0
+  pair 3/10 seed=20261013: 0.0
+  pair 4/10 seed=20261014: 0.0
+  pair 5/10 seed=20261015: 0.0
+  pair 6/10 seed=20262011: 0.0
+  pair 7/10 seed=20262012: 0.0
+  pair 8/10 seed=20262013: 0.0
+  pair 9/10 seed=20262014: 0.0
+  pair 10/10 seed=20262015: 0.0
+{"n_usable": 10, "positive": 0, "negative": 0, "sign_test_p": 1.0, "measurable": true, "reproducible": false}

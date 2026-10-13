@@ -1,0 +1,29 @@
+{
+  "claim": "本实验迷你口径实测：Qwen3-0.6B 作 NoMIRACL 相关性判官（en/zh/sw × relevant/non_relevant 各 30 题，seed 20261003，CPU 贪心，分母=全部 n）。幻觉率（non_relevant 判 yes）：english 0.9（CI 0.7438~0.9654，n=30）、chinese 0.9667（CI 0.8333~0.9941，n=30）、swahili 1.0（CI 0.8865~1.0，n=30）；错杀率（relevant 判非 yes）：english 0.0（CI 0.0~0.1135，n=30）、chinese 0.0（CI 0.0~0.1135，n=30）、swahili 0.0（CI 0.0~0.1135，n=30）。各语言对 Wilson 区间均重叠（report_numbers_only），不下语言间方向性结论。对文献锚（Llama-3-8B / Mistral-7B-Instruct，不同模型类别不同 prompt 协议）为量级对照非受控比较，anchor_gap=我方−锚（正=我方更差）：幻觉率高于两锚（llama3_8b 口径 english +0.7080, chinese +0.3227, swahili +0.9600），错杀率低于两锚（english -0.4160, chinese -0.0600, swahili -0.8080）——0.6B 判官在本任务呈近似恒答 yes 形态。unparsed 共 0。",
+  "verdict": "insufficient",
+  "summary_verdict": "report_numbers_only",
+  "gates": {
+    "recomputable": {
+      "pass": true,
+      "diffs": {
+        "cells": {},
+        "pairwise_separation": {},
+        "anchor_gap": {}
+      }
+    },
+    "verdict_consistency": {
+      "pass": true,
+      "reason": ""
+    },
+    "scope_discipline": {
+      "pass": true,
+      "reason": ""
+    },
+    "caliber_in_claim": {
+      "pass": true,
+      "reason": ""
+    }
+  },
+  "n_items": 180,
+  "design_note": "跨语言独立样本（无配对检验）；分离⇒pass，重叠⇒insufficient 只报数字；对锚=量级对照"
+}

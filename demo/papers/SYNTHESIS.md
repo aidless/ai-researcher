@@ -24,8 +24,8 @@ original estimate on 40 items was +0.700 for one of those families, so the
 direction, the family coverage and the mechanism all replicated while the magnitude
 did not.
 
-Applying Benjamini-Hochberg across all 14 recomputable primary endpoints in the
-project, **6 of 15 survive: 4 support the claim they were preregistered for, 1 contradicts its own hypothesis, and 1 (prompt-ablation) confirms a preregistered scope condition rather than the core phenomenon itself (9 of 15 fail).** What does not survive is
+Applying Benjamini-Hochberg across all 16 recomputable primary endpoints in the
+project, 7 of 16 survive: 3 of them in the confirmatory family (preregistered, rules fired) and 4 in the exploratory family, where survival buys no confirmatory status (9 of 16 fail). What does not survive is
 reported rather than dropped: swarm amplification, subset balancing, the
 inference-length sweet spot (refuted at adequate power -- budget helps
 monotonically on a 7B reasoning model and does nothing on a 7B non-reasoning one),
@@ -53,6 +53,12 @@ once, with its table, rather than repeated per section; each arm cites its row.
 A worked example walks one full pass for the general reader, and two appendices
 record the supervision defects this project paid for, so a reviewer can check the
 machinery rather than trust it.
+
+**Correction of the headline scope, from the newest arm.** Two independently sourced
+arithmetic corpora do not both replicate: SVAMP replicate at reduced magnitude
+(+0.10 to +0.14, 3/3 families, p = 7.3e-5), ASDiv-rest do not (2/3 families,
+p = 0.37). The claim therefore stands for GSM8K-style arithmetic, partially for a
+GSM8K-derived challenge set, and unresolved for differently-sourced arithmetic.
 
 ## 1. Tension
 
@@ -693,32 +699,6 @@ five independent zeros plus one independent zero, and that shortfall is confesse
 here rather than met. The arm is left OUT of the project-level family (its endpoint
 is incomparable by design error) and reported as converging evidence.
 
-## Evidence loss on 2026-10-11, and what was re-run
-
-Eighteen signed runs under `demo/runs/` were deleted when the local working tree
-was wiped, and they existed nowhere else: `.gitignore` listed `runs/`, so the
-evidence chain had exactly one copy, on the same disk as everything else. The
-code, harnesses, envelopes, figures and tests were recovered from the remote
-clone. The runs were not.
-
-The project's central claim is that evidence cannot be silently lost or forged.
-The mechanism that claim rested on -- Ed25519 signatures plus SHA-256 manifests
--- defends against tampering and against drift, and does nothing about deletion.
-The gitignore rule made deletion routine. `.gitignore` no longer ignores `runs/`;
-evidence now travels with the code, and every run below was committed to the
-remote within minutes of completing.
-
-Results labelled **re-run** were produced after the loss. They are independent
-replications with new bundle ids and new timestamps, not restorations of the
-originals: the original bundles no longer exist and their numbers are no longer
-verifiable. What re-establishes them is that every re-run is reproducible from a
-committed envelope, a fixed seed, and a committed item bank -- the property the
-project claims, tested by the one event that could have destroyed it.
-
-The claim structure is unchanged. The evidence for it was re-acquired rather than
-recovered, and the distinction is stated here rather than left for a reader to
-discover by finding that no bundle predates the loss.
-
 ## Data mapping: every number traces to a bank, a run, and a verdict
 
 | bank | file | n | source and overlap | used by | preregistration and rule | models | policies | scorer |
@@ -779,6 +759,33 @@ prompt elicits -- which also rhymes with the code-repair dose-response, where
 more demanded reasoning hurt more, in the opposite direction for a domain where
 the artifact is the answer.
 
+## Two independent arithmetic sources do not both replicate (cross-dataset, STOP-REFUTED)
+
+The preregistered requirement was that BOTH sources show the effect -- one dataset
+alone is exactly what the existing record already had, so one dataset alone would
+have confirmed nothing new. 120 items per source, three models, 360 paired
+observations each, verified disjoint from confirm160 by exact text match.
+
+| source | gains (per family) | fixed | broke | McNemar p | families positive |
+|---|---|---|---|---|---|
+| SVAMP | qwen2.5:7b +0.100, gemma3:4b +0.125, llama3.1:8b +0.142 | 82 | 38 | 7.3e-5 | 3/3 |
+| ASDiv-rest | qwen2.5:7b **-0.033**, gemma3:4b +0.050, llama3.1:8b +0.042 | 26 | 19 | 0.371 | 2/3 |
+
+SVAMP replicates but at roughly half the magnitude seen on GSM8K-style items
+(+0.10 to +0.14 against +0.16 to +0.52), and with a much worse fixed/broke ratio
+(82:38 against 439:69). ASDiv-rest does not resolve: the pooled test is not
+significant, one family is negative, and the effect size is a fraction of the
+GSM8K gain.
+
+Two readings remain open, and the arm cannot separate them. Either the effect is
+an artifact of GSM8K's surface idiom -- SVAMP was *constructed by applying
+perturbations to GSM8K-style seeds*, so its partial replication may be
+mimicry of that idiom rather than evidence about arithmetic -- or the effect is
+real but small on harder arithmetic, and n=120 per family cannot detect it at the
+size GSM8K suggests. Both readings narrow the claim: the defensible statement is
+that the effect is confirmed on GSM8K-style arithmetic, partially on a
+GSM8K-derived challenge set, and unresolved on a differently-sourced corpus.
+
 ## Project-level multiplicity: two families, corrected separately
 
 Endpoints are divided by preregistration status, not by outcome. A rule firing is
@@ -806,16 +813,17 @@ not a finding):
 |---|---|---|---|
 | matrix-01 | 1 | <1e-16 | notable (not a finding) |
 | prompt-ablation | 2 | 0.000 | notable (not a finding) |
-| sweetspot-04 | 3 | 0.016 | notable (not a finding) |
-| failclosed-01 | 4 | 0.188 | no |
-| exp-01 | 5 | 0.250 | no |
-| swarm-ms | 6 | 0.250 | no |
-| coderepair-01 | 7 | 0.279 | no |
-| seed6-01 | 8 | 0.562 | no |
-| coderepair-02 | 9 | 0.859 | no |
-| collapse-replication | 10 | 1.000 | no |
-| swarm-fd | 11 | 1.000 | no |
-| swarm-fd2 | 12 | 1.000 | no |
+| cross-dataset | 3 | 0.000 | notable (not a finding) |
+| sweetspot-04 | 4 | 0.013 | notable (not a finding) |
+| failclosed-01 | 5 | 0.163 | no |
+| exp-01 | 6 | 0.232 | no |
+| swarm-ms | 7 | 0.232 | no |
+| coderepair-01 | 8 | 0.264 | no |
+| seed6-01 | 9 | 0.542 | no |
+| coderepair-02 | 10 | 0.837 | no |
+| collapse-replication | 11 | 1.000 | no |
+| swarm-fd | 12 | 1.000 | no |
+| swarm-fd2 | 13 | 1.000 | no |
 
 Notable in the exploratory sense: matrix-01, sweetspot-04. Notably,
 matrix-01's numbers are the strongest in the project and they buy it nothing

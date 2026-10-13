@@ -1,0 +1,160 @@
+{"id": "cf-001", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (635 chars); unscorable as a model failur"}
+{"id": "cf-002", "passed": true, "why": ""}
+{"id": "cf-003", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (570 chars); unscorable as a model failur"}
+{"id": "cf-004", "passed": true, "why": ""}
+{"id": "cf-005", "passed": true, "why": ""}
+{"id": "cf-006", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-007", "passed": true, "why": ""}
+{"id": "cf-008", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (664 chars); unscorable as a model failur"}
+{"id": "cf-009", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (377 chars); unscorable as a model failur"}
+{"id": "cf-010", "passed": true, "why": ""}
+{"id": "cf-011", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (700 chars); unscorable as a model failur"}
+{"id": "cf-012", "passed": true, "why": ""}
+{"id": "cf-013", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-014", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (749 chars); unscorable as a model failur"}
+{"id": "cf-015", "passed": true, "why": ""}
+{"id": "cf-016", "passed": true, "why": ""}
+{"id": "cf-017", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-018", "passed": true, "why": ""}
+{"id": "cf-019", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-020", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-021", "passed": true, "why": ""}
+{"id": "cf-022", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (477 chars); unscorable as a model failur"}
+{"id": "cf-023", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (458 chars); unscorable as a model failur"}
+{"id": "cf-024", "passed": true, "why": ""}
+{"id": "cf-025", "passed": true, "why": ""}
+{"id": "cf-026", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-027", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (428 chars); unscorable as a model failur"}
+{"id": "cf-028", "passed": true, "why": ""}
+{"id": "cf-029", "passed": true, "why": ""}
+{"id": "cf-030", "passed": true, "why": ""}
+{"id": "cf-031", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-032", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (553 chars); unscorable as a model failur"}
+{"id": "cf-033", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (640 chars); unscorable as a model failur"}
+{"id": "cf-034", "passed": true, "why": ""}
+{"id": "cf-035", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (678 chars); unscorable as a model failur"}
+{"id": "cf-036", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (671 chars); unscorable as a model failur"}
+{"id": "cf-037", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-038", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-039", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-040", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (444 chars); unscorable as a model failur"}
+{"id": "cf-041", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-042", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (640 chars); unscorable as a model failur"}
+{"id": "cf-043", "passed": true, "why": ""}
+{"id": "cf-044", "passed": true, "why": ""}
+{"id": "cf-045", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (730 chars); unscorable as a model failur"}
+{"id": "cf-046", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (282 chars); unscorable as a model failur"}
+{"id": "cf-047", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-048", "passed": true, "why": ""}
+{"id": "cf-049", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-050", "passed": true, "why": ""}
+{"id": "cf-051", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (853 chars); unscorable as a model failur"}
+{"id": "cf-052", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-053", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (729 chars); unscorable as a model failur"}
+{"id": "cf-054", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-055", "passed": true, "why": ""}
+{"id": "cf-056", "passed": true, "why": ""}
+{"id": "cf-057", "passed": false, "why": "got 15.0"}
+{"id": "cf-058", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (716 chars); unscorable as a model failur"}
+{"id": "cf-059", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-060", "passed": true, "why": ""}
+{"id": "cf-061", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-062", "passed": true, "why": ""}
+{"id": "cf-063", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (732 chars); unscorable as a model failur"}
+{"id": "cf-064", "passed": true, "why": ""}
+{"id": "cf-065", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (713 chars); unscorable as a model failur"}
+{"id": "cf-066", "passed": true, "why": ""}
+{"id": "cf-067", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (590 chars); unscorable as a model failur"}
+{"id": "cf-068", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (239 chars); unscorable as a model failur"}
+{"id": "cf-069", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (686 chars); unscorable as a model failur"}
+{"id": "cf-070", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-071", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-072", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (463 chars); unscorable as a model failur"}
+{"id": "cf-073", "passed": true, "why": ""}
+{"id": "cf-074", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-075", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (554 chars); unscorable as a model failur"}
+{"id": "cf-076", "passed": true, "why": ""}
+{"id": "cf-077", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (496 chars); unscorable as a model failur"}
+{"id": "cf-078", "passed": true, "why": ""}
+{"id": "cf-079", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (507 chars); unscorable as a model failur"}
+{"id": "cf-080", "passed": true, "why": ""}
+{"id": "cf-081", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (530 chars); unscorable as a model failur"}
+{"id": "cf-082", "passed": true, "why": ""}
+{"id": "cf-083", "passed": true, "why": ""}
+{"id": "cf-084", "passed": true, "why": ""}
+{"id": "cf-085", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-086", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (62 chars); unscorable as a model failure"}
+{"id": "cf-087", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (100 chars); unscorable as a model failur"}
+{"id": "cf-088", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (107 chars); unscorable as a model failur"}
+{"id": "cf-089", "passed": true, "why": ""}
+{"id": "cf-090", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (760 chars); unscorable as a model failur"}
+{"id": "cf-091", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (881 chars); unscorable as a model failur"}
+{"id": "cf-092", "passed": true, "why": ""}
+{"id": "cf-093", "passed": true, "why": ""}
+{"id": "cf-094", "passed": true, "why": ""}
+{"id": "cf-095", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (509 chars); unscorable as a model failur"}
+{"id": "cf-096", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (610 chars); unscorable as a model failur"}
+{"id": "cf-097", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (588 chars); unscorable as a model failur"}
+{"id": "cf-098", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-099", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-100", "passed": true, "why": ""}
+{"id": "cf-101", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-102", "passed": true, "why": ""}
+{"id": "cf-103", "passed": true, "why": ""}
+{"id": "cf-104", "passed": true, "why": ""}
+{"id": "cf-105", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (536 chars); unscorable as a model failur"}
+{"id": "cf-106", "passed": true, "why": ""}
+{"id": "cf-107", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-108", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (717 chars); unscorable as a model failur"}
+{"id": "cf-109", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (274 chars); unscorable as a model failur"}
+{"id": "cf-110", "passed": true, "why": ""}
+{"id": "cf-111", "passed": true, "why": ""}
+{"id": "cf-112", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-113", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (677 chars); unscorable as a model failur"}
+{"id": "cf-114", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (673 chars); unscorable as a model failur"}
+{"id": "cf-115", "passed": true, "why": ""}
+{"id": "cf-116", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-117", "passed": true, "why": ""}
+{"id": "cf-118", "passed": true, "why": ""}
+{"id": "cf-119", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-120", "passed": true, "why": ""}
+{"id": "cf-121", "passed": true, "why": ""}
+{"id": "cf-122", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (510 chars); unscorable as a model failur"}
+{"id": "cf-123", "passed": true, "why": ""}
+{"id": "cf-124", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-125", "passed": true, "why": ""}
+{"id": "cf-126", "passed": true, "why": ""}
+{"id": "cf-127", "passed": false, "why": "got 41.0"}
+{"id": "cf-128", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-129", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-130", "passed": true, "why": ""}
+{"id": "cf-131", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-132", "passed": true, "why": ""}
+{"id": "cf-133", "passed": true, "why": ""}
+{"id": "cf-134", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (685 chars); unscorable as a model failur"}
+{"id": "cf-135", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (739 chars); unscorable as a model failur"}
+{"id": "cf-136", "passed": true, "why": ""}
+{"id": "cf-137", "passed": false, "why": "got 300.0"}
+{"id": "cf-138", "passed": true, "why": ""}
+{"id": "cf-139", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (718 chars); unscorable as a model failur"}
+{"id": "cf-140", "passed": true, "why": ""}
+{"id": "cf-141", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (594 chars); unscorable as a model failur"}
+{"id": "cf-142", "passed": true, "why": ""}
+{"id": "cf-143", "passed": true, "why": ""}
+{"id": "cf-144", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (482 chars); unscorable as a model failur"}
+{"id": "cf-145", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (650 chars); unscorable as a model failur"}
+{"id": "cf-146", "passed": true, "why": ""}
+{"id": "cf-147", "passed": true, "why": ""}
+{"id": "cf-148", "passed": true, "why": ""}
+{"id": "cf-149", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-150", "passed": true, "why": ""}
+{"id": "cf-151", "passed": true, "why": ""}
+{"id": "cf-152", "passed": true, "why": ""}
+{"id": "cf-153", "passed": true, "why": ""}
+{"id": "cf-154", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (152 chars); unscorable as a model failur"}
+{"id": "cf-155", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (339 chars); unscorable as a model failur"}
+{"id": "cf-156", "passed": true, "why": ""}
+{"id": "cf-157", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (226 chars); unscorable as a model failur"}
+{"id": "cf-158", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (1078 chars); unscorable as a model failu"}
+{"id": "cf-159", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-160", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (615 chars); unscorable as a model failur"}

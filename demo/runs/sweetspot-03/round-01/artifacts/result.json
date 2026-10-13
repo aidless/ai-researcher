@@ -1,0 +1,36 @@
+{
+ "model": "deepseek-r1:7b",
+ "caps": [
+  150,
+  400,
+  1000
+ ],
+ "families": {
+  "math": {
+   "acc": [
+    0.6667,
+    1.0,
+    1.0
+   ],
+   "nonmonotonic": false
+  },
+  "code": {
+   "acc": [
+    0.8333,
+    0.8333,
+    0.3333
+   ],
+   "nonmonotonic": true
+  },
+  "logic": {
+   "acc": [
+    0.0,
+    0.6667,
+    1.0
+   ],
+   "nonmonotonic": false
+  }
+ },
+ "any_sweet_spot": true,
+ "confirmed": true
+}

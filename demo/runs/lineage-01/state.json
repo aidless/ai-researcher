@@ -1,0 +1,53 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/lineage-01/round-01",
+   "result": {
+    "versions": [
+     "v1",
+     "v2",
+     "v3",
+     "v3b",
+     "v3c"
+    ],
+    "rates": {
+     "v1": null,
+     "v2": 0.6759,
+     "v3": 0.7326,
+     "v3b": 0.7241,
+     "v3c": 0.7083
+    },
+    "any_regression": true,
+    "regressions": [
+     {
+      "from": "v3",
+      "to": "v3b",
+      "drop": 0.0085
+     },
+     {
+      "from": "v3b",
+      "to": "v3c",
+      "drop": 0.0158
+     }
+    ],
+    "confirmed": true,
+    "exit_code": 0,
+    "wall_s": 18659.8,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@66414d95f45f",
+   "kill_row": "any_regression == True",
+   "verdict": "STOP-EXTEND",
+   "reason": "at least one checkpoint regresses: extend to per-check-type attribution + McNemar"
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-07T03:32:58.952433+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "6c14581cac0766a99f5b8f45341336ede1388f470eac770740bd441742aef3d9",
+ "key_priv": null
+}

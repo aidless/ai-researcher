@@ -1,0 +1,5 @@
+{
+  "amended_at": "2026-10-08T06:06:13.926201+00:00",
+  "correction": "ARTIFACT SHAPE DEFECT (does not affect any claim): result.json initialises models = {} and never populates it; the per-family data lives under per_model. Every number used in the paper is read from per_model, whose fields are complete (policies, gain, fixed, broke, p) and whose per-item flags are in out_*.jsonl. Recorded so nobody reads a claim off the empty models field. The bundle verifies; the defect is in the harness's output shape, not in the measurement.",
+  "knowable_without_data": "no: found while building the confirmation table, after the run had already produced its verdict through its own kill-switch"
+}

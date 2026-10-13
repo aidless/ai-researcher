@@ -1,0 +1,3240 @@
+{
+  "generated_at": "2026-10-04T23:37:22+0800",
+  "tool": "w10_criteria_fill.py",
+  "policy": "只读 arXiv；不编造；不改 store；insufficient 保持阻塞",
+  "items": {
+    "2212.10496v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "We see HyDE bring sizable improvements to Contriever across the board for both precision-oriented and recall metrics"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "recall",
+                "quote": "DL19 DL20 map ndcg@10 recall@1k map ndcg@10 recall@1k w/o relevance judgement BM25 30"
+              },
+              {
+                "value": "recall",
+                "quote": "DL19 DL20 map ndcg@10 recall@1k map ndcg@10 recall@1k w/o relevance judgement BM25 30"
+              }
+            ]
+          },
+          {
+            "metric": "ranking_metric",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "ndcg",
+                "quote": "DL19 DL20 map ndcg@10 recall@1k map ndcg@10 recall@1k w/o relevance judgement BM25 30"
+              },
+              {
+                "value": "recall@1",
+                "quote": "DL19 DL20 map ndcg@10 recall@1k map ndcg@10 recall@1k w/o relevance judgement BM25 30"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "TREC",
+            "quote": "4 TREC-COVID A"
+          },
+          {
+            "value": "TREC",
+            "quote": "7 TREC-NEWS A"
+          },
+          {
+            "value": "MS MARCO",
+            "quote": "DPR, ANCE and Contriever FT {}^{\\text{FT}} are in-domain supervised models that are finetuned on MS MARCO training data"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/texttron/hyde"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:04:31+0800"
+    },
+    "2403.09629v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "The left plot (a) shows the zero-shot accuracy on GSM8K, while the right plot (b) shows the zero-shot accuracy on CommonsenseQA, without any fine-tuning"
+              },
+              {
+                "value": "accuracy",
+                "quote": "The left plot (a) shows the zero-shot accuracy on GSM8K, while the right plot (b) shows the zero-shot accuracy on CommonsenseQA, without any fine-tuning"
+              }
+            ]
+          },
+          {
+            "metric": "ranking_metric",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "em",
+                "quote": "We initialize the start and end token embeddings to the embedding corresponding to the em dash, ” — ”, which often appears in text data to denote a pause or thought"
+              }
+            ]
+          },
+          {
+            "metric": "ppl",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "perplexity",
+                "quote": "2%) and observe a perplexity improvement of difficult tokens in natural text"
+              },
+              {
+                "value": "perplexity",
+                "quote": "2%) and observe a perplexity improvement of difficult tokens in natural text"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "GSM8K",
+            "quote": "In particular, after continued pretraining of an LM on a corpus of internet text with Quiet-STaR, we find zero-shot improvements on GSM8K (5"
+          },
+          {
+            "value": "GSM8K",
+            "quote": "In particular, after continued pretraining of an LM on a corpus of internet text with Quiet-STaR, we find zero-shot improvements on GSM8K (5"
+          },
+          {
+            "value": "GSM8K",
+            "quote": "2%) and GSM8K (5"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "7B",
+            "quote": "1 Base Mistral 7B E"
+          },
+          {
+            "value": "7B",
+            "quote": "2 OpenWebMath-Trained Mistral 7B E"
+          },
+          {
+            "value": "7B",
+            "quote": "3 Quiet-STaR-Trained Mistral 7B F Additional Works on Learning to Reason G Distribution of Improvements H Contribution Visualization I Handling Instability License: arXiv"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:04:54+0800"
+    },
+    "2503.09567v5": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": false,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [],
+        "benchmarks": [],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象",
+          "可算指标",
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:06:24+0800"
+    },
+    "2503.01763v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "1 Evaluation protocol We use three widely used IR metrics to evaluate the retrieval performance: (i) NDCG@K (N@K): evaluates ranking quality based on the relevance of retrieved tools; (ii) Recall@K (R@K): evaluates the proportion of target tools successfully retrieved within the top-K results; and (iii) Precision@K (P@K): evaluates the accuracy of the retrieved tools within the top-K results"
+              },
+              {
+                "value": "accuracy",
+                "quote": "(iii) Enhancing IR models for improved retrieval accuracy: Further optimize IR models to achieve higher retrieval precision, leveraging these improvements to augment tool-use LLMs and, consequently, enhance end-to-end task performance"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Precision",
+                "quote": "1 Evaluation protocol We use three widely used IR metrics to evaluate the retrieval performance: (i) NDCG@K (N@K): evaluates ranking quality based on the relevance of retrieved tools; (ii) Recall@K (R@K): evaluates the proportion of target tools successfully retrieved within the top-K results; and (iii) Precision@K (P@K): evaluates the accuracy of the retrieved tools within the top-K results"
+              },
+              {
+                "value": "precision",
+                "quote": "(iii) Enhancing IR models for improved retrieval accuracy: Further optimize IR models to achieve higher retrieval precision, leveraging these improvements to augment tool-use LLMs and, consequently, enhance end-to-end task performance"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Recall",
+                "quote": ", Recall@10) of IR models and the end-to-end task pass rate of tool-use agents"
+              },
+              {
+                "value": "recall",
+                "quote": "As shown in Table 2 , ToolRet requires models to recall more targets, posing a challenge in comprehensive retrieval"
+              }
+            ]
+          },
+          {
+            "metric": "ranking_metric",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Recall@10",
+                "quote": ", Recall@10) of IR models and the end-to-end task pass rate of tool-use agents"
+              },
+              {
+                "value": "nDCG",
+                "quote": ", NV-embedd-v1 ) that demonstrates strong performance in conventional IR benchmarks, achieves an nDCG@10 of only 33"
+              }
+            ]
+          },
+          {
+            "metric": "pass_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "pass rate",
+                "quote": "This low retrieval quality degrades the task pass rate of tool-use LLMs"
+              },
+              {
+                "value": "pass rate",
+                "quote": "This low retrieval quality degrades the task pass rate of tool-use LLMs"
+              }
+            ]
+          },
+          {
+            "metric": "attack_success",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "ASR",
+                "quote": "I would like you to help me transcribe the audio to text Labels : [1] {’ id ’: ’ taskbench_data_huggingface_tool_19 ’, ’ doc ’: {’ input - type ’: [’ audio ’], ’ output - type ’: [’ text ’], ’ name ’: ’ Automatic Speech Recognition ’, ’ description ’: ’ Automatic Speech Recognition ( ASR ), also known as Speech to Text ( STT ), is the task of transcribing a given audio to text"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "Tool-Retrieval-Benchmark",
+            "quote": ", Beijing, China Affiliation: Leiden University, Leiden, The Netherlands[2pt] Tool-Retrieval-Benchmark Abstract Tool learning aims to augment large language models (LLMs) with diverse tools, enabling them to act as agents for solving practical tasks"
+          },
+          {
+            "value": "ToolBench",
+            "quote": "(2024a) and ToolBench Qin et al"
+          },
+          {
+            "value": "ToolBench",
+            "quote": "To further explore the importance of tool retrieval, we conduct a pilot experiment on ToolBench Qin et al"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "1.5B",
+            "quote": "85 gte-Qwen2-1.5B-inst"
+          },
+          {
+            "value": "7B",
+            "quote": "80 GritLM-7B ♠ 25"
+          },
+          {
+            "value": "1.5B",
+            "quote": "41 gte-Qwen2-1.5B-inst"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "500 queries",
+            "quote": "(2024a) dataset contains 500 queries and 95 tools; Thus, we set the cluster number as min(500, 95) = 95 for clustering"
+          }
+        ],
+        "asset_urls": [
+          "https://github.com/open-compass/GTA",
+          "https://github.com/ShishirPatil/gorilla",
+          "https://github.com/ShishirPatil/gorilla/tree/main/data"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:07:02+0800"
+    },
+    "2307.02483v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "We note this evaluation scheme does not score on-topic responses on quality or accuracy, as our focus is on bypassing refusal mechanisms"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [],
+        "model_sizes": [],
+        "data_sizes": [
+          {
+            "value": "2,970 samples",
+            "quote": "In total, we process 2,970 samples for the curated dataset and 2,536 samples for the synthetic dataset"
+          },
+          {
+            "value": "2,536 samples",
+            "quote": "In total, we process 2,970 samples for the curated dataset and 2,536 samples for the synthetic dataset"
+          }
+        ],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:07:39+0800"
+    },
+    "2503.14376v3": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": false,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [],
+        "benchmarks": [],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象",
+          "可算指标",
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:08:49+0800"
+    },
+    "2609.08279v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "Existing budget-accuracy frontiers quantify the resulting loss in accuracy, but do not distinguish irreversible losses caused by eviction from recoverable retrieval failures"
+              },
+              {
+                "value": "accuracy",
+                "quote": "Existing budget-accuracy frontiers quantify the resulting loss in accuracy, but do not distinguish irreversible losses caused by eviction from recoverable retrieval failures"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "AgingBench",
+            "quote": "The most closely related work, AgingBench ( Zhu et al"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/megagonlabs/restore-counterfactual"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:09:39+0800"
+    },
+    "2507.20534v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "We compare data rephrasing with multi-epoch repetition by testing their corresponding accuracy on SimpleQA"
+              },
+              {
+                "value": "accuracy",
+                "quote": "As shown in Table 1 , the accuracy consistently improves across these strategies, demonstrating the efficacy of our rephrasing-based augmentation"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "Our approach employs a dual-path system to ensure both precision and robustness: Hybrid Rule Verification"
+              }
+            ]
+          },
+          {
+            "metric": "ranking_metric",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "EM",
+                "quote": "6 General Tasks MMLU (EM) 89"
+              },
+              {
+                "value": "EM",
+                "quote": "1 MMLU-Redux (EM) 92"
+              }
+            ]
+          },
+          {
+            "metric": "hallucination_rate",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "hallucination rate",
+                "quote": "1-Open it achieves a hallucination rate of 1"
+              },
+              {
+                "value": "hallucination rate",
+                "quote": "On FaithJudge’s RAG tasks the hallucination rate is 7"
+              }
+            ]
+          },
+          {
+            "metric": "ppl",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "perplexity",
+                "quote": "Evaluation Configurations We employ perplexity-based evaluation for MMLU, MMLU-Redux, GPQA-Diamond, HellaSwag, ARC-Challenge, C-Eval, and CMMLU"
+              }
+            ]
+          },
+          {
+            "metric": "pass_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Pass@1",
+                "quote": "5 Flash Coding Tasks LiveCodeBench v6 (Pass@1) 53"
+              },
+              {
+                "value": "Pass@1",
+                "quote": "7 OJBench (Pass@1) 27"
+              }
+            ]
+          },
+          {
+            "metric": "efficiency",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "throughput",
+                "quote": "Each engine is heavily optimized for throughput"
+              },
+              {
+                "value": "latency",
+                "quote": "In addition, as the model scales to the size of K2, the latency of engine switching and failure recovery becomes significant"
+              }
+            ]
+          },
+          {
+            "metric": "win_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Win rate",
+                "quote": "0 Hard Prompt (Win rate) 54"
+              },
+              {
+                "value": "Win rate",
+                "quote": "0 Creative Writing (Win rate) 85"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "Tau2-Bench",
+            "quote": "1 on Tau2-Bench, 76"
+          },
+          {
+            "value": "ACEBench",
+            "quote": "5 on ACEBench (En), 65"
+          },
+          {
+            "value": "SWE-Bench",
+            "quote": "8 on SWE-Bench Verified, and 47"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "9B",
+            "quote": "First, we train a mid-scale 9B activated and 53B total parameters Mixture-of-Experts (MoE) model using the vanilla Muon"
+          },
+          {
+            "value": "53B",
+            "quote": "First, we train a mid-scale 9B activated and 53B total parameters Mixture-of-Experts (MoE) model using the vanilla Muon"
+          },
+          {
+            "value": "671B",
+            "quote": "Table 2: Architectural comparison between Kimi K2 and DeepSeek-V3 DeepSeek-V3 Kimi K2 Δ \\Delta #Layers 61 61 = Total Parameters 671B 1"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://huggingface.co/moonshotai/Kimi-K2-Instruct",
+          "https://github.com/MoonshotAI/checkpoint-engine",
+          "https://huggingface.co/datasets/openai/mrcr"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:10:34+0800"
+    },
+    "2309.01431v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "We found that even though RAG can improve the response accuracy of LLMs, they still suffer from the above-mentioned challenges significantly"
+              },
+              {
+                "value": "accuracy",
+                "quote": "68 Table 1: The experimental result of noise robustness measured by accuracy (%) under different noise ratios"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "GLUE",
+            "quote": "In the past, benchmarks such as GLUE ( Wang et al"
+          },
+          {
+            "value": "MMLU",
+            "quote": "MMLU ( Hendrycks et al"
+          },
+          {
+            "value": "AGIEval",
+            "quote": "Recently, with the development of LLMs, a series of general evaluation benchmarks have emerged, such as AGIEval ( Zhong et al"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "6B",
+            "quote": "Based on RGB, we conduct evaluation on 6 state-of-the-art large language models including ChatGPT ( OpenAI 2022 ) , ChatGLM-6B ( THUDM 2023a ) , ChatGLM2-6B ( THUDM 2023b ) , Vicuna-7b ( Chiang et al"
+          },
+          {
+            "value": "6B",
+            "quote": "Based on RGB, we conduct evaluation on 6 state-of-the-art large language models including ChatGPT ( OpenAI 2022 ) , ChatGLM-6B ( THUDM 2023a ) , ChatGLM2-6B ( THUDM 2023b ) , Vicuna-7b ( Chiang et al"
+          },
+          {
+            "value": "7B",
+            "quote": "2023 ) , Qwen-7B-Chat ( QwenLM 2023 ) , BELLE-7B ( Yunjie Ji 2023 )"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/chen700564/RGB",
+          "https://huggingface.co/moka-ai/m3e-base",
+          "https://huggingface.co/sentence-transformers/all-mpnet-base-v2"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:11:43+0800"
+    },
+    "2502.17387v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": false,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [],
+        "benchmarks": [
+          {
+            "value": "GSM8k",
+            "quote": "Compared to the most commonly used existing open-source datasets for math reasoning, GSM8k and MATH, Big-Math is an order of magnitude larger, while our rigorous filtering ensures that we maintain the questions most suitable for RL"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "可算指标",
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:12:54+0800"
+    },
+    "2412.06464v3": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "acc",
+                "quote": "ppl ↓ \\downarrow ppl ↓ \\downarrow acc ↑ \\uparrow acc ↑ \\uparrow acc_n ↑ \\uparrow acc ↑ \\uparrow acc ↑ \\uparrow acc_n ↑ \\uparrow acc ↑ \\uparrow acc ↑ \\uparrow Recurrent models RetNet 19"
+              },
+              {
+                "value": "acc",
+                "quote": "ppl ↓ \\downarrow ppl ↓ \\downarrow acc ↑ \\uparrow acc ↑ \\uparrow acc_n ↑ \\uparrow acc ↑ \\uparrow acc ↑ \\uparrow acc_n ↑ \\uparrow acc ↑ \\uparrow acc ↑ \\uparrow Recurrent models RetNet 19"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "recall",
+                "quote": "Despite demonstrating superior associative recall and language modeling performance ( Schlag et al"
+              },
+              {
+                "value": "recall",
+                "quote": "suggesting the superiority of the (gated) delta rule over Mamba2 in in-context associative recall"
+              }
+            ]
+          },
+          {
+            "metric": "ppl",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "ppl",
+                "quote": "ppl ↓ \\downarrow ppl ↓ \\downarrow acc ↑ \\uparrow acc ↑ \\uparrow acc_n ↑ \\uparrow acc ↑ \\uparrow acc ↑ \\uparrow acc_n ↑ \\uparrow acc ↑ \\uparrow acc ↑ \\uparrow Recurrent models RetNet 19"
+              },
+              {
+                "value": "ppl",
+                "quote": "ppl ↓ \\downarrow ppl ↓ \\downarrow acc ↑ \\uparrow acc ↑ \\uparrow acc_n ↑ \\uparrow acc ↑ \\uparrow acc ↑ \\uparrow acc_n ↑ \\uparrow acc ↑ \\uparrow acc ↑ \\uparrow Recurrent models RetNet 19"
+              }
+            ]
+          },
+          {
+            "metric": "efficiency",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "Throughput",
+                "quote": "Long context understanding Throughput Comparison"
+              },
+              {
+                "value": "throughput",
+                "quote": "2K × \\times 16 4K × \\times 8 8K × \\times 4 16K × \\times 2 25 30 35 40 45 50 55 60 Sequence Length × \\times Batch Size Thousands Token Per Second (Kt/s) Transformer++ DeltaNet Gated DeltaNet Mamba1 Mamba2 Gated DeltaNet-H1 Samba Gated DeltaNet-H2 Figure 3: Training throughput comparison of 1"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "LongBench",
+            "quote": "Long context understanding As demonstrated in Table 5 , we evaluated the models’ performance on LongBench ( Bai et al"
+          },
+          {
+            "value": "LongBench",
+            "quote": "4 Table 5: Accuracy on 14 tasks from LongBench ( Bai et al"
+          },
+          {
+            "value": "HotpotQA",
+            "quote": ", 2023 ) : Narrative QA, QasperQA, MultiField QA, HotpotQA, 2WikiMulti QA, Musique, GovReport, QMSum, MultiNews, TRec, Trivia QA, SamSum, LCC, and RepoBench-P by order"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "1.3B",
+            "quote": "For fair comparison, all models are trained under identical conditions with 1.3B parameters on 100B tokens sampled from the FineWeb-Edu dataset ( Penedo et al"
+          },
+          {
+            "value": "100B",
+            "quote": "3B parameters on 100B tokens sampled from the FineWeb-Edu dataset ( Penedo et al"
+          },
+          {
+            "value": "1B",
+            "quote": "The learning rate follows a cosine annealing schedule with a 1B token warm-up period and batch size of 0"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/NVlabs/GatedDeltaNet",
+          "https://github.com/BlinkDL/RWKV-LM/tree/main/RWKV-v7",
+          "https://github.com/fla-org/flash-linear-attention/tree/main/fla/ops/generalized_delta_rule"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:13:22+0800"
+    },
+    "2305.11747v3": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "59\\% accuracy for ChatGPT in question answering)"
+              },
+              {
+                "value": "Accuracy",
+                "quote": "54 Table 5: Accuracy (%) of classifying whether a sample contains hallucinated contents"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "HotpotQA",
+            "quote": ", HotpotQA) as seed data, we employ ChatGPT to generate hallucinated samples with two styles of task-specific instructions, i"
+          },
+          {
+            "value": "HotpotQA",
+            "quote": "For these three tasks, we first randomly sample 30,000 30,000 instances from the training set of HotpotQA Yang et al"
+          },
+          {
+            "value": "HotpotQA",
+            "quote": "HotpotQA: A dataset for diverse, explainable multi-hop question answering"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "7B",
+            "quote": "Besides, we also evaluate five prevalent open-source LLMs, including Alpaca (7B) Taori et al"
+          },
+          {
+            "value": "7B",
+            "quote": "(2023) , Vicuna (7B) Chiang et al"
+          },
+          {
+            "value": "7B",
+            "quote": "(2023) , ChatGLM (7B) Zeng et al"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "5,000 queries",
+            "quote": "To further screen out user queries where LLMs are most likely to produce hallucinations, we use ChatGPT to sample three responses for each query and only retain 5,000 5,000 queries with the lowest similarity among three responses"
+          },
+          {
+            "value": "30,000 instances",
+            "quote": "For these three tasks, we first randomly sample 30,000 30,000 instances from the training set of HotpotQA Yang et al"
+          },
+          {
+            "value": "10,000 examples",
+            "quote": "1 , we produce a total of 30,000 30,000 hallucinated samples with 10,000 10,000 examples for each task of QA, dialogue, and summarization"
+          }
+        ],
+        "asset_urls": [
+          "https://github.com/RUCAIBox/HaluEval",
+          "https://github.com/tatsu-lab/stanford_alpaca"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:14:02+0800"
+    },
+    "2307.06962v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "recall",
+                "quote": ", 2019 ) are used as the document retriever, which can recall documents that have similar topics with the prefix"
+              }
+            ]
+          },
+          {
+            "metric": "ppl",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "Perplexity",
+                "quote": "3 Enlarged Phrase Index with En-Wiki Results Effects of Index Size 6 Related Work Dense Retrieval Retrieval-Augmented Text Generation (RAG) 7 Conclusion References A Dataset Statistics B More Implementation Details C Perplexity of Generated Text D The Phrase Segmentation Algorithm E More Cases License: CC BY 4"
+              },
+              {
+                "value": "perplexity",
+                "quote": ", 2019 ) often uses perplexity as the primary evaluation metric to measure the performance of language modeling"
+              }
+            ]
+          },
+          {
+            "metric": "efficiency",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "Latency",
+                "quote": "Model Decoding MAUVE ↑ \\uparrow Rep-2 ↓ \\downarrow Rep-3 ↓ \\downarrow Rep-4 ↓ \\downarrow Diversity ↑ \\uparrow Latency (s) ↓ \\downarrow Transformer greedy 19"
+              },
+              {
+                "value": "latency",
+                "quote": "Its inference latency is much higher than Transformer, and CoG , which is aligned with previous work ( Alon et al"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [],
+        "model_sizes": [
+          {
+            "value": "248M",
+            "quote": "Our proposed CoG contains overall 248M parameters from BERT and GPT2 models, and other baselines contain over 124M parameters"
+          },
+          {
+            "value": "124M",
+            "quote": "Our proposed CoG contains overall 248M parameters from BERT and GPT2 models, and other baselines contain over 124M parameters"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/gmftbyGMFTBY/Copyisallyouneed",
+          "https://github.com/lucidrains/RETRO-pytorch",
+          "https://huggingface.co/facebook/dpr-ctx_encoder-single-nq-base"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:15:00+0800"
+    },
+    "2401.12926v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": false,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [],
+        "benchmarks": [],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象",
+          "可算指标",
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:16:23+0800"
+    },
+    "2403.04307v3": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "This phenomenon has raised concerns regarding the reliability of LLMs in critical domains such as journalism and legal documentation, where accuracy is paramount ( Weise and Metz, 2023 ; Mello and Guha, 2023 )"
+              },
+              {
+                "value": "accuracy",
+                "quote": "4% validation accuracy, has desired pattern recognizing ability while overcoming the rigidity of using fixed patterns"
+              }
+            ]
+          },
+          {
+            "metric": "f1",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "F1",
+                "quote": "Appendix E Additional Metrics of the Challenging Query Classifier Precision Recall F1-score Positive 83% 78% 81% Negative 80% 84% 82% Table 5: Precison, Recall, and F1-score of the Llama-2-based Challenging Query Classifier"
+              },
+              {
+                "value": "F1",
+                "quote": "Appendix E Additional Metrics of the Challenging Query Classifier Precision Recall F1-score Positive 83% 78% 81% Negative 80% 84% 82% Table 5: Precison, Recall, and F1-score of the Llama-2-based Challenging Query Classifier"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "While acknowledging potential limitations in the precision of GPT-4’s classifications, the presented distribution provides valuable insights into the real-world prevalence of query types prone to inducing hallucinations in LLMs"
+              },
+              {
+                "value": "precision",
+                "quote": "To mitigate the impact of GPT-4’s propensity for hallucination on classifier precision, we employ a rigorous validation process"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "recall",
+                "quote": "Moreover, although RAG is still the common practice to improve the factuality and reduce hallucinations in LLMs, it potentially induces the recall and faithfulness problems ( Zhou et al"
+              },
+              {
+                "value": "Recall",
+                "quote": "Appendix E Additional Metrics of the Challenging Query Classifier Precision Recall F1-score Positive 83% 78% 81% Negative 80% 84% 82% Table 5: Precison, Recall, and F1-score of the Llama-2-based Challenging Query Classifier"
+              }
+            ]
+          },
+          {
+            "metric": "hallucination_rate",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "hallucination rate",
+                "quote": "Alpaca 7B, showing a hallucination rate of 99"
+              },
+              {
+                "value": "hallucination rate",
+                "quote": "In contrast, GPT-4-Turbo, with the lowest average hallucination rate of 18"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "MT-Bench",
+            "quote": "Benchmark HaluEval-Wild MT-Bench ↑ \\uparrow AlpacaEval ↑ \\uparrow AlpacaEval 2"
+          },
+          {
+            "value": "MT-bench",
+            "quote": "Other Alignment Benchmarks The comparison of model performances on HaluEval-Wild against other established alignment benchmarks such as MT-bench ( Zheng et al"
+          },
+          {
+            "value": "Natural questions",
+            "quote": "Natural questions: a benchmark for question answering research"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "7B",
+            "quote": "To mitigate this limitation, we harness the contextual understanding capabilities of LLMs and develop a classifier based on the Llama-2-7B model"
+          },
+          {
+            "value": "7B",
+            "quote": "The combined 8,540 positive and negative examples are used to finetune Llama-2-7B, with a 9:1 train-val ratio"
+          },
+          {
+            "value": "7B",
+            "quote": "26% Mistral 7B 61"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "8,067 queries",
+            "quote": "We further utilize the classifier to pre-screen all user queries in the ShareGPT dataset, collecting 8,067 queries predicted as positive to form our initial pool of challenging queries"
+          },
+          {
+            "value": "100 instances",
+            "quote": "We repeat this process until each category comprises 100 instances"
+          }
+        ],
+        "asset_urls": [
+          "https://github.com/HaluEval-Wild/HaluEval-Wild",
+          "https://huggingface.co/datasets/anon8231489123/ShareGPT_Vicuna_unfiltered",
+          "https://github.com/tatsu-lab/alpaca_eval"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:16:56+0800"
+    },
+    "2407.00079v4": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "However, predicting each request’s output length is challenging due to high costs [ 9 ] or low accuracy, especially under overload conditions where resources are scarce and accurate predictions are necessary, making request-level predictions particularly difficult"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "This type of prediction is ongoing and requires less precision, making it more appropriate for overload scenarios"
+              }
+            ]
+          },
+          {
+            "metric": "efficiency",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "throughput",
+                "quote": "The core of Mooncake is its KVCache-centric scheduler, which balances maximizing overall effective throughput while meeting latency-related Service Level Objectives (SLOs)"
+              },
+              {
+                "value": "latency",
+                "quote": "The core of Mooncake is its KVCache-centric scheduler, which balances maximizing overall effective throughput while meeting latency-related Service Level Objectives (SLOs)"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [],
+        "model_sizes": [
+          {
+            "value": "70B",
+            "quote": "To protect proprietary information and facilitate reproducibility, all the experimental results reported in this paper are based on replayed traces of real workloads, but using a dummy model that follows the same architecture as LLaMA2-70B"
+          },
+          {
+            "value": "70B",
+            "quote": "Figure 2 : Normalized throughput and latency of prefill and decoding stages with different sequence lengths or batch sizes for the dummy LLaMA2-70B model"
+          },
+          {
+            "value": "1M",
+            "quote": "1 Multi-node Prefill The available context length of recent LLMs is increasing rapidly, from 8k to 128K and even 1M [ 16 ]"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/kvcache-ai/Mooncake",
+          "https://github.com/NVIDIA/FasterTransformer",
+          "https://github.com/NVIDIA/TensorRT-LLM"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:17:46+0800"
+    },
+    "2502.12663v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "Through comprehensive evaluations on two widely used reasoning benchmarks across 11 languages, we demonstrate that multilingual PRMs not only improve average accuracy but also reduce early-stage reasoning errors"
+              },
+              {
+                "value": "accuracy",
+                "quote": "Through comprehensive evaluations on two widely used reasoning benchmarks across 11 languages, we demonstrate that multilingual PRMs not only improve average accuracy but also reduce early-stage reasoning errors"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "Processbench",
+            "quote": "Processbench: Identifying process errors in mathematical reasoning"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "7B",
+            "quote": "Finally, we conduct a comprehensive evaluation on two popular reasoning tasks ( MATH500 and MGSM ) across 11 languages (seven seen languages and four unseen languages) using three LLMs ( MetaMath-Mistral-7B , Llama-3"
+          },
+          {
+            "value": "8B",
+            "quote": "1-8B-math , and DeepSeekMath-7B-Instruct )"
+          },
+          {
+            "value": "7B",
+            "quote": "1-8B-math , and DeepSeekMath-7B-Instruct )"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/weixuan-wang123/Multilingual-PRM",
+          "https://huggingface.co/gohsyi/Meta-Llama-3.1-8B-sft-metamath"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:18:16+0800"
+    },
+    "2407.13168v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "These tests are extracted from real scientific workflows: scientists must design domain-specific test cases to verify code accuracy by reproducing results published in academic papers or matching analytical solutions derived from theoretical models"
+              },
+              {
+                "value": "accuracy",
+                "quote": "3 Example Domain Specific Test Cases Both the k k -space and sweeping grid sizes are set to very rough values to make the computation faster, feel free to increase them for higher accuracy"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "recall",
+                "quote": "The problems in SciCode naturally factorize into multiple subproblems, each involving knowledge recall, reasoning, and code synthesis"
+              },
+              {
+                "value": "recall",
+                "quote": "The problems naturally factorize into multiple subproblems, each involving knowledge recall, reasoning, and code synthesis"
+              }
+            ]
+          },
+          {
+            "metric": "pass_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "pass@1",
+                "quote": "4% pass@1 in our main setting"
+              },
+              {
+                "value": "pass@1",
+                "quote": "5 Table 2: Model performance in pass@1 rate on SciCode under the standard setup: without background knowledge and carrying over generated solutions to previous subproblems"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "scicode-bench",
+            "quote": "1 1 1 Data, code, and leaderboard available at https://scicode-bench"
+          },
+          {
+            "value": "MBPP",
+            "quote": "For simple function completion, MBPP [ 7 ] and HumanEval [ 11 ] are two widely used benchmarks that contain basic programming questions, mainly evaluating LMs’ ability to turn natural language instructions into Python programs"
+          },
+          {
+            "value": "HumanEval",
+            "quote": "For simple function completion, MBPP [ 7 ] and HumanEval [ 11 ] are two widely used benchmarks that contain basic programming questions, mainly evaluating LMs’ ability to turn natural language instructions into Python programs"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "70B",
+            "quote": ", Llama-3-70B-Instruct and Mixtral-8x22B-Inst) fail to complete any problems despite successfully solving some subproblems correctly"
+          },
+          {
+            "value": "7B",
+            "quote": "3 3 3 For instance, CodeLlama-7B-Instruct achieves only 0"
+          },
+          {
+            "value": "70B",
+            "quote": "• Llama-3-70B-Instruct [ 2 ] : The instruction-tuned version of the largest available model from the Llama-3 family"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:18:33+0800"
+    },
+    "2605.24022v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "As a result, CacheTune enables high-quality non-prefix KV reuse with near-full-recompute accuracy while substantially reducing TTFT across diverse storage configurations"
+              },
+              {
+                "value": "accuracy",
+                "quote": ", 2024 ) positions of each chunk to recover cross-attention at extremely low cost, but this approach offers insufficient coverage of globally semantic tokens and fails to guarantee model accuracy in many scenarios"
+              }
+            ]
+          },
+          {
+            "metric": "f1",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "F1",
+                "quote": ", 2022 ) Multi-hop QA Concatenation of multi-document retrieval chunks F1 WikiMQA ( Ho et al"
+              },
+              {
+                "value": "F1",
+                "quote": ", 2020 ) Multi-hop QA Concatenation of multi-document retrieval chunks F1 HotpotQA ( Yang et al"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "Hu Division: memory efficient training via dual activation precision"
+              }
+            ]
+          },
+          {
+            "metric": "efficiency",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "latency",
+                "quote": "Abstract: In long-context Large Language Model (LLM) inference, the Time-To-First-Token (TTFT) latency incurred by the prefill stage has become the foremost bottleneck limiting interactive performance and deployment cost"
+              },
+              {
+                "value": "latency",
+                "quote": "To turn this semantic selection into end-to-end latency reduction, CacheTune further combines sparse KV transfer, multi-stream asynchronous overlap, deferred positional-encoding recovery, and hardware-aware adaptive recomputation-ratio tuning to balance computation and data movement across heterogeneous cache pools"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "HotpotQA",
+            "quote": ", 2020 ) Multi-hop QA Concatenation of multi-document retrieval chunks F1 HotpotQA ( Yang et al"
+          },
+          {
+            "value": "Longbench",
+            "quote": "Longbench: a bilingual, multitask benchmark for long context understanding"
+          },
+          {
+            "value": "HotpotQA",
+            "quote": "Manning HotpotQA: A dataset for diverse, explainable multi-hop question answering"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "7B",
+            "quote": "3-7B ( Jiang et al"
+          },
+          {
+            "value": "8B",
+            "quote": ", 2023 ) and Llama 3-8B ( Team, 2024 ) on the MuSiQue ( Trivedi et al"
+          },
+          {
+            "value": "7B",
+            "quote": "3-7B ( Jiang et al"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:18:59+0800"
+    },
+    "2107.03374v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "In the paper that introduces APPS, the authors benchmark a few language models and report two metrics: the percentage of problems where the model finds a correct solution (called the “strict accuracy”) and the percentage of unit tests passed, even if the solution is incorrect"
+              },
+              {
+                "value": "accuracy",
+                "quote": "We avoid this metric and only focus on “strict accuracy”, and - as in the previous sections - we report pass@ k k numbers for various k k (Table 2 )"
+              }
+            ]
+          },
+          {
+            "metric": "pass_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "pass@1",
+                "quote": "One may be tempted to estimate pass@ k k with 1 − ( 1 − p ^ ) k 1-(1-\\hat{p})^{k} where p ^ \\hat{p} is the empirical estimate of pass@1, but we show that it is biased in Appendix A"
+              },
+              {
+                "value": "pass@1",
+                "quote": "In particular, for a 679M parameter model, the optimal temperature for pass@1 is T ∗ = 0"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "HumanEval",
+            "quote": "On HumanEval, a new evaluation set we release to measure functional correctness for synthesizing programs from docstrings, our model solves 28"
+          },
+          {
+            "value": "HumanEval",
+            "quote": "2 HumanEval: Hand-Written Evaluation Set 2"
+          },
+          {
+            "value": "HumanEval",
+            "quote": "On HumanEval , a new evaluation set we release to measure functional correctness for synthesizing programs from docstrings, our model solves 28"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "12B",
+            "quote": "8 Risk mitigation 8 Related Work 9 Conclusion References A Estimating pass@ k k B Random Problems and Solutions from Codex-12B C Building Blocks for Synthetic Tasks D Details of Specification-based Evaluation Framework E Analysis of Alignment Problems E"
+          },
+          {
+            "value": "12B",
+            "quote": "When a single sample is generated for each problem, GPT-12B solves no problems, but Codex (fine-tuned on code) solves 28"
+          },
+          {
+            "value": "12B",
+            "quote": "With just a single sample, a 12B parameter Codex solves 28"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "100 samples",
+            "quote": "2% of our problems with 100 samples per problem"
+          },
+          {
+            "value": "100 samples",
+            "quote": "2% of our problems with 100 samples per problem"
+          },
+          {
+            "value": "100 samples",
+            "quote": "From here, further gains can be realized by generating 100 samples per problem and selecting the sample with the highest mean log-probability (44"
+          }
+        ],
+        "asset_urls": [
+          "http://github.com/eleutherai/gpt-neo",
+          "https://github.com/kingoflolz/mesh-transformer-jax",
+          "https://github.com/openai/code-align-evals-data."
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:20:19+0800"
+    },
+    "2112.08542v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "5* Table 3: Balanced accuracy on the test set of the six SummaC benchmark datasets, and the average over the benchmark"
+              }
+            ]
+          },
+          {
+            "metric": "f1",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "F1",
+                "quote": "(2020b) with a backbone RoBERTa-MNLI model, averaging the three highest BertScore F1 scores over the input sentences"
+              },
+              {
+                "value": "F1",
+                "quote": "Typically, answer overlap in QA is measured through exact match ( EM ) score or word F1 score"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "(2020) , which shows that NP Chunks obtain the largest coverage of information units while retaining high precision"
+              }
+            ]
+          },
+          {
+            "metric": "ranking_metric",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "EM",
+                "quote": "Typically, answer overlap in QA is measured through exact match ( EM ) score or word F1 score"
+              },
+              {
+                "value": "EM",
+                "quote": "7 Answer Overlap LERC (QuIP) - EM 68"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "SQuAD",
+            "quote": "On the data side, we experiment with models trained for question generation on SQuAD Rajpurkar et al"
+          },
+          {
+            "value": "SQuAD",
+            "quote": "(2018) , a dataset of declarative sentences with associated question/answer pairs derived from SQuAD"
+          },
+          {
+            "value": "SQuAD",
+            "quote": "(2019) that achieves strong performance on the SQuAD 2"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/salesforce/QAFactEval",
+          "https://github.com/google-research-datasets/xsum_hallucination_annotations#license",
+          "https://github.com/salesforce/factCC/blob/master/LICENSE.txt"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:21:20+0800"
+    },
+    "2310.00741v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "Metrics: We compute two metrics: the F1 score (along with precision and recall scores) of detecting factual errors and balanced classification accuracy ( Brodersen et al"
+              },
+              {
+                "value": "accuracy",
+                "quote": ", 2010 ) that balances the positive and negative examples during computing the accuracy"
+              }
+            ]
+          },
+          {
+            "metric": "f1",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "F1",
+                "quote": "9 – – – – – Table 4: Segment-level with Response-level results of factual error detectors powered by Vicuna-33B, ChatGPT and GPT-4 on FELM, numbers are arranged according to F1/Precsion/Recall"
+              },
+              {
+                "value": "F1",
+                "quote": "Metrics: We compute two metrics: the F1 score (along with precision and recall scores) of detecting factual errors and balanced classification accuracy ( Brodersen et al"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "Metrics: We compute two metrics: the F1 score (along with precision and recall scores) of detecting factual errors and balanced classification accuracy ( Brodersen et al"
+              },
+              {
+                "value": "precision",
+                "quote": "Factscore: Fine-grained atomic evaluation of factual precision in long form text generation, 2023"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Recall",
+                "quote": "9 – – – – – Table 4: Segment-level with Response-level results of factual error detectors powered by Vicuna-33B, ChatGPT and GPT-4 on FELM, numbers are arranged according to F1/Precsion/Recall"
+              },
+              {
+                "value": "recall",
+                "quote": "Metrics: We compute two metrics: the F1 score (along with precision and recall scores) of detecting factual errors and balanced classification accuracy ( Brodersen et al"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "MMLU",
+            "quote": "Specifically, we source prompts from online platforms like Quora, Twitter, standard benchmarks such as MMLU ( Hendrycks et al"
+          },
+          {
+            "value": "TruthfulQA",
+            "quote": ", 2020 ) and TruthfulQA ( Lin et al"
+          },
+          {
+            "value": "TruthfulQA",
+            "quote": "In detail, for world knowledge domain, we involve questions related with history, society, common sense and news from TruthfulQA ( Lin et al"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "33B",
+            "quote": "We test three powerful LLMs as the backbone for factuality evaluators: Vicuna-33B ( vicuna-33B-v1"
+          },
+          {
+            "value": "33B",
+            "quote": "We test three powerful LLMs as the backbone for factuality evaluators: Vicuna-33B ( vicuna-33B-v1"
+          },
+          {
+            "value": "33B",
+            "quote": "Domain Level Vanilla Cot Link Content segment claim segment claim segment claim segment claim Vicuna-33B All seg"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "817 samples",
+            "quote": "FELM consists of a total of 817 samples and 3948 segments, each domain has at least 100 samples and 500 segments"
+          },
+          {
+            "value": "100 samples",
+            "quote": "FELM consists of a total of 817 samples and 3948 segments, each domain has at least 100 samples and 500 segments"
+          },
+          {
+            "value": "100 samples",
+            "quote": "For each aspect, specifically, we randomly select 100 samples from FELM, and the authors or crowd-source workers are asked to annotate reference reliability or safety"
+          }
+        ],
+        "asset_urls": [
+          "https://github.com/hkust-nlp/felm",
+          "https://github.com/giuven95/chatgpt-failures"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:21:56+0800"
+    },
+    "2410.23912v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": false,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [],
+        "benchmarks": [],
+        "model_sizes": [
+          {
+            "value": "0.5B",
+            "quote": "5-0.5B and Phi-3-mini, and the measured return curves follow the ones the analysis predicts"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象",
+          "可算指标"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:23:06+0800"
+    },
+    "2502.14187v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "Nonetheless, exploring quantization, such as 8-bit or lower precision, in future studies could provide insights into KTO’s performance under resource-constrained settings"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "MT-Bench",
+            "quote": "Using Alpaca-7B as the base model, we fine-tune on a realistic dataset under both methods and evaluate performance using MT-Bench-1, Vicuna, and AdvBench benchmarks"
+          },
+          {
+            "value": "AdvBench",
+            "quote": "Using Alpaca-7B as the base model, we fine-tune on a realistic dataset under both methods and evaluate performance using MT-Bench-1, Vicuna, and AdvBench benchmarks"
+          },
+          {
+            "value": "MT-Bench",
+            "quote": "Using Alpaca-7B as the base model, we fine-tune on a realistic dataset under both methods and evaluate performance using MT-Bench-1, Vicuna, and AdvBench benchmarks"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "7B",
+            "quote": "Using Alpaca-7B as the base model, we fine-tune on a realistic dataset under both methods and evaluate performance using MT-Bench-1, Vicuna, and AdvBench benchmarks"
+          },
+          {
+            "value": "7B",
+            "quote": "Using Alpaca-7B as the base model, we fine-tune on a realistic dataset under both methods and evaluate performance using MT-Bench-1, Vicuna, and AdvBench benchmarks"
+          },
+          {
+            "value": "7B",
+            "quote": "Model and Fine-Tuning Setup The base model used in our experiments is Alpaca-7B, an instruction-tuned model built on LLAMA-7B ( Taori et al"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/brains-group/OpenFedLLM/tree/KTO",
+          "https://github.com/tatsu-lab/stanford_alpaca"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:23:38+0800"
+    },
+    "2503.00061v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "Prior studies have shown that non-adaptive attacks can greatly underestimate a system’s vulnerabilities, as defenses that seem robust under these attacks may be entirely compromised by adaptive ones, drastically reducing accuracy and exposing a false sense of security Athalye et al"
+              }
+            ]
+          },
+          {
+            "metric": "ppl",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "Perplexity",
+                "quote": "Perplexity filtering Flag tool responses with high perplexity as attacks"
+              },
+              {
+                "value": "perplexity",
+                "quote": "Perplexity filtering Flag tool responses with high perplexity as attacks"
+              }
+            ]
+          },
+          {
+            "metric": "attack_success",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "attack success rate",
+                "quote": "In this paper, we evaluate eight different defenses and bypass all of them using adaptive attacks, consistently achieving an attack success rate of over 50%"
+              },
+              {
+                "value": "attack success rate",
+                "quote": "In this paper, we evaluate eight different defenses and bypass all of them using adaptive attacks, consistently achieving an attack success rate of over 50%"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "Harmbench",
+            "quote": "Harmbench: A standardized evaluation framework for automated red teaming and robust refusal"
+          },
+          {
+            "value": "mt-bench",
+            "quote": "Judging llm-as-a-judge with mt-bench and chatbot arena"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "7B",
+            "quote": "Figure 2: ASRs (%) for different defenses (in green ), and ASRs after implementing adaptive attacks (in red ) for both Vicuna-7B based prompted agent and Llama3-8B based finetuned agent"
+          },
+          {
+            "value": "8B",
+            "quote": "Figure 2: ASRs (%) for different defenses (in green ), and ASRs after implementing adaptive attacks (in red ) for both Vicuna-7B based prompted agent and Llama3-8B based finetuned agent"
+          },
+          {
+            "value": "7B",
+            "quote": "For prompted agent, we use Vicuna-7B 1 1 1 https://huggingface"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "1,054 test cases",
+            "quote": "The benchmark contains 1,054 test cases, covering two attack types: (1) Direct harm attacks: where the attacker instruction cause the agent to execute actions that can directly harm the user, such as initiating financial transactions or controlling devices like robots"
+          },
+          {
+            "value": "100 test cases",
+            "quote": "We randomly select 50 test cases from each attack type, creating a subset of 100 test cases for evaluation"
+          }
+        ],
+        "asset_urls": [
+          "https://github.com/uiuc-kang-lab/AdaptiveAttackAgent",
+          "https://huggingface.co/lmsys/vicuna-7b-v1.5",
+          "https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:24:10+0800"
+    },
+    "2504.19754v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "3 Methodology To guide our study, we define the following research questions (RQs), aimed at evaluating different strategies for chunking and retrieval in RAG systems: • RQ#1 : Compares the effectiveness of early versus late chunking strategies, utilizing different text segmenters and embedding models to evaluate their impact on retrieval accuracy and downstream performance in RAG systems"
+              },
+              {
+                "value": "accuracy",
+                "quote": "• RQ#2 : Compares the effectiveness of contextual retrieval versus traditional early chunking strategies, utilizing different text segmenters and embedding models to evaluate their impact on retrieval accuracy and downstream performance in RAG systems"
+              }
+            ]
+          },
+          {
+            "metric": "f1",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "F1",
+                "quote": "To evaluate the performance of our model, we utilize three key metrics: NDCG , MAP, and F1-score"
+              },
+              {
+                "value": "F1",
+                "quote": "F1-score: The F1-score, a harmonic mean of precision and recall, is employed to balance the trade-off between false positives and false negatives"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Precision",
+                "quote": "Mean Average Precision (MAP) : It calculates the mean of the Average Precision (AP) scores for all queries, where AP considers the precision at each relevant item in the ranked list"
+              },
+              {
+                "value": "Precision",
+                "quote": "Mean Average Precision (MAP) : It calculates the mean of the Average Precision (AP) scores for all queries, where AP considers the precision at each relevant item in the ranked list"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "recall",
+                "quote": "F1-score: The F1-score, a harmonic mean of precision and recall, is employed to balance the trade-off between false positives and false negatives"
+              }
+            ]
+          },
+          {
+            "metric": "ranking_metric",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "NDCG",
+                "quote": "To evaluate the performance of our model, we utilize three key metrics: NDCG , MAP, and F1-score"
+              },
+              {
+                "value": "NDCG",
+                "quote": "Normalized Discounted Cumulative Gain (NDCG): It measures the usefulness of an item based on its position in the ranking, assigning higher weights to items appearing at the top of the list"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "MSMarco",
+            "quote": "In our system initial Retrieval performance has been tested on the NFCorpus [ 3 ] dataset, while the subsequent Generation performance in question answering has been conducted over MSMarco [ 2 ]"
+          },
+          {
+            "value": "MsMarco",
+            "quote": "For datasets such as MsMarco , which include only passage texts rather than full documents, the system operates within a more constrained context for generating responses"
+          },
+          {
+            "value": "MSMarco",
+            "quote": "3 Generation evaluation Generation evaluation was assessed through the MSMarco dataset using a question answering task"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [
+          {
+            "value": "1,000 queries",
+            "quote": "In RQ#1 , the evaluation was conducted on the first 1,000 queries and approximately 5,000 documents/passages"
+          },
+          {
+            "value": "5,000 documents",
+            "quote": "In RQ#1 , the evaluation was conducted on the first 1,000 queries and approximately 5,000 documents/passages"
+          },
+          {
+            "value": "300 documents",
+            "quote": "For RQ#2 , due to the significant computational requirements and hardware limitations, the experiments were restricted to 50 queries and around 300 documents"
+          }
+        ],
+        "asset_urls": [
+          "https://github.com/disi-unibo-nlp/rag-when-how-chunk",
+          "https://github.com/anthropics/anthropic-cookbook/blob/main/skills/contextual-embeddings/guide.ipynb",
+          "https://huggingface.co/microsoft/Phi-3.5-mini-instruct"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:24:46+0800"
+    },
+    "2507.10593v3": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "Think-augmented function calling: Improving llm parameter accuracy through embedded reasoning"
+              }
+            ]
+          },
+          {
+            "metric": "efficiency",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "throughput",
+                "quote": "1x throughput over the alternative for a given workload"
+              },
+              {
+                "value": "throughput",
+                "quote": "1 × \\times throughput over the alternative for a given workload"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "glue",
+            "quote": "Yet the ecosystem treats each transport as a separate integration problem, forcing developers to write protocol-specific glue for what is fundamentally the same operation"
+          },
+          {
+            "value": "glue",
+            "quote": "2 Code Reduction Table 4: Code Reduction Comparison Integration Type Manual ToolRegistry Reduction (LOC) (LOC) (%) Native Functions 45 8 82% OpenAPI Integration 120 25 79% MCP Integration 85 12 86% Multi-Protocol Setup 250 45 82% The 79–86% reduction is consistent across integration types, confirming that the bulk of hand-written code is protocol glue rather than application logic"
+          },
+          {
+            "value": "glue",
+            "quote": "By wrapping native Python functions, MCP servers, OpenAPI specs, and LangChain tools behind one ToolRegistry object, the system eliminates the per-protocol glue code that dominates current practice: our benchmarks show 60–80% code reduction, with the right concurrency mode delivering up to 4"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/Oaklight/ToolRegistry",
+          "https://github.com/Oaklight/llm-rosetta",
+          "https://github.com/open-webui/mcpo"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:25:01+0800"
+    },
+    "2509.14285v4": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "attack_success",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "ASR",
+                "quote": "Without defense mechanisms, baseline Attack Success Rates (ASR) reached 30% for ChatGLM and 20% for Llama2"
+              },
+              {
+                "value": "ASR",
+                "quote": "Our multi-agent pipeline achieved 100% mitigation, reducing ASR to 0% across all tested scenarios"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [],
+        "model_sizes": [
+          {
+            "value": "6B",
+            "quote": "The first leverages ChatGLM-6B (2022), an earlier-generation model with limited safety training, while the second employs Llama2-13B (2023), a more recent model incorporating alignment optimizations"
+          },
+          {
+            "value": "13B",
+            "quote": "The first leverages ChatGLM-6B (2022), an earlier-generation model with limited safety training, while the second employs Llama2-13B (2023), a more recent model incorporating alignment optimizations"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:25:24+0800"
+    },
+    "2608.30597v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": false,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "win_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "win rate",
+                "quote": "Across 57 dataset-model-benchmark cells, PLC-DPO obtains the best mean win rate against DPO (60"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "dataset-model-benchmark",
+            "quote": "Across 57 dataset-model-benchmark cells, PLC-DPO obtains the best mean win rate against DPO (60"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:26:28+0800"
+    },
+    "2503.01935v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": false,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [],
+        "benchmarks": [
+          {
+            "value": "MultiAgentBench",
+            "quote": "In this paper, we introduce MultiAgentBench, a comprehensive benchmark designed to evaluate LLM-based multi-agent systems across diverse, interactive scenarios"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "可算指标",
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:27:40+0800"
+    },
+    "2404.19733v3": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "While only relying on examples in the training set, our approach results in increasing accuracy on GSM8K, MATH, and ARC-Challenge for Llama-2-70B-Chat, outperforming other Llama-2-based models not relying on additionally sourced datasets"
+              },
+              {
+                "value": "accuracy",
+                "quote": "6% on GSM8K and an accuracy of 88"
+              }
+            ]
+          },
+          {
+            "metric": "ranking_metric",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "EM",
+                "quote": ", 2022 ) , Rest EM ( Singh et al"
+              },
+              {
+                "value": "EM",
+                "quote": "ReST EM ( Singh et al"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "GSM8K",
+            "quote": "While only relying on examples in the training set, our approach results in increasing accuracy on GSM8K, MATH, and ARC-Challenge for Llama-2-70B-Chat, outperforming other Llama-2-based models not relying on additionally sourced datasets"
+          },
+          {
+            "value": "GSM8K",
+            "quote": "6% on GSM8K and an accuracy of 88"
+          },
+          {
+            "value": "GSM8K",
+            "quote": "1 Math Word Problems: GSM8K Experimental setup"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "70B",
+            "quote": "While only relying on examples in the training set, our approach results in increasing accuracy on GSM8K, MATH, and ARC-Challenge for Llama-2-70B-Chat, outperforming other Llama-2-based models not relying on additionally sourced datasets"
+          },
+          {
+            "value": "70B",
+            "quote": "While only relying on examples in the training set, our approach results in increasing accuracy on GSM8K, MATH, and ARC-Challenge for Llama-2-70B-Chat, outperforming other Llama-2-based models not relying on additionally sourced datasets"
+          },
+          {
+            "value": "70B",
+            "quote": "As a seed model M 0 M_{0} we use the chat version of Llama-2 70B model ( Touvron et al"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "1172 examples",
+            "quote": "We report results on the ARC-Challenge test set which has 1172 examples"
+          },
+          {
+            "value": "5,000 examples",
+            "quote": "The test set has 5,000 examples"
+          }
+        ],
+        "asset_urls": [
+          "https://huggingface.co/snorkelai/Snorkel-Mistral-PairRM-DPO"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:28:22+0800"
+    },
+    "2504.00914v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "While prior research has primarily focused on improving FC accuracy, little attention has been given to the robustness of these agents to perturbations in their input"
+              },
+              {
+                "value": "accuracy",
+                "quote": "While prior research has primarily focused on improving FC accuracy, little attention has been given to the robustness of these agents to perturbations in their input"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "Rotbench",
+            "quote": "Rotbench: a multi-level benchmark for evaluating the robustness of large language models in tool learning"
+          },
+          {
+            "value": "Complexfuncbench",
+            "quote": "Complexfuncbench: Exploring multi-step and constrained function calling under long-context scenario"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "70B",
+            "quote": "1-70B model ( Dubey et al"
+          },
+          {
+            "value": "13B",
+            "quote": ", 2024 ) , (2) function json definitions for executing these requests are generated using the Code-Llama-13B model ( Roziere et al"
+          },
+          {
+            "value": "70B",
+            "quote": "1-70B model ( Dubey et al"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://huggingface.co/datasets/ibm-research/BFCL-FC-robustness"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:29:33+0800"
+    },
+    "2505.14183v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "Experiments on multiple reasoning benchmarks show that ThinkSwitcher reduces computational cost by 20-30% while maintaining high accuracy on complex tasks"
+              },
+              {
+                "value": "accuracy",
+                "quote": "Experiments on multiple reasoning benchmarks show that ThinkSwitcher reduces computational cost by 20–30% while maintaining high accuracy on complex tasks"
+              }
+            ]
+          },
+          {
+            "metric": "pass_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Pass Rate",
+                "quote": "3 Impact of Pass Rate Estimation Quality 6"
+              },
+              {
+                "value": "pass rate",
+                "quote": "The empirical pass rate is: 𝒫 m ​ ( q ) = 1 k ​ ∑ i = 1 k 𝕀 ⁡ [ r m ( i ) ​ ( q ) ​ is correct ]"
+              }
+            ]
+          },
+          {
+            "metric": "efficiency",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "throughput",
+                "quote": "This inefficiency becomes especially problematic in high-throughput applications Kumar et al"
+              },
+              {
+                "value": "throughput",
+                "quote": "(2024) even on simple questions results in substantial computational inefficiencies and restricts their practicality in high-throughput scenarios"
+              }
+            ]
+          },
+          {
+            "metric": "auc",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "AUC",
+                "quote": "(2024) F AUC-AC and nAUC-AC: Metrics for Reasoning Efficiency G Per-Benchmark Trade-off Results License: arXiv"
+              },
+              {
+                "value": "AUC",
+                "quote": "To evaluate the overall trade-off performance, we use the AUC-AC to quantify how well ThinkSwitcher maintains accuracy across its spectrum of token efficiencies, and its normalized variant nAUC-AC to measure the advantage gained by ThinkSwitcher’s adaptive mechanism over a linear interpolation between SC-Only and LC-Only performance points"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "GSM8K",
+            "quote": "4 Computational Efficiency of Switching 7 Conclusion References A Induced Short CoT Performs on Challenging Tasks B Templates for Short and Long CoT C Mechanism Behind Short CoT Induction D Implementation Details E Datasets Details GSM8K Cobbe et al"
+          },
+          {
+            "value": "LiveAoPSBench",
+            "quote": "(2021) AIME MAA (2025) LiveAoPSBench Mahdavi et al"
+          },
+          {
+            "value": "OlympiadBench",
+            "quote": "(2025) OlympiadBench (math subset) He et al"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "7B",
+            "quote": "This raises a fundamental question: Can a single model achieve both robust reasoning capabilities and high efficiency? Figure 1: Comparison of long and short CoTs generated using different prompting strategies with Deepseek-R1-Distill-Qwen-7B"
+          },
+          {
+            "value": "32B",
+            "quote": "(2025) , Sky-T1-32B Team (2025) , and Qwen3 Yang et al"
+          },
+          {
+            "value": "7B",
+            "quote": "We focus on two key questions: (1) To what extent does short CoT reduce computational cost? (2) How much reasoning performance is preserved relative to long CoT? As shown in Figure 2 , our method consistently yields significantly shorter outputs across all models, including DeepSeek-R1-Distill (7B, 14B, and 32B), Sky-T1-32B, and Qwen3-8B"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "3,900 problems",
+            "quote": "(2025) is incorporated, which consists of approximately 3,900 problems obtained by excluding the Omni-MATH-500 test set used for evaluation"
+          },
+          {
+            "value": "500 problems",
+            "quote": "For our evaluation, we utilize a subset of 500 problems, referred to as MATH-500"
+          },
+          {
+            "value": "500 problems",
+            "quote": "For our evaluation, we utilize a subset of 500 problems from this dataset, referred to as Omni-MATH-500"
+          }
+        ],
+        "asset_urls": [
+          "https://huggingface.co/sentence-transformers/all-mpnet-base-v2",
+          "https://github.com/QwenLM/Qwen2.5-Math"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:30:12+0800"
+    },
+    "2505.22037v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": false,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [],
+        "benchmarks": [],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象",
+          "可算指标",
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:31:16+0800"
+    },
+    "2505.23419v2": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "f1",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "F1",
+                "quote": "4k theOehrly/Fast-F1 MIT 4 92 20"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "SWE-bench",
+            "quote": "While SWE-bench and its variants have become standard in this domain, they suffer from key limitations: they have not been updated since their initial releases, cover a narrow set of repositories, and depend heavily on manual effort for instance construction and environment setup"
+          },
+          {
+            "value": "SWE-bench",
+            "quote": "In this work, we present SWE-bench-Live, a live-updatable benchmark designed to overcome these challenges"
+          },
+          {
+            "value": "SWE-bench",
+            "quote": "We evaluate a range of state-of-the-art agent frameworks and LLMs on SWE-bench-Live, revealing a substantial performance gap compared to static benchmarks like SWE-bench, even under controlled evaluation conditions"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [
+          {
+            "value": "300 instances",
+            "quote": "This results in a compact set of 300 instances that balances recency, diversity, and evaluation efficiency"
+          },
+          {
+            "value": "216 instances",
+            "quote": "Specifically, 216 instances are derived from 8 repositories that were originally included in SWE-bench, which we refer to as From SWE-bench Repos"
+          },
+          {
+            "value": "1,103 instances",
+            "quote": "The remaining 1,103 instances are sourced from repositories not previously used in SWE-bench and are denoted as From Non-SWE-bench Repos"
+          }
+        ],
+        "asset_urls": [
+          "https://github.com/SWE-bench-Live",
+          "https://huggingface.co/SWE-bench-Live"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:31:31+0800"
+    },
+    "2509.18658v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "Experimental results demonstrate that this strategy matches or slightly surpasses baselines on correlation metrics while significantly outperforming direct scoring on error metrics, thereby achieving higher accuracy"
+              },
+              {
+                "value": "accuracy",
+                "quote": "The core of the question is about the Claim’s accuracy given the Situation"
+              }
+            ]
+          },
+          {
+            "metric": "error_metric",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "MAE",
+                "quote": "Mean squared error (MSE), mean absolute error (MAE), mean Spearman’s ρ \\rho and mean Kendall’s τ \\tau are calculated over 30 experiments"
+              },
+              {
+                "value": "MAE",
+                "quote": "Method Coherence Consistency Fluency Relevance MSE MAE ρ \\rho τ \\tau MSE MAE ρ \\rho τ \\tau MSE MAE ρ \\rho τ \\tau MSE MAE ρ \\rho τ \\tau GPT-4o mini Raw Score 1"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "GSM8K",
+            "quote": ", 2018 ) and GSM8K ( Cobbe et al"
+          },
+          {
+            "value": "GSM8K",
+            "quote": "Method SummEval Evaluated with G-Eval ROSCOE Evaluated with SocREval Consistency Coherence Fluency Relevance CosmosQA DROP e-SNLI GSM8K GPT-4o mini CQR 1"
+          },
+          {
+            "value": "GSM8K",
+            "quote": "Method SummEval Evaluated with G-Eval ROSCOE Evaluated with SocREval Consistency Coherence Fluency Relevance CosmosQA DROP e-SNLI GSM8K GPT-4o mini CQR 1"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "32B",
+            "quote": "Evaluations are mainly conducted using GPT-4o mini (2024-07-18), DeepSeek-R1-Distill-Qwen-32B ( DeepSeek-AI et al"
+          },
+          {
+            "value": "72B",
+            "quote": "5-72B-Instruct ( Qwen et al"
+          },
+          {
+            "value": "32B",
+            "quote": "07\\% DeepSeek-R1-Distill-Qwen-32B CQR 1"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "1,600 samples",
+            "quote": ", 2021 ) (1,600 samples) and DialSumm ( Gao and Wan, 2022 ) (1,400 samples), each annotated by three human raters using Likert-scale scores across four dimensions (i"
+          },
+          {
+            "value": "1,400 samples",
+            "quote": ", 2021 ) (1,600 samples) and DialSumm ( Gao and Wan, 2022 ) (1,400 samples), each annotated by three human raters using Likert-scale scores across four dimensions (i"
+          },
+          {
+            "value": "200 samples",
+            "quote": ", 2023 ) , each with around 200 samples on Likert scale"
+          }
+        ],
+        "asset_urls": [
+          "https://github.com/BruceSheng1202/Analyzing_Uncertainty_of_LLM-as-a-Judge"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:32:34+0800"
+    },
+    "2601.19280v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "1%, respectively, in pass@8 accuracy across 1"
+              },
+              {
+                "value": "accuracy",
+                "quote": "1% , respectively, in pass@8 accuracy across 1"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "By Step 366, the weight entropy stabilizes, indicating the adversary has locked into a high-precision curriculum targeting specific intermediate failure modes"
+              },
+              {
+                "value": "precision",
+                "quote": "7B, 4B, 8B) using BFloat16 (BF16) mixed precision and FlashAttention 2"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Recall",
+                "quote": "Recall from Section 2 that GRPO provides a per-response loss signal ℓ i , j ​ ( θ ) \\ell_{i,j}(\\theta) (Eq"
+              },
+              {
+                "value": "Recall",
+                "quote": "Recall that ℓ ^ ​ ( x , θ , n b ) \\hat{\\ell}(x;\\theta,n_{b}) denotes the prompt-level empirical loss estimator computed from n b n_{b} rollouts, and g ^ ​ ( x , θ , n b ) = ∇ θ ℓ ^ ​ ( x , θ , n b ) \\hat{g}(x;\\theta,n_{b})=\\nabla_{\\theta}\\hat{\\ell}(x;\\theta,n_{b})"
+              }
+            ]
+          },
+          {
+            "metric": "pass_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "pass@8",
+                "quote": "1%, respectively, in pass@8 accuracy across 1"
+              },
+              {
+                "value": "pass@8",
+                "quote": "1% , respectively, in pass@8 accuracy across 1"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [],
+        "model_sizes": [
+          {
+            "value": "1.7B",
+            "quote": "1%, respectively, in pass@8 accuracy across 1.7B, 4B, and 8B scales compared to the GRPO baseline"
+          },
+          {
+            "value": "4B",
+            "quote": "7B, 4B, and 8B scales compared to the GRPO baseline"
+          },
+          {
+            "value": "8B",
+            "quote": "7B, 4B, and 8B scales compared to the GRPO baseline"
+          }
+        ],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://huggingface.co/datasets/open-r1/DAPO-Math-17k-Processed",
+          "https://github.com/kishanpb/verl-gdro"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "评测对象"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:33:39+0800"
+    },
+    "2605.01664v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "0% grounding accuracy"
+              },
+              {
+                "value": "accuracy",
+                "quote": "Claim-level grounding evaluation extracted 200 factual claims from the generated answers, all of which were judged to be supported by the retrieved evidence, resulting in an overall grounding accuracy of 100"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "Hajishirzi, “FActScore: Fine-grained atomic evaluation of factual precision in long form text generation,” in Proc"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "recall",
+                "quote": "This two-stage design is useful because the first-stage retriever is optimized for broad candidate recall, while the reranker can perform more focused relevance estimation"
+              }
+            ]
+          },
+          {
+            "metric": "efficiency",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "latency",
+                "quote": "It should be noted that the Amazon Bedrock and Cohere model calls were executed through external managed services; therefore, the total runtime was influenced primarily by API latency, network response time, model availability, and request processing limits rather than by GPU computation alone"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "MS MARCO",
+            "quote": "MS MARCO has also played an important role in training and evaluating large-scale passage retrieval systems for question answering and ranking tasks [ 18 ]"
+          },
+          {
+            "value": "RAGAS",
+            "quote": "RAGAS provides a reference-free evaluation framework for RAG pipelines, including evaluation dimensions related to retrieval and generation quality [ 35 ]"
+          },
+          {
+            "value": "MS MARCO",
+            "quote": "Wang, “MS MARCO: A human generated machine reading comprehension dataset,” Microsoft Research, 2016"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:33:58+0800"
+    },
+    "2605.19576v3": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "As skills accumulate without quality gates, the library degrades retrieval precision, injects stale or harmful guidance, and the agent’s effective performance stagnates or drops below its no-skill baseline"
+              },
+              {
+                "value": "precision",
+                "quote": "As the bank grows unbounded, near-duplicate or stale skills crowd out useful ones, degrading precision at constant recall"
+              }
+            ]
+          },
+          {
+            "metric": "recall",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "recall",
+                "quote": "As the bank grows unbounded, near-duplicate or stale skills crowd out useful ones, degrading precision at constant recall"
+              }
+            ]
+          },
+          {
+            "metric": "pass_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "pass@1",
+                "quote": "019); (2) trace-level diagnostics: an append-only evidence log with per-skill contribution scores, attribution verdicts, and router engagement metrics that make the failure visible before it reaches end-task scores; and (3) a verified fix: a minimal governance recipe (outcome-driven retirement + bounded active-cap + meta-skill authoring prior) that lifts held-out pass@1 from a 0"
+              },
+              {
+                "value": "pass@1",
+                "quote": "019); (2) trace-level diagnostics : an append-only evidence log with per-skill contribution scores, attribution verdicts, and router engagement metrics that make the failure visible before it reaches end-task scores; and (3) a verified fix : a minimal governance recipe (outcome-driven retirement + bounded active-cap + meta-skill authoring prior) that lifts held-out pass@1 from a 0"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "SkillsBench",
+            "quote": "2pp (SkillsBench)), yet the underlying mechanism has not been isolated"
+          },
+          {
+            "value": "MBPP",
+            "quote": "328) on MBPP+ hard-100 over 100 rounds"
+          },
+          {
+            "value": "SkillsBench",
+            "quote": "2pp; SkillsBench ( Li et al"
+          }
+        ],
+        "model_sizes": [],
+        "data_sizes": [],
+        "asset_urls": [
+          "https://github.com/amazon-science/Self-Evolving-Agents-Ratchet"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "insufficient",
+        "missing_fields": [
+          "可比锚数字"
+        ],
+        "note": "原文抓取到但要素不足或抓取失败，保持阻塞，不猜",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:34:54+0800"
+    },
+    "2606.06959v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "Despite these advances, hallucination in generated text remains a critical challenge, where LLMs produce outputs that are grammatically and logically coherent but lack factual accuracy or verifiable evidence [ 3 , 4 , 5 ]"
+              },
+              {
+                "value": "accuracy",
+                "quote": "Our evaluation yields three findings: 1) detector effectiveness is scenario- and backbone-dependent, with self-reported confidence varying strongly across settings; 2) richer model access raises the performance ceiling, but does not guarantee robust gains; 3) evidence acquisition often dominates cost, making accuracy-only comparisons incomplete"
+              }
+            ]
+          },
+          {
+            "metric": "f1",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "F1",
+                "quote": "For each stochastic sample, it also segments the sampled response into sentences and computes BERTScore F1 between every primary-response sentence and every sampled-response sentence"
+              },
+              {
+                "value": "F1",
+                "quote": "For each sentence in the primary response, the detector keeps the maximum BERTScore F1 over sentences in the sampled response, then averages these scores across samples"
+              }
+            ]
+          },
+          {
+            "metric": "precision",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "precision",
+                "quote": "Hajishirzi (2023) FActscore: fine-grained atomic evaluation of factual precision in long form text generation"
+              }
+            ]
+          },
+          {
+            "metric": "ppl",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "Perplexity",
+                "quote": "14 Perplexity E"
+              },
+              {
+                "value": "Perplexity",
+                "quote": "1) For single-output likelihood methods, Perplexity [ 23 ] scores a generated output using token-level likelihoods, while Self-evaluation [ 59 ] asks the model to assess whether its own output is true or false; following our score orientation, we use the probability of the “False” label, equivalently one minus the probability of correctness, as the hallucination score"
+              }
+            ]
+          },
+          {
+            "metric": "efficiency",
+            "direction": "lower",
+            "evidence": [
+              {
+                "value": "latency",
+                "quote": "reports the final detector scoring latency per example after the required artifacts are available"
+              }
+            ]
+          },
+          {
+            "metric": "auc",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "AUROC",
+                "quote": "4 Evaluation Metrics Following [ 3 , 39 ] , we use AUROC as the primary metric"
+              },
+              {
+                "value": "AUROC",
+                "quote": "AUROC evaluates whether hallucinated responses receive higher scores than correct responses across decision thresholds"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "TruthfulQA",
+            "quote": "ARC-Challenge [ 43 ] and CommonsenseQA [ 44 ] cover multiple-choice science and commonsense reasoning; TriviaQA [ 4 ] and TruthfulQA [ 5 ] cover open-ended factual and truthfulness-oriented QA; SQuAD v2 [ 45 ] and HotpotQA [ 46 ] evaluate evidence-grounded answer extraction, including unanswerable and multi-hop cases"
+          },
+          {
+            "value": "SQuAD",
+            "quote": "ARC-Challenge [ 43 ] and CommonsenseQA [ 44 ] cover multiple-choice science and commonsense reasoning; TriviaQA [ 4 ] and TruthfulQA [ 5 ] cover open-ended factual and truthfulness-oriented QA; SQuAD v2 [ 45 ] and HotpotQA [ 46 ] evaluate evidence-grounded answer extraction, including unanswerable and multi-hop cases"
+          },
+          {
+            "value": "HotpotQA",
+            "quote": "ARC-Challenge [ 43 ] and CommonsenseQA [ 44 ] cover multiple-choice science and commonsense reasoning; TriviaQA [ 4 ] and TruthfulQA [ 5 ] cover open-ended factual and truthfulness-oriented QA; SQuAD v2 [ 45 ] and HotpotQA [ 46 ] evaluate evidence-grounded answer extraction, including unanswerable and multi-hop cases"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "70B",
+            "quote": "It covers 17 datasets , full evaluations on 4 backbone LLMs , and selected 70B-scale experiments across diverse generation scenarios ( see Appendix F )"
+          },
+          {
+            "value": "3B",
+            "quote": "2-3B Verbalized Conf"
+          },
+          {
+            "value": "8B",
+            "quote": "85 Qwen3 Method 8B 14B 8B 14B 8B 14B 8B 14B 8B 14B 8B 14B 8B 14B 8B 14B Verbalized Conf"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "100 examples",
+            "quote": "Each profiling run uses up to 100 examples from the corresponding dataset, with the same train/validation/test split construction as the main benchmark pipeline"
+          },
+          {
+            "value": "100 examples",
+            "quote": "Cost@100 is the artifact-inclusive wall-clock time for processing up to 100 examples under the profiling setup"
+          },
+          {
+            "value": "100 examples",
+            "quote": "Cost@100 is the artifact-inclusive wall-clock time for up to 100 examples under the profiling setup"
+          }
+        ],
+        "asset_urls": [
+          "https://github.com/Nellie179/Hallucination-Detection"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:35:58+0800"
+    },
+    "2406.18518v1": {
+      "fetch": {
+        "abs_ok": true,
+        "html_ok": true,
+        "error": []
+      },
+      "criteria": {
+        "metrics": [
+          {
+            "metric": "accuracy",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "accuracy",
+                "quote": "Crucially, each generated data point undergoes rigorous multi-stage verification processes—format, execution, and semantic—to ensure accuracy and applicability"
+              },
+              {
+                "value": "accuracy",
+                "quote": "The AST evaluation focuses on the syntactic accuracy of the generated function calls, ensuring that the model’s output matches a predefined function documentation in structure and parameters"
+              }
+            ]
+          },
+          {
+            "metric": "pass_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "pass rate",
+                "quote": "We usually also include an additional \"thought\" field, which is known as the chain-of-thought (CoT) prompting technique [ 37 ] , to increase the pass rate of the generated data"
+              },
+              {
+                "value": "Pass Rate",
+                "quote": "Model Verified Data Fail Format Fail Execution Fail Semantic Pass Rate DeepSeek-Coder-33B-Inst 13,769 4,311 15,496 6,424 34"
+              }
+            ]
+          },
+          {
+            "metric": "win_rate",
+            "direction": "higher",
+            "evidence": [
+              {
+                "value": "Win Rate",
+                "quote": "5 to assess the Win Rate"
+              }
+            ]
+          }
+        ],
+        "benchmarks": [
+          {
+            "value": "ToolBench",
+            "quote": "ToolBench [ 10 ] creates an instruction-tuning dataset for tool use by collecting diverse REST APIs and generating their descriptions using ChatGPT"
+          },
+          {
+            "value": "ToolBench",
+            "quote": "We primarily sourced APIs from ToolBench [ 10 ] , a comprehensive tool-use dataset that includes 16,464 REST APIs across 49 coarse-grained categories from RapidAPI Hub"
+          },
+          {
+            "value": "ToolBench",
+            "quote": "To further enhance the usability and quality of the APIs, we perform the following filtering and cleaning procedures on the ToolBench dataset: • Data Quality Filtering: We remove APIs with incorrectly parsed documentation and those lacking required or optional parameters"
+          }
+        ],
+        "model_sizes": [
+          {
+            "value": "7B",
+            "quote": "We demonstrate that models trained with our curated datasets, even with only 7B parameters, can achieve state-of-the-art performance on the Berkeley Function-Calling Benchmark, outperforming multiple GPT-4 models"
+          },
+          {
+            "value": "1B",
+            "quote": "Moreover, our 1B model achieves exceptional performance, surpassing GPT-3"
+          },
+          {
+            "value": "7B",
+            "quote": "We demonstrate that models trained with our curated datasets, even with only 7B parameters, can achieve state-of-the-art performance on the Berkeley Function-Calling Benchmark, outperforming multiple GPT-4 models"
+          }
+        ],
+        "data_sizes": [
+          {
+            "value": "1,000 test cases",
+            "quote": "ToolEval [ 10 ] assesses functional calling capabilities via RapidAPI, containing around 1,000 test cases and asking GPT-3"
+          },
+          {
+            "value": "2,000 test cases",
+            "quote": "Furthermore, the Berkeley Function-Calling Leaderboard (BFCL) [ 9 ] provides a robust and comprehensive framework to evaluate models’ abilities to call functions, with 2,000 test cases covering a wide range of scenarios"
+          },
+          {
+            "value": "600 samples",
+            "quote": "We engage three human evaluators to manually inspect a total of 600 samples from our released dataset"
+          }
+        ],
+        "asset_urls": [
+          "https://huggingface.co/datasets/Salesforce/xlam-function-calling-60k"
+        ],
+        "has_text": true
+      },
+      "judge": {
+        "verdict": "measurable",
+        "missing_fields": [],
+        "note": "要素齐；跑批前仍需人工批准 + 本机能力测量（store 门不变）",
+        "fetch_failed": false
+      },
+      "attempts": 1,
+      "fetched_at": "2026-10-04T23:37:20+0800"
+    }
+  }
+}

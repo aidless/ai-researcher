@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-10-09T01:12:00+00:00",
+  "purpose": "launch_clean_lineage.py precondition 2 requires model digests recorded next to the output. No model_digests.json existed for either the 2026-10-07 original or the 2026-10-08 retries, so that precondition has never had a carrier. Written now, before the clean data is scored.",
+
+  "digest_kind": "DECLARED, NOT RECOMPUTED",
+  "digest_kind_explanation": "These sha256 strings are the layer digests ollama's manifest declares, and they are also the blob filenames under OLLAMA_MODELS=/data4/OllamaModels/models/blobs. They were read from the manifest, not produced by hashing the 6.2 GB files, because a full recompute would have added minutes of disk I/O while the re-run holds the machine. Anyone who needs a recomputed digest should run sha256sum on the blob path after the run finishes and compare byte-for-byte.",
+
+  "store": "/data4/OllamaModels (OLLAMA_MODELS from /proc/<ollama serve>/environ)",
+  "models_used_by_this_run": {
+    "copilot-3b-lora-v3b:latest": {
+      "manifest": "manifests/registry.ollama.ai/library/copilot-3b-lora-v3b/latest",
+      "blob_sha256_declared": "342ed8e35b2f5fb95185a752185e6827dcb8e67e0bf5e4945660a65148fb0838",
+      "blob_bytes": 6178923360,
+      "manifest_mtime": "2026-08-08 16:41:48",
+      "loads_and_answers": "yes -- HTTP 200, response 'OK', load_duration 11.8 s on 2026-10-09"
+    },
+    "copilot-3b-lora-v3c:latest": {
+      "manifest": "manifests/registry.ollama.ai/library/copilot-3b-lora-v3c/latest",
+      "blob_sha256_declared": "87881c610ace97ff8dd8ce790e56990f7b7f0b15dd098b2ce0ae60b8c558f438",
+      "blob_bytes": 6178923360,
+      "manifest_mtime": "2026-08-08 16:41:55",
+      "loads_and_answers": "yes -- HTTP 200, response 'OK', load_duration 11.9 s on 2026-10-09"
+    }
+  },
+  "model_excluded_by_defect": {
+    "copilot-3b-lora:latest (v1)": {
+      "manifest": "manifests/registry.ollama.ai/library/copilot-3b-lora/latest",
+      "blob_sha256_declared": "5b72e04330d515fe309c28ddece75129e1b5187d53417843f534b77bd2d81716",
+      "blob_bytes": 3579014912,
+      "manifest_mtime": "2026-08-08 16:41:24",
+      "loads_and_answers": "NO -- HTTP 500 'error loading model: check_tensor_dims: tensor blk.0.attn_q.weight has wrong shape; expected 2048, 2048, got 1, 2097152, 1, 1', reproduced 6/6 on an idle machine 2026-10-09",
+      "size_note": "3,579,014,912 bytes against 6,178,923,360 for every sibling; the offending tensor declares 2,097,152 elements where 2048*2048 = 4,194,304 are required, i.e. exactly half.",
+      "identity_note": "mtime 2026-08-08 is two months older than both the 10-07 original run and the 10-08 retries, and unchanged across them, so the same bytes failed on all three occasions. This is what supports reading the original pred_v1.jsonl 50/50 HTTPError as the same artifact defect rather than as contention."
+    }
+  },
+  "not_run_today": {
+    "copilot-3b-lora-v2:latest": "loads fine (verified 2026-10-09), not in the paired comparison",
+    "copilot-3b-lora-v3:latest": "loads fine (verified 2026-10-09), not in the paired comparison"
+  }
+}

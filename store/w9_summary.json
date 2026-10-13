@@ -1,0 +1,126 @@
+{
+  "probed_at": "2026-10-04T15:49:47+0800",
+  "arxiv_id": "2312.11361v3",
+  "n_per_subset": 30,
+  "seed": 20261003,
+  "langs": [
+    "english",
+    "chinese",
+    "swahili"
+  ],
+  "cells": {
+    "english.error_rate": {
+      "k": 0,
+      "n": 30,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.1135
+      ],
+      "n_unparsed": 0,
+      "sec_mean": 3.54
+    },
+    "english.hallucination_rate": {
+      "k": 27,
+      "n": 30,
+      "rate": 0.9,
+      "wilson95": [
+        0.7438,
+        0.9654
+      ],
+      "n_unparsed": 0,
+      "sec_mean": 3.6
+    },
+    "chinese.error_rate": {
+      "k": 0,
+      "n": 30,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.1135
+      ],
+      "n_unparsed": 0,
+      "sec_mean": 4.38
+    },
+    "chinese.hallucination_rate": {
+      "k": 29,
+      "n": 30,
+      "rate": 0.9667,
+      "wilson95": [
+        0.8333,
+        0.9941
+      ],
+      "n_unparsed": 0,
+      "sec_mean": 3.54
+    },
+    "swahili.error_rate": {
+      "k": 0,
+      "n": 30,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.1135
+      ],
+      "n_unparsed": 0,
+      "sec_mean": 3.76
+    },
+    "swahili.hallucination_rate": {
+      "k": 30,
+      "n": 30,
+      "rate": 1.0,
+      "wilson95": [
+        0.8865,
+        1.0
+      ],
+      "n_unparsed": 0,
+      "sec_mean": 3.36
+    }
+  },
+  "anchor_gap": {
+    "english.hallucination_rate.llama3_8b": 0.708,
+    "chinese.hallucination_rate.llama3_8b": 0.3227,
+    "swahili.hallucination_rate.llama3_8b": 0.96,
+    "english.hallucination_rate.mistral_7b": 0.472,
+    "chinese.hallucination_rate.mistral_7b": 0.5147,
+    "swahili.hallucination_rate.mistral_7b": 0.852,
+    "english.error_rate.llama3_8b": -0.416,
+    "chinese.error_rate.llama3_8b": -0.06,
+    "swahili.error_rate.llama3_8b": -0.808,
+    "english.error_rate.mistral_7b": -0.08,
+    "chinese.error_rate.mistral_7b": -0.132,
+    "swahili.error_rate.mistral_7b": -0.576
+  },
+  "pairwise_separation": [
+    {
+      "cell": "hallucination_rate",
+      "pair": "english-chinese",
+      "separated": false
+    },
+    {
+      "cell": "hallucination_rate",
+      "pair": "english-swahili",
+      "separated": false
+    },
+    {
+      "cell": "hallucination_rate",
+      "pair": "chinese-swahili",
+      "separated": false
+    },
+    {
+      "cell": "error_rate",
+      "pair": "english-chinese",
+      "separated": false
+    },
+    {
+      "cell": "error_rate",
+      "pair": "english-swahili",
+      "separated": false
+    },
+    {
+      "cell": "error_rate",
+      "pair": "chinese-swahili",
+      "separated": false
+    }
+  ],
+  "verdict": "report_numbers_only"
+}

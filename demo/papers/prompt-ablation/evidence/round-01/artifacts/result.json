@@ -1,0 +1,106 @@
+{
+ "domain": "arithmetic",
+ "arm": "prompt_ablation",
+ "models_requested": [
+  "qwen2.5:7b",
+  "gemma3:4b",
+  "llama3.1:8b"
+ ],
+ "models_measured": [
+  "qwen2.5:7b",
+  "gemma3:4b",
+  "llama3.1:8b"
+ ],
+ "n_items": 80,
+ "variants": [
+  "v0-canonical",
+  "v1-terse",
+  "v2-verbose",
+  "v3-numbers"
+ ],
+ "direct_acc": {
+  "qwen2.5:7b": 0.225,
+  "gemma3:4b": 0.0875,
+  "llama3.1:8b": 0.1
+ },
+ "variant_acc": {
+  "v0-canonical": {
+   "qwen2.5:7b": 0.475,
+   "gemma3:4b": 0.65,
+   "llama3.1:8b": 0.475
+  },
+  "v1-terse": {
+   "qwen2.5:7b": 0.8125,
+   "gemma3:4b": 0.5875,
+   "llama3.1:8b": 0.8125
+  },
+  "v2-verbose": {
+   "qwen2.5:7b": 0.8,
+   "gemma3:4b": 0.7875,
+   "llama3.1:8b": 0.7625
+  },
+  "v3-numbers": {
+   "qwen2.5:7b": 0.4125,
+   "gemma3:4b": 0.2375,
+   "llama3.1:8b": 0.4625
+  }
+ },
+ "contrasts": {
+  "v0-canonical": {
+   "gain_mean": 0.3958,
+   "gains": {
+    "qwen2.5:7b": 0.25,
+    "gemma3:4b": 0.5625,
+    "llama3.1:8b": 0.375
+   },
+   "fixed": 101,
+   "broke": 6,
+   "mcnemar_p": 0.0,
+   "families_positive": "3/3"
+  },
+  "v1-terse": {
+   "gain_mean": 0.6,
+   "gains": {
+    "qwen2.5:7b": 0.5875,
+    "gemma3:4b": 0.5,
+    "llama3.1:8b": 0.7125
+   },
+   "fixed": 149,
+   "broke": 5,
+   "mcnemar_p": 0.0,
+   "families_positive": "3/3"
+  },
+  "v2-verbose": {
+   "gain_mean": 0.6458,
+   "gains": {
+    "qwen2.5:7b": 0.575,
+    "gemma3:4b": 0.7,
+    "llama3.1:8b": 0.6625
+   },
+   "fixed": 158,
+   "broke": 3,
+   "mcnemar_p": 0.0,
+   "families_positive": "3/3"
+  },
+  "v3-numbers": {
+   "gain_mean": 0.2333,
+   "gains": {
+    "qwen2.5:7b": 0.1875,
+    "gemma3:4b": 0.15,
+    "llama3.1:8b": 0.3625
+   },
+   "fixed": 71,
+   "broke": 15,
+   "mcnemar_p": 0.0,
+   "families_positive": "3/3"
+  }
+ },
+ "all_variants_beat_direct": true,
+ "confirmed": true,
+ "_config": {
+  "n_items": 80,
+  "models": 3,
+  "variants": 4
+ },
+ "measurable": true
+}

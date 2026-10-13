@@ -1,0 +1,17 @@
+{
+ "syllogism": {
+  "s1_stability": 0.667,
+  "s2_deduct_placement": null,
+  "n_ok": 1
+ },
+ "coins": {
+  "s1_stability": 1.0,
+  "s2_deduct_placement": null,
+  "n_ok": 0
+ },
+ "gcd": {
+  "s1_stability": 0.667,
+  "s2_deduct_placement": null,
+  "n_ok": 2
+ }
+}

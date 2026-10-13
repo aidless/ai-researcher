@@ -1,0 +1,29 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/failclosed-01/round-01",
+   "result": {
+    "planted": 5,
+    "caught": 5,
+    "escape_rate": 0.0,
+    "escaped": [],
+    "confirmed": true,
+    "control_clean_pass": true,
+    "exit_code": 0,
+    "wall_s": 0.1
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@760bef99b831",
+   "kill_row": "confirmed == True",
+   "verdict": "STOP-EXTEND",
+   "reason": null
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-06T10:03:44.772412+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "df3fca4fc54ef52ae4efc8c553071e92206e1c617cee42c9c7928cc9f8d57729",
+ "key_priv": null
+}

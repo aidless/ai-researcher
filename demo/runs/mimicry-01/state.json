@@ -1,0 +1,49 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/mimicry-01/round-01",
+   "result": {
+    "model": "deepseek-r1:7b",
+    "k": 3,
+    "questions": {
+     "syllogism": {
+      "expected": "yes",
+      "correct_majority": false,
+      "s1_stability": 1.0,
+      "s2_deduct_placement": null,
+      "n_ok": 0
+     },
+     "coins": {
+      "expected": "2",
+      "correct_majority": false,
+      "s1_stability": 0.667,
+      "s2_deduct_placement": null,
+      "n_ok": 1
+     },
+     "gcd": {
+      "expected": "6",
+      "correct_majority": true,
+      "s1_stability": 1.0,
+      "s2_deduct_placement": null,
+      "n_ok": 3
+     }
+    },
+    "confirmed": true,
+    "exit_code": 0,
+    "wall_s": 194.2
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@8715cc206a4d",
+   "kill_row": "confirmed == True",
+   "verdict": "STOP-EXTEND",
+   "reason": null
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-06T10:05:46.948158+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "bfe7979104a2393880d43098d05525e617d051868495481c05b186f5c03f065a",
+ "key_priv": null
+}

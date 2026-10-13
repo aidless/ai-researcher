@@ -1,0 +1,8 @@
+  [SELFTEST OK] 160 items, disjoint from heldout40, all golds parse, all multi-step
+  pool available: 1216 disjoint items of 1319 in the split
+wrote /home/liuzewen/F:\deepseek/ai-researcher/demo/transfer/items/confirm160.json
+  [SELFTEST OK] 160 items, disjointness asserted, 5 extraction cases
+  [SELFTEST OK] 160 items, disjointness asserted, 5 extraction cases
+qwen2.5:7b: {'direct': 0.0, 'step-calc': 0.0} gain=0.0
+gemma3:4b: {'direct': 0.0, 'step-calc': 0.0} gain=0.0
+{"gain_mean": 0.0, "families_positive": "0/2", "pooled": {"fixed": 0, "broke": 0, "p": 1.0}, "paired_observations": 320, "confirmed": false}

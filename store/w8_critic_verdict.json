@@ -1,0 +1,73 @@
+{
+  "claim": "本实验迷你口径实测：Qwen3-0.6B 同源配对（同 6-shot 自编 exemplar、同 n=100 GSM8K 子集 seed 20261003、CPU 贪心、截断计错）：程序执行臂 acc=0.31（CI 0.2278~0.4063），匹配 few-shot CoT 臂 acc=0.41（CI 0.3187~0.508）。配对差 b=9/c=19 McNemar 精确双侧 p=0.087159，不显著——只报数字不下方向性结论。对文献锚（code-davinci-002，不同源）为量级测量非受控比较：程序执行臂 0.723 差 -0.413，CoT 臂 0.633 差 -0.223。F 臂执行失败 2、截断 1；C 臂无答案 0、截断 1。",
+  "measured_scope": "Qwen3-0.6B 双臂（程序执行 vs 匹配 few-shot CoT）；GSM8K test n=100 seed 20261003；CPU 贪心 max_new_tokens=384；6 个自编 exemplar；锚为 code-davinci-002 已发表固定点（不同源）",
+  "verdict": "insufficient",
+  "gates": {
+    "recomputable": {
+      "pass": true,
+      "diffs": {},
+      "recomputed": {
+        "arm_f": {
+          "n": 100,
+          "n_correct": 31,
+          "acc": 0.31,
+          "wilson95": [
+            0.2278,
+            0.4063
+          ],
+          "n_unparsed": 2,
+          "n_truncated": 1
+        },
+        "arm_c": {
+          "n": 100,
+          "n_correct": 41,
+          "acc": 0.41,
+          "wilson95": [
+            0.3187,
+            0.508
+          ],
+          "n_unparsed": 0,
+          "n_truncated": 1
+        },
+        "paired_f_vs_c": {
+          "b_f_right_c_wrong": 9,
+          "c_f_wrong_c_right": 19,
+          "n_discordant": 28,
+          "p_exact_two_sided": 0.087159
+        },
+        "gap_to_anchor": {
+          "f_vs_0.723": -0.413,
+          "c_vs_0.633": -0.223
+        }
+      }
+    },
+    "effect_vs_noise_paired": {
+      "pass": false,
+      "reason": "McNemar 精确双侧 p=0.08716 ≥ 0.05，配对差不可区分（insufficient：只报数字）",
+      "test": "2·P(X≤9|n_d=28,0.5), b=9, c=19",
+      "p_value": 0.087159
+    },
+    "scope_discipline": {
+      "pass": true,
+      "reason": "无越界词；实测范围：Qwen3-0.6B 双臂（程序执行 vs 匹配 few-shot CoT）；GSM8K test n=100 seed 20261003；CPU 贪心 max_new_tokens=384；6 个自编 exemplar；锚为 code-davinci-002 已发表固定点（不同源）",
+      "measured_scope": "Qwen3-0.6B 双臂（程序执行 vs 匹配 few-shot CoT）；GSM8K test n=100 seed 20261003；CPU 贪心 max_new_tokens=384；6 个自编 exemplar；锚为 code-davinci-002 已发表固定点（不同源）"
+    },
+    "caliber_in_claim": {
+      "pass": true,
+      "reason": "",
+      "note": "F vs C 允许称受控比较（同源配对）；对锚只许量级测量"
+    },
+    "mechanism_alignment": {
+      "pass": null,
+      "reason": "描述性拆分已附（不构成机制形式检验）",
+      "breakdown": {
+        "f_执行失败": 2,
+        "f_程序算错": 67,
+        "c_无答案": 0,
+        "c_有答案算错": 59,
+        "note": "描述性拆分，不构成机制形式检验"
+      }
+    }
+  },
+  "design_note": "双臂同源配对（本机逐项）；F vs C=受控比较，对文献锚=量级测量；门形状按设计适配"
+}

@@ -1,0 +1,62 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/collapse-01/round-01",
+   "result": {
+    "executor": "qwen2.5:7b",
+    "rounds": 8,
+    "seed": 20261006,
+    "self": {
+     "judge": "qwen2.5:7b",
+     "pci_trajectory": [
+      0.0,
+      0.0722,
+      0.087,
+      0.0787,
+      0.1382,
+      0.1276,
+      0.1557,
+      0.0577,
+      0.0975
+     ],
+     "pci_final": 0.0975,
+     "pci_start": 0.0
+    },
+    "cross": {
+     "judge": "llama3.1:8b",
+     "pci_trajectory": [
+      0.0,
+      0.1283,
+      0.1379,
+      0.214,
+      0.1714,
+      0.1849,
+      0.214,
+      0.2969,
+      0.2969
+     ],
+     "pci_final": 0.2969,
+     "pci_start": 0.0
+    },
+    "cross_excess": 0.1994,
+    "confirmed": true,
+    "n_tasks": 8,
+    "n_strategies": 4,
+    "exit_code": 0,
+    "wall_s": 1159.1
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@f2ef50396bb1",
+   "kill_row": "confirmed == True",
+   "verdict": "STOP-EXTEND",
+   "reason": null
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-06T09:42:42.550711+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "5f2e32c52e8bb1f6854e24aaf1b58e4111e05a6b773d95f73660d06e5c7d2328",
+ "key_priv": null
+}

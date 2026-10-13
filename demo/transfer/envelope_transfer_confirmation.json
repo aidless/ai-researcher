@@ -1,6 +1,6 @@
 {
   "hypothesis": "structured step-by-step scoring beats direct answering on held-out arithmetic for every local model family tested, at a sample size pre-specified to detect a 0.10 difference",
-  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; # 1. rebuild the disjoint item bank, refusing to write it if any invariant fails\nPYTHONPATH=\"$ROOT/src\" python3 \"$ROOT/demo/transfer/build_confirm_set.py\" --n 160 --seed 20261010 || exit 1\n# 2. the scorer must pass its own self-test or nothing runs\nPYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" python3 \"$ROOT/demo/transfer/run_confirmation.py\" --selftest || exit 1\n# 3. measure\nPYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261010 EVO_MODELS=\"qwen2.5:7b,gemma3:4b\" python3 \"$ROOT/demo/transfer/run_confirmation.py\"",
+  "methods": "ROOT=\"$PYTHON_EVO_REPO_ROOT\"; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; export EVO_REPO_ROOT=\"$ROOT\"; # 1. rebuild the disjoint item bank, refusing to write it if any invariant fails\nPYTHONPATH=\"$ROOT/src\" python3 \"$ROOT/demo/transfer/build_confirm_set.py\" --n 160 --seed 20261010 || exit 1\n# 2. the scorer must pass its own self-test or nothing runs\nPYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" python3 \"$ROOT/demo/transfer/run_confirmation.py\" --selftest || exit 1\n# 3. measure\nPYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261010 EVO_MODELS=\"qwen2.5:7b,gemma3:4b\" python3 \"$ROOT/demo/transfer/run_confirmation.py\"",
   "max_rounds": 1,
   "max_cost_usd": 0.0,
   "max_wall_hours": 12.0,
@@ -24,8 +24,8 @@
   "required_artifacts": [
     "result.json"
   ],
-  "approved_by": "liuzewen (blanket 全做 2026-10-08; prospective confirmation, disjoint 160-item bank, n=320 paired)",
-  "approved_at": "2026-10-08T02:43:08.678143+00:00",
+  "approved_by": "",
+  "approved_at": "",
   "seed": 20261010,
   "tension": "The only effect in this project that survives project-level multiplicity correction (2 of 8 primary endpoints) is the arithmetic transfer result -- and it was measured on two arms whose verdict was analyst-assigned, because matrix-01's preregistered kill-switch keyed on a field its harness never emitted, so the preregistered rule never ran. A surviving result whose decision rule was assigned after seeing the data is not a confirmed result. Confirming it prospectively, at an n chosen by a power calculation rather than by what fit in a session, is the difference between a finding and an observation. If the effect does not reproduce prospectively at n=320 with a kill-switch that runs, the honest outcome is that this project's single surviving effect was an artifact of unpreregistered analysis.",
   "power": {

@@ -1,0 +1,48 @@
+{"id": "cr01", "cls": "none_handling", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr02", "cls": "off_by_one", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr03", "cls": "off_by_one", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr04", "cls": "none_handling", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr05", "cls": "missing_guard", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr06", "cls": "missing_guard", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr07", "cls": "missing_guard", "hinted": false, "passed": false, "why": "expected None, got 'Error: Division by zero'"}
+{"id": "cr08", "cls": "type_coercion", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr09", "cls": "none_handling", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr10", "cls": "missing_guard", "hinted": false, "passed": false, "why": "expected None, got 'Error: Division by zero'"}
+{"id": "cr11", "cls": "missing_guard", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr12", "cls": "missing_guard", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr13", "cls": "type_coercion", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr14", "cls": "type_coercion", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr15", "cls": "type_coercion", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr16", "cls": "none_handling", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr17", "cls": "off_by_one", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr18", "cls": "type_coercion", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr19", "cls": "missing_guard", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr20", "cls": "missing_guard", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr21", "cls": "missing_guard", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr22", "cls": "none_handling", "hinted": false, "passed": false, "why": "expected None, got 0"}
+{"id": "cr23", "cls": "type_coercion", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr24", "cls": "missing_guard", "hinted": false, "passed": false, "why": "expected None, got 'Error: Division by zero'"}
+{"id": "cr25", "cls": "missing_guard", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr26", "cls": "missing_guard", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr27", "cls": "off_by_one", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr28", "cls": "missing_guard", "hinted": false, "passed": false, "why": "expected None, got 'Error: Division by zero'"}
+{"id": "cr29", "cls": "type_coercion", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr30", "cls": "missing_guard", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr31", "cls": "missing_guard", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr32", "cls": "none_handling", "hinted": false, "passed": false, "why": "expected None, got 0"}
+{"id": "cr33", "cls": "type_coercion", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr34", "cls": "type_coercion", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr35", "cls": "off_by_one", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr36", "cls": "type_coercion", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr37", "cls": "off_by_one", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr38", "cls": "type_coercion", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr39", "cls": "missing_guard", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr40", "cls": "none_handling", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr41", "cls": "none_handling", "hinted": false, "passed": false, "why": "expected None, got 0"}
+{"id": "cr42", "cls": "off_by_one", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr43", "cls": "none_handling", "hinted": false, "passed": true, "why": "pass"}
+{"id": "cr44", "cls": "none_handling", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr45", "cls": "none_handling", "hinted": false, "passed": false, "why": "expected None, got 0"}
+{"id": "cr46", "cls": "type_coercion", "hinted": false, "passed": false, "why": "candidate raised"}
+{"id": "cr47", "cls": "off_by_one", "hinted": true, "passed": true, "why": "pass"}
+{"id": "cr48", "cls": "none_handling", "hinted": false, "passed": true, "why": "pass"}

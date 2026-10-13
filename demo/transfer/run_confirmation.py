@@ -30,20 +30,39 @@ import re
 import sys
 from math import comb
 
-# __file__ must NOT be passed through resolve(): this working tree's
-# absolute path contains a literal backslash (F:\deepseek), and resolve()
-# doubles it, so every derived path then fails an existence check on a
-# file that is present. Read __file__ as-is and build paths from that.
-_HERE_RAW = pathlib.Path(__file__)
-HERE = _HERE_RAW.parent
-from ai_researcher import canonical
+HERE = pathlib.Path(__file__).resolve().parent
+REOT = None
+
+
+def _resolve_root(start: pathlib.Path) -> pathlib.Path:
+    """Locate the repository root without counting parents.
+
+    HERE.parents[1] was wrong twice on this tree, once in each direction, because
+    the absolute path contains a literal backslash and parents[] arithmetic is
+    easy to get wrong by hand. Prefer the injected EVO_REPO_ROOT, then a marker
+    walk that tolerates unstattable intermediate paths.
+    """
+    env = os.environ.get("EVO_REPO_ROOT")
+    if env:
+        cand = pathlib.Path(env)
+        if os.path.isfile(os.path.join(str(cand), "src", "ai_researcher", "loop.py")):
+            return cand
+    for cand in [start.resolve(), *start.resolve().parents]:
+        try:
+            if (cand / "src" / "ai_researcher" / "loop.py").is_file():
+                return cand
+        except OSError:
+            continue
+    raise SystemExit("no repository root; set EVO_REPO_ROOT")
+
 ROOT = pathlib.Path(canonical.repo_root())
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "demo/shared"))
 
+from ai_researcher import canonical
 from ollama_guard import call  # noqa: E402
 
-ITEMS = pathlib.Path(canonical.join("demo", "transfer", "items", "confirm160.json"))
+ITEMS = HERE / "items" / "confirm160.json"
 NUM = re.compile(r"-?\d[\d,]*\.?\d*")
 MODELS = ["qwen2.5:7b", "gemma3:4b"]
 

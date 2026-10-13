@@ -31,36 +31,20 @@ jobs:
       - name: install
         run: |
           python -m pip install --upgrade pip
-          pip install cryptography pytest
+          pip install cryptography pytest pyyaml
 
-      - name: unit tests
-        run: python -m pytest tests/ -q
+      - name: gate (the same entry point used locally)
+        # One command, one definition of "green". Before this the CI duplicated the four
+        # steps inline, so the local runner (scripts/gate.sh) and CI could drift -- and
+        # neither had ever run against the other, because this workflow has never executed
+        # on GitHub Actions at all (no remote until 2026-10-09; .github/ was untracked).
+        # scripts/gate.sh --prove-red is the control that shows the gate can fail.
+        run: bash scripts/gate.sh
 
-      - name: preregistration contract
-        # The power pre-check and the emit contract are the two gates that stop a
-        # run from being approved on a promise it cannot keep.
-        run: |
-          PYTHONPATH=src python3 -c "
-          from ai_researcher.envelope import Envelope, required_n
-          assert required_n(0.10) > 40, 'power pre-check regressed'
-          import ai_researcher.protocols as P
-          for name in ('paired-transfer', 'boundary-probe', 'judge-agreement', 'confound-audit'):
-              assert not P.check_emits(name), f'{name} emit contract broken'
-          print('contract checks ok')
-          "
-
-      - name: figure caption consistency
-        env:
-          PYTHONPATH: src
-        run: python3 demo/papers/figures/check_consistency.py
-
-      - name: evidence and gate sweep
-        # Reports the mechanical half of the venue gate and states plainly that
-        # the judgment half did NOT run: no review key in CI. A green mechanical
-        # result must never be readable as a venue verdict.
-        env:
-          PYTHONPATH: src
-        run: python3 scripts/verify_all.py
+      - name: prove the gate can go red
+        # A gate that has never been shown failing is a decoration (AGENTS.md rule 8).
+        # This runs a control plus three injected defects against throwaway copies.
+        run: bash scripts/gate.sh --prove-red
 
       - name: summary
         if: always()

@@ -1,0 +1,49 @@
+{
+  "experiment": "w11_humaneval_pass1",
+  "arxiv_id": "2107.03374v2",
+  "probed_at": "2026-10-05T11:29:52+0800",
+  "device": "cpu",
+  "protocol": {
+    "model": "Qwen3-0.6B bf16 CPU greedy",
+    "n_tasks": 164,
+    "denominator": "全部 164 题（无抽样）",
+    "max_new_tokens": 512,
+    "template_flag": "enable_thinking=False",
+    "metric": "pass@1（每题单采样贪心）",
+    "judge": "prompt+候选代码 后接数据自带 check(entry_point)，子进程 [python,-I,-S]，超时 20s；超时/报错/无代码均判 fail",
+    "dataset": "openai/human-eval data/HumanEval.jsonl.gz（164 行实测）",
+    "anchors": {
+      "GPT-Neo 125M": 0.75,
+      "GPT-Neo 1.3B": 4.79,
+      "GPT-Neo 2.7B": 6.41,
+      "GPT-J 6B": 11.62,
+      "TabFive 2.58": 2.58,
+      "Codex-12M": 2.0,
+      "Codex-25M": 3.21,
+      "Codex-42M": 5.06,
+      "Codex-85M": 8.22,
+      "Codex-300M": 13.17,
+      "Codex-679M": 16.22,
+      "Codex-2.5B": 21.36,
+      "Codex-12B": 28.81
+    },
+    "anchor_source": "https://arxiv.org/html/2107.03374v2 Table 1（2026-10-04 抓取）",
+    "caliber_note": "表 1 的 k=1 列与本协议同为单采样；但模型/来源不同 ⇒ 量级测量，非受控比较；不做显著性声明"
+  },
+  "pass_at_1": 0.3537,
+  "n_pass": 58,
+  "n_tasks": 164,
+  "fail_reasons": {
+    "assert_or_error": 105,
+    "exec_timeout": 1
+  },
+  "n_truncated": 2,
+  "n_unparsed": 0,
+  "sec_mean": 29.7,
+  "gap_to_anchor": {
+    "vs_Codex-12M_2.00": 0.3337,
+    "vs_GPT-Neo-125M_0.75": 0.3462,
+    "vs_GPT-J-6B_11.62": 0.2375
+  },
+  "wall_min": 81.6
+}

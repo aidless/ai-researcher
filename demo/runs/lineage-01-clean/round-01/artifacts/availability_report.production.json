@@ -1,0 +1,95 @@
+{
+ "judge": "production",
+ "judge_path": "/tmp/ind-audit/auditable-llm-eval/copilot/score_copilot_run_v2.py",
+ "arms": {
+  "original/v1": {
+   "items": 50,
+   "unmeasurable": 50,
+   "availability": 0.0,
+   "measured_rate": null,
+   "acc_over_all_rows": 0.0,
+   "unmeasurable_by_reason": {
+    "http_error": 50
+   },
+   "mean_score_rate": null,
+   "n_mean_score_rows": 0,
+   "n_scored": 0
+  },
+  "original/v2": {
+   "items": 50,
+   "unmeasurable": 8,
+   "availability": 0.84,
+   "measured_rate": 0.3095,
+   "acc_over_all_rows": 0.26,
+   "unmeasurable_by_reason": {
+    "timeout": 8
+   },
+   "mean_score_rate": 0.6759,
+   "n_mean_score_rows": 36,
+   "n_scored": 36
+  },
+  "original/v3": {
+   "items": 50,
+   "unmeasurable": 2,
+   "availability": 0.96,
+   "measured_rate": 0.3958,
+   "acc_over_all_rows": 0.38,
+   "unmeasurable_by_reason": {
+    "timeout": 2
+   },
+   "mean_score_rate": 0.7326,
+   "n_mean_score_rows": 48,
+   "n_scored": 48
+  },
+  "original/v3b": {
+   "items": 50,
+   "unmeasurable": 5,
+   "availability": 0.9,
+   "measured_rate": 0.4,
+   "acc_over_all_rows": 0.36,
+   "unmeasurable_by_reason": {
+    "timeout": 5
+   },
+   "mean_score_rate": 0.7241,
+   "n_mean_score_rows": 45,
+   "n_scored": 45
+  },
+  "original/v3c": {
+   "items": 50,
+   "unmeasurable": 8,
+   "availability": 0.84,
+   "measured_rate": 0.3333,
+   "acc_over_all_rows": 0.28,
+   "unmeasurable_by_reason": {
+    "timeout": 8
+   },
+   "mean_score_rate": 0.7083,
+   "n_mean_score_rows": 32,
+   "n_scored": 32
+  },
+  "clean/v3b": {
+   "items": 50,
+   "unmeasurable": 0,
+   "availability": 1.0,
+   "measured_rate": 0.4,
+   "acc_over_all_rows": 0.4,
+   "unmeasurable_by_reason": {},
+   "mean_score_rate": 0.7317,
+   "n_mean_score_rows": 50,
+   "n_scored": 50
+  },
+  "clean/v3c": {
+   "items": 50,
+   "unmeasurable": 8,
+   "availability": 0.84,
+   "measured_rate": 0.3333,
+   "acc_over_all_rows": 0.28,
+   "unmeasurable_by_reason": {
+    "timeout": 8
+   },
+   "mean_score_rate": 0.7083,
+   "n_mean_score_rows": 32,
+   "n_scored": 32
+  }
+ }
+}

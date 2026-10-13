@@ -1,0 +1,386 @@
+[
+ {
+  "cls": "none_handling",
+  "src": "def second_largest(nums):\n    nums = sorted(nums, reverse=True)\n    return nums[1]\n",
+  "hinted": false,
+  "rep": 2,
+  "id": "cr01",
+  "n_tests": 4
+ },
+ {
+  "cls": "off_by_one",
+  "src": "def last_n(items, n):\n    return items[len(items) - n + 1:]\n",
+  "hinted": true,
+  "rep": 0,
+  "id": "cr02",
+  "n_tests": 3
+ },
+ {
+  "cls": "off_by_one",
+  "src": "def running_total(nums):\n    total = 0\n    out = []\n    for i in range(1, len(nums)):\n        total += nums[i]\n        out.append(total)\n    return out\n",
+  "hinted": true,
+  "rep": 3,
+  "id": "cr03",
+  "n_tests": 3
+ },
+ {
+  "cls": "none_handling",
+  "src": "def get_nested(data, key):\n    return data[key][\"value\"]\n",
+  "hinted": false,
+  "rep": 0,
+  "id": "cr04",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def index_of(items, target):\n    return items.index(target)\n",
+  "hinted": false,
+  "rep": 1,
+  "id": "cr05",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def index_of(items, target):\n    return items.index(target)\n",
+  "hinted": false,
+  "rep": 2,
+  "id": "cr06",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def divide(a, b):\n    return a / b\n",
+  "hinted": false,
+  "rep": 1,
+  "id": "cr07",
+  "n_tests": 3
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def concat_id(a, b):\n    return a + b\n",
+  "hinted": false,
+  "rep": 0,
+  "id": "cr08",
+  "n_tests": 3
+ },
+ {
+  "cls": "none_handling",
+  "src": "def second_largest(nums):\n    nums = sorted(nums, reverse=True)\n    return nums[1]\n",
+  "hinted": false,
+  "rep": 0,
+  "id": "cr09",
+  "n_tests": 4
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def divide(a, b):\n    return a / b\n",
+  "hinted": false,
+  "rep": 0,
+  "id": "cr10",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def chunk(items, size):\n    return [items[i:i + size - 1] for i in range(0, len(items), size)]\n",
+  "hinted": true,
+  "rep": 1,
+  "id": "cr11",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def clamp(n, lo, hi):\n    return min(max(n, hi), lo)\n",
+  "hinted": false,
+  "rep": 3,
+  "id": "cr12",
+  "n_tests": 4
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def to_int(s):\n    return int(s) + 1\n",
+  "hinted": false,
+  "rep": 2,
+  "id": "cr13",
+  "n_tests": 4
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def concat_id(a, b):\n    return a + b\n",
+  "hinted": false,
+  "rep": 2,
+  "id": "cr14",
+  "n_tests": 3
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def is_even(n):\n    return n % 2 == \"0\"\n",
+  "hinted": false,
+  "rep": 0,
+  "id": "cr15",
+  "n_tests": 4
+ },
+ {
+  "cls": "none_handling",
+  "src": "def second_largest(nums):\n    nums = sorted(nums, reverse=True)\n    return nums[1]\n",
+  "hinted": false,
+  "rep": 3,
+  "id": "cr16",
+  "n_tests": 4
+ },
+ {
+  "cls": "off_by_one",
+  "src": "def running_total(nums):\n    total = 0\n    out = []\n    for i in range(1, len(nums)):\n        total += nums[i]\n        out.append(total)\n    return out\n",
+  "hinted": true,
+  "rep": 0,
+  "id": "cr17",
+  "n_tests": 3
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def is_even(n):\n    return n % 2 == \"0\"\n",
+  "hinted": false,
+  "rep": 3,
+  "id": "cr18",
+  "n_tests": 4
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def index_of(items, target):\n    return items.index(target)\n",
+  "hinted": false,
+  "rep": 3,
+  "id": "cr19",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def clamp(n, lo, hi):\n    return min(max(n, hi), lo)\n",
+  "hinted": false,
+  "rep": 1,
+  "id": "cr20",
+  "n_tests": 4
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def clamp(n, lo, hi):\n    return min(max(n, hi), lo)\n",
+  "hinted": false,
+  "rep": 0,
+  "id": "cr21",
+  "n_tests": 4
+ },
+ {
+  "cls": "none_handling",
+  "src": "def average(nums):\n    return sum(nums) / len(nums)\n",
+  "hinted": false,
+  "rep": 0,
+  "id": "cr22",
+  "n_tests": 4
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def concat_id(a, b):\n    return a + b\n",
+  "hinted": false,
+  "rep": 1,
+  "id": "cr23",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def divide(a, b):\n    return a / b\n",
+  "hinted": false,
+  "rep": 3,
+  "id": "cr24",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def chunk(items, size):\n    return [items[i:i + size - 1] for i in range(0, len(items), size)]\n",
+  "hinted": true,
+  "rep": 2,
+  "id": "cr25",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def clamp(n, lo, hi):\n    return min(max(n, hi), lo)\n",
+  "hinted": false,
+  "rep": 2,
+  "id": "cr26",
+  "n_tests": 4
+ },
+ {
+  "cls": "off_by_one",
+  "src": "def last_n(items, n):\n    return items[len(items) - n + 1:]\n",
+  "hinted": true,
+  "rep": 2,
+  "id": "cr27",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def divide(a, b):\n    return a / b\n",
+  "hinted": false,
+  "rep": 2,
+  "id": "cr28",
+  "n_tests": 3
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def to_int(s):\n    return int(s) + 1\n",
+  "hinted": false,
+  "rep": 3,
+  "id": "cr29",
+  "n_tests": 4
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def chunk(items, size):\n    return [items[i:i + size - 1] for i in range(0, len(items), size)]\n",
+  "hinted": true,
+  "rep": 3,
+  "id": "cr30",
+  "n_tests": 3
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def index_of(items, target):\n    return items.index(target)\n",
+  "hinted": false,
+  "rep": 0,
+  "id": "cr31",
+  "n_tests": 3
+ },
+ {
+  "cls": "none_handling",
+  "src": "def average(nums):\n    return sum(nums) / len(nums)\n",
+  "hinted": false,
+  "rep": 2,
+  "id": "cr32",
+  "n_tests": 4
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def concat_id(a, b):\n    return a + b\n",
+  "hinted": false,
+  "rep": 3,
+  "id": "cr33",
+  "n_tests": 3
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def is_even(n):\n    return n % 2 == \"0\"\n",
+  "hinted": false,
+  "rep": 1,
+  "id": "cr34",
+  "n_tests": 4
+ },
+ {
+  "cls": "off_by_one",
+  "src": "def running_total(nums):\n    total = 0\n    out = []\n    for i in range(1, len(nums)):\n        total += nums[i]\n        out.append(total)\n    return out\n",
+  "hinted": true,
+  "rep": 1,
+  "id": "cr35",
+  "n_tests": 3
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def to_int(s):\n    return int(s) + 1\n",
+  "hinted": false,
+  "rep": 1,
+  "id": "cr36",
+  "n_tests": 4
+ },
+ {
+  "cls": "off_by_one",
+  "src": "def last_n(items, n):\n    return items[len(items) - n + 1:]\n",
+  "hinted": true,
+  "rep": 3,
+  "id": "cr37",
+  "n_tests": 3
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def is_even(n):\n    return n % 2 == \"0\"\n",
+  "hinted": false,
+  "rep": 2,
+  "id": "cr38",
+  "n_tests": 4
+ },
+ {
+  "cls": "missing_guard",
+  "src": "def chunk(items, size):\n    return [items[i:i + size - 1] for i in range(0, len(items), size)]\n",
+  "hinted": true,
+  "rep": 0,
+  "id": "cr39",
+  "n_tests": 3
+ },
+ {
+  "cls": "none_handling",
+  "src": "def get_nested(data, key):\n    return data[key][\"value\"]\n",
+  "hinted": false,
+  "rep": 3,
+  "id": "cr40",
+  "n_tests": 3
+ },
+ {
+  "cls": "none_handling",
+  "src": "def average(nums):\n    return sum(nums) / len(nums)\n",
+  "hinted": false,
+  "rep": 1,
+  "id": "cr41",
+  "n_tests": 4
+ },
+ {
+  "cls": "off_by_one",
+  "src": "def last_n(items, n):\n    return items[len(items) - n + 1:]\n",
+  "hinted": true,
+  "rep": 1,
+  "id": "cr42",
+  "n_tests": 3
+ },
+ {
+  "cls": "none_handling",
+  "src": "def get_nested(data, key):\n    return data[key][\"value\"]\n",
+  "hinted": false,
+  "rep": 1,
+  "id": "cr43",
+  "n_tests": 3
+ },
+ {
+  "cls": "none_handling",
+  "src": "def second_largest(nums):\n    nums = sorted(nums, reverse=True)\n    return nums[1]\n",
+  "hinted": false,
+  "rep": 1,
+  "id": "cr44",
+  "n_tests": 4
+ },
+ {
+  "cls": "none_handling",
+  "src": "def average(nums):\n    return sum(nums) / len(nums)\n",
+  "hinted": false,
+  "rep": 3,
+  "id": "cr45",
+  "n_tests": 4
+ },
+ {
+  "cls": "type_coercion",
+  "src": "def to_int(s):\n    return int(s) + 1\n",
+  "hinted": false,
+  "rep": 0,
+  "id": "cr46",
+  "n_tests": 4
+ },
+ {
+  "cls": "off_by_one",
+  "src": "def running_total(nums):\n    total = 0\n    out = []\n    for i in range(1, len(nums)):\n        total += nums[i]\n        out.append(total)\n    return out\n",
+  "hinted": true,
+  "rep": 2,
+  "id": "cr47",
+  "n_tests": 3
+ },
+ {
+  "cls": "none_handling",
+  "src": "def get_nested(data, key):\n    return data[key][\"value\"]\n",
+  "hinted": false,
+  "rep": 2,
+  "id": "cr48",
+  "n_tests": 3
+ }
+]

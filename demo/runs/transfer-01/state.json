@@ -1,0 +1,869 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/transfer-01/round-01",
+   "result": {
+    "models": {
+     "qwen2.5:7b": {
+      "model": "qwen2.5:7b",
+      "policies": {
+       "direct": {
+        "acc": 0.15,
+        "detail": [
+         {
+          "id": "held-01",
+          "passed": true,
+          "lat": 34.4
+         },
+         {
+          "id": "held-02",
+          "passed": false,
+          "lat": 43.33
+         },
+         {
+          "id": "held-03",
+          "passed": false,
+          "lat": 40.98
+         },
+         {
+          "id": "held-04",
+          "passed": false,
+          "lat": 42.98
+         },
+         {
+          "id": "held-05",
+          "passed": false,
+          "lat": 43.84
+         },
+         {
+          "id": "held-06",
+          "passed": false,
+          "lat": 36.58
+         },
+         {
+          "id": "held-07",
+          "passed": false,
+          "lat": 39.17
+         },
+         {
+          "id": "held-08",
+          "passed": true,
+          "lat": 39.13
+         },
+         {
+          "id": "held-09",
+          "passed": false,
+          "lat": 36.06
+         },
+         {
+          "id": "held-10",
+          "passed": false,
+          "lat": 35.64
+         },
+         {
+          "id": "held-11",
+          "passed": false,
+          "lat": 75.71
+         },
+         {
+          "id": "held-12",
+          "passed": false,
+          "lat": 41.22
+         },
+         {
+          "id": "held-13",
+          "passed": false,
+          "lat": 36.99
+         },
+         {
+          "id": "held-14",
+          "passed": false,
+          "lat": 40.75
+         },
+         {
+          "id": "held-15",
+          "passed": false,
+          "lat": 38.95
+         },
+         {
+          "id": "held-16",
+          "passed": false,
+          "lat": 38.68
+         },
+         {
+          "id": "held-17",
+          "passed": false,
+          "lat": 38.72
+         },
+         {
+          "id": "held-18",
+          "passed": false,
+          "lat": 34.32
+         },
+         {
+          "id": "held-19",
+          "passed": false,
+          "lat": 34.79
+         },
+         {
+          "id": "held-20",
+          "passed": false,
+          "lat": 39.49
+         },
+         {
+          "id": "held-21",
+          "passed": false,
+          "lat": 37.03
+         },
+         {
+          "id": "held-22",
+          "passed": false,
+          "lat": 44.22
+         },
+         {
+          "id": "held-23",
+          "passed": true,
+          "lat": 6.39
+         },
+         {
+          "id": "held-24",
+          "passed": false,
+          "lat": 16.74
+         },
+         {
+          "id": "held-25",
+          "passed": false,
+          "lat": 5.38
+         },
+         {
+          "id": "held-26",
+          "passed": true,
+          "lat": 12.55
+         },
+         {
+          "id": "held-27",
+          "passed": false,
+          "lat": 6.13
+         },
+         {
+          "id": "held-28",
+          "passed": false,
+          "lat": 12.06
+         },
+         {
+          "id": "held-29",
+          "passed": false,
+          "lat": 13.52
+         },
+         {
+          "id": "held-30",
+          "passed": true,
+          "lat": 15.19
+         },
+         {
+          "id": "held-31",
+          "passed": false,
+          "lat": 10.95
+         },
+         {
+          "id": "held-32",
+          "passed": false,
+          "lat": 12.5
+         },
+         {
+          "id": "held-33",
+          "passed": false,
+          "lat": 3.64
+         },
+         {
+          "id": "held-34",
+          "passed": false,
+          "lat": 12.37
+         },
+         {
+          "id": "held-35",
+          "passed": false,
+          "lat": 4.93
+         },
+         {
+          "id": "held-36",
+          "passed": false,
+          "lat": 15.19
+         },
+         {
+          "id": "held-37",
+          "passed": false,
+          "lat": 4.84
+         },
+         {
+          "id": "held-38",
+          "passed": false,
+          "lat": 12.14
+         },
+         {
+          "id": "held-39",
+          "passed": false,
+          "lat": 6.47
+         },
+         {
+          "id": "held-40",
+          "passed": true,
+          "lat": 12.62
+         }
+        ]
+       },
+       "step-calc": {
+        "acc": 0.9,
+        "detail": [
+         {
+          "id": "held-01",
+          "passed": true,
+          "lat": 9.07
+         },
+         {
+          "id": "held-02",
+          "passed": false,
+          "lat": 16.93
+         },
+         {
+          "id": "held-03",
+          "passed": true,
+          "lat": 10.35
+         },
+         {
+          "id": "held-04",
+          "passed": true,
+          "lat": 12.76
+         },
+         {
+          "id": "held-05",
+          "passed": true,
+          "lat": 11.85
+         },
+         {
+          "id": "held-06",
+          "passed": true,
+          "lat": 11.54
+         },
+         {
+          "id": "held-07",
+          "passed": true,
+          "lat": 15.38
+         },
+         {
+          "id": "held-08",
+          "passed": true,
+          "lat": 12.15
+         },
+         {
+          "id": "held-09",
+          "passed": true,
+          "lat": 18.38
+         },
+         {
+          "id": "held-10",
+          "passed": true,
+          "lat": 14.14
+         },
+         {
+          "id": "held-11",
+          "passed": true,
+          "lat": 13.74
+         },
+         {
+          "id": "held-12",
+          "passed": true,
+          "lat": 11.26
+         },
+         {
+          "id": "held-13",
+          "passed": true,
+          "lat": 15.58
+         },
+         {
+          "id": "held-14",
+          "passed": true,
+          "lat": 10.95
+         },
+         {
+          "id": "held-15",
+          "passed": true,
+          "lat": 16.4
+         },
+         {
+          "id": "held-16",
+          "passed": true,
+          "lat": 16.04
+         },
+         {
+          "id": "held-17",
+          "passed": true,
+          "lat": 12.56
+         },
+         {
+          "id": "held-18",
+          "passed": true,
+          "lat": 12.87
+         },
+         {
+          "id": "held-19",
+          "passed": true,
+          "lat": 11.61
+         },
+         {
+          "id": "held-20",
+          "passed": true,
+          "lat": 13.54
+         },
+         {
+          "id": "held-21",
+          "passed": true,
+          "lat": 11.39
+         },
+         {
+          "id": "held-22",
+          "passed": true,
+          "lat": 12.73
+         },
+         {
+          "id": "held-23",
+          "passed": true,
+          "lat": 12.7
+         },
+         {
+          "id": "held-24",
+          "passed": true,
+          "lat": 18.72
+         },
+         {
+          "id": "held-25",
+          "passed": true,
+          "lat": 15.44
+         },
+         {
+          "id": "held-26",
+          "passed": true,
+          "lat": 12.99
+         },
+         {
+          "id": "held-27",
+          "passed": true,
+          "lat": 16.01
+         },
+         {
+          "id": "held-28",
+          "passed": false,
+          "lat": 21.04
+         },
+         {
+          "id": "held-29",
+          "passed": false,
+          "lat": 21.84
+         },
+         {
+          "id": "held-30",
+          "passed": true,
+          "lat": 16.63
+         },
+         {
+          "id": "held-31",
+          "passed": true,
+          "lat": 12.99
+         },
+         {
+          "id": "held-32",
+          "passed": true,
+          "lat": 20.78
+         },
+         {
+          "id": "held-33",
+          "passed": true,
+          "lat": 16.87
+         },
+         {
+          "id": "held-34",
+          "passed": false,
+          "lat": 20.74
+         },
+         {
+          "id": "held-35",
+          "passed": true,
+          "lat": 10.26
+         },
+         {
+          "id": "held-36",
+          "passed": true,
+          "lat": 15.22
+         },
+         {
+          "id": "held-37",
+          "passed": true,
+          "lat": 16.48
+         },
+         {
+          "id": "held-38",
+          "passed": true,
+          "lat": 11.95
+         },
+         {
+          "id": "held-39",
+          "passed": true,
+          "lat": 14.03
+         },
+         {
+          "id": "held-40",
+          "passed": true,
+          "lat": 14.58
+         }
+        ]
+       }
+      },
+      "gain": 0.75,
+      "paired": {
+       "b_step_only": 30,
+       "c_direct_only": 0
+      }
+     },
+     "llama3.1:8b": {
+      "model": "llama3.1:8b",
+      "policies": {
+       "direct": {
+        "acc": 0.025,
+        "detail": [
+         {
+          "id": "held-01",
+          "passed": false,
+          "lat": 31.98
+         },
+         {
+          "id": "held-02",
+          "passed": false,
+          "lat": 36.67
+         },
+         {
+          "id": "held-03",
+          "passed": false,
+          "lat": 46.42
+         },
+         {
+          "id": "held-04",
+          "passed": false,
+          "lat": 35.19
+         },
+         {
+          "id": "held-05",
+          "passed": false,
+          "lat": 50.5
+         },
+         {
+          "id": "held-06",
+          "passed": false,
+          "lat": 42.71
+         },
+         {
+          "id": "held-07",
+          "passed": false,
+          "lat": 38.98
+         },
+         {
+          "id": "held-08",
+          "passed": false,
+          "lat": 28.22
+         },
+         {
+          "id": "held-09",
+          "passed": false,
+          "lat": 33.52
+         },
+         {
+          "id": "held-10",
+          "passed": false,
+          "lat": 32.66
+         },
+         {
+          "id": "held-11",
+          "passed": false,
+          "lat": 31.05
+         },
+         {
+          "id": "held-12",
+          "passed": false,
+          "lat": 33.17
+         },
+         {
+          "id": "held-13",
+          "passed": false,
+          "lat": 37.01
+         },
+         {
+          "id": "held-14",
+          "passed": false,
+          "lat": 31.2
+         },
+         {
+          "id": "held-15",
+          "passed": false,
+          "lat": 34.66
+         },
+         {
+          "id": "held-16",
+          "passed": false,
+          "lat": 31.08
+         },
+         {
+          "id": "held-17",
+          "passed": false,
+          "lat": 30.77
+         },
+         {
+          "id": "held-18",
+          "passed": false,
+          "lat": 37.05
+         },
+         {
+          "id": "held-19",
+          "passed": true,
+          "lat": 36.88
+         },
+         {
+          "id": "held-20",
+          "passed": false,
+          "lat": 54.78
+         },
+         {
+          "id": "held-21",
+          "passed": false,
+          "lat": 54.39
+         },
+         {
+          "id": "held-22",
+          "passed": false,
+          "lat": 44.03
+         },
+         {
+          "id": "held-23",
+          "passed": false,
+          "lat": 43.86
+         },
+         {
+          "id": "held-24",
+          "passed": false,
+          "lat": 58.86
+         },
+         {
+          "id": "held-25",
+          "passed": false,
+          "lat": 40.58
+         },
+         {
+          "id": "held-26",
+          "passed": false,
+          "lat": 55.25
+         },
+         {
+          "id": "held-27",
+          "passed": false,
+          "lat": 49.32
+         },
+         {
+          "id": "held-28",
+          "passed": false,
+          "lat": 49.45
+         },
+         {
+          "id": "held-29",
+          "passed": false,
+          "lat": 53.76
+         },
+         {
+          "id": "held-30",
+          "passed": false,
+          "lat": 57.91
+         },
+         {
+          "id": "held-31",
+          "passed": false,
+          "lat": 54.01
+         },
+         {
+          "id": "held-32",
+          "passed": false,
+          "lat": 55.37
+         },
+         {
+          "id": "held-33",
+          "passed": false,
+          "lat": 44.57
+         },
+         {
+          "id": "held-34",
+          "passed": false,
+          "lat": 60.63
+         },
+         {
+          "id": "held-35",
+          "passed": false,
+          "lat": 42.57
+         },
+         {
+          "id": "held-36",
+          "passed": false,
+          "lat": 66.5
+         },
+         {
+          "id": "held-37",
+          "passed": false,
+          "lat": 48.58
+         },
+         {
+          "id": "held-38",
+          "passed": false,
+          "lat": 48.71
+         },
+         {
+          "id": "held-39",
+          "passed": false,
+          "lat": 46.23
+         },
+         {
+          "id": "held-40",
+          "passed": false,
+          "lat": 58.26
+         }
+        ]
+       },
+       "step-calc": {
+        "acc": 0.8,
+        "detail": [
+         {
+          "id": "held-01",
+          "passed": true,
+          "lat": 47.28
+         },
+         {
+          "id": "held-02",
+          "passed": true,
+          "lat": 54.63
+         },
+         {
+          "id": "held-03",
+          "passed": true,
+          "lat": 45.58
+         },
+         {
+          "id": "held-04",
+          "passed": true,
+          "lat": 55.21
+         },
+         {
+          "id": "held-05",
+          "passed": true,
+          "lat": 44.02
+         },
+         {
+          "id": "held-06",
+          "passed": true,
+          "lat": 49.8
+         },
+         {
+          "id": "held-07",
+          "passed": true,
+          "lat": 73.35
+         },
+         {
+          "id": "held-08",
+          "passed": true,
+          "lat": 55.73
+         },
+         {
+          "id": "held-09",
+          "passed": false,
+          "lat": 50.95
+         },
+         {
+          "id": "held-10",
+          "passed": true,
+          "lat": 57.89
+         },
+         {
+          "id": "held-11",
+          "passed": true,
+          "lat": 56.8
+         },
+         {
+          "id": "held-12",
+          "passed": true,
+          "lat": 54.86
+         },
+         {
+          "id": "held-13",
+          "passed": true,
+          "lat": 48.76
+         },
+         {
+          "id": "held-14",
+          "passed": true,
+          "lat": 68.02
+         },
+         {
+          "id": "held-15",
+          "passed": false,
+          "lat": 58.01
+         },
+         {
+          "id": "held-16",
+          "passed": true,
+          "lat": 67.01
+         },
+         {
+          "id": "held-17",
+          "passed": true,
+          "lat": 81.24
+         },
+         {
+          "id": "held-18",
+          "passed": true,
+          "lat": 79.45
+         },
+         {
+          "id": "held-19",
+          "passed": true,
+          "lat": 65.99
+         },
+         {
+          "id": "held-20",
+          "passed": false,
+          "lat": 66.55
+         },
+         {
+          "id": "held-21",
+          "passed": true,
+          "lat": 60.76
+         },
+         {
+          "id": "held-22",
+          "passed": true,
+          "lat": 64.93
+         },
+         {
+          "id": "held-23",
+          "passed": true,
+          "lat": 33.15
+         },
+         {
+          "id": "held-24",
+          "passed": true,
+          "lat": 50.57
+         },
+         {
+          "id": "held-25",
+          "passed": false,
+          "lat": 0.0
+         },
+         {
+          "id": "held-26",
+          "passed": false,
+          "lat": 0.0
+         },
+         {
+          "id": "held-27",
+          "passed": true,
+          "lat": 32.67
+         },
+         {
+          "id": "held-28",
+          "passed": true,
+          "lat": 42.79
+         },
+         {
+          "id": "held-29",
+          "passed": false,
+          "lat": 84.45
+         },
+         {
+          "id": "held-30",
+          "passed": true,
+          "lat": 65.53
+         },
+         {
+          "id": "held-31",
+          "passed": true,
+          "lat": 51.18
+         },
+         {
+          "id": "held-32",
+          "passed": true,
+          "lat": 45.35
+         },
+         {
+          "id": "held-33",
+          "passed": false,
+          "lat": 0.0
+         },
+         {
+          "id": "held-34",
+          "passed": false,
+          "lat": 0.0
+         },
+         {
+          "id": "held-35",
+          "passed": true,
+          "lat": 30.25
+         },
+         {
+          "id": "held-36",
+          "passed": true,
+          "lat": 40.55
+         },
+         {
+          "id": "held-37",
+          "passed": true,
+          "lat": 32.31
+         },
+         {
+          "id": "held-38",
+          "passed": true,
+          "lat": 37.09
+         },
+         {
+          "id": "held-39",
+          "passed": true,
+          "lat": 56.29
+         },
+         {
+          "id": "held-40",
+          "passed": true,
+          "lat": 65.45
+         }
+        ]
+       }
+      },
+      "gain": 0.775,
+      "paired": {
+       "b_step_only": 31,
+       "c_direct_only": 0
+      }
+     }
+    },
+    "n": 40,
+    "replication_gain": 0.75,
+    "transfer_gain": 0.775,
+    "gain": 0.775,
+    "exit_code": 0,
+    "wall_s": 5760.2
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@04c96d2e4e76",
+   "kill_row": "transfer_gain >= 0.10",
+   "verdict": "STOP-EXTEND",
+   "reason": null
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-06T06:38:57.273812+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "1b4e1c9039e7535af89c3daa640abd5960c53fb6984f9fe4a483912d8d980ec3",
+ "key_priv": null
+}

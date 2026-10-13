@@ -1,0 +1,124 @@
+{
+ "reps": [
+  {
+   "arms": {
+    "swarm1": {
+     "swarm": 1,
+     "pci_trajectory": [
+      0.0,
+      0.1485,
+      0.1636,
+      0.1356,
+      0.2121,
+      0.2388,
+      0.2398
+     ],
+     "slope": 0.04,
+     "n_actual_per_round": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+     ],
+     "mean_n_actual": 1.0,
+     "forced_votes": 0,
+     "abstained_votes": 0,
+     "total_votes": 0
+    },
+    "swarm4": {
+     "swarm": 4,
+     "pci_trajectory": [
+      0.0,
+      0.1485,
+      0.1636,
+      0.2596,
+      0.2121,
+      0.2388,
+      0.3096
+     ],
+     "slope": 0.0516,
+     "n_actual_per_round": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+     ],
+     "mean_n_actual": 4.0,
+     "forced_votes": 0,
+     "abstained_votes": 0,
+     "total_votes": 18
+    }
+   },
+   "slope_excess": 0.0116,
+   "seed": 20261006
+  }
+ ],
+ "n_seeds": 1,
+ "excesses": [
+  0.0116
+ ],
+ "n_positive": 1,
+ "confirmed": true,
+ "seed": 20261006,
+ "arms": {
+  "swarm1": {
+   "swarm": 1,
+   "pci_trajectory": [
+    0.0,
+    0.1485,
+    0.1636,
+    0.1356,
+    0.2121,
+    0.2388,
+    0.2398
+   ],
+   "slope": 0.04,
+   "n_actual_per_round": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "mean_n_actual": 1.0,
+   "forced_votes": 0,
+   "abstained_votes": 0,
+   "total_votes": 0
+  },
+  "swarm4": {
+   "swarm": 4,
+   "pci_trajectory": [
+    0.0,
+    0.1485,
+    0.1636,
+    0.2596,
+    0.2121,
+    0.2388,
+    0.3096
+   ],
+   "slope": 0.0516,
+   "n_actual_per_round": [
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+   ],
+   "mean_n_actual": 4.0,
+   "forced_votes": 0,
+   "abstained_votes": 0,
+   "total_votes": 18
+  }
+ },
+ "slope_excess": 0.0116
+}

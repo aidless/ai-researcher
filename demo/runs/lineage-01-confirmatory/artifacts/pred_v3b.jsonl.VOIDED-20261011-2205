@@ -1,0 +1,1 @@
+{"id": "d001", "task": "failure_diagnosis", "ts": "2026-10-11T22:02:36", "model": "copilot-3b-lora-v3b:latest", "elapsed_s": 150.2, "chars": 0, "done_reason": null, "timeout": true, "error": "TimeoutError", "output": ""}

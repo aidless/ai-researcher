@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-02",
+  "mode": "dry-run",
+  "before_p1": {
+    "total": 393,
+    "A": 160,
+    "B": 119,
+    "C": 114
+  },
+  "buckets": {
+    "already_strict": 394,
+    "normalizable": 643,
+    "needs_human": 1
+  },
+  "normalized": 643,
+  "rejected": [],
+  "needs_human_keys": [
+    "2210.02414v2"
+  ]
+}

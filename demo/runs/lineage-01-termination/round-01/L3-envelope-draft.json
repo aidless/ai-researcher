@@ -1,0 +1,28 @@
+{
+  "hypothesis": "v3c non-termination is independent of machine state (L3 of the termination preregistration)",
+  "methods": "termination_run.py L3 (to be written: same row format + num_predict=1024 legs; see below), run in chunks with the same refusal/exemption/snapshot protocol as L1+L2",
+  "design": {
+    "L3a_cold": "8 items x 1 call each immediately after fresh model load (restart ollama model first)",
+    "L3b_hot": "8 items x 1 call each after 30 consecutive warm-up calls",
+    "L3c_contended": "8 items x 1 call each while a small-model request runs concurrently (DELIBERATE contention — this leg tests state-dependence by construction)",
+    "note": "L3c deliberately creates the condition L1+L2 excluded; its purpose is to measure the effect, not to avoid it. num_predict=1024 on all L3 legs so done_reason arrives instead of a client timeout; the two ceilings stay registered separately per the草案"
+  },
+  "kill_switch": [
+    {
+      "condition": "L3a, L3b, L3c identical outcome distributions (all non-stop on v3c)",
+      "action": "STOP-EXTEND (full): v3c non-termination is a checkpoint property; proceed to token-level instrumentation (/api/generate + stream, EOS probability)",
+      "note": "this completes the conjunction pending in ROUND_SUMMARY.md"
+    },
+    {
+      "condition": "any leg differs (e.g. cold stops, hot hangs, or contended hangs)",
+      "action": "STATE_DEPENDENT: not-H holds; the line becomes 'how concurrency/VRAM affects generation termination', unrelated to lineage; lineage-01复现断言 downgraded to single observation"
+    }
+  ],
+  "max_wall_hours": 1.0,
+  "max_cost_usd": 0.0,
+  "seed_note": "gen() sends no seed (see G5); determinism claim rests on temp-0 + L2 byte-identity evidence, not on seeding",
+  "required_artifacts": ["termination.jsonl L3 rows", "contamination_watch.jsonl entries"],
+  "approved_by": "",
+  "approved_at": "",
+  "status": "DRAFT-UNSIGNED: instrument (L3 legs in termination_run.py) not yet written; envelope not yet approved. Written 2026-10-10 by agent session under blanket authorization; human signature required before launch."
+}

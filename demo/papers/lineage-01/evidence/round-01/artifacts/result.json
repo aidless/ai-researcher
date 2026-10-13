@@ -1,0 +1,30 @@
+{
+ "versions": [
+  "v1",
+  "v2",
+  "v3",
+  "v3b",
+  "v3c"
+ ],
+ "rates": {
+  "v1": null,
+  "v2": 0.6759,
+  "v3": 0.7326,
+  "v3b": 0.7241,
+  "v3c": 0.7083
+ },
+ "any_regression": true,
+ "regressions": [
+  {
+   "from": "v3",
+   "to": "v3b",
+   "drop": 0.0085
+  },
+  {
+   "from": "v3b",
+   "to": "v3c",
+   "drop": 0.0158
+  }
+ ],
+ "confirmed": true
+}

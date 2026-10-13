@@ -1,0 +1,160 @@
+{"id": "cf-001", "passed": true, "why": ""}
+{"id": "cf-002", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-003", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-004", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-005", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-006", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-007", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-008", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-009", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-010", "passed": true, "why": ""}
+{"id": "cf-011", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-012", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-013", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-014", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-015", "passed": true, "why": ""}
+{"id": "cf-016", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-017", "passed": true, "why": ""}
+{"id": "cf-018", "passed": true, "why": ""}
+{"id": "cf-019", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-020", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-021", "passed": true, "why": ""}
+{"id": "cf-022", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-023", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-024", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-025", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-026", "passed": true, "why": ""}
+{"id": "cf-027", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-028", "passed": true, "why": ""}
+{"id": "cf-029", "passed": true, "why": ""}
+{"id": "cf-030", "passed": true, "why": ""}
+{"id": "cf-031", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-032", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-033", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-034", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-035", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-036", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-037", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-038", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-039", "passed": true, "why": ""}
+{"id": "cf-040", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-041", "passed": true, "why": ""}
+{"id": "cf-042", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-043", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-044", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-045", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-046", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-047", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-048", "passed": true, "why": ""}
+{"id": "cf-049", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-050", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-051", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-052", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-053", "passed": true, "why": ""}
+{"id": "cf-054", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-055", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-056", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-057", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-058", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-059", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-060", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-061", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-062", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-063", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-064", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-065", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-066", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-067", "passed": true, "why": ""}
+{"id": "cf-068", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-069", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-070", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-071", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-072", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-073", "passed": true, "why": ""}
+{"id": "cf-074", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-075", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-076", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-077", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-078", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-079", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-080", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-081", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-082", "passed": true, "why": ""}
+{"id": "cf-083", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-084", "passed": true, "why": ""}
+{"id": "cf-085", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-086", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-087", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-088", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-089", "passed": true, "why": ""}
+{"id": "cf-090", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-091", "passed": true, "why": ""}
+{"id": "cf-092", "passed": true, "why": ""}
+{"id": "cf-093", "passed": true, "why": ""}
+{"id": "cf-094", "passed": true, "why": ""}
+{"id": "cf-095", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-096", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-097", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-098", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-099", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-100", "passed": true, "why": ""}
+{"id": "cf-101", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-102", "passed": true, "why": ""}
+{"id": "cf-103", "passed": true, "why": ""}
+{"id": "cf-104", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-105", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-106", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-107", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-108", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-109", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-110", "passed": true, "why": ""}
+{"id": "cf-111", "passed": true, "why": ""}
+{"id": "cf-112", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-113", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-114", "passed": true, "why": ""}
+{"id": "cf-115", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-116", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-117", "passed": true, "why": ""}
+{"id": "cf-118", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-119", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-120", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-121", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-122", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-123", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-124", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-125", "passed": true, "why": ""}
+{"id": "cf-126", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-127", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-128", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-129", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-130", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-131", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-132", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-133", "passed": true, "why": ""}
+{"id": "cf-134", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-135", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-136", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-137", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-138", "passed": true, "why": ""}
+{"id": "cf-139", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-140", "passed": true, "why": ""}
+{"id": "cf-141", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-142", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-143", "passed": true, "why": ""}
+{"id": "cf-144", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-145", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-146", "passed": true, "why": ""}
+{"id": "cf-147", "passed": true, "why": ""}
+{"id": "cf-148", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-149", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-150", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-151", "passed": true, "why": ""}
+{"id": "cf-152", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-153", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-154", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-155", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-156", "passed": true, "why": ""}
+{"id": "cf-157", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-158", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-159", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}
+{"id": "cf-160", "passed": false, "why": "RuntimeError: ollama returned error-text (0 chars): ''"}

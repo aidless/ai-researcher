@@ -1,6 +1,6 @@
 {
   "hypothesis": "the arithmetic transfer effect replicates on two non-GSM8K sources (SVAMP and ASDiv), all families positive and significant on each",
-  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared:$ROOT/demo/transfer\" python3 \"$ROOT/demo/transfer/run_cross_dataset.py\" --selftest && PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared:$ROOT/demo/transfer\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261012 EVO_MODELS=\"qwen2.5:7b,gemma3:4b,llama3.1:8b\" python3 \"$ROOT/demo/transfer/run_cross_dataset.py\"",
+  "methods": "ROOT=\"$PYTHON_EVO_REPO_ROOT\"; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; export EVO_REPO_ROOT=\"$ROOT\"; export EVO_REPO_ROOT=\"$ROOT\"; PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared:$ROOT/demo/transfer\" python3 \"$ROOT/demo/transfer/run_cross_dataset.py\" --selftest && PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared:$ROOT/demo/transfer\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261012 EVO_MODELS=\"qwen2.5:7b,gemma3:4b,llama3.1:8b\" python3 \"$ROOT/demo/transfer/run_cross_dataset.py\"",
   "max_rounds": 1,
   "max_cost_usd": 0.0,
   "max_wall_hours": 10.0,
@@ -19,8 +19,8 @@
   "required_artifacts": [
     "result.json"
   ],
-  "approved_by": "liuzewen (P1; two independent arithmetic sources, power-checked, both must replicate)",
-  "approved_at": "2026-10-10T14:39:07.324461+00:00",
+  "approved_by": "",
+  "approved_at": "",
   "seed": 20261012,
   "tension": "The entire confirmatory record runs on GSM8K-style arithmetic, and a reviewer's first ask is whether the effect is a property of one dataset's surface idiom rather than of arithmetic itself. Models can acquire a surface form and fail on differently-phrased arithmetic, and no arm has tested an independently-sourced set. Answering it decides whether the primary claim is about arithmetic or about GSM8K's idiom, and one dataset is not enough because one dataset is what the record already has.",
   "power": {

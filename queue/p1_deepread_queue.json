@@ -1,0 +1,152 @@
+[
+  {
+    "arxivId": "2604.26622v1",
+    "base_id": "2604.26622",
+    "title": "OCR-Memory: Optical Context Retrieval for Long-Horizon Agent Memory",
+    "summary": "Autonomous LLM agents increasingly operate in long-horizon, interactive settings where success depends on reusing experience accumulated over extended histories. However, existing agent memory systems are fundamentally constrained by text-context budgets: storing or revisiting raw trajectories is prohibitively token-expensive, while summarization and text-only retrieval trade token savings for information loss and fragmented evidence. To address this limitation, we propose Optical Context Retrieval Memory (OCR-Memory), a memory framework that leverages the visual modality as a high-density representation of agent experience, enabling retention of arbitrarily long histories with minimal prompt overhead at retrieval time. Specifically, OCR-Memory renders historical trajectories into images annotated with unique visual identifiers. OCR-Memory retrieves stored experience via a \\emph{locate-and-transcribe} paradigm that selects relevant regions through visual anchors and retrieves the corresponding verbatim text, avoiding free-form generation and reducing hallucination. Experiments on long-horizon agent benchmarks show consistent gains under strict context limits, demonstrating that optical encoding increases effective memory capacity while preserving faithful evidence recovery.",
+    "url": "https://arxiv.org/abs/2604.26622v1",
+    "published": "2026-04-29T12:49:30Z",
+    "agent_score": 17.0,
+    "why": [
+      "topic overlap with 'long-horizon agent memory' (weight 17.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  },
+  {
+    "arxivId": "2608.10108v1",
+    "base_id": "2608.10108",
+    "title": "MESA:Task-Adaptive Multi-Structure Evidence Selection for Long-Horizon Agent Memory",
+    "summary": "Long-horizon agents accumulate trajectories spanning hundreds of interleaved reasoning, action, and observation steps, where answering a query may depend on evidence buried far back in the history. External memory stores such trajectories as structured representations, yet each structure provides a distinct and incomplete view. Existing multi-memory systems either read a fixed set of structures for every query, inflating context and introducing noise, or route each query to a single structure, preventing the composition of complementary evidence. A controlled analysis on AMA-Bench shows that the optimal memory configuration is typically neither a single structure nor the full union, but a tailored composition of multiple structural memories that varies with query and task demands. Motivated by these findings, we formulate structure-level dynamic selection: selecting and fusing a query-adaptive subset from a library of specialized memory structures. We propose MESA (a Multi-structure Evidence Selection framework for long-horizon Agent), which builds five complementary structure views of each trajectory and learns from end-to-end answer-level feedback to select and fuse a query-specific subset for a frozen answer model. To learn under this weak supervision, MESA employs harness optimization with prior-guided search and UCB-guided scheduling to balance exploration and exploitation. On AMA-Bench, MESA outperforms the strongest baseline by 8.5% while using 41% fewer evidence tokens than the all-structure alternative.",
+    "url": "https://arxiv.org/abs/2608.10108v1",
+    "published": "2026-08-10T18:23:04Z",
+    "agent_score": 16.0,
+    "why": [
+      "topic overlap with 'long-horizon agent memory' (weight 16.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  },
+  {
+    "arxivId": "2606.20954v2",
+    "base_id": "2606.20954",
+    "title": "Learning What Not to Forget: Long-Horizon Agent Memory from a Few Kilobytes of Learning",
+    "summary": "Long-running language-model systems accumulate interaction history that outgrows the context window, so they must continually evict. When an eviction policy drops a task-critical detail, for example an access token issued at login or a path the next call needs, the action fails. We present LRE (Learned Relevance Eviction), a kilobyte-scale, CPU-only, language-model-free scorer that learns which units of history are task-critical and keeps them by verbatim extraction. Under a matched-budget comparison, in our experiment, no baseline dominates LRE on the accuracy-cost plane. On agents, LRE recovers 93% of the aggregate accuracy of keeping the entire history (41.1 vs. 44.0) and exceeds it by 27% on the simplest tasks, while requiring zero compressor calls and cutting the worst-case peak prompt by 52%. A controlled study trace shows LRE completes tasks where the others loop, finishing one such task in 37% fewer calls than keeping everything and solving 14 tasks where no other run policy does. On conversational memory, LRE outranks dense and token-pruning encoders at zero neural cost while being 295-1569x smaller in size. In downstream evaluation, LRE gives the best budgeted answer quality on LoCoMo reading 68% fewer tokens. Its supervision can also be annotation-free: training only on the system's own behavior recovers 95% of the supervised scorer's effectiveness. We argue that, because memory eviction in LLM agents is a fidelity problem, it requires a deployable proactive policy where the future query is unavailable and exact state is decisive, and that cheap learned relevance can be sufficient.",
+    "url": "https://arxiv.org/abs/2606.20954v2",
+    "published": "2026-06-18T21:39:10Z",
+    "agent_score": 14.0,
+    "why": [
+      "topic overlap with 'long-horizon agent memory' (weight 14.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  },
+  {
+    "arxivId": "2609.37025v1",
+    "base_id": "2609.37025",
+    "title": "AnyAct: Universal Action for Self-Evolving Agents",
+    "summary": "As large language models (LLMs) advance, AI agents are increasingly deployed in open-world environments to tackle complex sequential tasks (e.g., document processing, cross-application collaboration), relying heavily on actions ranging from GUI operations to semantic APIs. However, three core challenges persist: the \"scale dilemma\" of massive tool ecosystems exceeding LLM context windows, the \"non-stationarity\" of tool quality due to updates or outages, and the \"heterogeneity\" of feedback formats (pixels, text, structured data) creating information silos. To address these, we propose AnyAct, a universal action layer that unifies available capabilities into a self-evolving action space, enabling agents to operate efficiently and reliably in large-scale, dynamic tool ecosystems. AnyAct's core design focuses on two objectives: constructing this action space via hierarchical progressive retrieval (filtering task-relevant actions) and test-time reliability evolution (pruning unreliable actions), and enabling reliability-aware action orchestration through a heterogeneous observation grounding module that unifies multi-modal feedback. Additionally, it defines a hybrid action space (primitive + semantic actions) and optimizes for a balance between task success rate and execution cost. Evaluations on LiveMCPBench and OSMCP (a new benchmark we developed for multi-granularity action collaboration) demonstrate state-of-the-art performance. AnyAct delivers substantial performance gains over baseline methods across various LLM base models on LiveMCPBench and improvements are particularly notable for models with constrained native capabilities. On OSMCP, it achieves 77.27% overall success with only 50 steps, which is half the steps required by most competitors.",
+    "url": "https://arxiv.org/abs/2609.37025v1",
+    "published": "2026-09-29T08:41:27Z",
+    "agent_score": 13.0,
+    "why": [
+      "topic overlap with 'self-evolving agents' (weight 13.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  },
+  {
+    "arxivId": "2609.36746v1",
+    "base_id": "2609.36746",
+    "title": "EASE: Behavior-Adaptive Skill Curation for Self-Evolving Agents",
+    "summary": "Agent skills provide a lightweight mechanism for self-evolving agents to accumulate reusable procedural knowledge without updating model parameters. However, existing learned skill curators typically optimize curation without explicitly modeling downstream executor behavior. We show that this can cause systematic cross-executor degradation: curators trained with different executors perform best when paired with their own training executor, indicating that effective skill curation is executor-dependent. We formulate behavior-adaptive skill curation and introduce EASE, a framework that learns a single curator that adapts its decisions to different executor behaviors. EASE maintains an online behavioral profile of recent execution patterns and conditions the curator on this profile, the current trajectory, and retrieved skills to add, modify, or remove skills from an evolving repository. We train the shared curator jointly across multiple frozen executors with reinforcement learning, using retrieval-aware and behavior-aware temporal attribution to focus optimization on curation actions with observable downstream influence. Across ALFWorld, ScienceWorld, and WebShop, with executors ranging from Qwen3-8B/32B and GPT-OSS-120B to unseen Kimi K2.6, DeepSeek V4 Flash, and Gemini 3.5 Flash, EASE outperforms strong skill- and memory-based baselines without per-executor finetuning. EASE also maintains 34.5--41.0% fewer skills, improves skill retrieval by 36.3--38.7% and measured edit utility by 51.8--60.0%, and reduces deployment-time inference tokens by 9.1--14.5%. These results establish behavior-adaptive skill curation as an effective principle for building self-evolving agents.",
+    "url": "https://arxiv.org/abs/2609.36746v1",
+    "published": "2026-09-29T05:18:24Z",
+    "agent_score": 13.0,
+    "why": [
+      "topic overlap with 'self-evolving agents' (weight 13.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  },
+  {
+    "arxivId": "2609.37661v1",
+    "base_id": "2609.37661",
+    "title": "Corpus-Guided Dual-Path Propagation for Graph Retrieval-Augmented Generation",
+    "summary": "Graph-based retrieval-augmented generation supports multi-hop retrieval by organizing corpus information into graphs. However, existing relation-free graph retrieval methods rely primarily on query-sentence similarity to search for evidence. This can exclude useful bridging evidence with low query similarity and activate incidental entities unrelated to the reasoning chain. In this paper, we propose a simple and effective approach called NexusRAG, which augments the relation-free Tri-Graph with a corpus-level entity neighborhood structure derived from joint entity co-occurrence and semantic similarity. NexusRAG employs this structure to guide two complementary propagation paths: neighborhood-constrained semantic propagation through sentences identifies the query-relevant entity frontier, while direct structural propagation between neighboring entities expands that frontier to structurally related entities. The propagated entity weights also inform neighborhood-aware passage initialization for Personalized PageRank. Experiments on three multi-hop QA benchmarks and a domain-specific subset of GraphRAG-Bench show that NexusRAG consistently outperforms existing approaches. On the GraphRAG-Bench subset, NexusRAG achieves the highest evidence recall in all question categories, exceeding baselines by 4.2-8.1 points. The implementation code is available at https://github.com/Jacob-biu/NexusRAG.",
+    "url": "https://arxiv.org/abs/2609.37661v1",
+    "published": "2026-09-29T14:20:46Z",
+    "agent_score": 13.0,
+    "why": [
+      "topic overlap with 'retrieval augmented generation' (weight 13.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  },
+  {
+    "arxivId": "2609.35155v1",
+    "base_id": "2609.35155",
+    "title": "LENS: The Sum Is Worse Than the Parts for Set-Level Poisoning in Retrieval-Augmented Generation",
+    "summary": "Retrieval-augmented generation (RAG) aggregates evidence from multiple external documents, yet this joint integration creates an underexamined vulnerability: attack effects absent in individual documents can emerge through set-level composition. Existing coordinated attacks do not explicitly enforce that every proper subset remains insufficient in frozen single-round RAG. We formalize set-level compositional poisoning, where documents designed to remain individually plausible jointly redirect RAG outputs to a target answer, while proper subsets fail to induce the target on their own. To construct such attacks, we propose LENS, a generator-black-box multi-agent framework that casts construction as constrained evidence composition. LENS factorizes target inference into a query-conditioned interpretation lens and complementary facts, then uses a nested dual-loop workflow to concentrate steering in the full set while suppressing subset leakage. The outer loop plans the interpretation lens and semantic roles; the inner loop synthesizes documents and applies counterexample-guided repair. Across four benchmarks and three generators, returned packets achieve 0.852 full-set ASR and 0.784 post-retrieval ASR@5, while their strongest proper subsets reach only 0.069. Against construction baselines evaluated on the same frozen manifest, LENS improves all-attempt E2E-Strict@5 from 0.244 to 0.363, a 48.8% relative gain. A blinded human audit finds that 68.3% of returned packets combine an incorrect target, a definite answer-criterion shift, and no target entailment under the original semantics. Across four published defenses, LENS attains the highest defended all-attempt ASR@5, exceeding the strongest baseline by 0.141 on average. Together, these results establish evidence composition as a distinct RAG security boundary and position LENS as a stress test for defenses that reason over document sets.",
+    "url": "https://arxiv.org/abs/2609.35155v1",
+    "published": "2026-09-28T13:33:32Z",
+    "agent_score": 13.0,
+    "why": [
+      "topic overlap with 'retrieval augmented generation' (weight 13.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  },
+  {
+    "arxivId": "2609.34776v1",
+    "base_id": "2609.34776",
+    "title": "Page-Aware Retrieval-Augmented Generation for EvalLLM 2026: A Five-Variant Study on French PDFs",
+    "summary": "We study retrieval-augmented generation (RAG) for questions about French PDF documents when both the answer and its supporting document pages are evaluated. Five system variants add dense retrieval, rank fusion, reranking, and query decomposition to a BM25 baseline. On 595 challenge questions, the complete system scores 0.4450 MRR@10 and 0.4013 Recall@10, compared with 0.3430 and 0.2994 for BM25. Dense retrieval alone and a simple lexical--dense fusion both underperform BM25. Reranking improves the hybrid system, whereas adding query decomposition produces the largest further gain, with higher latency and more detected output artifacts. The complete system slightly exceeds the reported anonymous overall mean on two answer metrics but falls below it on most page-retrieval metrics. These results identify accurate page selection, rather than semantic retrieval in isolation, as the main opportunity for improvement in this setting.",
+    "url": "https://arxiv.org/abs/2609.34776v1",
+    "published": "2026-09-28T09:51:52Z",
+    "agent_score": 13.0,
+    "why": [
+      "topic overlap with 'retrieval augmented generation' (weight 13.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  },
+  {
+    "arxivId": "2609.34127v1",
+    "base_id": "2609.34127",
+    "title": "STITCH-RAG: Spatio-Temporal Influence Tracing over Topic Hypergraphs for Multi-Hop Retrieval-Augmented Generation",
+    "summary": "Multi-hop retrieval-augmented generation requires a retriever to connect evidence distributed across documents while preserving a concise, faithful generation context. Existing indexes leave two complementary gaps: chunk-based RAG can break cross-passage evidence chains, whereas an unlabeled pairwise projection without generating-topic provenance cannot jointly preserve topic-level co-participation and per-occurrence entity descriptions. We propose STITCH-RAG, a hypergraph-based framework with three coupled components. First, a semi-merged topic hypergraph encodes multi-entity co-participation as topic-summary hyperedges while retaining per-chunk entity states linked by canonical-name equivalence. Second, spatio-temporal influence bridging propagation (STIBP) combines topic-space propagation with deterministic chunk-index linkage across name-equivalent states under frequency-adaptive decay. Third, continuous STIBP scores replace binary entity-match seeds in localized Personalized PageRank (PPR). We characterize the condition under which this prior assigns more PPR mass to ground-truth evidence than a binary prior. Under the reported protocol, STITCH-RAG attains the highest reported Contain-Acc and LLM-Acc point estimates among the compared methods on HotpotQA and 2WikiMultiHopQA, and higher Recall@8 than the methods included in the standardized retrieval comparison. Results on the mixed-domain benchmark remain auxiliary preference-based evidence because only LLM-judged accuracy is available.",
+    "url": "https://arxiv.org/abs/2609.34127v1",
+    "published": "2026-09-28T02:05:31Z",
+    "agent_score": 13.0,
+    "why": [
+      "topic overlap with 'retrieval augmented generation' (weight 13.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  },
+  {
+    "arxivId": "2609.38222v1",
+    "base_id": "2609.38222",
+    "title": "Conformal Factuality Control for Multi-Hop Retrieval-Augmented Generation",
+    "summary": "Retrieval-augmented generation (RAG) can ground large language models in external evidence, but retrieved context does not guarantee that generated claims are factually supported. This problem is especially relevant in multi-hop RAG, where retrieval and reasoning proceed through multiple dependent stages. We study whether claim-level conformal factuality control, previously developed for RAG, remains effective in this setting. We apply split-conformal claim filtering to multi-hop RAG and evaluate it on HotpotQA, Natural Questions, and TriviaQA using Llama 3.1 8B and GPT-4o-mini, together with a single-hop reference experiment. Across all six multi-hop model-dataset configurations, increasingly stringent conformal targets consistently increase the fraction of responses whose retained claims are fully supported. At the 95% target, this rate ranges from 95.80% to 97.20%, compared with 55.60%-76.03% without filtering. However, the improvement is strongly selective: only 4.41%-31.09% of generated claims are retained and 9.70%-51.40% of responses remain non-empty at the 95% target. These results show that conformal factuality extends to multi-hop RAG, while demonstrating that nominal reliability must be interpreted jointly with claim retention and abstention.",
+    "url": "https://arxiv.org/abs/2609.38222v1",
+    "published": "2026-09-27T23:55:03Z",
+    "agent_score": 13.0,
+    "why": [
+      "topic overlap with 'retrieval augmented generation' (weight 13.0)"
+    ],
+    "meta_fetched": true,
+    "notes": "",
+    "status": "needs_deepread"
+  }
+]

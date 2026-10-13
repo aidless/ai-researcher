@@ -1,0 +1,1 @@
+{"agreement": 0.5, "flips": 16, "confirmed": true}

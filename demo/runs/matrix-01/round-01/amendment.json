@@ -1,0 +1,5 @@
+{
+  "amended_at": "2026-10-07T13:56:05.867994+00:00",
+  "correction": "KILL-SWITCH UNEVALUABLE: the envelope preregistered 'confirmed == True -> STOP-EXTEND' but run_transfer.py never emits a 'confirmed' field, and _eval_kill silently swallowed the NameError, so the run was reported as a clean STOP-ROUNDS-EXHAUSTED. Fixed in loop.py (fail-closed STOP-KILL-UNEVALUABLE); the signed bundle predates that fix and still verifies because the artifact itself is intact. Analyst-assigned verdict from the measured data: STOP-EXTEND. 8/8 model families improve on the held-out transfer set (per-model gain +0.15 to +0.775); pooled paired McNemar 173:3, p=1.9e-47; sign test across families 8/8, p=0.004. Range spans 1B-8B, general + reasoning + coder families.",
+  "knowable_without_data": "no: discovered after seeing that status was clean while the rule had not run"
+}

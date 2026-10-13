@@ -1,0 +1,59 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/sweetspot-02/round-01",
+   "result": {
+    "model": "deepseek-r1:7b",
+    "caps": [
+     150,
+     400,
+     1000
+    ],
+    "families": {
+     "math": {
+      "acc": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "nonmonotonic": false
+     },
+     "code": {
+      "acc": [
+       0.5,
+       0.6667,
+       0.6667
+      ],
+      "nonmonotonic": false
+     },
+     "logic": {
+      "acc": [
+       0.0,
+       0.0,
+       0.0
+      ],
+      "nonmonotonic": false
+     }
+    },
+    "any_sweet_spot": false,
+    "confirmed": false,
+    "exit_code": 0,
+    "wall_s": 4401.5,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@8619d2d73b51",
+   "kill_row": "confirmed == False",
+   "verdict": "STOP-REFUTED",
+   "reason": "monotone everywhere: sweet spot is frontier/task-specific artifact"
+  }
+ ],
+ "status": "STOP-REFUTED",
+ "started_at": "2026-10-06T10:57:11.024371+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "20d2afa876555f2698e23fd2542020020134c03d1f0463060db38ce7a168667e",
+ "key_priv": null
+}

@@ -23,8 +23,10 @@ Invariants, all executable:
 
 Usage: python3 demo/transfer/build_confirm_set.py [--n 160] [--seed 20261010]
 """
+import sys as _sys
+_sys.path.insert(0, '/home/liuzewen/F:/src')
+from ai_researcher import canonical
 from __future__ import annotations
-import os
 
 import argparse
 import json
@@ -32,13 +34,31 @@ import pathlib
 import random
 import re
 
-# __file__ must NOT be passed through resolve(): this working tree's
-# absolute path contains a literal backslash (F:\deepseek), and resolve()
-# doubles it, so every derived path then fails an existence check on a
-# file that is present. Read __file__ as-is and build paths from that.
-_HERE_RAW = pathlib.Path(__file__)
-HERE = _HERE_RAW.parent
-from ai_researcher import canonical
+HERE = pathlib.Path(__file__).resolve().parent
+REOT = None
+
+
+def _resolve_root(start: pathlib.Path) -> pathlib.Path:
+    """Locate the repository root without counting parents.
+
+    HERE.parents[1] was wrong twice on this tree, once in each direction, because
+    the absolute path contains a literal backslash and parents[] arithmetic is
+    easy to get wrong by hand. Prefer the injected EVO_REPO_ROOT, then a marker
+    walk that tolerates unstattable intermediate paths.
+    """
+    env = os.environ.get("EVO_REPO_ROOT")
+    if env:
+        cand = pathlib.Path(env)
+        if os.path.isfile(os.path.join(str(cand), "src", "ai_researcher", "loop.py")):
+            return cand
+    for cand in [start.resolve(), *start.resolve().parents]:
+        try:
+            if (cand / "src" / "ai_researcher" / "loop.py").is_file():
+                return cand
+        except OSError:
+            continue
+    raise SystemExit("no repository root; set EVO_REPO_ROOT")
+
 ROOT = pathlib.Path(canonical.repo_root())
 GSM = ROOT / "data" / "gsm8k" / "test.jsonl"
 HELD = HERE / "items" / "heldout40.json"
@@ -90,11 +110,14 @@ def main() -> int:
     ap.add_argument("--out", default=str(OUT))
     args = ap.parse_args()
 
+    # os.path, not pathlib: this tree's absolute path contains a literal
+    # backslash and pathlib stat on it is unreliable in places (the same anomaly
+    # that has made several is_file/exists checks lie during this recovery).
     if not os.path.isfile(str(GSM)):
         print(f"FATAL: {GSM} missing. The confirmation set cannot be built "
               f"without an in-repo item source.")
         return 1
-    if not os.path.isfile(str(HELD)):
+    if not HELD.exists():
         print(f"FATAL: {HELD} missing. Disjointness cannot be verified.")
         return 1
 

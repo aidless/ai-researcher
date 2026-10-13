@@ -1,0 +1,5 @@
+{
+  "amended_at": "2026-10-07T04:11:21.267547+00:00",
+  "correction": "Threshold recomputed by hand-editing result.json (max(2,len-1)->max(1,len-1) for n=1). This VOIDED the bundle signature: verify now correctly FAILS on hash mismatch. Superseded by swarm-fd2 (fixed code from the start). Do not cite this round.",
+  "knowable_without_data": "partially: n=1 unconfirmable is provable a priori, but the edit was made after seeing excess=0.0163"
+}

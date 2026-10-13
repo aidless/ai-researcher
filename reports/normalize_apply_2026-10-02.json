@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-02",
+  "mode": "apply",
+  "before_p1": {
+    "total": 403,
+    "A": 170,
+    "B": 119,
+    "C": 114
+  },
+  "buckets": {
+    "already_strict": 404,
+    "normalizable": 633,
+    "needs_human": 1
+  },
+  "normalized": 633,
+  "rejected": [],
+  "needs_human_keys": [
+    "2210.02414v2"
+  ],
+  "after_p1": {
+    "total": 1036,
+    "A": 803,
+    "B": 119,
+    "C": 114
+  },
+  "backup": "/home/liuzewen/.dsh/storages/research_wiki.json.bak-normalize-20261002T000949"
+}

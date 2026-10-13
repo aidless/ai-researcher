@@ -1,0 +1,32 @@
+{
+  "amended_at": "2026-10-09T12:35:00+00:00",
+  "amended_by": "qoder session 2026-10-09 (paid-blank / attribution audit); precedent format follows runs/coderepair-01/round-01/amendment.json",
+  "scope": "runs/sweetspot-04 only. No published artifact modified; this file is the only write.",
+
+  "correction": "AVAILABILITY-vs-CAPABILITY ATTRIBUTION: 111 of the 144 deepseek-r1:7b calls returned 0 characters and were recorded as model failures by the harness. Per arm: cap150 48/48 (100%), cap400 36/48 (75%), cap1000 27/48 (56%). The recorded failure text is 'RuntimeError: ollama returned error-text (0 chars): \"\"' from shared/ollama_guard.py, which is the expected shape for a reasoning model whose entire token budget is consumed by reasoning so that ollama's `response` field comes back empty. qwen2.5:7b had 0 such rows in all three caps.",
+
+  "what_the_published_numbers_were": "stdout.txt: deepseek-r1:7b cap=150 acc=0.0000, cap=400 acc=0.0833, cap=1000 acc=0.2708; qwen2.5:7b acc=0.5833 at all three caps; pooled_p=0.003906, cliff_confirmed=false.",
+
+  "measurable_subset_view": {
+    "deepseek-r1_7b_cap150": {"pass": 0, "rows": 48, "infra": 48, "published_rate": 0.0, "rate_on_measurable_rows": "undefined -- no measurable rows exist"},
+    "deepseek-r1_7b_cap400": {"pass": 4, "rows": 48, "infra": 36, "published_rate": 0.0833, "rate_on_measurable_rows": 0.3333},
+    "deepseek-r1_7b_cap1000": {"pass": 13, "rows": 48, "infra": 27, "published_rate": 0.2708, "rate_on_measurable_rows": 0.6190},
+    "qwen2.5_7b_all_caps": {"pass": 28, "rows": 48, "infra": 0, "published_rate": 0.5833, "rate_on_measurable_rows": 0.5833},
+    "best_arm_as_published": "qwen2.5_7b_cap1000 at 0.583 (all three qwen caps tie)",
+    "best_arm_measurable_only": "deepseek-r1_7b_cap1000 at 0.619"
+  },
+
+  "why_this_matters_more_than_a_between_arm_bias": "The design varies the reasoning budget and reads accuracy against it. But the budget ALSO determines how many rows are measurable at all: at cap150 none of deepseek's rows are measurable, at cap400 12 are, at cap1000 21 are. So the independent variable moved the dependent variable's denominator, which means the monotone rise 0.000 -> 0.083 -> 0.271 is not evidence about a sweet spot -- it is arithmetically what an unmeasurable-to-measurable shift looks like. The published pooled_p=0.003906 is therefore not interpretable for the deepseek arm.",
+
+  "do_not_overcorrect": "This does NOT establish that deepseek-r1:7b is better than qwen2.5:7b. rate_on_measurable_rows is conditioned on the model producing an answer under that budget, and that condition is itself the thing being varied -- it is a selection on the outcome. What is now established: (a) cap150's 0.000 must not be cited as a measured zero, it is an absent measurement in the same sense coderepair-01's llama3.2:3b cells were; (b) cap400/cap1000 published rates understate their measurable-subset rates by 0.250 and 0.348; (c) any claim about an optimal budget needs availability and accuracy reported as two separate columns, never folded into one rate.",
+
+  "knowable_without_data": "partly yes. The mechanism was already written down twice before this run: the workspace note 免费API通道2026-10-07.md says 'inference models: content can come back empty, take the content field, avoid', and shared/ollama_guard.py documents the 0-char rejection it uses. What was NOT knowable in advance is the per-cap distribution -- that only the 100+ item measurement reveals.",
+
+  "collector_gap_relative_to_the_sibling": "CORRECTED after checking rather than assuming: run_sweetspot_amp.py DOES have the coderepair preflight -- it imports resolve_models from run_coderepair, which drops tags ollama does not have before any measurement, and result.json records models_requested == models_measured == ['qwen2.5:7b','deepseek-r1:7b'], so nothing was dropped and absent models are NOT what happened here. The real gap is narrower and worse: this collector already has an availability column, `truncated`, built on the right principle ('truncation at the cap is an infrastructure event, not a model failure ... a cap effect is never manufactured out of our own budget setting') -- but it recognises only the TRUNCATED reason. It records 0 for every cap here, while 111 deepseek-r1 rows died as 'ollama returned error-text (0 chars)' and fell into the generic exception bucket, where acc = passed / len(items) charges them to capability. So the accounting that should have caught this existed, was pointed at the right idea, and had too narrow a predicate.",
+
+  "recommended_reporting_shape": "Every future arm rate should carry three numbers, not one: measured_rate over measurable rows, availability = measurable/total, and the raw counts. lineage-01 needed exactly this split and had to be reconstructed by hand (v3c: 0.7778 on what it answered, 8/50 it never answered, net 0.6533).",
+
+  "collector_fix": "Applied 2026-10-09 to demo/sweetspot/run_sweetspot_amp.py (original md5 9e7c4b52c6ae9c72b72f416ad4d752c9 -> 1a33d12bf735bb74f845eb948ea92654; untouched original and revert command in the workspace patches/sweetspot-availability/). grade_one() now separates transport / graded / grading-blowup, unavailability_reason() matches exception prefixes rather than substrings so a wrong answer mentioning 'timeout' cannot excuse itself, arm_columns() emits availability + measured_rate (None when nothing was measurable, never 0.000) + acc_over_all_rows, and the paired cliff test runs only over items measurable in both budgets with pairs_dropped printed. `confirmed` was deliberately LEFT UNCHANGED so this run stays comparable as pre-registered; the new columns are diagnostics until the owner promotes them. Verified: --selftest (11 classifier cases, 13 column checks, 5 production-path grade_one cases) passes alongside the existing harness selftest, and --replay on this run's committed rows reproduces the numbers above. The fixture battery was proved non-vacuous by two mutations, each yielding one targeted FAIL after a green control.",
+
+  "verification": "paid_blank_scan.py and the per-arm table in the 2026-10-09 audit report reproduce every number above from runs/sweetspot-04/round-01/artifacts/out_*.jsonl without regenerating anything; the collector's own --replay mode reaches the same figures through the functions that will produce future runs, so the audit and the instrument now agree by construction rather than by coincidence."
+}

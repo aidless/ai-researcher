@@ -1,0 +1,8 @@
+{
+ "n_items": 50,
+ "excluded_harness": 2,
+ "semantic_scored": 48,
+ "rate_over_answered": 0.7326,
+ "rate_counting_nonanswers_zero": 0.7033,
+ "would_also_be_excluded_by_production": 0
+}

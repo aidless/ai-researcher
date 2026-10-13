@@ -1,0 +1,54 @@
+{
+ "n_diffs": 8,
+ "evaluators": [
+  "qwen2.5:7b",
+  "llama3.1:8b",
+  "deepseek-r1:7b"
+ ],
+ "votes": {
+  "bugfix-offbyone": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "deepseek-r1:7b": null
+  },
+  "perf-nplus1": {
+   "qwen2.5:7b": "APPROVE",
+   "llama3.1:8b": "APPROVE",
+   "deepseek-r1:7b": null
+  },
+  "refactor-rename": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "deepseek-r1:7b": null
+  },
+  "security-eval": {
+   "qwen2.5:7b": "APPROVE",
+   "llama3.1:8b": "APPROVE",
+   "deepseek-r1:7b": null
+  },
+  "docs-typo": {
+   "qwen2.5:7b": "APPROVE",
+   "llama3.1:8b": null,
+   "deepseek-r1:7b": null
+  },
+  "test-only": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "deepseek-r1:7b": null
+  },
+  "dep-bump": {
+   "qwen2.5:7b": "APPROVE",
+   "llama3.1:8b": "APPROVE",
+   "deepseek-r1:7b": null
+  },
+  "api-change": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "deepseek-r1:7b": null
+  }
+ },
+ "abstentions": 9,
+ "pairwise_agreement": 0.429,
+ "flip_cases": 0,
+ "confirmed": true
+}

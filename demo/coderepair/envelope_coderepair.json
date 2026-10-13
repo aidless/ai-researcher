@@ -1,6 +1,6 @@
 {
   "hypothesis": "structured step-by-step scoring transfers beyond arithmetic: on held-out code repair, step-calc beats direct answering, pooled paired positive across every model family tested",
-  "methods": "RD=\"$PWD\"; PYTHONPATH=\"$RD/../../src:$RD/../../demo/shared\" python3 \"$RD/../coderepair/run_coderepair.py\" --selftest && PYTHONPATH=\"$RD/../../src:$RD/../../demo/shared\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261007 python3 \"$RD/../coderepair/run_coderepair.py\"",
+  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root (no src/ai_researcher above $RD)\" >&2; exit 1; }; PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" python3 \"$ROOT/demo/coderepair/run_coderepair.py\" --selftest && PYTHONPATH=\"$ROOT/src:$ROOT/demo/shared\" EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261007 python3 \"$ROOT/demo/coderepair/run_coderepair.py\"",
   "max_rounds": 1,
   "max_cost_usd": 0.0,
   "max_wall_hours": 4.0,
@@ -25,8 +25,8 @@
     "result.json",
     "items.json"
   ],
-  "approved_by": "liuzewen (blanket 全做 directive 2026-10-06; second-domain arm targets the zone1 generality gap)",
-  "approved_at": "2026-10-07T14:12:24.135329+00:00",
+  "approved_by": "liuzewen (blanket 全做; marker corrected to a path that exists in this repo)",
+  "approved_at": "2026-10-08T01:34:23.712314+00:00",
   "seed": 20261007,
   "tension": "The eight-family matrix is the paper's answer to the generality objection, but every family was measured on one arithmetic held-out set, so the paper claims breadth across models while a reviewer reads breadth across tasks. The theory says the mechanism is protocol design rather than content, which predicts the gain should follow the policy into any domain that requires locating a defect before answering; the observation is that no second domain has been tried. Answering it decides whether the central claim is a general mechanism or an arithmetic artifact, and no amount of additional models can substitute for a second domain.",
   "power": {

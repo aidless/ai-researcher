@@ -1,0 +1,1 @@
+{"n": 7, "hit_rate": 0.714, "confirmed": true, "note": "confirmed"}

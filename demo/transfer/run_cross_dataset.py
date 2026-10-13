@@ -29,22 +29,49 @@ import pathlib
 import sys
 from math import comb
 
-# __file__ must NOT be passed through resolve(): this working tree's
-# absolute path contains a literal backslash (F:\deepseek), and resolve()
-# doubles it, so every derived path then fails an existence check on a
-# file that is present. Read __file__ as-is and build paths from that.
-_HERE_RAW = pathlib.Path(__file__)
-HERE = _HERE_RAW.parent
+def _resolve_root(start: pathlib.Path) -> pathlib.Path:
+    """Repo root, never derived from the process cwd.
+
+    On this working tree (F:\\deepseek) the kernel cwd reports a DOUBLED
+    backslash, so paths built from os.getcwd() fail existence checks on files that
+    are present. EVO_REPO_ROOT comes from the loop, which derives it from
+    __file__; the parent walk is the fallback and is only trusted when it can
+    actually READ the marker.
+    """
+    env = os.environ.get("EVO_REPO_ROOT")
+    if env:
+        try:
+            with open(os.path.join(env, "src", "ai_researcher", "loop.py"), "rb"):
+                return pathlib.Path(env)
+        except OSError:
+            pass
+    for cand in [start] + list(start.parents):
+        try:
+            with open(os.path.join(str(cand), "src", "ai_researcher", "loop.py"), "rb"):
+                return cand
+        except OSError:
+            continue
+    raise SystemExit("no repository root; set EVO_REPO_ROOT")
+
+
+HERE = pathlib.Path(__file__).resolve().parent
 
 
 def _repo_root(start: pathlib.Path) -> pathlib.Path:
-    d = start.resolve()
-    for cand in [d, *d.parents]:
-        if (cand / "src" / "ai_researcher").is_dir():
-            return cand
-    raise SystemExit(f"no repository root above {start}")
-
-
+    env = os.environ.get("EVO_REPO_ROOT")
+    if env:
+        try:
+            with open(os.path.join(env, "src", "ai_researcher", "loop.py"), "rb"):
+                return pathlib.Path(env)
+        except OSError:
+            pass
+    for cand in [start] + list(start.parents):
+        try:
+            with open(os.path.join(str(cand), "src", "ai_researcher", "loop.py"), "rb"):
+                return cand
+        except OSError:
+            continue
+    raise SystemExit("no repository root; set EVO_REPO_ROOT")
 from ai_researcher import canonical
 REPO = pathlib.Path(canonical.repo_root())
 sys.path.insert(0, str(REPO / "src"))
@@ -52,6 +79,7 @@ sys.path.insert(0, str(REPO / "demo" / "shared"))
 sys.path.insert(0, str(REPO / "demo" / "transfer"))
 
 from run_confirmation import PROMPTS, available_models, extract_number, mcnemar  # noqa: E402
+from ai_researcher import canonical
 from ollama_guard import call  # noqa: E402
 
 SRC = REPO / "data" / "arithmetic"

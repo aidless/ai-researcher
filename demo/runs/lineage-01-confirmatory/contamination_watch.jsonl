@@ -1,0 +1,26 @@
+{"chunk": "pre-v3b[0:1]", "t": "2026-10-11T22:02:36", "gpu_non_ollama": ["2645788, python3"]}
+{"chunk": "post-v3b[0:1]", "t": "2026-10-11T22:05:06", "gpu_non_ollama": ["2645788, python3"]}
+{"event": "void-leg", "leg": "v3b[0:1]", "cutoff_ts": "2026-10-11T22:13:01", "rows_voided": 1, "reason": "d001 row is a 150s TimeoutError with 0 chars under documented GPU contention: deeped2.py (pid 2645788, another session's job, 3674MiB, 74min CPU) held the GPU for the whole chunk; both pre/post snapshots recorded gpu_non_ollama=['2645788, python3']. v3b was 0/50 non-terminating in the pilot, so a fresh-item timeout is far more likely contention than model behaviour.", "disposition": "moved aside as pred_v3b.jsonl.VOIDED-20261011-2205; excluded from scoring; re-run when GPU is clear.", "lesson": "the snapshot recorded the confound but the runner did not REFUSE on it -- the G10 gap again. Fixed below."}
+{"chunk": "gpu-refusal-v3b", "t": "2026-10-11T22:14:38", "gpu_non_ollama": ["2645788, python3"]}
+{"chunk": "pre-v3b[0:25]", "t": "2026-10-12T03:00:34", "gpu_non_ollama": []}
+{"chunk": "post-v3b[0:25]", "t": "2026-10-12T03:11:36", "gpu_non_ollama": []}
+{"event": "void-rows", "leg": "v3b[0:25]", "cutoff_ts": "2026-10-12T03:42:40", "rows_voided": ["d013", "d014", "d015", "d016", "d017", "d018", "d019", "d020", "d021", "d022", "d023", "d024", "d025"], "rows_kept": ["d001", "d002", "d003", "d004", "d005", "d006", "d007", "d008", "d009", "d010", "d011", "d012"], "reason": "ollama SERVER FAULT, not contention. GIN access log: every request in 03:08-03:12 came from 127.0.0.1 (this runner) -- no second client. d012 returned 200 at 03:09:57 after 45.8s; d013 returned 500 after 39.0s at 03:10:36 and every subsequent call 500'd in 5.0s. The server was still 500ing at 03:16 (probe) and at 03:2x (probe). deeped3.py started 03:26:56, i.e. AFTER the chunk ended -- it did not cause this (my first inference said otherwise; the log corrected it).", "kept_rows_justification": "d001-d012: pre-chunk snapshot gpu_non_ollama=[], no other ollama client in the whole window, latencies 38.6-58.1s consistent with the successful tail, real content (762-1343 chars), done_reason=stop. Clean.", "disposition": "raw 25-row chunk archived as .RAW-20261012-0300-0311; active pred_v3b.jsonl now holds only the 12 clean rows; d013-d025 will be re-collected.", "monitor_gap": "pre/post snapshots at chunk start/end BOTH showed gpu_non_ollama=[] and neither caught the server fault -- snapshots sample the wrong thing (they see GPU consumers, not server health). Needs: a health probe and/or per-row outcome-rate tripwire, discussed in report."}
+{"chunk": "gpu-refusal-v3b", "t": "2026-10-12T03:43:35", "gpu_non_ollama": ["3353495, python3"]}
+{"chunk": "pre-v3b[12:37]", "t": "2026-10-12T19:34:35", "gpu_non_ollama": []}
+{"chunk": "post-v3b[12:37]", "t": "2026-10-12T20:01:49", "gpu_non_ollama": ["241434, [No data]"]}
+{"chunk": "pre-v3b[37:62]", "t": "2026-10-12T20:03:42", "gpu_non_ollama": []}
+{"chunk": "gpu-refusal-v3b", "t": "2026-10-12T21:10:00", "gpu_non_ollama": ["260459, python3"]}
+{"chunk": "pre-v3b[61:81]", "t": "2026-10-13T19:40:13", "gpu_non_ollama": []}
+{"chunk": "row-error-d072", "t": "2026-10-13T19:46:29", "gpu_non_ollama": [], "error": "TimeoutError", "server_probe": false, "probe_detail": "TimeoutError after 60s", "consecutive_errors": 1}
+{"chunk": "chunk-abort-v3b", "t": "2026-10-13T19:46:29", "gpu_non_ollama": [], "at": "d072", "reason": "server health probe failed", "rows_collected": 11}
+{"chunk": "post-v3b[61:81]", "t": "2026-10-13T19:46:29", "gpu_non_ollama": []}
+{"chunk": "pre-v3b[72:92]", "t": "2026-10-13T19:58:40", "gpu_non_ollama": []}
+{"chunk": "post-v3b[72:92]", "t": "2026-10-13T20:00:31", "gpu_non_ollama": []}
+{"chunk": "pre-v3b[92:112]", "t": "2026-10-13T20:01:47", "gpu_non_ollama": []}
+{"chunk": "post-v3b[92:112]", "t": "2026-10-13T20:02:51", "gpu_non_ollama": []}
+{"chunk": "pre-v3b[112:132]", "t": "2026-10-13T20:03:24", "gpu_non_ollama": []}
+{"chunk": "post-v3b[112:132]", "t": "2026-10-13T20:17:58", "gpu_non_ollama": []}
+{"chunk": "pre-v3b[132:150]", "t": "2026-10-13T20:18:20", "gpu_non_ollama": []}
+{"chunk": "row-error-d144", "t": "2026-10-13T20:32:12", "gpu_non_ollama": [], "error": "TimeoutError", "server_probe": true, "probe_detail": "1s", "consecutive_errors": 1}
+{"chunk": "post-v3b[132:150]", "t": "2026-10-13T20:40:07", "gpu_non_ollama": []}
+{"chunk": "pre-v3c[0:20]", "t": "2026-10-13T20:41:51", "gpu_non_ollama": []}

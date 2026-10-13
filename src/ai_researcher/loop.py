@@ -1,5 +1,7 @@
 """Autonomous executor: runs unattended inside an approved envelope.
+
 The loop is a state machine with resume. Each round:
+
   1. check budget (rounds, cost, wall-clock) -- over any bound: STOP, no appeal
   2. run the envelope's methods command in the round directory
   3. collect required artifacts -- missing: round does not count, retry once, else STOP
@@ -9,9 +11,11 @@ The loop is a state machine with resume. Each round:
   6. every N rounds (default 2): two-seat review of the interim claim.
      A joint NOT_READY does not stop the run, but it is recorded and the next
      round must address the strongest objection, or the round after stops.
+
 There is intentionally no --force, no --skip-gate, no override flag. A run that
 cannot proceed inside its envelope is a run that should not proceed. The human
 writes a new envelope instead.
+
 Usage:
     python -m ai_researcher.loop approve envelope.json --by "name"   # the one human act
     python -m ai_researcher.loop run envelope.json --workdir runs/exp-01
@@ -19,22 +23,46 @@ Usage:
     python -m ai_researcher.loop verify runs/exp-01                  # re-verify every bundle
 """
 from __future__ import annotations
+
 import json
-import pathlib
-import re
 import os
 import subprocess
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+
 from . import evidence as EV
+from . import keystore as KS
 from .envelope import Envelope
 from .two_seat import review as two_seat_review
+
 STATE = "state.json"
 REVIEW_EVERY = 2
+# Bumped when the round record gained a review on terminal verdicts (the 5c placement).
+# The gate requires a review record iff a run was produced by schema >= 2 -- a code
+# marker, not a wall-clock date: seed6-01 started 2026-10-08T18:23Z and a date test for
+# "2026-10-09" classified it as legacy, because local time was already 10-09 while the
+# stamp is UTC. Do not date-gate this again.
+LOOP_SCHEMA = 2
+
+
+def should_review(rnd: int, max_rounds: int, every: int = REVIEW_EVERY) -> bool:
+    """Does the two-seat review fire on this round?
+
+    It used to be `rnd % REVIEW_EVERY == 0` alone, and every envelope on disk (14 of 15)
+    sets max_rounds=1 -- so the periodic condition could never be satisfied and the
+    judgment stage was structurally unreachable: 0 of 27 recorded rounds carry a review.
+    A run that ends without ever being reviewed is exactly what this fixes: the last
+    round is always reviewed, whatever the cadence says.
+    """
+    return rnd % every == 0 or rnd >= max_rounds
+
+
 def _now():
     return datetime.now(timezone.utc).isoformat()
+
+
 def cmd_approve(args):
     env = Envelope.load(args.envelope)
     env.approved_by = args.by
@@ -48,17 +76,23 @@ def cmd_approve(args):
     env.save(args.envelope)
     print(f"approved by {args.by} at {env.approved_at}: executable")
     return 0
+
+
 def _load_state(workdir: Path) -> dict:
     f = workdir / STATE
     if f.exists():
         return json.loads(f.read_text(encoding="utf-8"))
     return {"rounds": [], "status": "READY", "started_at": _now(),
             "cost_usd": 0.0, "key_pub": None, "key_priv": None}
+
+
 def _save_state(workdir: Path, st: dict) -> None:
     """Atomic write: temp file + rename, so a crash mid-write cannot corrupt."""
     tmp = workdir / (STATE + ".tmp")
     tmp.write_text(json.dumps(st, indent=2) + "\n", encoding="utf-8")
     os.replace(tmp, workdir / STATE)
+
+
 def _acquire_lock(workdir: Path):
     """Exclusive lock: two processes on one workdir corrupt state silently."""
     import os as _os
@@ -77,6 +111,8 @@ def _acquire_lock(workdir: Path):
             return _acquire_lock(workdir)
     _os.write(fd, f"{_os.getpid()} {_now()}\n".encode())
     return fd
+
+
 def _release_lock(fd, workdir: Path) -> None:
     import os as _os
     try:
@@ -84,12 +120,16 @@ def _release_lock(fd, workdir: Path) -> None:
     except Exception:
         pass
     (workdir / "run.lock").unlink(missing_ok=True)
+
+
 def _eval_kill(rows: list, result: dict):
     """Evaluate kill-switch rows in order. Returns (action, row, unevaluable).
+
     The result dict carries numeric facts (gain, p_value, cost_usd, ...). Each row
     condition is a tiny expression over those names, e.g. "gain >= 0.10".
     Only names present in result are visible; anything else is a failed row, not
     a crash -- a row that cannot be evaluated cannot authorize continuation.
+
     A row that raises (NameError on a field the artifact never writes) is
     UNEVALUABLE, and an unevaluable row is returned to the caller instead of
     being silently skipped. matrix-01 (2026-10-07) shipped a kill-switch on
@@ -109,134 +149,8 @@ def _eval_kill(rows: list, result: dict):
                                 "error": f"{type(e).__name__}: {e}"})
             continue
     return "CONTINUE", None, unevaluable
-# src/ai_researcher/loop.py -> parents[2] is the repo root. No resolve(): this
-# tree's absolute path contains a literal backslash (F:\deepseek) and resolve()
-# doubles it, which broke every derived path during the 2026-10-11 recovery.
-def _kernel_readable_root() -> str:
-    """Canonical, kernel-readable repository root. See ai_researcher.canonical.
-
-    Two implementations of this existed during the 2026-10-11 recovery and the
-    second one silently shadowed the first, so the child kept receiving a
-    doubled-backslash root and reading nothing. One source, verified by opening a
-    DEEP marker: src/ai_researcher/loop.py is readable under both path forms, so
-    it cannot tell them apart.
-    """
-    from . import canonical
-    return canonical.repo_root()
 
 
-def cmd_approve(args):
-    env = Envelope.load(args.envelope)
-    env.approved_by = args.by
-    env.approved_at = _now()
-    problems = env.validate()
-    if problems:
-        print("envelope NOT executable:")
-        for p in problems:
-            print(f"  - {p}")
-        return 1
-    env.save(args.envelope)
-    print(f"approved by {args.by} at {env.approved_at}: executable")
-    return 0
-def _load_state(workdir: Path) -> dict:
-    f = workdir / STATE
-    if f.exists():
-        return json.loads(f.read_text(encoding="utf-8"))
-    return {"rounds": [], "status": "READY", "started_at": _now(),
-            "cost_usd": 0.0, "key_pub": None, "key_priv": None}
-def _save_state(workdir: Path, st: dict) -> None:
-    """Atomic write: temp file + rename, so a crash mid-write cannot corrupt."""
-    tmp = workdir / (STATE + ".tmp")
-    tmp.write_text(json.dumps(st, indent=2) + "\n", encoding="utf-8")
-    os.replace(tmp, workdir / STATE)
-def _acquire_lock(workdir: Path):
-    """Exclusive lock: two processes on one workdir corrupt state silently."""
-    import os as _os
-    lock = workdir / "run.lock"
-    try:
-        fd = _os.open(lock, _os.O_CREAT | _os.O_EXCL | _os.O_WRONLY)
-    except FileExistsError:
-        try:
-            pid = int(lock.read_text(encoding="utf-8").strip().split()[0])
-            _os.kill(pid, 0)
-            print(f"refusing: {lock} held by live pid {pid}")
-            return None
-        except (ValueError, ProcessLookupError, FileNotFoundError):
-            print(f"stale lock {lock}, taking over")
-            lock.unlink(missing_ok=True)
-            return _acquire_lock(workdir)
-    _os.write(fd, f"{_os.getpid()} {_now()}\n".encode())
-    return fd
-def _release_lock(fd, workdir: Path) -> None:
-    import os as _os
-    try:
-        _os.close(fd)
-    except Exception:
-        pass
-    (workdir / "run.lock").unlink(missing_ok=True)
-def _eval_kill(rows: list, result: dict):
-    """Evaluate kill-switch rows in order. Returns (action, row, unevaluable).
-    The result dict carries numeric facts (gain, p_value, cost_usd, ...). Each row
-    condition is a tiny expression over those names, e.g. "gain >= 0.10".
-    Only names present in result are visible; anything else is a failed row, not
-    a crash -- a row that cannot be evaluated cannot authorize continuation.
-    A row that raises (NameError on a field the artifact never writes) is
-    UNEVALUABLE, and an unevaluable row is returned to the caller instead of
-    being silently skipped. matrix-01 (2026-10-07) shipped a kill-switch on
-    `confirmed == True` while its script emitted no `confirmed` field: the
-    exception was swallowed, no row fired, and the run concluded as
-    STOP-ROUNDS-EXHAUSTED -- a preregistered decision rule that never ran,
-    reported as a clean finish. Silent-skip made status a lie.
-    """
-    safe = {k: v for k, v in result.items() if isinstance(v, (int, float, bool))}
-    unevaluable = []
-    for r in rows:
-        try:
-            if eval(r["condition"], {"__builtins__": {}}, dict(safe)):  # noqa: S307
-                return r["action"], r, unevaluable
-        except Exception as e:
-            unevaluable.append({"condition": r["condition"],
-                                "error": f"{type(e).__name__}: {e}"})
-            continue
-    return "CONTINUE", None, unevaluable
-# src/ai_researcher/loop.py -> parents[2] is the repo root. No resolve(): this
-# tree's absolute path contains a literal backslash (F:\deepseek) and resolve()
-# doubles it, which broke every derived path during the 2026-10-11 recovery.
-def _kernel_readable_root() -> str:
-    """A repo-root path string the kernel can actually walk.
-    Candidates, in order: EVO_REPO_ROOT as received, the path derived from
-    __file__, and the cwd -- each verified by opening a known marker rather than
-    by stat, because stat lies on this tree in some forms. Returns the first
-    candidate that reads; raises if none do, because a child given an unreadable
-    root silently produces no artifacts and the run looks like a refutation.
-    """
-    import pathlib as _p
-    candidates = []
-    here = _p.Path(os.path.abspath(__file__))
-    for base in (here.parents[2], _p.Path.cwd()):
-        candidates.append(str(base))
-    seen = os.environ.get("EVO_REPO_ROOT")
-    if seen:
-        candidates.insert(0, seen)
-    # EVERY derived form on this tree arrives doubled (F:\\deepseek);
-    # only the single-backslash form is kernel-readable, so construct it.
-    manual = '/home/liuzewen/F:\deepseek/ai-researcher'
-    candidates.insert(0, manual)
-    marker = os.path.join("data", "gsm8k", "test.jsonl")
-    # Fold doubled backslashes. This tree's real directory name contains ONE
-    # backslash (F:\deepseek); the shell and pwd both report it doubled, and
-    # every path built from the doubled form is unreadable. So each candidate is
-    # tried as-is AND with runs of backslashes collapsed to one.
-    for cand in candidates:
-        folded = cand.replace(chr(92) * 2, chr(92))
-        for form in (cand, folded):
-            try:
-                with open(os.path.join(form, marker), "rb"):
-                    return form
-            except OSError:
-                continue
-    raise RuntimeError(f"no kernel-readable repo root among {candidates}")
-REPO_ROOT = pathlib.Path(__file__).parents[2]
 def _run_round(env: Envelope, workdir: Path, rnd: int, st: dict) -> dict:
     rd = workdir / f"round-{rnd:02d}"
     (rd / "artifacts").mkdir(parents=True, exist_ok=True)
@@ -251,32 +165,8 @@ def _run_round(env: Envelope, workdir: Path, rnd: int, st: dict) -> dict:
     returncode = -1
     out, err = "", ""
     try:
-        # The repository root is injected rather than discovered. The envelope
-        # methods strings used to locate it with a shell loop over $PWD, which
-        # fails on a working tree whose absolute path contains a literal backslash
-        # (F:\deepseek): `[ -d ... ]` returns false and every run dies with "no
-        # repo root" before writing a single artifact.
-        # The repository root handed to the child must be a path that the KERNEL
-        # can walk. Shell expansion of $PWD on this tree doubles the literal
-        # backslash (F:\\deepseek), and every path under that form is unreadable
-        # -- so a child told "F:\\deepseek/..." cannot open its own files. The
-        # loop therefore derives the root in Python from __file__ with cwd-derived
-        # candidates as fallback, and verifies it by READING the marker file
-        # before handing it over.
-        root_env = _kernel_readable_root()
-        child_env = {**os.environ,
-                     "EVO_REPO_ROOT": root_env,
-                     "EVO_ROUND_DIR": str(rd)}
-        # cwd is the REPO ROOT, not the round dir, so envelope methods can use
-        # repo-relative paths. Round-relative cwd forced methods strings to build
-        # absolute paths from $ROOT -- and this tree's absolute path contains a
-        # literal backslash (F:\deepseek) that the shell expands to a doubled one,
-        # so every "$ROOT/demo/script.py" invocation failed to open a file that
-        # exists. Repo-relative + EVO_OUT pointing at the round dir keeps the
-        # artifact location unambiguous without ever stating an absolute path.
-        proc = subprocess.run(env.methods, shell=True, cwd=REPO_ROOT, capture_output=True,
-                              text=True, timeout=int(env.max_wall_hours * 3600),
-                              env=child_env)
+        proc = subprocess.run(env.methods, shell=True, cwd=rd, capture_output=True,
+                              text=True, timeout=int(env.max_wall_hours * 3600))
         out, err, returncode = proc.stdout or "", proc.stderr or "", proc.returncode
     except subprocess.TimeoutExpired as e:
         timed_out = True
@@ -314,6 +204,8 @@ def _run_round(env: Envelope, workdir: Path, rnd: int, st: dict) -> dict:
     missing = [a for a in env.required_artifacts if not (rd / "artifacts" / a).exists()]
     return {"round": rnd, "dir": str(rd), "result": result, "missing": missing,
             "exit_code": returncode, "timed_out": timed_out}
+
+
 def cmd_run(args):
     env = Envelope.load(args.envelope)
     problems = env.validate()
@@ -331,6 +223,8 @@ def cmd_run(args):
         return _cmd_run_locked(args, workdir, lock_fd)
     finally:
         _release_lock(lock_fd, workdir)
+
+
 def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
     env = Envelope.load(args.envelope)
     problems = env.validate()
@@ -343,14 +237,25 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
     if st["status"] not in ("READY", "RUNNING"):
         print(f"run already {st['status']}; refusing to resume a finished run")
         return 1
-    if not st.get("key_priv"):
-        priv, pub = EV.generate_keypair()
-        st["key_priv"], st["key_pub"] = priv.hex(), pub.hex()
-    priv = bytes.fromhex(st["key_priv"])
-    pub = bytes.fromhex(st["key_pub"])
+    # Trust root (2026-10-09): rounds are signed by the pinned root key kept OUTSIDE
+    # the run directory, and no private key is ever written into state.json again.
+    # Before this, cmd_verify read the trust key from the same state.json that stored
+    # the private key, so writing inside the run dir was enough to re-sign a doctored
+    # bundle and have it print valid (demonstrated on a copy of coderepair-01).
+    pub = KS.root_pub(KS.default_root_dir())
+    if pub is None:
+        print(f"refusing to start: no pinned root key at "
+              f"{KS.default_root_dir() / KS.ROOT_PUB} -- run "
+              f"`python -m ai_researcher.keystore init` first")
+        return 1
+    st["key_pub"] = pub.hex()
+    st["key_priv"] = None          # never again: the run dir holds no signing power
+    st["key_era"] = "root"
+    st["loop_schema"] = LOOP_SCHEMA
     st["status"] = "RUNNING"
     _save_state(workdir, st)
     start_wall = time.monotonic()
+
     while len(st["rounds"]) < env.max_rounds:
         rnd = len(st["rounds"]) + 1
         # 1. budget. cost_usd accrues from each round's reported spend; rounds
@@ -362,6 +267,7 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
             st["status"] = "STOP-TIME"; break
         # 2-4. run, collect, sign
         rr = _run_round(env, workdir, rnd, st)
+
         # 1b. config binding. Signing proves the artifacts were not modified; it
         # says nothing about whether they are the artifacts the envelope declared.
         # breadth-02 (2026-10-08) ran the original 8 trivial diffs instead of the
@@ -425,9 +331,8 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
             _save_state(workdir, st)
             st["status"] = "STOP-INVALID"
             break
-        envl = EV.sign_round(workdir / f"round-{rnd:02d}" / "artifacts",
-                             priv, signer="ai-researcher-loop",
-                             round_id=f"r{rnd:02d}")
+        envl = KS.sign_with_root(workdir / f"round-{rnd:02d}" / "artifacts",
+                                 signer="ai-researcher-loop", round_id=f"r{rnd:02d}")
         chk = EV.verify_round(workdir / f"round-{rnd:02d}" / "artifacts",
                               envl["bundle"], envl["envelope"], pub)
         if not chk["valid"]:
@@ -438,6 +343,9 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
             break
         (workdir / f"round-{rnd:02d}" / "envelope.json").write_text(
             json.dumps(envl, indent=2) + "\n", encoding="utf-8")
+        # Record the bundle outside the run tree. A bundle that is signed but absent
+        # from the registry does not verify (tests/test_trust_root.py T5).
+        KS.register(envl, run_name=workdir.name)
         # 5. kill-switch (notes pass through: a verdict without its reason
         # is unactionable, and the earlier dict comprehension dropped them)
         action, row, uneval = _eval_kill(
@@ -484,15 +392,13 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
                 }
         except Exception as e:
             rec["robustness"] = {"error": f"{type(e).__name__}: {e}"}
-        if action != "CONTINUE":
-            rec["verdict"] = action
-            rec["reason"] = (row.get("note") if row else "")
-            st["rounds"].append(rec)
-            _save_state(workdir, st)
-            st["status"] = action
-            break
-        # 6. periodic two-seat review
-        if rnd % REVIEW_EVERY == 0:
+        # 5c. two-seat review, BEFORE the verdict is written. Placement matters and was
+        # a bug: this stage used to sit after the terminal branch's `break`, so a run that
+        # refuted on its first round (seed6-01, 2026-10-09 -- the very run that found it)
+        # reached a final verdict with review=None. A refutation is exactly the result that
+        # needs an independent read on it, so the review runs regardless of the action and
+        # the last round is always reviewed (should_review), whatever the cadence says.
+        if should_review(rnd, env.max_rounds):
             try:
                 rev = two_seat_review(
                     claim=env.hypothesis,
@@ -501,9 +407,22 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
                                  "contradiction": rev["contradiction"],
                                  "methodology": rev["methodology"].get("verdict"),
                                  "devil": rev["devil"].get("verdict"),
-                                 "devil_objection": rev["devil"].get("strongest_objection", "")[:500]}
+                                 "devil_objection": rev["devil"].get("strongest_objection", "")[:500],
+                                 # which instrument produced this score. A review without a
+                                 # model id is unreadable later: same-family and different-
+                                 # family reviews look identical otherwise, and the whole
+                                 # point of the two seats is cross-family independence.
+                                 "reviewer": rev.get("reviewer")}
             except Exception as e:
                 rec["review"] = {"error": f"{type(e).__name__}: {e}"}
+        if action != "CONTINUE":
+            rec["verdict"] = action
+            rec["reason"] = (row.get("note") if row else "")
+            st["rounds"].append(rec)
+            _save_state(workdir, st)
+            st["status"] = action
+            break
+        # 6. (review already ran at 5c, before the verdict -- see the placement note)
         rec["verdict"] = "CONTINUE"
         st["rounds"].append(rec)
         _save_state(workdir, st)
@@ -514,6 +433,8 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
     _save_state(workdir, st)
     print(f"final: {st['status']} after {len(st['rounds'])} rounds")
     return 0
+
+
 def cmd_status(args):
     st = _load_state(Path(args.workdir))
     print(f"status: {st['status']} | rounds: {len(st['rounds'])} | "
@@ -521,26 +442,36 @@ def cmd_status(args):
     for r in st["rounds"]:
         print(f"  r{r['round']:02d} {r.get('verdict')} "
               f"{str(r.get('result', {}))[:110]}")
+
+
 def cmd_verify(args):
+    """Re-verify every bundle in a run against the PINNED trust root, never against a
+    key stored inside the run directory (that was the laundering path until 2026-10-09).
+
+    A round may verify under the root key (registered, authoritative) or under a key
+    pinned in keys/legacy_pubkeys.jsonl (pre-trust-root history). Legacy verdicts are
+    labelled as non-authoritative in the reason string: their signing key sat in the
+    run's own state.json, so they prove the files were not edited after signing and
+    nothing more.
+    """
     workdir = Path(args.workdir)
-    st = _load_state(workdir)
-    if not st.get("key_pub"):
-        print(f"no key in {workdir}: nothing signed here yet (run first)")
-        return 1
-    pub = bytes.fromhex(st["key_pub"])
-    ok = bad = 0
-    for r in st["rounds"]:
-        rd = workdir / f"round-{r['round']:02d}"
-        envl = json.loads((rd / "envelope.json").read_text(encoding="utf-8"))
-        chk = EV.verify_round(rd / "artifacts", envl["bundle"],
-                              envl["envelope"], pub)
-        print(f"  r{r['round']:02d} {chk['valid']} {chk['reason']}")
-        ok += chk["valid"]
-        bad += not chk["valid"]
-    print(f"{ok} valid, {bad} invalid")
+    res = KS.verify_run(workdir)
+    ok = bad = legacy = 0
+    for r in res["rounds"]:
+        print(f"  {r['round']} {r['valid']} {r['reason']}")
+        ok += r["valid"]
+        bad += not r["valid"]
+        legacy += bool(r["valid"] and "legacy era" in r["reason"])
+    print(f"{ok} valid, {bad} invalid"
+          + (f"  ({legacy} of them legacy-era, non-authoritative)" if legacy else ""))
+    if not res["rounds"]:
+        print(f"nothing signed under {workdir}: no state.json rounds and no round-*/envelope.json")
     return 0 if bad == 0 else 1
+
+
 def cmd_publish(args):
     """Publication gate: a run is submittable to a tier only if BOTH halves pass.
+
     Mechanical half runs locally (no model). Judgment half scores both seats
     against the tier rubric. Either half failing -> NOT-SUBMITTABLE, with the
     failing checks named. There is no override flag: fix the paper, not the gate.
@@ -617,8 +548,11 @@ def cmd_publish(args):
     (workdir / f"publish-{args.tier}.json").write_text(
         json.dumps(rep, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return 0 if rep["verdict"] == "PASS" else 1
+
+
 def _parse_ledger(path: Path) -> list:
     """Parse a CLAIM_LEDGER.md table into {id, value, status, evidence, how}.
+
     Header-driven with English and Chinese aliases. The historical hardcoded
     `| C-` prefix silently returned zero rows for any ledger whose first column
     was not a C-numbered id -- and a ledger that parses to nothing makes every
@@ -626,8 +560,10 @@ def _parse_ledger(path: Path) -> list:
     instance of the shape that has bitten this project: a missing value reading
     as a neutral one). bridge writes Chinese headers, so English-only matching
     would have reproduced the same silence.
+
         id | claim | evidence | value | how | status | run
         ID | 声明（章节） | 证据文件+字段 | 数值 | 如何验证 | 状态 | 源运行
+
     Columns are located by name, so ledgers may carry extra columns (e.g. `run`)
     in any order. With no recognizable header the positional layout is used.
     """
@@ -640,8 +576,10 @@ def _parse_ledger(path: Path) -> list:
         "how": ("how", "如何验证", "验证"),
         "status": ("status", "状态"),
     }
+
     def norm(c: str) -> str:
         return "".join(ch for ch in c.lower() if ch.isalnum())
+
     def match(low: list) -> dict:
         found = {}
         for field, names in alias.items():
@@ -651,6 +589,7 @@ def _parse_ledger(path: Path) -> list:
                     found.setdefault(field, i)
                     break
         return found
+
     header, rows = None, []
     for line in path.read_text(encoding="utf-8").splitlines():
         s = line.strip()
@@ -670,25 +609,41 @@ def _parse_ledger(path: Path) -> list:
                       "value": 3, "how": 4, "status": 5}
         if len(parts) < 6:
             continue
+
         def cell(name, fallback=""):
             i = header.get(name, fallback)
             return parts[i] if isinstance(i, int) and 0 <= i < len(parts) else ""
+
         cid = cell("id")
         if not cid or norm(cid) in ("id", "编号"):
             continue
         val = cell("value")
+        note = None
         try:
             val = float(val.split()[0].rstrip(":："))
         except Exception:
-            pass
+            # A value that does not parse must become None WITH ITS RAW TEXT
+            # kept (value_note), not stay a str. Downstream filters use
+            # isinstance(row["value"], (int, float)); a surviving str leaves
+            # every such filter silently, and the CI-coverage denominator
+            # shrinks as the ledger gets worse -- the 2026-10-02
+            # "missing value reads as neutral" shape, one layer up.
+            if val.strip():
+                note = val
+            val = None
         row = {"id": cid, "claim": cell("claim"), "evidence": cell("evidence"),
                "value": val, "how": cell("how"), "status": cell("status")}
+        if note:
+            row["value_note"] = note
         if cell("run"):
             row["run"] = cell("run")
         rows.append(row)
     return rows
+
+
 def cmd_amend(args):
     """Append a correction note to a round WITHOUT touching signed artifacts.
+
     Directly editing artifacts/result.json breaks the bundle signature (learned
     the hard way: a threshold recomputation edited the signed file and voided
     the chain). Amend instead writes a separate amendment.json alongside,
@@ -709,8 +664,11 @@ def cmd_amend(args):
         json.dumps(note, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"amendment recorded on round-{rnd:02d} (artifacts untouched, bundle intact)")
     return 0
+
+
 def cmd_finalize(args):
     """Complete bookkeeping for a round whose artifacts already exist on disk.
+
     matrix-01 (2026-10-07) wrote a complete artifacts/result.json and was then
     killed by the wall clock before the loop could sign it, evaluate the
     kill-switch, or set a terminal status. The data was real; only the
@@ -718,6 +676,7 @@ def cmd_finalize(args):
     budget and time already spent) and hand-editing state.json would forge the
     audit trail. This command signs the untouched artifacts, evaluates the
     envelope's kill-switch against them, and appends the round to state.
+
     It never touches artifact bytes and never invents a verdict: no envelope
     kill-switch row firing means CONTINUE -> STOP-ROUNDS-EXHAUSTED, and a
     missing or unparseable result.json is refused.
@@ -738,11 +697,14 @@ def cmd_finalize(args):
         return 1
     try:
         st = _load_state(workdir)
-        if not st.get("key_priv"):
-            priv, pub = EV.generate_keypair()
-            st["key_priv"], st["key_pub"] = priv.hex(), pub.hex()
-        priv = bytes.fromhex(st["key_priv"])
-        pub = bytes.fromhex(st["key_pub"])
+        pub = KS.root_pub(KS.default_root_dir())
+        if pub is None:
+            print("refusing to finalize: no pinned root key at "
+                  f"{KS.default_root_dir() / KS.ROOT_PUB} -- run "
+                  "`python -m ai_researcher.keystore init` first")
+            return 1
+        st["key_pub"] = pub.hex()
+        st["key_priv"] = None
         rnd = len(st["rounds"]) + 1
         rd = workdir / f"round-{rnd:02d}"
         result_path = rd / "artifacts" / "result.json"
@@ -760,14 +722,14 @@ def cmd_finalize(args):
             print(f"refusing to finalize: missing artifacts {missing}")
             return 1
         result.setdefault("finalized_from_disk", True)
-        envl = EV.sign_round(rd / "artifacts", priv, signer="ai-researcher-loop",
-                             round_id=f"r{rnd:02d}")
+        envl = KS.sign_with_root(rd / "artifacts", round_id=f"r{rnd:02d}")
         chk = EV.verify_round(rd / "artifacts", envl["bundle"], envl["envelope"], pub)
         if not chk["valid"]:
             print(f"refusing to finalize: verification failed ({chk['reason']})")
             return 1
         (rd / "envelope.json").write_text(json.dumps(envl, indent=2) + "\n",
                                           encoding="utf-8")
+        KS.register(envl, run_name=workdir.name)
         action, row, uneval = _eval_kill(
             [{"condition": r.condition, "action": r.action, "note": r.note}
              for r in env.kill_switch], result)
@@ -799,6 +761,8 @@ def cmd_finalize(args):
         return 0
     finally:
         _release_lock(lock_fd, workdir)
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(prog="ai-researcher.loop")
@@ -817,5 +781,7 @@ def main(argv=None):
             "status": cmd_status, "verify": cmd_verify,
             "publish": cmd_publish, "amend": cmd_amend,
             "finalize": cmd_finalize}[a.cmd](a)
+
+
 if __name__ == "__main__":
     sys.exit(main())

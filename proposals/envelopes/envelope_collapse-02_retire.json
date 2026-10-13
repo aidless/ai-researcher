@@ -1,0 +1,28 @@
+{
+  "hypothesis": "Retire the direction behind collapse-02 and spend elsewhere",
+  "methods": "# TODO(retire): exact command for collapse-02",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 4.0,
+  "seed": 0,
+  "power": {
+    "n": 1,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.9,
+    "power_at_mde": 0.8
+  },
+  "kill_switch": [
+    {
+      "condition": "True",
+      "action": "STOP-REFUTED",
+      "note": "archived"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "negative_publish": "replication-report",
+  "approved_by": "",
+  "approved_at": "",
+  "tension": "This direction has been tested and refuted with no remaining discriminating experiment. Continuing to spend compute on it is not persistence, it is a sunk cost. Retiring it frees the budget for directions that can still change a conclusion."
+}

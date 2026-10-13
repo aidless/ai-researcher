@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/liuzewen/F:\deepseek/ai-researcher/src/ai_researcher/loop.py", line 397, in <module>
+    return 1
+         ^^^^
+  File "/home/liuzewen/F:\deepseek/ai-researcher/src/ai_researcher/loop.py", line 391, in main
+    workdir = Path(args.workdir)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/liuzewen/F:\deepseek/ai-researcher/src/ai_researcher/loop.py", line 174, in cmd_run
+    return _cmd_run_locked(args, workdir, lock_fd)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/liuzewen/F:\deepseek/ai-researcher/src/ai_researcher/loop.py", line 210, in _cmd_run_locked
+    rr = _run_round(env, workdir, rnd, st)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/liuzewen/F:\deepseek/ai-researcher/src/ai_researcher/loop.py", line 128, in _run_round
+    proc = subprocess.run(env.methods, shell=True, cwd=rd, capture_output=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 2116, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/usr/lib/python3.12/subprocess.py", line 1253, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command 'RD="$PWD"; cd /tmp/ind-audit/gsm8k-self-evolve && EVO_OUT="$RD/artifacts" EVO_SEED=20261006 EVO_MODELS="qwen2.5:7b,llama3.1:8b,qwen2:7b,gemma3:4b,deepseek-r1:7b,qwen3:4b,qwen2.5-coder:7b,llama3.2:1b" PYTHONPATH=/tmp/ind-audit/gsm8k-self-evolve/examples python3 /tmp/air-transfer/run_transfer.py' timed out after 14400 seconds

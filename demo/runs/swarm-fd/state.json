@@ -1,0 +1,147 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/swarm-fd/round-01",
+   "result": {
+    "reps": [
+     {
+      "arms": {
+       "swarm1": {
+        "swarm": 1,
+        "pci_trajectory": [
+         0.0,
+         0.1485,
+         0.1636,
+         0.1356,
+         0.1356,
+         0.1356,
+         0.2121
+        ],
+        "slope": 0.0353,
+        "n_actual_per_round": [
+         1,
+         1,
+         1,
+         1,
+         0,
+         0,
+         1
+        ],
+        "mean_n_actual": 0.71,
+        "forced_votes": 0,
+        "abstained_votes": 0,
+        "total_votes": 0
+       },
+       "swarm4": {
+        "swarm": 4,
+        "pci_trajectory": [
+         0.0,
+         0.1485,
+         0.1636,
+         0.2596,
+         0.2121,
+         0.2388,
+         0.3096
+        ],
+        "slope": 0.0516,
+        "n_actual_per_round": [
+         4,
+         4,
+         4,
+         4,
+         4,
+         4,
+         4
+        ],
+        "mean_n_actual": 4.0,
+        "forced_votes": 0,
+        "abstained_votes": 0,
+        "total_votes": 18
+       }
+      },
+      "slope_excess": 0.0163,
+      "seed": 20261006
+     }
+    ],
+    "n_seeds": 1,
+    "excesses": [
+     0.0163
+    ],
+    "n_positive": 1,
+    "confirmed": false,
+    "seed": 20261006,
+    "arms": {
+     "swarm1": {
+      "swarm": 1,
+      "pci_trajectory": [
+       0.0,
+       0.1485,
+       0.1636,
+       0.1356,
+       0.1356,
+       0.1356,
+       0.2121
+      ],
+      "slope": 0.0353,
+      "n_actual_per_round": [
+       1,
+       1,
+       1,
+       1,
+       0,
+       0,
+       1
+      ],
+      "mean_n_actual": 0.71,
+      "forced_votes": 0,
+      "abstained_votes": 0,
+      "total_votes": 0
+     },
+     "swarm4": {
+      "swarm": 4,
+      "pci_trajectory": [
+       0.0,
+       0.1485,
+       0.1636,
+       0.2596,
+       0.2121,
+       0.2388,
+       0.3096
+      ],
+      "slope": 0.0516,
+      "n_actual_per_round": [
+       4,
+       4,
+       4,
+       4,
+       4,
+       4,
+       4
+      ],
+      "mean_n_actual": 4.0,
+      "forced_votes": 0,
+      "abstained_votes": 0,
+      "total_votes": 18
+     }
+    },
+    "slope_excess": 0.0163,
+    "exit_code": 0,
+    "wall_s": 644.5,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@36c4e8c951af",
+   "kill_row": "confirmed == False",
+   "verdict": "STOP-REFUTED",
+   "reason": "gap vanishes under force-decide: the v2 excess was abstention-mechanism interaction, not bias"
+  }
+ ],
+ "status": "STOP-REFUTED",
+ "started_at": "2026-10-07T03:42:50.444684+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "715ec84d7a90b27640bc952e4db813359d4dbf7dfeefbc7437157a9944cb2bd5",
+ "key_priv": null
+}

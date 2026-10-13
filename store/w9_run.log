@@ -1,0 +1,197 @@
+计划 180 条，已完成 0，待跑 180
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  86%|████████▌ | 268/311 [00:00<00:00, 2678.67it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 2871.58it/s]
+模型加载 3.7s
+[english relevant 1/30] pred=1 6.33s
+[english relevant 2/30] pred=1 1.94s
+[english relevant 3/30] pred=1 2.06s
+[english relevant 4/30] pred=1 4.48s
+[english relevant 5/30] pred=1 1.8s
+[english relevant 6/30] pred=1 2.0s
+[english relevant 7/30] pred=1 1.7s
+[english relevant 8/30] pred=1 5.78s
+[english relevant 9/30] pred=1 3.56s
+[english relevant 10/30] pred=1 2.69s
+[english relevant 11/30] pred=1 3.67s
+[english relevant 12/30] pred=1 2.88s
+[english relevant 13/30] pred=1 4.66s
+[english relevant 14/30] pred=1 3.21s
+[english relevant 15/30] pred=1 2.93s
+[english relevant 16/30] pred=1 3.53s
+[english relevant 17/30] pred=1 4.82s
+[english relevant 18/30] pred=1 3.02s
+[english relevant 19/30] pred=1 3.22s
+[english relevant 20/30] pred=1 3.69s
+[english relevant 21/30] pred=1 3.94s
+[english relevant 22/30] pred=1 3.25s
+[english relevant 23/30] pred=1 5.06s
+[english relevant 24/30] pred=1 2.95s
+[english relevant 25/30] pred=1 3.2s
+[english relevant 26/30] pred=1 2.5s
+[english relevant 27/30] pred=1 4.21s
+[english relevant 28/30] pred=1 3.98s
+[english relevant 29/30] pred=1 4.13s
+[english relevant 30/30] pred=1 5.02s
+[english non_relevant 1/30] pred=1 1.53s
+[english non_relevant 2/30] pred=1 1.5s
+[english non_relevant 3/30] pred=1 5.04s
+[english non_relevant 4/30] pred=0 2.53s
+[english non_relevant 5/30] pred=1 3.72s
+[english non_relevant 6/30] pred=1 3.15s
+[english non_relevant 7/30] pred=1 1.47s
+[english non_relevant 8/30] pred=1 2.32s
+[english non_relevant 9/30] pred=1 2.96s
+[english non_relevant 10/30] pred=1 5.63s
+[english non_relevant 11/30] pred=1 2.73s
+[english non_relevant 12/30] pred=1 5.82s
+[english non_relevant 13/30] pred=1 3.33s
+[english non_relevant 14/30] pred=1 4.27s
+[english non_relevant 15/30] pred=1 4.45s
+[english non_relevant 16/30] pred=1 4.35s
+[english non_relevant 17/30] pred=1 2.52s
+[english non_relevant 18/30] pred=1 3.06s
+[english non_relevant 19/30] pred=1 1.71s
+[english non_relevant 20/30] pred=1 5.21s
+[english non_relevant 21/30] pred=1 6.59s
+[english non_relevant 22/30] pred=1 4.14s
+[english non_relevant 23/30] pred=1 3.6s
+[english non_relevant 24/30] pred=1 1.92s
+[english non_relevant 25/30] pred=1 4.76s
+[english non_relevant 26/30] pred=0 3.36s
+[english non_relevant 27/30] pred=1 6.22s
+[english non_relevant 28/30] pred=1 3.59s
+[english non_relevant 29/30] pred=0 3.08s
+[english non_relevant 30/30] pred=1 3.49s
+[chinese relevant 1/30] pred=1 6.03s
+[chinese relevant 2/30] pred=1 5.41s
+[chinese relevant 3/30] pred=1 4.49s
+[chinese relevant 4/30] pred=1 6.04s
+[chinese relevant 5/30] pred=1 3.5s
+[chinese relevant 6/30] pred=1 5.76s
+[chinese relevant 7/30] pred=1 3.44s
+[chinese relevant 8/30] pred=1 6.18s
+[chinese relevant 9/30] pred=1 5.76s
+[chinese relevant 10/30] pred=1 4.72s
+[chinese relevant 11/30] pred=1 4.55s
+[chinese relevant 12/30] pred=1 4.09s
+[chinese relevant 13/30] pred=1 4.3s
+[chinese relevant 14/30] pred=1 2.92s
+[chinese relevant 15/30] pred=1 4.63s
+[chinese relevant 16/30] pred=1 2.92s
+[chinese relevant 17/30] pred=1 3.0s
+[chinese relevant 18/30] pred=1 2.95s
+[chinese relevant 19/30] pred=1 3.37s
+[chinese relevant 20/30] pred=1 2.35s
+[chinese relevant 21/30] pred=1 1.94s
+[chinese relevant 22/30] pred=1 9.75s
+[chinese relevant 23/30] pred=1 4.59s
+[chinese relevant 24/30] pred=1 2.01s
+[chinese relevant 25/30] pred=1 5.2s
+[chinese relevant 26/30] pred=1 7.07s
+[chinese relevant 27/30] pred=1 5.11s
+[chinese relevant 28/30] pred=1 3.59s
+[chinese relevant 29/30] pred=1 3.16s
+[chinese relevant 30/30] pred=1 2.51s
+[chinese non_relevant 1/30] pred=1 3.82s
+[chinese non_relevant 2/30] pred=1 6.4s
+[chinese non_relevant 3/30] pred=1 4.81s
+[chinese non_relevant 4/30] pred=1 3.53s
+[chinese non_relevant 5/30] pred=1 2.6s
+[chinese non_relevant 6/30] pred=1 3.45s
+[chinese non_relevant 7/30] pred=1 6.74s
+[chinese non_relevant 8/30] pred=1 7.48s
+[chinese non_relevant 9/30] pred=1 3.94s
+[chinese non_relevant 10/30] pred=0 3.68s
+[chinese non_relevant 11/30] pred=1 6.93s
+[chinese non_relevant 12/30] pred=1 2.81s
+[chinese non_relevant 13/30] pred=1 1.43s
+[chinese non_relevant 14/30] pred=1 3.33s
+[chinese non_relevant 15/30] pred=1 1.54s
+[chinese non_relevant 16/30] pred=1 4.03s
+[chinese non_relevant 17/30] pred=1 3.36s
+[chinese non_relevant 18/30] pred=1 1.51s
+[chinese non_relevant 19/30] pred=1 5.02s
+[chinese non_relevant 20/30] pred=1 2.29s
+[chinese non_relevant 21/30] pred=1 3.07s
+[chinese non_relevant 22/30] pred=1 2.46s
+[chinese non_relevant 23/30] pred=1 3.52s
+[chinese non_relevant 24/30] pred=1 2.28s
+[chinese non_relevant 25/30] pred=1 2.85s
+[chinese non_relevant 26/30] pred=1 1.79s
+[chinese non_relevant 27/30] pred=1 1.26s
+[chinese non_relevant 28/30] pred=1 3.08s
+[chinese non_relevant 29/30] pred=1 4.42s
+[chinese non_relevant 30/30] pred=1 2.76s
+[swahili relevant 1/30] pred=1 2.44s
+[swahili relevant 2/30] pred=1 4.11s
+[swahili relevant 3/30] pred=1 2.01s
+[swahili relevant 4/30] pred=1 3.71s
+[swahili relevant 5/30] pred=1 2.93s
+[swahili relevant 6/30] pred=1 2.57s
+[swahili relevant 7/30] pred=1 6.38s
+[swahili relevant 8/30] pred=1 5.64s
+[swahili relevant 9/30] pred=1 4.34s
+[swahili relevant 10/30] pred=1 4.01s
+[swahili relevant 11/30] pred=1 2.88s
+[swahili relevant 12/30] pred=1 2.72s
+[swahili relevant 13/30] pred=1 3.68s
+[swahili relevant 14/30] pred=1 2.61s
+[swahili relevant 15/30] pred=1 6.39s
+[swahili relevant 16/30] pred=1 3.44s
+[swahili relevant 17/30] pred=1 4.4s
+[swahili relevant 18/30] pred=1 6.96s
+[swahili relevant 19/30] pred=1 2.38s
+[swahili relevant 20/30] pred=1 4.02s
+[swahili relevant 21/30] pred=1 1.9s
+[swahili relevant 22/30] pred=1 2.63s
+[swahili relevant 23/30] pred=1 3.36s
+[swahili relevant 24/30] pred=1 8.52s
+[swahili relevant 25/30] pred=1 2.11s
+[swahili relevant 26/30] pred=1 2.58s
+[swahili relevant 27/30] pred=1 1.55s
+[swahili relevant 28/30] pred=1 4.55s
+[swahili relevant 29/30] pred=1 4.54s
+计划 180 条，已完成 149，待跑 31
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:  75%|███████▍  | 233/311 [00:00<00:00, 2202.27it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 2337.15it/s]
+模型加载 4.0s
+[swahili relevant 30/30] pred=1 3.44s
+[swahili non_relevant 1/30] pred=1 5.04s
+[swahili non_relevant 2/30] pred=1 5.16s
+[swahili non_relevant 3/30] pred=1 2.48s
+[swahili non_relevant 4/30] pred=1 1.91s
+[swahili non_relevant 5/30] pred=1 3.24s
+[swahili non_relevant 6/30] pred=1 3.4s
+[swahili non_relevant 7/30] pred=1 3.86s
+[swahili non_relevant 8/30] pred=1 7.25s
+[swahili non_relevant 9/30] pred=1 3.17s
+[swahili non_relevant 10/30] pred=1 1.92s
+[swahili non_relevant 11/30] pred=1 2.65s
+[swahili non_relevant 12/30] pred=1 3.66s
+[swahili non_relevant 13/30] pred=1 3.26s
+[swahili non_relevant 14/30] pred=1 2.58s
+[swahili non_relevant 15/30] pred=1 1.5s
+[swahili non_relevant 16/30] pred=1 5.92s
+[swahili non_relevant 17/30] pred=1 2.57s
+[swahili non_relevant 18/30] pred=1 3.67s
+[swahili non_relevant 19/30] pred=1 3.27s
+[swahili non_relevant 20/30] pred=1 3.68s
+[swahili non_relevant 21/30] pred=1 2.33s
+[swahili non_relevant 22/30] pred=1 1.92s
+[swahili non_relevant 23/30] pred=1 2.0s
+[swahili non_relevant 24/30] pred=1 2.48s
+[swahili non_relevant 25/30] pred=1 1.49s
+[swahili non_relevant 26/30] pred=1 2.69s
+[swahili non_relevant 27/30] pred=1 5.33s
+[swahili non_relevant 28/30] pred=1 4.43s
+[swahili non_relevant 29/30] pred=1 4.35s
+[swahili non_relevant 30/30] pred=1 3.57s
+Traceback (most recent call last):
+  File "/home/liuzewen/F:\deepseek/ai-researcher/scripts/w9_multilingual_relevance.py", line 369, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/home/liuzewen/F:\deepseek/ai-researcher/scripts/w9_multilingual_relevance.py", line 246, in main
+    return summarize()
+           ^^^^^^^^^^^
+  File "/home/liuzewen/F:\deepseek/ai-researcher/scripts/w9_multilingual_relevance.py", line 284, in summarize
+    mine["rate"] - anchors[key][model][lang], 4)
+                   ~~~~~~~~~~~~~~~~~~~^^^^^^
+KeyError: 'english'

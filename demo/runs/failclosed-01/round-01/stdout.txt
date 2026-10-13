@@ -1,0 +1,6 @@
+D1-hallucinated-ref: CAUGHT (dangling cites: ['FAKEKEY2099'])
+D2-drifted-number: CAUGHT (evidence gain=0.75 absent from manuscript)
+D3-swallowed-exit: CAUGHT (swallowed exits: ['ci.yml:4'])
+D4-unhedged-inconclusive: CAUGHT (unhedged: ['C-gain'])
+D5-stale-manifest: CAUGHT (stale hash for evidence.json)
+{"escape_rate": 0.0, "confirmed": true}

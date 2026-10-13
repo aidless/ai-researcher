@@ -1,0 +1,147 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "dir": "demo/runs/confirmation-8fam-r2/round-01",
+      "result": {
+        "models": {},
+        "n": 160,
+        "seed": 20261010,
+        "models_requested": [
+          "qwen2.5:7b",
+          "gemma3:4b",
+          "qwen3:4b",
+          "llama3.1:8b",
+          "qwen2:7b",
+          "deepseek-r1:7b",
+          "qwen2.5-coder:7b",
+          "llama3.2:1b"
+        ],
+        "models_measured": [
+          "qwen2.5:7b",
+          "gemma3:4b",
+          "qwen3:4b",
+          "llama3.1:8b",
+          "qwen2:7b",
+          "deepseek-r1:7b",
+          "qwen2.5-coder:7b",
+          "llama3.2:1b"
+        ],
+        "item_bank": "demo/transfer/items/confirm160.json",
+        "per_model": {
+          "qwen2.5:7b": {
+            "policies": {
+              "direct": 0.1938,
+              "step-calc": 0.4562
+            },
+            "gain": 0.2624,
+            "fixed": 50,
+            "broke": 8,
+            "p": 0.0
+          },
+          "gemma3:4b": {
+            "policies": {
+              "direct": 0.1062,
+              "step-calc": 0.625
+            },
+            "gain": 0.5188,
+            "fixed": 88,
+            "broke": 5,
+            "p": 0.0
+          },
+          "qwen3:4b": {
+            "policies": {
+              "direct": 0.2313,
+              "step-calc": 0.1688
+            },
+            "gain": -0.0625,
+            "fixed": 9,
+            "broke": 19,
+            "p": 0.087159
+          },
+          "llama3.1:8b": {
+            "policies": {
+              "direct": 0.1187,
+              "step-calc": 0.4813
+            },
+            "gain": 0.3626,
+            "fixed": 65,
+            "broke": 7,
+            "p": 0.0
+          },
+          "qwen2:7b": {
+            "policies": {
+              "direct": 0.1375,
+              "step-calc": 0.4813
+            },
+            "gain": 0.3438,
+            "fixed": 61,
+            "broke": 6,
+            "p": 0.0
+          },
+          "deepseek-r1:7b": {
+            "policies": {
+              "direct": 0.425,
+              "step-calc": 0.5875
+            },
+            "gain": 0.1625,
+            "fixed": 37,
+            "broke": 11,
+            "p": 0.000222
+          },
+          "qwen2.5-coder:7b": {
+            "policies": {
+              "direct": 0.2313,
+              "step-calc": 0.675
+            },
+            "gain": 0.4437,
+            "fixed": 79,
+            "broke": 8,
+            "p": 0.0
+          },
+          "llama3.2:1b": {
+            "policies": {
+              "direct": 0.0625,
+              "step-calc": 0.3438
+            },
+            "gain": 0.2813,
+            "fixed": 50,
+            "broke": 5,
+            "p": 0.0
+          }
+        },
+        "gain_mean": 0.2891,
+        "families_positive": "7/8",
+        "mcnemar_pooled": {
+          "fixed": 439,
+          "broke": 69,
+          "p": 0.0
+        },
+        "paired_observations": 1280,
+        "confirmed": false,
+        "sign_test_p": 1.0,
+        "exit_code": 0,
+        "wall_s": 13266.0,
+        "cost_usd_known": false,
+        "round_cost_usd": 0.0
+      },
+      "missing": [],
+      "exit_code": 0,
+      "timed_out": false,
+      "bundle": "r01@d3f32e975271",
+      "kill_row": "confirmed == False",
+      "review": {
+        "error": "RuntimeError: no review key: set SILICONFLOW_API_KEY (OpenRouter value), or point LLM_API_URL at a local endpoint (e.g. ollama's http://127.0.0.1:11434/v1/chat/completions)"
+      },
+      "verdict": "STOP-REFUTED",
+      "reason": "no replicable gain: restrict the claim to the conditions actually tested"
+    }
+  ],
+  "status": "STOP-REFUTED",
+  "started_at": "2026-10-10T01:03:37.698490+00:00",
+  "cost_usd": 0.0,
+  "key_pub": "8a35f5b832ee2a7b93a35cb82836d0f8ae6768c42b24d467393ecbb2c472cbce",
+  "key_priv": null,
+  "key_era": "root",
+  "loop_schema": 2
+}

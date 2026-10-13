@@ -1,0 +1,199 @@
+{
+  "amended_at": "2026-10-09T01:15:00+00:00",
+  "amended_by": "qoder session 2026-10-09 (continuation of the 2026-10-08 retries)",
+  "scope": "runs/lineage-01-clean/round-01 only. No original artifact touched.",
+  "corrections_to_the_2026-10-08_record": [
+    {
+      "id": "A1-v1-is-a-broken-artifact-not-contention",
+      "claim_being_corrected": "contamination_watch.jsonl events at 11:26 / 14:02 / 17:50 / 19:36 attribute 25/25 and 10/10 HTTPError to ollama server saturation, three-way process contention, and a degraded server needing 'extended cooldown before clean run is feasible'.",
+      "measured_instead": "On 2026-10-09 the box was idle (ollama ps empty, no experiment processes, 5/14 GB RAM used) and a single call to copilot-3b-lora:latest still failed in 8.5 s, then 5/5 rapid calls failed in 2.4 s each, all with HTTP 500: 'llama-server process has terminated: exit status 1: error loading model: check_tensor_dims: tensor blk.0.attn_q.weight has wrong shape; expected 2048, 2048, got 1, 2097152, 1, 1'. Declared element count 2097152 is exactly half the expected 2048*2048=4194304. The four other lineage versions (v2/v3/v3b/v3c) each loaded and answered in ~11 s at the same moment, so the server was healthy.",
+      "conclusion": "The failure is deterministic and artifact-local to copilot-3b-lora:latest (v1). It is independent of machine load. All four discarded 10-08 chunks were v1 chunks, so none of them measured the confound they were recorded as measuring.",
+      "evidence": "probe_ollama_health.py output; per-model load test via /api/generate; blob sizes 3579014912 (v1) vs 6178923360 (v2, v3, v3b, v3c identical) under OLLAMA_MODELS=/data4/OllamaModels"
+    },
+    {
+      "id": "A2-v1-was-already-dead-in-the-original-run",
+      "measured": "papers/lineage-01/evidence/round-01/artifacts/pred_v1.jsonl = 50/50 records carrying error 'HTTPError', all outputs empty; identical signature to the 10-09 deterministic failure. The v1 blob and manifest are dated 2026-08-08 16:41:24 and are unchanged across both runs, so the same bytes failed on both dates. Original result.json accordingly records rates.v1 = null.",
+      "conclusion": "The v1 baseline of this lineage has never produced a single model output, in either run. The original amendment's 'four experiments shared one ollama server' explanation does not account for v1. Any statement that the five-version lineage was measured is unsupported; four versions were attempted and v1 was not.",
+      "status_of_this_item": "measured"
+    },
+    {
+      "id": "A3-length-collapse-in-the-original-v3c-arm",
+      "measured": "Answered (no error field) output lengths: v3b n=45 median 1013 max 1500; v3c n=42 median 27 max 522, with 26/42 under 100 chars. Scorer runtime_error: v3b 5/50, v3c 18/50. sum_v3b semantic_scored=45 across 5 tasks; sum_v3c semantic_scored=32 across 4 tasks (failure_diagnosis absent).",
+      "conclusion": "The withdrawn v3b-vs-v3c 1:14 McNemar counts the difference in runtime_error flags, and the v3c arm is length-collapsed end to end rather than intermittently failing. Two explanations remain open and were not distinguished on 10-07: (a) collection truncated under load, (b) the v3c checkpoint genuinely emits terse outputs. The clean re-run under exclusive lock is the discriminator: if clean v3c reproduces a median near 27 while clean v3b sits near 1000+ on the same box, the effect is the checkpoint; if clean v3c matches clean v3b, the original was contamination.",
+      "carrier": "lineage01_v3c_length_audit.py (prints the census, hard-codes no numbers)"
+    },
+    {
+      "id": "A4-clean-v3b-is-not-a-byte-replication-of-the-original",
+      "measured": "v3b_replication_check.py on the two complete v3b arms: 40/50 byte-identical, 5 outputs differing at a character offset (c002 @277, c009 @526, c016 @50, c021 @86, c032 @123), and 5 items that carried TimeoutError in the original now answered normally (c006, c008, c010, c022, c027). Clean v3b has 0 error records against the original's 5.",
+      "reading": "Two effects are mixed here and they point in opposite directions. The 5 timeouts that disappeared is exactly what exclusivity was supposed to buy, and it happened: contention did degrade the original collection. The 5 text divergences at temp 0 are the measured cost of G5 -- no seed is sent, so the same protocol does not reproduce the same tokens. Roughly one item in ten rewrites itself between collections.",
+      "consequence_for_the_adjudication": "A paired McNemar across the two collections carries an intrinsic discordance floor near 10% per arm. It is therefore legitimate to compare clean-v3b against clean-v3c (same day, same box, same numerics) but NOT to treat clean-vs-original item flips as findings. The registered script's headline test is the within-clean pair, which is the defensible one; its printed comparison against the original should be read as context, not as a paired test.",
+      "status_of_this_item": "measured before v3c finished collecting"
+    },
+    {
+      "id": "A5-the-regression_is_a_judge_length_coupling_and_it_flips_sign",
+      "measured": "Recomputed with the production scorer's own score_one (judge_length_coupling_check.py imports it rather than reimplementing it). Original v3c has 18 runtime_error = 8 harness-recorded (c001-c004, c006-c008, c035) + 10 pattern-derived (c021-c030, consecutive). Original v3b has 5 runtime_error, ALL harness-recorded, ZERO pattern-derived. Items c021-c030 are all task failure_diagnosis, whose prompt contains the literal string 'connection refused after 240s timeout' and whose checks are must_distinguish_provider_error and must_not_claim_tamper_proof. v3b answered that family at 873-1130 chars; v3c answered it at 96-101 chars, correctly and concisely.",
+      "mechanism": "classify_runtime(out) only inspects text shorter than 200 characters and fires on patterns including timeout, connection refused, 240s. An answer that correctly diagnoses a provider error therefore trips the rule, and the >=200 exemption means the rule's effect depends on how verbose an arm happens to be. Ten items -- one entire task family, 20% of the instrument -- are deleted from v3c's denominator and retained in v3b's. The judge cannot itself do the thing the item tests: must_distinguish_provider_error.",
+      "counterfactual": "Scored on all 50 items instead of the surviving subset: original v3b 0.7017 (was published 0.7241 over 45), original v3c 0.7367 (was published 0.7083 over 32). The published -0.0158 step from v3b to v3c becomes +0.0350. The withdrawn 'regression' is an artefact of the judge, and its sign is wrong.",
+      "what_remains_real": "The 8 harness timeouts in original v3c reproduce today under exclusive access on the same item ids (clean v3c c001-c004 = TimeoutError while the box was idle and locked). v3c's non-termination is a genuine checkpoint property: a numbered list climbing past item 75 at a steady 20.6 chars/s, first token 0.43 s, no EOS. That is a model finding, but it is about generation termination, not about reference-check capability, and it is not what produced the 1:14.",
+      "conclusion": "The original amendment named one cause, infrastructure contamination. The data supports two different causes and refutes the one that produced the headline number: the 1:14 came from a length-coupled judge rule, and the terse-answer arm was penalised for being terse. Neither branch of the registered kill switch describes this, because both assume errors are either infra or model, and this one is in the judge.",
+      "carrier": "judge_length_coupling_check.py"
+    },
+    {
+      "id": "A6-my-own-0.7367-and-plus-0.0050-were-wrong-non-answers-earned-vacuous-credit",
+      "supersedes": "A5.counterfactual and the +0.0050 figure repeated in MCNEMAR.md, CLAIM_LEDGER.md, lineage01_confound_casestudy.py and this session's interim report",
+      "error": "My counterfactual scored an item by calling score_one on its EMPTY output when the generation had failed. Empty text vacuously passes negative checks -- must_not_claim_tamper_proof is satisfied by asserting nothing -- so a non-answer earned roughly half credit instead of zero. That inflated v3c's counterfactual from 0.6533 to 0.7367 and turned a real deficit into an apparent +0.0050 advantage.",
+      "measured_after_fix": "Three instruments recomputed on the same clean arms now agree exactly. published (production judge): v3b 0.7317 vs v3c 0.7083 = -0.0234. corrected judge over answered items only: v3b 0.7317 vs v3c 0.7778 = +0.0461 (paired Wilcoxon on 42 common items, W=0, exact p=0.03125, scipy agrees; 6 items better in v3c, 0 better in v3b, 36 ties). corrected judge counting non-answers as 0: v3b 0.7317 vs v3c 0.6533 = -0.0784.",
+      "final_reading": "The published step was wrong in BOTH directions simultaneously. The judge manufactured a capability loss by deleting c021-c030 (v3c's best-scoring family under the correct rule) AND hid an availability loss by dropping v3c's 8 non-terminating items from the denominator rather than scoring them. There is no capability regression: v3c is better where it answers. There is a real regression in availability: 8/50 items it never answers.",
+      "also_affected": "original v2 was depressed the same way: published 0.6759 (n=36) -> 0.7222 answered-only (n=42), 0.6067 with non-answers as zero. So the lineage's non-monotonicity hypothesis needs recomputation on fixed denominators before it can be stated at all.",
+      "carriers": "copilot_scorer_fixed.py (selftest PASS, differential confirmed on the real c021 item where the terse answer passes both checks), rescore_lineage_fixed.py -> artifacts/fixed/, adjudicate_corrected.py",
+      "status_of_this_item": "measured; the earlier figure is left in place above so any citation of it can be traced"
+    },
+    {
+      "id": "A7-v1_is_not_recoverable_as_the_same_artifact",
+      "measured_from_the_file_itself": "v1's blob is 3,579,014,912 bytes where all four siblings are exactly 6,178,923,360, and every one of them declares general.file_type = 1 (F16), architecture qwen2, block_count 36, embedding_length 2048, feed_forward_length 11008 -- same architecture, same nominal precision class, so the size gap is not explained by a different quantization.",
+      "WITHDRAWN": "This entry earlier claimed the tensor-info region of v1 is itself malformed, on the strength of read_gguf_header.py aborting at byte 3077. Retracted: the same reader run against the WORKING sibling v3b aborts at the same byte 3077 with the same absurd value, which makes it a bug in my parser, not a property of the file. A positive control was added to the script for exactly this reason and it caught my own claim.",
+      "what_still_stands": "llama.cpp's own loader error (expected 2048,2048 got 1,2097152,1,1 for blk.0.attn_q.weight), the 3.58 GB vs 6.18 GB byte counts, and v1 failing 6/6 on an idle box while all four siblings load in ~11 s. Those come from instruments whose behaviour is confirmed -- and the loader is the authority that matters, since it is what must read the file. What is NOT established is the precise structural defect inside the file.",
+      "source_availability": "Modelfile_copilot says 'FROM outputs/copilot_3b_lora/merged' and no such directory exists on this box; Modelfile_copilot2 says 'FROM F:\\test\\2026-07-12-00-12-06\\outputs\\copilot_3b_lora\\merged_clean', a Windows path. Search roots actually checked: /data4 (incl. ubuntu_migration_backup), ~/.research, ai-researcher/, 文档, /tmp/ind-audit, ~/projects. No adapter, no merged dir, no v1 gguf anywhere.",
+      "retraining_does_not_recover_it": "train_copilot_3b.py present on disk is the v3 configuration (OUTPUT_DIR outputs/copilot_3b_lora_v3, 'LR 2e-5 was 5e-5', 'LORA_R 8 was 16', DATA_FILE train_seed_200_aug.jsonl). v1's recipe and its training data file are not recorded here, and the script's own environment is Windows (F:/train_env, HF_HOME=F:/hf_cache). Even a faithful retrain yields a NEW checkpoint, not the artifact under study.",
+      "verdict": "NOT_RECOVERABLE as the same bytes. Two legitimate options: (a) accept that this lineage has four measured versions and state v1 as never-measured; (b) pre-register a new arm (e.g. v1-rebuilt) with its recipe recorded before training, and never label it v1.",
+      "status_of_this_item": "measured"
+    },
+    {
+      "id": "A8_this_defect_was_already_documented_and_the_fix_expired",
+      "prior_incident": "auditable-llm-eval/analysis/001-scorer-runtime-misclassification-fix.md, dated 2026-07-13, names the same mechanism, the same task family, and even quotes answers to c021/c022/c024 as correct diagnoses that were being excluded. So A5 is a RE-DISCOVERY, not a discovery, and presenting it as new misstates the record.",
+      "what_the_july_fix_did": "Two changes: (1) runtime_err prefers the harness field -- correct, still in production; (2) `if len(text) >= 200: return False` inside classify_runtime -- this treated the symptom. Long diagnoses were protected, short ones still deleted, so the probability a correct answer is excluded became a function of verbosity. That residual hole is what fired on 2026-10-07.",
+      "why_it_was_not_caught": "The July verification reported 'v3c after fix: 69.00%, 0 items with runtime_error' from run 20260713-211540-copilot-3b-lora-v3c. All five copilot-3b-lora* manifests are dated 2026-08-08, i.e. AFTER that verification -- the October v3c (median 27 chars) is not the July v3c. And tests/test_scorer.py pinned only the long-answer immunity and the short-echo exclusion; nothing pinned a SHORT CORRECT DIAGNOSIS. A fix verified once against an artifact that was later rebuilt, with no regression test for the case that broke, has an expiry date.",
+      "delivered_instead_of_a_live_edit": "patches/scorer-runtime-guard/ -- git-applyable against b05cf87, structural rule (ECHO/CUE/SUPPLY, no length threshold), 39 -> 47 tests passing, plus prove_red_differential.py which calls both implementations positionally on the real c021-c030 texts: old excludes 10/10 in v3c and 0/10 in v3b; new excludes 0 in both. The /tmp checkout was deliberately NOT patched, because lineage_chunk.py imports the scorer from that path and mutating it would stop this run's result.json from being reproducible.",
+      "status_of_this_item": "measured"
+    },
+    {
+      "id": "A9_second_live_hole_production_pays_a_blank_answer",
+      "finding": "Found by the over-correction fixture (the direction usually skipped), not by reading code: a blank answer is not a runtime echo, so classify_runtime returns False and score_one evaluates it on exact checks -- where negative checks such as must_not_claim_tamper_proof are satisfied by saying nothing. Production awards a non-answer positive credit. Measured: production pays blanks 1, patched pays 0.",
+      "why_this_matters_here": "It is the same error I made in my own counterfactual earlier today (A6: scoring \"\" inflated v3c from 0.6533 to 0.7367). One instance is my arithmetic; the identical shape shipping in the shared judge is a defect that biases any arm returning empty text without an error field.",
+      "fix": "patches/scorer-runtime-guard adds no_answer to score_one: a blank scores 0.0 and stays in the denominator. Verified to leave every lineage number reported in this run unchanged (clean v3b 0 excluded 0.7317 n=50; clean v3c the same 8 ids, 0.7778 n=42), so nothing in this amendment needs retracting because of it.",
+      "related_clause": "patches/broken_short-guard/ measures the registered criterion's third clause (`< 300 chars`) the same way: across both runs it touches 18 items and all 18 pass every reference check they are asked -- it convicts correct answers, contradicting the lesson ollama_guard.py already records.",
+      "status_of_this_item": "measured"
+    },
+    {
+      "id": "A10_blast_radius_of_the_blank-answer_question_across_the_corpus",
+      "question": "How many verdicts elsewhere had their denominator moved by blank answers?",
+      "method": "paid_blank_survey.py first enumerated the real schema shapes (8 of them; only 14 files carry answer text, 60 carry verdicts alone) so that a reported 0 could not silently mean 'my glob missed'. paid_blank_scan.py then adjudicated the text-bearing files with the production scorer, and an independent second count re-measured the same population by different logic.",
+      "forward_direction_result": "0 paid blanks. Of 700 rows across 14 text-bearing files, 154 are blank and ALL 154 carry a truthy error field, so the paid-blank population is empty. Both instruments agree. The scorer hole is therefore LATENT here, not exercised -- the no_answer clause in the patch is insurance, and no published number in this or any other run needs retracting because of it.",
+      "near_miss_checked_and_cleared": "The July artifacts that analysis/001 used to verify its fix (.research/opencode_archive/verify-B/.../runs/20260713-*/outputs.jsonl) have schema ['id','output','prompt','task'] -- no error field at all, so they are structurally incapable of flagging a failure and one blank would have been paid silently. Measured: those runs contain 0 blanks, so the July claim of '0 items with runtime_error' was NOT manufactured by this mechanism. Recorded as a hypothesis tested and rejected, not as a finding.",
+      "reverse_direction_is_where_it_bleeds": "The same attribution error pointed the other way -- recording a non-generation as a capability FAILURE -- is live. In the verdict-only family (1824 rows, 4 runs): coderepair-01 80 rows, all 404 absent-tag, ALREADY documented and fixed by that collector's /api/tags preflight (amendment 2026-10-08 09:42); sweetspot-04 111 rows, all 'ollama returned error-text (0 chars)' on deepseek-r1:7b, with NO prior correction; transfer-confirmation 2; coderepair-02 0.",
+      "sweetspot_04_consequence": "Its design varies the reasoning budget and reads accuracy against it, but the budget also determines how many rows are measurable: cap150 48/48 infra (0.000 is an absent measurement, not a measured zero), cap400 36/48 (0.083 published vs 0.333 measurable), cap1000 27/48 (0.271 vs 0.619). The monotone rise is arithmetically the growth of measurable rows from 0 to 21, so pooled_p=0.003906 is not interpretable for that arm and the best arm flips (published qwen2.5:7b cap1000 0.583 -> deepseek-r1 cap1000 0.619 on measurable rows). Recorded in runs/sweetspot-04/round-01/amendment.json. Not to be over-corrected: the 0.619 is conditioned on the model having answered under that budget, which is the variable under study, so it supports neither the original ranking nor its inversion.",
+      "coverage_hole_stated_not_as_zero": "breadth-02 / mimicry-02 / swarm-ms / transfer-01 / matrix-01 / collapse-replication persist only result.json with per-item passed booleans and NO failure reason, so blank-versus-wrong is undecidable from disk. transfer-01 happens to carry latency: 160 rows, min 0.0 median 35.4 max 84.5, nothing near the 150s ceiling, but 4 rows at exactly lat=0.0 with passed=false concentrated in one arm (llama3.1:8b step-calc, held-25/26/33/34) while zero passes occur under 0.5s -- a suspicion, not a verdict.",
+      "in_house_precedent_for_the_fix": "breadth-02's result.json already carries abstention_rate and evaluators_dropped_by_preflight. The availability column this whole investigation wants is not a new invention; it exists in this pipeline and simply is not universal.",
+      "recommendation": "Report three numbers per arm, never one: measured_rate over measurable rows, availability = measurable/total, and raw counts. lineage-01 needed exactly this split and obtained it only by hand post hoc (v3c 0.7778 answered-only, 8/50 never answered, net 0.6533).",
+      "carriers": "paid_blank_survey.py, paid_blank_scan.py, patches/scorer-runtime-guard/, patches/broken_short-guard/, runs/sweetspot-04/round-01/amendment.json, 工作区 空正文发分-影响面扫描-2026-10-09.md",
+      "self_note": "this field was briefly destroyed by the edit that appended A11 (the anchor overlapped it) and restored on checking -- an entry whose carriers line silently vanishes is an entry nobody can re-verify",
+      "status_of_this_item": "measured"
+    },
+    {
+      "id": "A11_instrument_work_landed_and_two_more_of_my_own_errors_were_caught",
+      "single_implementation": "Availability arithmetic now lives in exactly one place, demo/shared/availability.py (unavailability_reason / outcome_of / arm_columns). run_sweetspot_amp.py's local copy was DELETED and replaced by an import; before deleting it the two were compared and agreed on 6/6 stored sweetspot-04 arms and 0 reason-classifier disagreements, and after the refactor the replay output is byte-identical (md5 b8b5e0a285fa). Two writable copies of a classifier is the defect this repo has already been bitten by twice.",
+      "g3_closed": "lineage_chunk.py now ACQUIRES /tmp/ollama_guard.lock with ollama_guard's own stale-takeover rule and refuses if a live holder exists, so a guard-respecting session can no longer run underneath it. Tested behaviourally both directions plus the stale case (13 checks, --selftest, no GPU): second acquire refuses while the holder is alive; a lock left by a dead pid is taken over rather than obeyed.",
+      "termination_line_unblocked": "The collector now records done_reason, eval_count, elapsed and a per-row stage (transport / empty_response / graded), and takes an opt-in seed via LINEAGE_SEED. This is the prerequisite the termination draft named ('lineage_chunk.py has no done_reason column; extend the instrument first, then collect'). Seed default remains None == not sent, so enabling it cannot silently change the instrument under the artifacts already on disk; the completed confound-audit run is therefore still reproducible.",
+      "my_own_error_caught_by_my_new_test": "First version of the shared classifier MISSED ConnectionRefusedError, ReadTimeout and BrokenPipeError -- they fell through to None, i.e. charged to capability, which is the exact sweetspot-04 error reproduced inside my own fix. It was caught only after I added battery cases taken from real corpus strings rather than from strings my own collector emits. A predicate that covers the cases you thought of is not a predicate that covers the phenomenon.",
+      "second_error_same_origin": "The classifier also labelled 'RuntimeError: truncated at num_predict=400 (528 chars)' as empty_response, because it tested the needle 'chars' before 'truncat'. Right bucket (unmeasurable), wrong reason -- and those two diagnoses need different fixes (budget too small vs model said nothing). Both are now battery cases.",
+      "third_error_my_own_scan": "The earlier paid-blank figure of 192 infra rows across 1824 was an UNDERCOUNT: it used a hand-written needle list that missed 'truncated at num_predict' and every exception name outside its set. Rerun through the shared classifier: 206 unmeasurable of 2144 rows (9.6%) across 5 runs -- sweetspot-04 111 (availability 0.615), coderepair-01 80 (0.750), transfer-confirmation 10, confirmation-8fam 5, coderepair-02 0. The same 'predicate narrower than the phenomenon' fault, in my own audit tool.",
+      "two_rulers_kept_apart": "lineage_availability_report.py runs under --judge production or --judge fixed and writes ONE FILE PER JUDGE, because the interesting question is which ruler produced a number. Under production: v3b 0.7317, v3c 0.7083 (v3c lower by 0.0234 on answered rows). Under fixed: v3b 0.7317, v3c 0.7778 (v3c HIGHER by 0.0461), and it reproduces artifacts/fixed/comparison.json through an independent code path -- AGREE. Availability is 0.840 vs 1.000 either way. Any 'v3c regressed' sentence must now name the judge and the column.",
+      "not_touched": "demo/transfer/ was left alone throughout: another session's run_confirmation.py held the guard lock and was live for the whole of this work, and editing a collector under a running job is how a mixed-generation arm gets produced. mimicry / swarm / collapse / breadth get a written port recipe (patches/availability-port-recipe.md) rather than blind edits I cannot verify against their selftests.",
+      "carriers": "demo/shared/availability.py; demo/sweetspot/run_sweetspot_amp.py (import-only, 128 lines of local classifier removed); workspace lineage_chunk.py --selftest; workspace lineage_availability_report.py; runs/lineage-01-clean/round-01/artifacts/availability_report.{production,fixed}.json; patches/sweetspot-availability/"
+    },
+    {
+      "id": "A12_i_broke_four_scripts_that_were_carrying_prior_claims",
+      "what_i_said_or_did": "On 2026-10-10 I pinned 8 workspace scripts to the frozen judge with a batch script. The splice dropped the helper body into `from __future__ import annotations` and into the `SCORER = (...)` assignment in lineage_chunk.py, paid_blank_scan.py, patches/scorer-runtime-guard/prove_red_differential.py and patches/broken_short-guard/broken_short_guard_fixtures.py -- four files would not compile.",
+      "why_it_matters": "Those four files carry the evidence behind claims already reported (the blank-answer blast radius, the broken_short differential, the collector contract). While they were broken, nothing they printed could be cited, including my own 'the patch was verified' line.",
+      "fix_and_ruler": "Hand-edited (no more scripted surgery), then verified with a whole-workspace py_compile sweep (`find . -name '*.py' -not -path '*/.venv*' -not -path '*/__pycache__/*'` -> zero SYNTAX-FAIL), then re-ran each instrument: lineage_chunk --selftest PASS; prove_red_differential rc=0 (old 10/10 vs new 0/10 exclusions on v3c, control v3b 0/0); broken_short fixtures rc=0 (18 vetoed items, 18 pass every check; direction B prod pays 1 blank, patched 0); upstream pytest 47 passed.",
+      "reproducibility_of_the_registered_numbers": "Re-scored the clean run with the frozen judge into a temp dir and byte-compared: out_v3b.jsonl, sum_v3b.json, out_v3c.jsonl, sum_v3c.json all IDENTICAL. Measured with cmp -s against the committed artifacts; lineage_chunk.score() was deliberately NOT run because it writes into the registered directory in place.",
+      "measured_not_transcribed": "frozen/prod_scorer_20261009.py sha256 62b240b797547d69ea1b4774695c87d9286d3bf02acec9b09664e65ca0660926; post-patch live sha256 d5622de5d3303177dfe4f15ec25d424ad2c111ccb0c91e8117468d584835dd54 (sha256sum)."
+    }
+  ],
+  "scope_amendment_for_this_run": {
+    "registered_scope": "250 gen calls across v1, v2, v3, v3b, v3c (lineage_chunk.py docstring)",
+    "actual_scope": "100 gen calls: v3b and v3c only",
+    "reason": "adjudicate_lineage_clean.py reads only out_v3b/out_v3c and pred_v3c, and asserts 50 items for each of v3b and v3c. v1 cannot load (A1) and was already dead in the original (A2); v2 and v3 are not in the paired comparison. Running them would add ~60 min of machine time to a question that does not use their output.",
+    "consequence": "result.json from score() will contain rates for v3b and v3c only. It must not be read as a five-version lineage, and the original result.json's v2/v3 rates are not reproduced here."
+  },
+  "gaps_found_in_the_judge": [
+    {
+      "id": "G1-corrected-my-own-error-about-the-envelope",
+      "wrong_claim_made_earlier_this_session": "I recorded that envelope_lineage-01_confound_audit.json does not exist, having searched demo/, .research/ and this workspace by name and by content.",
+      "correction": "It exists at ai-researcher/proposals/envelopes/envelope_lineage-01_confound_audit.json -- a sibling tree of demo/ that I had not searched. My negative was an artifact of my search scope, not of the file's absence.",
+      "what_the_envelope_actually_says": "kill_switch is 'confirmed == True -> STOP-EXTEND' / 'confirmed == False -> STOP-REFUTED'. adjudicate_lineage_clean.py implements exactly that condition, so the judge is faithful to the registered criterion and there is no criterion change to flag. What the envelope does NOT fix is the definition of 'confirmed'; the script supplies it (significant McNemar AND broken items free of error text AND free of sub-300-char outputs).",
+      "note": "Definition of confirmed was authored 2026-10-08 in the script, before any clean prediction existed, so it is not fitted to today's data.",
+      "attribution_nuance": "launch_clean_lineage.py introduces its kill switch as '(from the envelope; computed on the clean data the same way)' and then states the elaborated form. The envelope text itself is only 'confirmed == True -> STOP-EXTEND' / 'confirmed == False -> STOP-REFUTED'; the elaboration (McNemar significant AND broken items with no error text AND no sub-300-char output) is the 10-08 session's own definition of 'confirmed'. It is a reasonable reading but it is not the envelope's words, and G2 is a defect of that elaboration, not of the registered envelope."
+    },
+    {
+      "id": "G4-envelope_is_unapproved_and_its_methods_are_a_todo",
+      "finding": "In the envelope: approved_by = \"\", approved_at = \"\", methods = \"# TODO(confound_audit): exact command for lineage-01\". max_cost_usd 0.0, max_wall_hours 4.0.",
+      "consequence": "This run is being executed against an envelope that was scaffolded but never completed or approved. The original lineage-01 run by contrast carries approved_by 'liuzewen (blanket 全做 directive 2026-10-06)'. The case study's line 'was never approved/run' is correct about approval, and wrong about it not existing.",
+      "budget_check": "cost 0 (local ollama) and wall ~1.6 h for 100 calls, both inside the registered limits.",
+      "action_for_owner": "fill methods with the exact command and set approved_by, or mark this run exploratory."
+    },
+    {
+      "id": "G5-seed_declared_but_not_sent",
+      "finding": "Envelope declares seed 0. lineage_chunk.py gen() sends only {temperature: 0}; no seed field reaches ollama.",
+      "why_not_fixed_during_this_run": "v3b[0:5] and items 5..14 were already collected without a seed. Patching gen() now would mix two generation settings inside one arm, which is worse than the deviation itself.",
+      "consequence": "Numbers from this run are reproducible in protocol but not bit-reproducible. Recorded as a deviation, not corrected silently."
+    },
+    {
+      "id": "G6-power_plan_is_for_n80_on_a_50_item_instrument",
+      "finding": "Envelope power block: n=80, alpha 0.05, min_detectable_effect 0.2, power_at_mde 0.8. The test set is llm_lab_copilot/test_50.jsonl, 50 paired items.",
+      "consequence": "The delivered instrument has 30 fewer pairs than the registered power plan. Any non-significant McNemar here is not evidence of no effect at the registered MDE; the shortfall is in the envelope, not in this run's execution. Do not read a null as a refutation on power grounds.",
+      "already_documented_by": "launch_clean_lineage.py lines 20-25 recorded exactly this deviation on 2026-10-08 and argued power is not the binding constraint because n=50 resolved the original effect at p=0.001. This session re-derived it independently, so it is a duplicate finding rather than a new one, and the prior record is the citable one."
+    },
+    {
+      "id": "G9-precondition_2_had_no_digest_carrier_until_now",
+      "finding": "launch_clean_lineage.py precondition 2 requires 'digests recorded in model_digests.json next to the output'. No model_digests.json existed for the 10-07 original or the 10-08 retries, so that precondition was asserted without a carrier in both.",
+      "action_taken_today": "wrote runs/lineage-01-clean/round-01/model_digests.json. Its digests are DECLARED (read from the ollama manifest and matching the blob filename), not recomputed by hashing 6.2 GB, because recompute would have added disk I/O while the run holds the machine. The v1 artifact defect is recorded there with its mtime, which is what supports the cross-run identity claim in A2."
+    },
+    {
+      "id": "G2-broken_short-rule-contradicts-ollama_guard",
+      "finding": "adjudicate_lineage_clean.py disqualifies confirmation when a clean-broken item's output is under 300 chars. ollama_guard.py documents the opposite rule from its own first misfire: 'Empty output or a provider error string. Brevity alone is NOT an error ... A blanket length floor misfired on its first use.' Both original arms contain legitimate 3-char answers ('不能。') to the reviewer_qa items.",
+      "risk": "If the v3c terse-output hypothesis (A3 option b) is true, this rule will label a real model effect as recurring contamination and print STOP-REFUTED for the wrong reason. The registered verdict is still run unchanged; the arm-level length census is reported beside it so the two readings are visible."
+    },
+    {
+      "id": "G3-lineage_chunk-does-not-take-the-guard-lock",
+      "finding": "lineage_chunk.py scans the process table and refuses at chunk start, but never acquires /tmp/ollama_guard.lock, so a concurrent session that does respect the guard can run against ollama during a chunk without being kept out. The 10-08 14:02 attempt is an instance: clean pre-snapshot, competitor appeared mid-chunk.",
+      "mitigation_used_today": "an external holder process owned the lock for the whole run. The script itself is unchanged during the run so that the second invocation cannot execute different code from the first."
+    },
+    {
+      "id": "G7-launcher_is_a_data_loss_hazard_and_its_premise_is_stale",
+      "finding": "start_lineage_clean.sh opens with 'rm -f' over contamination_watch.jsonl, stdout/stderr, watch_stdout, and artifacts/pred_*, out_*, sum_*, result.json. Run while a re-run is in flight it deletes the evidence being generated. It then invokes run_lineage.py (the original single 250-call process), not lineage_chunk.py, and its header comment asserts 'inside tmux (survives tool-call ends)' while lineage_chunk.py's docstring records the opposite as verified.",
+      "today's_test_of_that_premise": "nohup and a harness background task both survived tool-call boundaries on 2026-10-09, and no tmux server was running. The tmux claim is neither confirmed nor needed here; the background run is resumable through done_ids() regardless.",
+      "action_taken_today": "the launcher was NOT used. The run went through lineage_chunk.py directly, with the discarded 10-08 chunks left in place as named .CONTAMINATED- files.",
+      "action_for_owner": "delete or rewrite this launcher: an rm -f ahead of an evidence-producing run has no safe invocation."
+    },
+    {
+      "id": "G8-exclusivity_evidence_is_two_producers_on_two_files",
+      "finding": "lineage_chunk.py writes pre/post snapshots per chunk into contamination_watch.jsonl; watch_ollama.py polls every 30 s. Pointing both at one file would interleave two record schemas.",
+      "action_taken_today": "sidecar started against watch_sidecar_20261009.jsonl (separate file, pid 2283193) so the run window has continuous coverage rather than only two endpoints. A stale contamination_watch.jsonl.pid from the 10-08 session was left untouched."
+    },
+    {
+      "id": "G10-the_guard_lock_is_advisory_and_a_trainer_ignores_it",
+      "finding": "While probing the A2 eight-condition pipeline on 2026-10-09 at ~11:00-11:13, a concurrent session ran r4_gpu_train.py at ~82% CPU for the whole window. /tmp/ollama_guard.lock was held during that probe and did nothing, because the lock only excludes processes that go through ollama_guard; a GPU trainer never touches it.",
+      "consequence": "The 25.0 s/call latency measured in that probe is not citable as the pipeline's cost, and the run is not an exclusive-access run. This is the lineage-01 confound class reproduced by me, in the same session that documented it, and it is why the probe's conclusion was edited to withdraw the cost projection rather than refine it.",
+      "what_exclusivity_requires": "Counting co-resident GPU/python work at both ends of the window (the sidecar's ps snapshot is the right instrument for this) rather than trusting a lock file. The sidecar for the lineage-01 arms did exactly that and reported 0 competitors in 121 polls, which is why those arms' numbers stand.",
+      "status_of_this_item": "measured"
+    },
+    {
+      "id": "G11_the_registered_runs_instrument_is_an_unpinned_volatile_path",
+      "finding": "lineage_chunk.py reads TESTS and SCORER from /tmp/ind-audit/... -- a git checkout of an external repo inside volatile storage. Nothing in this run's envelope or artifacts records which bytes of the judge produced them. Two consequences already materialised today: (a) the July 'fix verified' claim was made against a model artifact that no longer exists (A8); (b) any re-score after a reboot silently uses whatever the path holds then.",
+      "mitigation_applied": "frozen/ in the workspace now carries test_50.jsonl (sha256 f889747d...95708) and the scorer as of this run (sha256 62b240b7...660926), and the frozen scorer was verified functionally, not just by hash: re-scoring the original v3c predictions through it reproduces the live scorer's per-item output exactly (50/50 identical).",
+      "recommendation": "Envelopes should carry sha256 of the dataset and the scorer, and a run should pin its judge by digest at launch. An instrument that can change underneath a registered result is not a registered instrument.",
+      "status_of_this_item": "measured"
+    },
+    {
+      "id": "G12_the_live_judge_was_patched_so_published_means_a_pinned_copy_now",
+      "gap": "Eight workspace scripts load the judge from /tmp/ind-audit/auditable-llm-eval/copilot/score_copilot_run_v2.py and define 'as published' as 'whatever is at that path'. scorer.patch landed on that path 2026-10-10, so the path survived and the instrument did not -- a silent swap that would have made every before/after comparison against it a tautology.",
+      "resolution": "Every one of those scripts now resolves SCORER/OLD through _find_frozen_judge(), which searches upward for the marker frozen/prod_scorer_20261009.py and raises SystemExit(NOT_ASSESSED) if the marker is missing -- no silent fallback, and no `parents[n]` counting (that mistake is documented in demo/sweetspot/run_sweetspot_amp.py::_repo_root). SCORER_LIVE=1 is the only way to score with the post-patch judge, and the scripts print which one they mean.",
+      "merge_state": "scorer.patch applied to the checkout at HEAD b05cf87; three files show ' M' in `git status --porcelain`; NOT committed, NOT pushed. Revert: `git checkout -- copilot/score_copilot_run_v2.py specs/scoring-rules.json tests/test_scorer.py`. Deciding whether to commit upstream is the user's, not mine.",
+      "standing_test": "patches/scorer-runtime-guard/prove_red_differential.py is now a standing regression test on the merge, and its NEW now names the live checkout rather than the patch-dir copy (same bytes today: both d5622de5...; if they ever drift the test goes red instead of testing a file nobody consumes). If it ever stops reporting the differential, either the merge was reverted or the fixture no longer reproduces the defect.",
+      "for_the_next_run": "Envelopes should pin the sha256 of BOTH the dataset and the scorer (G11). The 2026-10-10 lesson is that pinning a volatile path is not enough once that path is edited in place -- pin the digest and keep a frozen copy beside it."
+    }
+  ],
+  "knowable_without_data": "yes for A1/A2/A3/G1/G2/G3: all were read off committed artifacts and a load probe, before any clean prediction was scored. No scoring output existed at the time of this amendment.",
+  "not_withdrawn": "The confound mechanism itself is real and ollama_guard.py's rules still stand. What is withdrawn is the attribution of the four 10-08 v1 chunks to it."
+}

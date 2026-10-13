@@ -1,0 +1,39 @@
+{
+  "hypothesis": "The evaluator-bias amplification claim replicates across independent seeds: with the evaluator and task held fixed, at least 5 of 6 independent swarm seeds show a swarm=4 vs swarm=1 PCI slope excess of >= 0.01/round.",
+  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root (no src/ai_researcher above $RD)\" >&2; exit 1; }; EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261006 EVO_SEEDS=20261006,20261007,20261008,20261009,20261010,20261011 EVO_ROUNDS=6 python3 \"$ROOT/demo/swarm/run_swarm.py\"",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 3.0,
+  "kill_switch": [
+    {
+      "condition": "n_seeds < 6",
+      "action": "STOP-INCONCLUSIVE",
+      "note": "the harness emitted fewer independent seeds than this envelope declares, so the escalation did not execute. Nothing is claimed in either direction; check EVO_SEEDS reached the process before spending another round."
+    },
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": ">=5 of 6 seeds reproduce the slope excess -- the claim becomes citable at adequate n, and the next step is a second task family rather than more seeds."
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "the excess does not survive independent seeds. Publish as a replication report; the single-seed observations that carried the claim were noise or seed-specific."
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "approved_by": "liuzewen (2026-10-09 会话授权按顺序全部做，含这一发 seed 升档；批准字段系操作者自述)",
+  "approved_at": "2026-10-08T17:52:59.639459+00:00",
+  "seed": 20261006,
+  "tension": "Every swarm result on disk was measured at n_seeds=1, and the harness's own success field is defined as n_positive >= max(1, len(reps)-1) -- which at one seed reads 1 >= 1, i.e. trivially true. So `confirmed: true` in swarm-fd and swarm-fd2 was never evidence of anything: swarm-fd went further and had its threshold edited by hand from max(2,len-1) to max(1,len-1) to flip that field, voiding its own signature (see its amendment.json; the bundle still verifies as invalid and is not citable). The open question is therefore not whether the bias amplifies -- it is whether ANY of the three single-seed observations replicate once the threshold is not self-satisfying. Six independent seeds with a 5-of-6 requirement is the smallest design in which 'replicates' has content and the sign test can actually reject p=0.5 (2*0.5^6 = 0.031 < 0.05). Answering it decides whether the scaling claim goes into a paper at all or becomes a documented non-replication.",
+  "power": {
+    "n": 6,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.01,
+    "power_at_mde": 0.8,
+    "endpoint": "sign test over 6 independent seeds (required_n() models a paired proportion difference, which is not this design; the gate checks required_n_signtest(0.05)=6 instead)"
+  },
+  "negative_publish": "replication-report"
+}

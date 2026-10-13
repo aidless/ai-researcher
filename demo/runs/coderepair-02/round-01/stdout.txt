@@ -1,0 +1,7 @@
+[preflight] not installed, excluded before measurement: ['definitely-not-a-real-model:9b']
+[preflight] available: ['agi-sft-qwen3-0.6b:round22', 'agi-sft-smollm2-round20:latest', 'agi-sft-smollm2-validation:round18', 'copilot-3b-lora-v2:latest', 'copilot-3b-lora-v3:latest', 'copilot-3b-lora-v3b:latest', 'copilot-3b-lora-v3c:latest', 'copilot-3b-lora:latest', 'deepseek-r1:7b', 'gemma3:4b', 'lfm2.5:2.6b', 'llama3.1:8b', 'llama3.2:1b', 'moondream:latest', 'nomic-embed-text:latest', 'qwen2.5-coder:3b', 'qwen2.5-coder:7b', 'qwen2.5:1.5b-instruct-q4_K_M', 'qwen2.5:3b', 'qwen2.5:3b-instruct-q4_K_M', 'qwen2.5:7b', 'qwen2.5vl:3b', 'qwen2:7b', 'qwen3:0.6b', 'qwen3:1.7b', 'qwen3:4b']
+  [SELFTEST OK] 12 classes, 40 items, 3 known-good cases, extraction 3/3
+qwen2.5:7b: {'direct': 0.5833, 'step-calc': 0.5833, 'spec-first': 0.5208, 'test-first': 0.6042}
+qwen2.5-coder:7b: {'direct': 0.5833, 'step-calc': 0.5833, 'spec-first': 0.3333, 'test-first': 0.5833}
+gemma3:4b: {'direct': 0.6667, 'step-calc': 0.3542, 'spec-first': 0.4167, 'test-first': 0.5625}
+{"best": "test-first", "gain_mean": -0.0278, "p": 0.643969, "guard_minus_arith": -2, "confirmed": false}

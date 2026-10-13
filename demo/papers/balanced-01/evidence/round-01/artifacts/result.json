@@ -1,0 +1,25 @@
+{
+ "n_strategies_full": 11,
+ "n_strategies_balanced": 6,
+ "kept_text": [
+  "critical_check",
+  "step_by_step",
+  "synthesis"
+ ],
+ "kept_visual": [
+  "visual_grounding",
+  "spatial_decompose",
+  "aesthetic_frame"
+ ],
+ "full": {
+  "cross": 1.6191071613701178,
+  "self": 1.265337993756165
+ },
+ "balanced": {
+  "cross": 1.1058618487749612,
+  "self": 1.5434358842927345
+ },
+ "full_order": "cross>self",
+ "balanced_order": "self>=cross",
+ "confirmed": false
+}

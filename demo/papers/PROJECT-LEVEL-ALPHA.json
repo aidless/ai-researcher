@@ -1,5 +1,5 @@
 {
- "family_size": 15,
+ "family_size": 16,
  "families": {
   "confirmatory": {
    "definition": "preregistered hypothesis about the core phenomenon, rule fired, direction pre-specified",
@@ -40,8 +40,9 @@
   },
   "exploratory": {
    "definition": "everything else testable; BH is descriptive, survival is not a finding",
-   "size": 12,
+   "size": 13,
    "notable": [
+    "cross-dataset",
     "matrix-01",
     "prompt-ablation",
     "sweetspot-04"
@@ -50,65 +51,71 @@
     "swarm-fd2:primary": {
      "q": 1.0,
      "notable": false,
-     "rank": 12,
+     "rank": 13,
      "run": "swarm-fd2"
     },
     "swarm-fd:primary": {
      "q": 1.0,
      "notable": false,
-     "rank": 11,
+     "rank": 12,
      "run": "swarm-fd"
     },
     "collapse-replication:primary": {
      "q": 1.0,
      "notable": false,
-     "rank": 10,
+     "rank": 11,
      "run": "collapse-replication"
     },
     "coderepair-02:primary": {
-     "q": 0.858625,
+     "q": 0.83716,
      "notable": false,
-     "rank": 9,
+     "rank": 10,
      "run": "coderepair-02"
     },
     "seed6-01:primary": {
-     "q": 0.5625,
+     "q": 0.541667,
      "notable": false,
-     "rank": 8,
+     "rank": 9,
      "run": "seed6-01"
     },
     "coderepair-01:primary": {
-     "q": 0.27901,
+     "q": 0.264478,
      "notable": false,
-     "rank": 7,
+     "rank": 8,
      "run": "coderepair-01"
     },
     "swarm-ms:primary": {
-     "q": 0.25,
+     "q": 0.232143,
      "notable": false,
-     "rank": 6,
+     "rank": 7,
      "run": "swarm-ms"
     },
     "exp-01:primary": {
-     "q": 0.25,
+     "q": 0.232143,
      "notable": false,
-     "rank": 5,
+     "rank": 6,
      "run": "exp-01"
     },
     "failclosed-01:primary": {
-     "q": 0.1875,
+     "q": 0.1625,
      "notable": false,
-     "rank": 4,
+     "rank": 5,
      "run": "failclosed-01"
     },
     "sweetspot-04:primary": {
-     "q": 0.015625,
+     "q": 0.012695,
      "notable": true,
-     "rank": 3,
+     "rank": 4,
      "run": "sweetspot-04"
     },
+    "cross-dataset:primary": {
+     "q": 0.000382,
+     "notable": true,
+     "rank": 3,
+     "run": "cross-dataset"
+    },
     "prompt-ablation:primary": {
-     "q": 0.000209,
+     "q": 0.000226,
      "notable": true,
      "rank": 2,
      "run": "prompt-ablation"
@@ -124,7 +131,9 @@
  },
  "surviving_supporting_claim": [
   "confirmation-8fam-r2",
+  "cross-dataset",
   "matrix-01",
+  "prompt-ablation",
   "transfer-01",
   "transfer-confirmation"
  ],
@@ -188,11 +197,20 @@
   "confirmation-8fam-r2": {
    "direction": "aligns",
    "claim": "7/8 families positive on 160 fresh disjoint items (1280 paired obs), signed bundle, kill-switch fired; unanimity fails informatively at qwen3:4b"
+  },
+  "prompt-ablation": {
+   "direction": "aligns",
+   "claim": "all four wording variants beat direct in all three families (wording-robustness, preregistered scope condition, not the core phenomenon itself)"
+  },
+  "cross-dataset": {
+   "direction": "aligns",
+   "claim": "preregistered null: both independent sources must replicate; SVAMP does (3/3, p=7.3e-5) but ASDiv-rest does not (2/3, p=0.37) -- so the claim narrows rather than surviving"
   }
  },
  "alpha": 0.05,
  "surviving": [
   "confirmation-8fam-r2",
+  "cross-dataset",
   "matrix-01",
   "prompt-ablation",
   "sweetspot-04",
@@ -203,65 +221,71 @@
   "swarm-fd2:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 15,
+   "rank": 16,
    "run": "swarm-fd2"
   },
   "swarm-fd:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 14,
+   "rank": 15,
    "run": "swarm-fd"
   },
   "collapse-replication:primary": {
    "p_bh": 1.0,
    "survives": false,
-   "rank": 13,
+   "rank": 14,
    "run": "collapse-replication"
   },
   "coderepair-02:primary": {
-   "p_bh": 0.804961,
+   "p_bh": 0.792577,
    "survives": false,
-   "rank": 12,
+   "rank": 13,
    "run": "coderepair-02"
   },
   "seed6-01:primary": {
-   "p_bh": 0.511364,
+   "p_bh": 0.5,
    "survives": false,
-   "rank": 11,
+   "rank": 12,
    "run": "seed6-01"
   },
   "coderepair-01:primary": {
-   "p_bh": 0.244133,
+   "p_bh": 0.236736,
    "survives": false,
-   "rank": 10,
+   "rank": 11,
    "run": "coderepair-01"
   },
   "swarm-ms:primary": {
-   "p_bh": 0.208333,
+   "p_bh": 0.2,
    "survives": false,
-   "rank": 9,
+   "rank": 10,
    "run": "swarm-ms"
   },
   "exp-01:primary": {
-   "p_bh": 0.208333,
+   "p_bh": 0.2,
    "survives": false,
-   "rank": 8,
+   "rank": 9,
    "run": "exp-01"
   },
   "failclosed-01:primary": {
-   "p_bh": 0.133929,
+   "p_bh": 0.125,
    "survives": false,
-   "rank": 7,
+   "rank": 8,
    "run": "failclosed-01"
   },
   "sweetspot-04:primary": {
-   "p_bh": 0.009766,
+   "p_bh": 0.008929,
    "survives": true,
-   "rank": 6,
+   "rank": 7,
    "run": "sweetspot-04"
   },
+  "cross-dataset:primary": {
+   "p_bh": 0.000235,
+   "survives": true,
+   "rank": 6,
+   "run": "cross-dataset"
+  },
   "prompt-ablation:primary": {
-   "p_bh": 0.000104,
+   "p_bh": 0.000111,
    "survives": true,
    "rank": 5,
    "run": "prompt-ablation"
@@ -302,6 +326,7 @@
   "collapse-replication": "seed-level sign test on excess over majority-vote baseline; positive_seeds=0/10",
   "confirmation-8fam": "SUPERSEDED: superseded by confirmation-8fam-r2: identical design, signed bundle, 7/8 with the same boundary family (qwen3:4b)",
   "confirmation-8fam-r2": "pooled paired McNemar, direct vs step-calc; fixed=439, broke=69, families=8",
+  "cross-dataset": "pooled paired McNemar, direct vs step-calc; fixed=108, broke=57, families=6",
   "exp-01": "exact binomial, single-arm hit count against chance; passed=4/4",
   "failclosed-01": "exact binomial, defects caught against chance (0.5); escaped=0/5",
   "jsd-01": "no directional claim: descriptive only",

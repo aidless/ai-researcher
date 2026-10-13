@@ -1,0 +1,59 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/sweetspot-03/round-01",
+   "result": {
+    "model": "deepseek-r1:7b",
+    "caps": [
+     150,
+     400,
+     1000
+    ],
+    "families": {
+     "math": {
+      "acc": [
+       0.6667,
+       1.0,
+       1.0
+      ],
+      "nonmonotonic": false
+     },
+     "code": {
+      "acc": [
+       0.8333,
+       0.8333,
+       0.3333
+      ],
+      "nonmonotonic": true
+     },
+     "logic": {
+      "acc": [
+       0.0,
+       0.6667,
+       1.0
+      ],
+      "nonmonotonic": false
+     }
+    },
+    "any_sweet_spot": true,
+    "confirmed": true,
+    "exit_code": 0,
+    "wall_s": 5602.5,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@a4faaf3f2a75",
+   "kill_row": "confirmed == True",
+   "verdict": "STOP-EXTEND",
+   "reason": "non-monotonicity on calibrated items: extend to more items/families"
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-07T06:45:15.544199+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "b6dd01976a680a0dba4079d8d4b55f574b35be99e9800b9a060341f0361e3041",
+ "key_priv": null
+}

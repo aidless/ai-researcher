@@ -1,0 +1,52 @@
+{"chunk": "lock-bypass-L1", "holder": "3127597", "reason": "stuck by CPU/elapsed criteria; breaking it would fork mutual exclusion"}
+{"chunk": "exemptions-L1", "waived_stuck_processes": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; } [cpu=0s elapsed=42079s]", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=4s elapsed=42079s]"]}
+{"chunk": "pre-L1", "t": "00:08:04", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "post-L1", "t": "00:08:04", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "lock-bypass-L1", "holder": "3127597", "reason": "stuck by CPU/elapsed criteria; breaking it would fork mutual exclusion"}
+{"chunk": "exemptions-L1", "waived_stuck_processes": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; } [cpu=0s elapsed=42142s]", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=4s elapsed=42142s]"]}
+{"chunk": "pre-L1", "t": "00:09:07", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "post-L1", "t": "00:34:09", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "lock-bypass-L1", "holder": "3127597", "reason": "stuck by CPU/elapsed criteria; breaking it would fork mutual exclusion"}
+{"chunk": "exemptions-L1", "waived_stuck_processes": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=4s elapsed=43653s]"]}
+{"chunk": "pre-L1", "t": "00:34:18", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "post-L1", "t": "00:59:20", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "lock-bypass-L1", "holder": "3127597", "reason": "stuck by CPU/elapsed criteria; breaking it would fork mutual exclusion"}
+{"chunk": "exemptions-L1", "waived_stuck_processes": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=4s elapsed=45177s]"]}
+{"chunk": "pre-L1", "t": "00:59:41", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "post-L1", "t": "01:24:43", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "lock-bypass-L1", "holder": "3127597", "reason": "stuck by CPU/elapsed criteria; breaking it would fork mutual exclusion"}
+{"chunk": "exemptions-L1", "waived_stuck_processes": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=4s elapsed=46688s]"]}
+{"chunk": "pre-L1", "t": "01:24:52", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "post-L1", "t": "01:49:54", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "lock-bypass-L2", "holder": "3127597", "reason": "stuck by CPU/elapsed criteria; breaking it would fork mutual exclusion"}
+{"chunk": "exemptions-L2", "waived_stuck_processes": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=4s elapsed=48205s]"]}
+{"chunk": "pre-L2", "t": "01:50:10", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "post-L2", "t": "02:18:10", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "lock-bypass-L2", "holder": "3127597", "reason": "stuck by CPU/elapsed criteria; breaking it would fork mutual exclusion"}
+{"chunk": "exemptions-L2", "waived_stuck_processes": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=4s elapsed=49894s]"]}
+{"chunk": "pre-L2", "t": "02:18:18", "experiments": ["python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "pre-L2", "t": "02:48:38", "experiments": []}
+{"chunk": "post-L2", "t": "02:53:23", "experiments": []}
+{"chunk": "pre-L3a", "t": "09:01:50", "experiments": []}
+{"chunk": "L3a-preload-state", "loaded": []}
+{"chunk": "post-L3a", "t": "09:18:00", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py", "python3 /home/liuzewen/.research/paper5-consolidated/run_grid_v4flash.py --rounds 8 --seeds 5 --out /tmp/opencode/grid_n", "python3 /home/liuzewen/.research/paper5-consolidated/run_grid_v4flash.py --rounds 8 --seeds 5 --out /tmp/opencode/grid_n"]}
+{"chunk": "lock-bypass-L3b", "holder": "3820732"}
+{"chunk": "exemptions-L3b", "waived_stuck_processes": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; } [cpu=0s elapsed=1921s]", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=1s elapsed=1921s]"]}
+{"chunk": "pre-L3b", "t": "09:35:39", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "lock-bypass-L3b", "holder": "3820732"}
+{"chunk": "exemptions-L3b", "waived_stuck_processes": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; } [cpu=0s elapsed=3413s]", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=1s elapsed=3413s]"]}
+{"chunk": "pre-L3b", "t": "10:00:31", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"chunk": "post-L3b", "t": "10:16:05", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"]}
+{"event": "void-leg", "leg": "L3b", "cutoff_ts": "2026-10-10T10:16:46", "reason": "4/8 rows HTTPError under GPU-trainer contention (deeped_torch.py active, invisible to run_*.py process monitor; G10 lesson reproduced). HTTPError = request never executed, not a model behavior measurement. Keeping 4 good + voiding 4 would mix measurement regimes; voiding the whole leg is cleaner.", "rule": "L3b rows with ts <= cutoff are superseded; re-run writes fresh rows; adjudication uses only post-cutoff L3b rows.", "disposition": "re-run full L3b leg when GPU is free"}
+{"chunk": "lock-bypass-L3b", "holder": "3820732"}
+{"chunk": "exemptions-L3b", "waived_stuck_processes": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; } [cpu=0s elapsed=6188s]", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=1s elapsed=6187s]"]}
+{"chunk": "lock-bypass-L3b", "holder": "3820732"}
+{"chunk": "exemptions-L3b", "waived_stuck_processes": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; } [cpu=0s elapsed=6204s]", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=1s elapsed=6203s]"]}
+{"chunk": "pre-L3b", "t": "10:47:01", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"], "gpu_non_ollama": []}
+{"chunk": "post-L3b", "t": "11:02:10", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"], "gpu_non_ollama": ["3964744, [No data]"]}
+{"chunk": "lock-bypass-L3c", "holder": "3820732"}
+{"chunk": "exemptions-L3c", "waived_stuck_processes": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; } [cpu=0s elapsed=7123s]", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py [cpu=1s elapsed=7123s]"]}
+{"chunk": "pre-L3c", "t": "11:02:21", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"], "gpu_non_ollama": []}
+{"chunk": "L3c-designed-contention", "model": "qwen3:0.6b"}
+{"chunk": "contender-L3c", "model": "qwen3:0.6b", "calls_completed": 14}
+{"chunk": "post-L3c", "t": "11:19:57", "experiments": ["/bin/sh -c RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }", "python3 /home/liuzewen/F:\\deepseek/ai-researcher/demo/transfer/run_confirmation.py"], "gpu_non_ollama": ["3968584, [No data]"]}

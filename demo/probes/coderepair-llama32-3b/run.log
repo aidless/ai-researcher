@@ -1,0 +1,5 @@
+### A3 探针：llama3.2:3b（刚装的模型）跑 coderepair 同一批 40 题，两个策略
+start 2026-10-10T16:31:22+08:00
+llama3.2:3b: {'direct': 0.425, 'step-calc': 0.575}
+{"gain_mean": 0.15, "families_positive": "1/1", "mcnemar_pooled": {"fixed": 11, "broke": 5, "p": 0.210113525390625}, "confirmed": false, "sign_test_p": 0.5}
+rc=0  end 2026-10-10T16:32:16+08:00

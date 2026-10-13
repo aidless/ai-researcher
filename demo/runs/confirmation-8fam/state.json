@@ -1,0 +1,29 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/confirmation-8fam/round-01",
+   "result": {
+    "exit_code": -1,
+    "wall_s": 43200.3,
+    "timed_out": true,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [
+    "result.json"
+   ],
+   "exit_code": -1,
+   "timed_out": true,
+   "verdict": "ROUND-INVALID",
+   "reason": "missing artifacts: ['result.json']"
+  }
+ ],
+ "status": "STOP-INVALID",
+ "started_at": "2026-10-09T04:26:43.679374+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "339783ad6a79307b4996808024f17c6b6fa3be9fb1e1515907021ff7194e4e28",
+ "key_priv": null,
+ "key_era": "root",
+ "loop_schema": 2
+}

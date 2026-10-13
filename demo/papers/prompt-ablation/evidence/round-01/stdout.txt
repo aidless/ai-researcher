@@ -1,0 +1,18 @@
+  [SELFTEST OK] 80-item subset, 4 variants, canonical matches confirmation wording: True
+  [SELFTEST OK] 80-item subset, 4 variants, canonical matches confirmation wording: True
+qwen2.5:7b direct: 0.2250
+qwen2.5:7b v0-canonical: 0.4750
+qwen2.5:7b v1-terse: 0.8125
+qwen2.5:7b v2-verbose: 0.8000
+qwen2.5:7b v3-numbers: 0.4125
+gemma3:4b direct: 0.0875
+gemma3:4b v0-canonical: 0.6500
+gemma3:4b v1-terse: 0.5875
+gemma3:4b v2-verbose: 0.7875
+gemma3:4b v3-numbers: 0.2375
+llama3.1:8b direct: 0.1000
+llama3.1:8b v0-canonical: 0.4750
+llama3.1:8b v1-terse: 0.8125
+llama3.1:8b v2-verbose: 0.7625
+llama3.1:8b v3-numbers: 0.4625
+{"contrasts": {"v0-canonical": {"gain": 0.3958, "p": 0.0, "fam": "3/3"}, "v1-terse": {"gain": 0.6, "p": 0.0, "fam": "3/3"}, "v2-verbose": {"gain": 0.6458, "p": 0.0, "fam": "3/3"}, "v3-numbers": {"gain": 0.2333, "p": 0.0, "fam": "3/3"}}, "confirmed": true}

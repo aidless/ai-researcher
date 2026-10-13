@@ -1,0 +1,1 @@
+{"replication_gain": 0.75, "transfer_gain": 0.775, "gain": 0.775}

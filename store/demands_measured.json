@@ -1,0 +1,23 @@
+{
+  "measured_at": "2026-10-03T16:40+08:00",
+  "measured_by": "agent-reading（LLM 逐条读提案原文判定，非程序探针；每条附理由）",
+  "local_capability": {"gpu_total_mib": 6144, "gpu_free_mib": "~3000", "mem_available_gb": 5.0, "disk_free_gb": 57.9, "cpu_inference": "0.6B ≈9s/query（W6 n=10 实测）", "cloud": "已退役，无远程路径"},
+  "caliber_warning": "『可跑』全部指迷你口径：先把规模钉死再跑，结论按迷你范围收窄。提案原文的完整主张（如 18 语全覆盖、SWE 全仓执行）本机均不可复现。",
+  "items": [
+    {"arxiv_id": "2404.01318v5", "score": 5.8, "class": "runnable_mini", "demand": {"model": "0.6B~4B 推理", "gpu": "不需要（CPU 可）", "data": "JailbreakBench 开源集下载", "disk": "<2GB", "safety": "安全评测基准，按其防御性评测用途使用"}, "reason": "纯推理+开源数据集；评审判据可用启发式匹配器避免再养一个 judge"},
+    {"arxiv_id": "2402.06457v2", "score": 5.7, "class": "blocked_local", "demand": {"training": "DPO/verifier 训练"}, "reason": "训练类：0.6B bf16+AdamW ≈7.2GB > 本机显存 3GB 可用；CPU 训练按周计不成立"},
+    {"arxiv_id": "2504.02605v1", "score": 3.5, "class": "blocked_local", "demand": {"data": "SWE 类 issue 数据集+执行环境", "disk": "数十 GB"}, "reason": "仓库级执行环境+多语标注，规模与环境超出本机；5 仓玩具切片低于该提案主张的口径，不值当闭环"},
+    {"arxiv_id": "2504.08703v3", "score": 3.5, "class": "blocked_local", "demand": {"data": "仓库级 agent 执行环境"}, "reason": "同 2504.02605：执行环境规模超本机"},
+    {"arxiv_id": "2312.11361v3", "score": 3.0, "class": "runnable_mini", "demand": {"model": "bge-m3 嵌入（~2GB 下载）+ 0.6B 生成", "data": "多语 QA 子集", "disk": "~5GB"}, "reason": "RAG 评测与 B 线 rag_min_demo 机制同构，可复用现有流水线；迷你口径=选 3~4 语种子集"},
+    {"arxiv_id": "2406.06769v2", "score": 2.4, "class": "needs_decomposition", "demand": {"data": "120 任务构造+标注"}, "reason": "缺口本身是 data_labeling，构造 120 任务的标注成本先要拆解成阶段才能测"},
+    {"arxiv_id": "2404.07413v1", "score": 2.3, "class": "blocked_local", "demand": {"training": "MoE 预训练/续训"}, "reason": "0.1M 成本复核=训练类，本机不可行；只读其公开数字属阅读任务不是实验"},
+    {"arxiv_id": "2412.01769v1", "score": 2.3, "class": "runnable_mini", "demand": {"model": "0.6B~1.7B 推理", "infra": "生成代码的隔离执行沙箱", "disk": "<1GB"}, "reason": "规格→代码→跑单测，CPU 可行；需先建最小沙箱执行器（subprocess 隔离）"},
+    {"arxiv_id": "2606.08275v1", "score": 2.1, "class": "runnable_mini", "demand": {"data": "CAR 开源轨迹", "infra": "重放器"}, "reason": "提案自述『CAR 开源可跑』；重放成本随轨迹长增长，迷你口径=固定轨迹长度上限；第一步先验证该仓库在本机可运行"},
+    {"arxiv_id": "2503.12029v2", "score": 1.9, "class": "blocked_local", "demand": {"data": "SWE-bench 级执行环境"}, "reason": "SWE 执行环境规模超本机"},
+    {"arxiv_id": "2405.07551v1", "score": 1.4, "class": "runnable_mini", "demand": {"model": "Qwen3-0.6B（本机已有）", "data": "GSM8K 子集 n=100 固定种子（~5MB）", "gpu": "不需要", "time": "~17min CPU（100 题×~10s）"}, "reason": "与 W6 bakeoff 同机制零新建基础设施；判据=本机纯 prompt 准确率 vs 论文公开锚值 83.8~90.7 的差距（Wilson CI），是差距测量不是复现"},
+    {"arxiv_id": "2412.09722v2", "score": 1.4, "class": "blocked_local", "demand": {"training": "白盒梯度"}, "reason": "需开权重模型梯度（训练类），提案自己也标注白盒限制；本机显存不足"},
+    {"arxiv_id": "2301.13379v3", "score": 1.3, "class": "runnable_mini", "demand": {"model": "0.6B 推理", "infra": "求解器（SymPy 类）+ 代码执行沙箱", "time": "与 2405.07551 同量级"}, "reason": "翻译→求解器执行，CPU 可行；与 #2405.07551 可共用同一 GSM8K 子集，二次闭环边际成本极低"},
+    {"arxiv_id": "2505.19764v2", "score": 0.9, "class": "needs_decomposition", "demand": {"unknown": "多视角编码+预训练组件的训练头规模未明"}, "reason": "架构含预训练组件，先拆解哪些部分免训练才可测"}
+  ],
+  "summary": {"runnable_mini": 6, "blocked_local": 6, "needs_decomposition": 2}
+}

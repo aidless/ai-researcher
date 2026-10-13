@@ -1,0 +1,45 @@
+{
+  "tier": "tmlr",
+  "verdict": "FAIL",
+  "bar": 6.0,
+  "mechanical": [
+    {
+      "id": "T1-numbers-trace",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "T2-ci-present",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "T3-limitations-present",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "T4-double-blind",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "T5-references-resolve",
+      "pass": true,
+      "reason": "mechanical pass; hallucination scan is a separate gate"
+    },
+    {
+      "id": "T6-not-survey",
+      "pass": true,
+      "reason": "ok"
+    }
+  ],
+  "mechanical_ok": true,
+  "judgment_means": {},
+  "judgment_ok": false,
+  "dimensions": [
+    "correctness",
+    "clarity",
+    "scope-fit"
+  ]
+}

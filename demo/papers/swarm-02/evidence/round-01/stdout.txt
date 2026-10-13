@@ -1,0 +1,1 @@
+{"swarm1_slope": 0.04, "swarm4_slope": 0.0765, "confirmed": true}

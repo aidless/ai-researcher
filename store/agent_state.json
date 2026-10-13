@@ -1,0 +1,166 @@
+{
+ "cycles": [
+  {
+   "cycle": 1,
+   "ts": "2026-10-03T15:51:15+0800",
+   "steps": [
+    {
+     "step": "scan",
+     "module": "ai_researcher.scanner",
+     "rc": 0,
+     "ok": true,
+     "timed_out": false,
+     "seconds": 0.3,
+     "tail": "扫描 1365 篇：可用 384 / 拒 981，本机可跑 231\n  拒因 no_gap      426\n  拒因 incomplete  328\n  拒因 compressed  86\n  拒因 bib         82\n  拒因 short       51\n  拒因 residue     6\n  拒因 subjective  2",
+     "status": "ran"
+    },
+    {
+     "step": "rank",
+     "module": "ai_researcher.ranker",
+     "rc": 0,
+     "ok": true,
+     "timed_out": false,
+     "seconds": 0.3,
+     "tail": "        用户已判为 C1 类缺口（1.0）\n        有可套用的 C2 模板（0.8）\n   9. [ 4.8] 2609.08279v1     单一作者的审计框架；覆盖\n        已仲裁与对标工作不重复（3.0）\n        用户已判为 C1 类缺口（1.0）\n        有可套用的 C2 模板（0.8）\n  10. [ 4.1] 2507.20534v2     MuonClip泛化；万亿成本\n        已用它证伪过他人说法，负知识（1.2）\n        用户已判为 C1 类缺口（1.0）\n        有可套用的 C2 模板（0.8）\n\n结果已写入 ../rank/ranked.json",
+     "status": "ran"
+    },
+    {
+     "step": "propose",
+     "module": "ai_researcher.runner",
+     "rc": 0,
+     "ok": true,
+     "timed_out": false,
+     "seconds": 0.6,
+     "tail": "  2503.01763v2    工具描述质量决定上限；训练集分布外泛化待验。\n      缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验\n  2307.02483v1    分类覆盖；新attacks\n      缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验\n  2503.14376v3    核优化限；xLSTM泛化\n      缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验\n\n── needs_human（1 条）──\n  2601.07880v1    单域（ISPM）；生产数据不可公开，复现门槛高。\n      涉及生产数据/授权/合规，必须人拍后才能定实验\n\n结果已写入 ../proposals/proposals.json",
+     "status": "ran"
+    },
+    {
+     "step": "gate",
+     "module": "ai_researcher.store",
+     "rc": 0,
+     "ok": true,
+     "timed_out": false,
+     "seconds": 0.4,
+     "tail": "  2312.11361v3    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n  2406.06769v2    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n  2404.07413v1    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n  2412.01769v1    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n  2606.08275v1    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n  2503.12029v2    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n  2405.07551v1    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n  2412.09722v2    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n  2301.13379v3    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n  2505.19764v2    需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / \n\n结果已写入 ../store/proposals_state.json",
+     "status": "ran"
+    },
+    {
+     "step": "judge",
+     "module": "ai_researcher.critic",
+     "rc": 0,
+     "ok": true,
+     "timed_out": false,
+     "seconds": 0.1,
+     "tail": "    [过] caliber_isolation → 同口径 'dense|fixed_220_o40|w4_64q'，指标 'span_full_at_3'\n    [不过] mechanism_alignment → 增益不在预测的 'boundary' 类（该类 -0.143，其余类均值 +0.008）——不支持该机制主张，但效应可能真实\n    [过] scope_discipline → 无越界词；实测范围：本语料 26 篇 / 64 题\n\n主张：在本语料（26 篇 / 64 题）上，contextual retrieval 优于 W4 稀疏基线\n  裁决：FAIL\n    [过] effect_vs_noise → 跨度 0.031 落在 [0.02, 0.10]（n=64）\n    [不过] caliber_isolation → 口径不同：实验臂 'dense|fixed_220_o40|w4_64q' vs 对照臂 'sparse|fixed_220_o40|w4_64q' ——差值里混着口径差异，不是处理效应\n    [不过] mechanism_alignment → 两臂缺 'boundary' 类分项，无法验机制\n    [过] scope_discipline → 无越界词；实测范围：本语料 26 篇 / 64 题\n\n结果已写入 ../store/critic_verdicts.json",
+     "status": "ran"
+    }
+   ],
+   "headline": {
+    "runnable_now": 0,
+    "proposals": {
+     "blocked": 41,
+     "executable": 14,
+     "needs_human": 1
+    },
+    "store_states": {
+     "被阻塞": 41,
+     "待批": 15
+    },
+    "critic": {
+     "fail": 2,
+     "insufficient": 1
+    },
+    "blocked_reasons": {
+     "缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验": 16,
+     "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块": 13,
+     "缺判据（找不到任何可判定的比较、阈值或不变量）——需回原论文补齐后才能定实验": 12,
+     "缺判据（找不到任何可判定的比较、阈值或不变量）；缺观测（找不到任何可算出来的数）——需回原论文补齐后才能定实验": 11,
+     "数据 需求未测量：原文提到该类资源但未给体量/来源，本地可得性无法判定（fail-closed）": 1
+    }
+   },
+   "approvals_needed": [
+    {
+     "kind": "needs_human",
+     "id": "2601.07880v1",
+     "why": "涉及生产数据/授权/合规，必须人拍后才能定实验"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2404.01318v5",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2402.06457v2",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2504.02605v1",
+     "why": "数据 需求未测量：原文提到该类资源但未给体量/来源，本地可得性无法判定（fail-closed）"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2504.08703v3",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2312.11361v3",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2406.06769v2",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2404.07413v1",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2412.01769v1",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2606.08275v1",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2503.12029v2",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2405.07551v1",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2412.09722v2",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2601.07880v1",
+     "why": "涉及生产数据/授权/合规，必须人拍后才能定实验"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2301.13379v3",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    },
+    {
+     "kind": "awaiting_approval",
+     "id": "2505.19764v2",
+     "why": "需求未测量：提案原文未显式给出算力/数据需求，无法判定本机可跑（fail-closed）。补齐方式：为该提案写一份 demand（需 X G 显存 / 需 N GB 数据 / 需外网），再重跑本模块"
+    }
+   ],
+   "verdict": "本轮无一条提案可在本机开跑（fail-closed 或缺数据），不进入实验层"
+  }
+ ]
+}

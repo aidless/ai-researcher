@@ -1,0 +1,70 @@
+Loading weights:   0%|          | 0/311 [00:00<?, ?it/s]Loading weights:   0%|          | 1/311 [00:00<00:35,  8.65it/s]Loading weights:  29%|██▉       | 90/311 [00:00<00:00, 406.88it/s]Loading weights:  63%|██████▎   | 196/311 [00:00<00:00, 658.80it/s]Loading weights: 100%|██████████| 311/311 [00:00<00:00, 743.62it/s]
+[F 1/100] acc=0/1 last_sec=637.0 how=exec trunc=False
+[F 10/100] acc=5/10 last_sec=584.3 how=exec trunc=False
+[F 20/100] acc=8/20 last_sec=127.9 how=exec trunc=False
+[F 30/100] acc=12/30 last_sec=127.9 how=exec trunc=False
+[F 40/100] acc=14/40 last_sec=29.8 how=exec trunc=False
+[F 50/100] acc=19/50 last_sec=36.5 how=exec trunc=False
+[F 60/100] acc=22/60 last_sec=33.3 how=exec trunc=False
+[F 70/100] acc=23/70 last_sec=40.6 how=exec trunc=False
+[F 80/100] acc=27/80 last_sec=48.9 how=exec trunc=False
+[F 90/100] acc=27/90 last_sec=32.3 how=exec trunc=False
+[F 100/100] acc=31/100 last_sec=40.4 how=exec trunc=False
+[C 1/100] acc=1/1 last_sec=126.3
+[C 10/100] acc=6/10 last_sec=75.1
+[C 20/100] acc=11/20 last_sec=102.3
+[C 30/100] acc=18/30 last_sec=43.0
+[C 40/100] acc=22/40 last_sec=38.7
+[C 50/100] acc=27/50 last_sec=41.7
+[C 60/100] acc=30/60 last_sec=66.3
+[C 70/100] acc=34/70 last_sec=50.7
+[C 80/100] acc=37/80 last_sec=55.8
+[C 90/100] acc=40/90 last_sec=70.3
+[C 100/100] acc=41/100 last_sec=60.2
+{
+  "experiment": "w8_faithful_cot",
+  "arxiv_id": "2301.13379v3",
+  "probed_at": "2026-10-04T03:19:00+0800",
+  "device": "cpu",
+  "pairing_with_w7": {
+    "matched": true,
+    "n_w7": 100,
+    "n_ours": 100
+  },
+  "arm_f": {
+    "n": 100,
+    "n_correct": 31,
+    "acc": 0.31,
+    "wilson95": [
+      0.2278,
+      0.4063
+    ],
+    "n_unparsed": 2,
+    "n_truncated": 1,
+    "sec_mean": 101.3
+  },
+  "arm_c": {
+    "n": 100,
+    "n_correct": 41,
+    "acc": 0.41,
+    "wilson95": [
+      0.3187,
+      0.508
+    ],
+    "n_unparsed": 0,
+    "n_truncated": 1,
+    "sec_mean": 61.8
+  },
+  "paired_f_vs_c": {
+    "b_f_right_c_wrong": 9,
+    "c_f_wrong_c_right": 19,
+    "n_discordant": 28,
+    "p_exact_two_sided": 0.087159
+  },
+  "gap_to_anchor": {
+    "f_vs_0.723": -0.413,
+    "c_vs_0.633": -0.223
+  },
+  "wall_min": 272.4
+}
+wrote /home/liuzewen/F:\deepseek/ai-researcher/store/w8_faithful_cot_items.jsonl and /home/liuzewen/F:\deepseek/ai-researcher/store/w8_faithful_cot_summary.json

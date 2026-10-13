@@ -1,0 +1,67 @@
+{
+  "tier": "sci-journal",
+  "verdict": "FAIL",
+  "bar": 7.0,
+  "mechanical": [
+    {
+      "id": "J1-numbers-trace",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "J2-ci-present",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "J3-generality-discussed",
+      "pass": false,
+      "reason": "missing: ['strengths', 'generality']"
+    },
+    {
+      "id": "J4-predecessors-acknowledged",
+      "pass": false,
+      "reason": "no related/prior-work discussion found"
+    },
+    {
+      "id": "J5-examples-present",
+      "pass": false,
+      "reason": "no worked example found"
+    },
+    {
+      "id": "J6-new-terms-justified",
+      "pass": true,
+      "reason": "requires reviewer judgment; flagged for the seats"
+    },
+    {
+      "id": "J7-not-narrow",
+      "pass": true,
+      "reason": "requires reviewer judgment; flagged for the seats"
+    },
+    {
+      "id": "J8-not-applications-only",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "J9-references-resolve",
+      "pass": true,
+      "reason": "mechanical pass; hallucination scan is a separate gate"
+    },
+    {
+      "id": "J10-revision-ready",
+      "pass": true,
+      "reason": "checked against the objection table at gate time"
+    }
+  ],
+  "mechanical_ok": false,
+  "judgment_means": {},
+  "judgment_ok": false,
+  "dimensions": [
+    "significance",
+    "correctness",
+    "clarity",
+    "generality",
+    "predecessor-acknowledgment"
+  ]
+}

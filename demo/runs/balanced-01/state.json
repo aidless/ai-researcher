@@ -1,0 +1,46 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/balanced-01/round-01",
+   "result": {
+    "n_strategies_full": 11,
+    "n_strategies_balanced": 6,
+    "kept_text": [
+     "critical_check",
+     "step_by_step",
+     "synthesis"
+    ],
+    "kept_visual": [
+     "visual_grounding",
+     "spatial_decompose",
+     "aesthetic_frame"
+    ],
+    "full": {
+     "cross": 1.6191071613701178,
+     "self": 1.265337993756165
+    },
+    "balanced": {
+     "cross": 1.1058618487749612,
+     "self": 1.5434358842927345
+    },
+    "full_order": "cross>self",
+    "balanced_order": "self>=cross",
+    "confirmed": false,
+    "exit_code": 0,
+    "wall_s": 0.1
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@f6a66b27aa2a",
+   "kill_row": "confirmed == False",
+   "verdict": "STOP-REFUTED",
+   "reason": null
+  }
+ ],
+ "status": "STOP-REFUTED",
+ "started_at": "2026-10-06T07:20:36.245839+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "0b4f502b1f1ab12821d9204eeaa4f8c9b78174aca2befd92a85f2bb38d25fde3",
+ "key_priv": null
+}

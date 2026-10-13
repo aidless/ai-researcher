@@ -1,0 +1,196 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/jsd-01/round-01",
+   "result": {
+    "n_conditions": 5,
+    "conditions": [
+     "contagion",
+     "ds-self",
+     "gpt4o-cross",
+     "qwen37",
+     "real-image"
+    ],
+    "pairs": [
+     {
+      "a": "contagion",
+      "b": "ds-self",
+      "jsd": 0.1404,
+      "gap": 0.7993
+     },
+     {
+      "a": "contagion",
+      "b": "gpt4o-cross",
+      "jsd": 0.2929,
+      "gap": -0.6813
+     },
+     {
+      "a": "contagion",
+      "b": "qwen37",
+      "jsd": 0.1107,
+      "gap": -0.2287
+     },
+     {
+      "a": "contagion",
+      "b": "real-image",
+      "jsd": 0.2481,
+      "gap": -0.5724
+     },
+     {
+      "a": "ds-self",
+      "b": "contagion",
+      "jsd": 0.1404,
+      "gap": -0.7993
+     },
+     {
+      "a": "ds-self",
+      "b": "gpt4o-cross",
+      "jsd": 0.3493,
+      "gap": -1.4806
+     },
+     {
+      "a": "ds-self",
+      "b": "qwen37",
+      "jsd": 0.1583,
+      "gap": -1.028
+     },
+     {
+      "a": "ds-self",
+      "b": "real-image",
+      "jsd": 0.4029,
+      "gap": -1.3717
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "contagion",
+      "jsd": 0.2929,
+      "gap": 0.6813
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "ds-self",
+      "jsd": 0.3493,
+      "gap": 1.4806
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "qwen37",
+      "jsd": 0.3247,
+      "gap": 0.4526
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "real-image",
+      "jsd": 0.4705,
+      "gap": 0.1089
+     },
+     {
+      "a": "qwen37",
+      "b": "contagion",
+      "jsd": 0.1107,
+      "gap": 0.2287
+     },
+     {
+      "a": "qwen37",
+      "b": "ds-self",
+      "jsd": 0.1583,
+      "gap": 1.028
+     },
+     {
+      "a": "qwen37",
+      "b": "gpt4o-cross",
+      "jsd": 0.3247,
+      "gap": -0.4526
+     },
+     {
+      "a": "qwen37",
+      "b": "real-image",
+      "jsd": 0.4011,
+      "gap": -0.3437
+     },
+     {
+      "a": "real-image",
+      "b": "contagion",
+      "jsd": 0.2481,
+      "gap": 0.5724
+     },
+     {
+      "a": "real-image",
+      "b": "ds-self",
+      "jsd": 0.4029,
+      "gap": 1.3717
+     },
+     {
+      "a": "real-image",
+      "b": "gpt4o-cross",
+      "jsd": 0.4705,
+      "gap": -0.1089
+     },
+     {
+      "a": "real-image",
+      "b": "qwen37",
+      "jsd": 0.4011,
+      "gap": 0.3437
+     }
+    ],
+    "loo": [
+     {
+      "held_out": "contagion",
+      "nearest": "qwen37",
+      "pred_rank": 2,
+      "true_rank": 1,
+      "hit": true
+     },
+     {
+      "held_out": "ds-self",
+      "nearest": "contagion",
+      "pred_rank": 1,
+      "true_rank": 0,
+      "hit": true
+     },
+     {
+      "held_out": "gpt4o-cross",
+      "nearest": "contagion",
+      "pred_rank": 1,
+      "true_rank": 4,
+      "hit": false
+     },
+     {
+      "held_out": "qwen37",
+      "nearest": "contagion",
+      "pred_rank": 1,
+      "true_rank": 2,
+      "hit": true
+     },
+     {
+      "held_out": "real-image",
+      "nearest": "contagion",
+      "pred_rank": 1,
+      "true_rank": 3,
+      "hit": false
+     }
+    ],
+    "hit_rate": 0.6,
+    "n_predictable": 5,
+    "confirmed": true,
+    "verdict_note": "confirmed",
+    "exit_code": 0,
+    "wall_s": 0.1,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@b4604f2d4170",
+   "kill_row": "confirmed == True",
+   "verdict": "STOP-EXTEND",
+   "reason": "at threshold: extend to more evaluator conditions + ablations for a real validation set"
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-06T11:05:32.933270+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "a91753910b9fa43a6f695b12cd034387d0c2316212bb5e523b5ce132e7f7c875",
+ "key_priv": null
+}

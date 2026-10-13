@@ -1,0 +1,116 @@
+{
+  "claim": "本实验迷你口径实测：Qwen3-0.6B（bf16，CPU 贪心，每题单采样）在 HumanEval 全量 164 题上的 pass@1 = 0.3537（Wilson 95% CI [0.2846, 0.4294]，n=164，分母=全部题，无抽样）；失败原因分布 {'assert_or_error': 105, 'exec_timeout': 1}，其中截断 2 题、无可抽取代码 0 题。本实验 95% Wilson 区间 [0.2846, 0.4294] 下界 0.2846 高于表中最小锚 GPT-Neo 125M（0.75%），可区分地高于该锚；但上界 0.4294 与最大锚 Codex-12B（28.81%）重叠，故不声称高于最大锚。对 Codex 论文 Table 1 pass@1 锚（不同模型不同数据配比，同口径 k=1 单采样）为量级测量、非受控比较；anchor_gap=我方−锚（负=我方更差）：GPT-Neo 125M +0.3462、Codex-12M +0.3337、GPT-J 6B +0.2375。",
+  "verdict": "pass",
+  "recomputed": {
+    "pass_at_1": 0.3537,
+    "wilson95": [
+      0.2846,
+      0.4294
+    ],
+    "n_pass": 58,
+    "n_tasks": 164,
+    "n_missing": 0,
+    "missing_ids": [],
+    "fail_reasons": {
+      "assert_or_error": 105,
+      "exec_timeout": 1
+    },
+    "n_truncated": 2,
+    "n_unparsed": 0,
+    "sec_mean": 29.7,
+    "rerun_pass_mismatch": [],
+    "rerun_fail_mismatch": []
+  },
+  "gates": {
+    "recomputable": {
+      "pass": true,
+      "diffs": {
+        "pass_at_1": [
+          0.3537,
+          0.3537
+        ],
+        "wilson95": [
+          [
+            0.2846,
+            0.4294
+          ],
+          [
+            0.2846,
+            0.4294
+          ]
+        ],
+        "n_pass": [
+          58,
+          58
+        ],
+        "n_tasks": [
+          164,
+          164
+        ],
+        "fail_reasons": [
+          {
+            "assert_or_error": 105,
+            "exec_timeout": 1
+          },
+          {
+            "assert_or_error": 105,
+            "exec_timeout": 1
+          }
+        ],
+        "n_truncated": [
+          2,
+          2
+        ],
+        "n_unparsed": [
+          0,
+          0
+        ],
+        "sec_mean": [
+          29.7,
+          29.7
+        ],
+        "gap_to_anchor": {},
+        "gap_keys_scope": [
+          [
+            "vs_Codex-12M_2.00",
+            "vs_GPT-J-6B_11.62",
+            "vs_GPT-Neo-125M_0.75"
+          ],
+          [
+            "vs_Codex-12M_2.00",
+            "vs_GPT-J-6B_11.62",
+            "vs_GPT-Neo-125M_0.75"
+          ]
+        ]
+      }
+    },
+    "denominator_complete": {
+      "pass": true,
+      "reason": ""
+    },
+    "independent_rerun": {
+      "pass": true,
+      "reason": ""
+    },
+    "scope_caliber_in_claim": {
+      "pass": true,
+      "reason": ""
+    }
+  },
+  "anchors_used": {
+    "GPT-Neo 125M": 0.75,
+    "GPT-Neo 1.3B": 4.79,
+    "GPT-Neo 2.7B": 6.41,
+    "GPT-J 6B": 11.62,
+    "TabFive 2.58": 2.58,
+    "Codex-12M": 2.0,
+    "Codex-25M": 3.21,
+    "Codex-42M": 5.06,
+    "Codex-85M": 8.22,
+    "Codex-300M": 13.17,
+    "Codex-679M": 16.22,
+    "Codex-2.5B": 21.36,
+    "Codex-12B": 28.81
+  },
+  "design_note": "全量 164 题、无抽样、每题单采样（pass@1）。方向性判据=本实验 CI 上界 < 表中最小锚（保守）。对锚=量级测量非受控比较，不做显著性声明。"
+}

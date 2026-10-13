@@ -1,0 +1,44 @@
+{
+  "claim": "迷你口径实测：Qwen3-0.6B 纯 prompt CoT 在 GSM8K test n=100（seed 20261003，CPU 贪心，截断计错）准确率 0.53，Wilson 95% CI [0.433, 0.625]；相对文献锚下界 0.838（MathCoder，7B 级微调+工具，与本实验不同源）差距 -0.308，精确二项检验 p<1e-8 且 CI 上界 0.625 仍低于锚下界——差距可区分。此为量级测量非受控比较：0.6B 纯 prompt 距前沿锚约 21~41 个百分点。unparsed=0，截断=5 计错。",
+  "measured_scope": "Qwen3-0.6B 纯 prompt CoT；GSM8K test n=100 seed 20261003；CPU 贪心 max_new_tokens=384；锚为文献固定点 0.838~0.907",
+  "verdict": "pass",
+  "gates": {
+    "recomputable": {
+      "pass": true,
+      "diffs": {},
+      "recomputed": {
+        "n": 100,
+        "n_correct": 53,
+        "acc": 0.53,
+        "wilson95": [
+          0.4329,
+          0.6249
+        ],
+        "gap_to_anchor_lo": -0.308,
+        "n_unparsed": 0,
+        "n_truncated": 5
+      }
+    },
+    "effect_vs_noise_single_arm": {
+      "pass": true,
+      "reason": "",
+      "test": "P(X≤53|n=100,p=0.838)",
+      "p_value": 6.436175594100624e-13,
+      "note": "单臂对固定锚的检验；双臂 Arm 门不适用（锚无逐项数据，造 Arm 即编造）"
+    },
+    "scope_discipline": {
+      "pass": true,
+      "reason": "无越界词；实测范围：Qwen3-0.6B 纯 prompt CoT；GSM8K test n=100 seed 20261003；CPU 贪心 max_new_tokens=384；锚为文献固定点 0.838~0.907",
+      "measured_scope": "Qwen3-0.6B 纯 prompt CoT；GSM8K test n=100 seed 20261003；CPU 贪心 max_new_tokens=384；锚为文献固定点 0.838~0.907"
+    },
+    "caliber_in_claim": {
+      "pass": true,
+      "reason": ""
+    },
+    "mechanism_alignment": {
+      "pass": null,
+      "reason": "不适用：本主张是测量主张，不断言机制（显式记录，非静默跳过）"
+    }
+  },
+  "design_note": "单臂测量 vs 已发表固定锚；与 critic 双臂形状不同，门形状按设计适配（见各 gate.note）"
+}

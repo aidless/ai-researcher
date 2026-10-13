@@ -1,0 +1,48 @@
+{"id": "ss01", "cls": "none_handling", "passed": true, "why": "pass"}
+{"id": "ss02", "cls": "off_by_one", "passed": true, "why": "pass"}
+{"id": "ss03", "cls": "off_by_one", "passed": false, "why": "wrong value [1, 3]"}
+{"id": "ss04", "cls": "none_handling", "passed": true, "why": "pass"}
+{"id": "ss05", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss06", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss07", "cls": "missing_guard", "passed": false, "why": "candidate raised"}
+{"id": "ss08", "cls": "type_coercion", "passed": true, "why": "pass"}
+{"id": "ss09", "cls": "none_handling", "passed": true, "why": "pass"}
+{"id": "ss10", "cls": "missing_guard", "passed": false, "why": "candidate raised"}
+{"id": "ss11", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss12", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss13", "cls": "type_coercion", "passed": false, "why": "candidate raised"}
+{"id": "ss14", "cls": "type_coercion", "passed": true, "why": "pass"}
+{"id": "ss15", "cls": "type_coercion", "passed": false, "why": "candidate raised"}
+{"id": "ss16", "cls": "none_handling", "passed": true, "why": "pass"}
+{"id": "ss17", "cls": "off_by_one", "passed": false, "why": "wrong value [1, 3]"}
+{"id": "ss18", "cls": "type_coercion", "passed": false, "why": "candidate raised"}
+{"id": "ss19", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss20", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss21", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss22", "cls": "none_handling", "passed": false, "why": "expected None, got 0.0"}
+{"id": "ss23", "cls": "type_coercion", "passed": true, "why": "pass"}
+{"id": "ss24", "cls": "missing_guard", "passed": false, "why": "candidate raised"}
+{"id": "ss25", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss26", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss27", "cls": "off_by_one", "passed": true, "why": "pass"}
+{"id": "ss28", "cls": "missing_guard", "passed": false, "why": "candidate raised"}
+{"id": "ss29", "cls": "type_coercion", "passed": false, "why": "candidate raised"}
+{"id": "ss30", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss31", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss32", "cls": "none_handling", "passed": false, "why": "expected None, got 0.0"}
+{"id": "ss33", "cls": "type_coercion", "passed": true, "why": "pass"}
+{"id": "ss34", "cls": "type_coercion", "passed": false, "why": "candidate raised"}
+{"id": "ss35", "cls": "off_by_one", "passed": false, "why": "wrong value [1, 3]"}
+{"id": "ss36", "cls": "type_coercion", "passed": false, "why": "candidate raised"}
+{"id": "ss37", "cls": "off_by_one", "passed": true, "why": "pass"}
+{"id": "ss38", "cls": "type_coercion", "passed": false, "why": "candidate raised"}
+{"id": "ss39", "cls": "missing_guard", "passed": true, "why": "pass"}
+{"id": "ss40", "cls": "none_handling", "passed": true, "why": "pass"}
+{"id": "ss41", "cls": "none_handling", "passed": false, "why": "expected None, got 0.0"}
+{"id": "ss42", "cls": "off_by_one", "passed": true, "why": "pass"}
+{"id": "ss43", "cls": "none_handling", "passed": true, "why": "pass"}
+{"id": "ss44", "cls": "none_handling", "passed": true, "why": "pass"}
+{"id": "ss45", "cls": "none_handling", "passed": false, "why": "expected None, got 0.0"}
+{"id": "ss46", "cls": "type_coercion", "passed": false, "why": "candidate raised"}
+{"id": "ss47", "cls": "off_by_one", "passed": false, "why": "wrong value [1, 3]"}
+{"id": "ss48", "cls": "none_handling", "passed": true, "why": "pass"}

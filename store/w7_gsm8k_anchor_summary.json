@@ -1,0 +1,34 @@
+{
+  "experiment": "w7_gsm8k_anchor",
+  "arxiv_id": "2405.07551v1",
+  "probed_at": "2026-10-03T19:30:02+0800",
+  "probe_source": "live",
+  "device": "cpu",
+  "protocol": {
+    "model": "Qwen3-0.6B bf16 CPU greedy",
+    "n": 100,
+    "seed": 20261003,
+    "max_new_tokens": 384,
+    "template_flag": "enable_thinking=False",
+    "prompt": "Solve the following grade school math problem. Reason step by step, then write the final numeric answer on the last line in the exact format:\n#### <number>\n\nProblem: {q}",
+    "scoring": "分母=全部 n；unparsed/截断计错；容差 1e-4",
+    "anchor": [
+      0.838,
+      0.907
+    ],
+    "caliber_note": "锚为 7B 级微调+工具（MathCoder）；本机 0.6B 纯 prompt 与它的差距是量级测量，不是受控比较"
+  },
+  "n_correct": 53,
+  "n": 100,
+  "acc": 0.53,
+  "wilson95": [
+    0.4329,
+    0.6249
+  ],
+  "gap_to_anchor_lo": -0.308,
+  "gap_ci_note": "gap 的不确定度≈acc 自身 CI 的宽度（锚按固定点处理）",
+  "n_unparsed": 0,
+  "n_truncated": 5,
+  "sec_mean": 93.5,
+  "wall_min": 157.0
+}

@@ -1,0 +1,44 @@
+{
+  "bundle": {
+    "bundle_id": "r01@360151290b25",
+    "sha256": "360151290b2531a9e13db0a4583632cfb334dffcef741824ea56f172b2a9ee27",
+    "manifest": {
+      "files": {
+        "items.json": "807da71300e4b963c7bf3c76dde86d9ed26de93cc9eca86b995cd108f3bae990",
+        "out_gemma3_4b_v0-canonical.jsonl": "40ad49bf72c593f63b65bb5259164261febbaba939a05724576fba1d5ac20bc1",
+        "out_gemma3_4b_v1-terse.jsonl": "097067184c470c630170d2937b9c190e68003ee5a8e39b3c8d2e3b4afce0face",
+        "out_gemma3_4b_v2-verbose.jsonl": "9617a5bb0cf2b27cb4dd0d4af3d43e3868d184c89d473b7dfca2141b293c6b33",
+        "out_gemma3_4b_v3-numbers.jsonl": "0a263799709c8ca8846c88274d6bd49a5f0f20ea12bcffd129f97d88df19afe6",
+        "out_llama3.1_8b_v0-canonical.jsonl": "3ca293430654923d7dc83a5c7de560e0806739faccc81cd1bb978533b558427c",
+        "out_llama3.1_8b_v1-terse.jsonl": "351f0a33eebaebaf656d9c6542b53832cde66ef38004a58042e5dba18a6c93b2",
+        "out_llama3.1_8b_v2-verbose.jsonl": "03ae4b70b7fca38ce7528a284ce98bce94e79cc2f7141a6ed3294dbfa3a68e02",
+        "out_llama3.1_8b_v3-numbers.jsonl": "38baa6ccca590eee9869f1fd9c0897324b8f28f304355f3b0ee77a04924479c5",
+        "out_qwen2.5_7b_v0-canonical.jsonl": "fa20a947c28bb79d8d1279497e8e376f6a384732427b3a82a9da29487251e11c",
+        "out_qwen2.5_7b_v1-terse.jsonl": "ffa7246c1caad5d5f6973cf4b4fadc7b00f823b910ebbb586d3a9204bd46360b",
+        "out_qwen2.5_7b_v2-verbose.jsonl": "ec27ecdcaba85b6db614bbaa1ad9a3338d4b99cc03bc707bf0fff5d4ad4881f0",
+        "out_qwen2.5_7b_v3-numbers.jsonl": "6279cbd2eb6dbb332187d042a5144da20b627d9fadc144e52a151fee6b694eef",
+        "result.json": "0f2bbe3a43d44b6bf5e3482dbcfa184af9902966bd6ae3a7a97472a11d0b4d34"
+      },
+      "environment": {
+        "ollama_model": "",
+        "ollama_base_digest": "unknown",
+        "python": "3.12.3",
+        "numpy": "2.5.2",
+        "scipy": "1.18.1",
+        "seed": "unset"
+      },
+      "sha256": "360151290b2531a9e13db0a4583632cfb334dffcef741824ea56f172b2a9ee27"
+    }
+  },
+  "envelope": {
+    "payload": {
+      "bundle_id": "r01@360151290b25",
+      "bundle_sha256": "360151290b2531a9e13db0a4583632cfb334dffcef741824ea56f172b2a9ee27",
+      "signer": "ai-researcher-loop",
+      "signed_at": "2026-10-10T11:15:14.687716+00:00",
+      "expires_at": "2027-10-06T00:00:00+00:00"
+    },
+    "signature": "tEfmj7tLQDOPBjU1vciYt5dV2Smor5Hox0f0yLGBU0DOSiumL9QoRcSsV9Sd1aVwH8KwDyO8c1kTT5+oY3fhDA==",
+    "algorithm": "Ed25519"
+  }
+}

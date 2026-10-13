@@ -1,32 +1,32 @@
 ---
-tags: [proposal, self-evolution, power_escalation, balanced-01]
+tags: [proposal, self-evolution, retire, balanced-01]
 generated_by: ai_researcher.evolve
 ---
 
-# NEXT-05 Re-measure balanced-01 at an n that can resolve its effect
+# NEXT-05 Retire the direction behind balanced-01 and spend elsewhere
 
-**kind**: power_escalation  
+**kind**: retire  
 **source run**: `balanced-01`  
-**evidence**: 136 ledger claim(s) flagged inconclusive on sample size; n=40 could not detect mde=0.10 (needs n>=157)  
-**power**: n=157, mde=0.1, alpha=0.05, power=0.8  
-**status**: ready for approval
+**evidence**: verdict STOP-REFUTED with no amendment and no live alternative reading ()  
+**power**: n=1, mde=0.9, alpha=0.05, power=0.8  
+**status**: **BLOCKED** -- n=1 cannot detect mde=0.9 at alpha=0.05 power=0.8; need n>=10
 
 ## Why this, and not something else
 
-Every two-seat review in this project has said some version of 'n is too small'. This converts that recurring objection into a queued experiment with a computed n.
+Archive feedback is only real if something stops being tried.
 
 ## Tension
 
-The ledger records claims that cannot be resolved at the n actually run, so they are formally unciteable. Either they are real effects awaiting enough data, or they are noise that more data will not rescue. Only one of those is worth buying, and the difference is currently unmeasured.
+This direction has been tested and refuted with no remaining discriminating experiment. Continuing to spend compute on it is not persistence, it is a sunk cost. Retiring it frees the budget for directions that can still change a conclusion.
 
 ## Method sketch
 
-Same items, policies, scorer and seed; increase n to the pre-checked requirement and report per-condition CIs rather than a pooled test.
+No experiment. Archive the run, keep the replication report.
 
 ## Preregistered kill-switch
 
-- `confirmed == True` -> **STOP-EXTEND** -- the effect is real at adequate n; the claim becomes citable
-- `confirmed == False` -> **STOP-REFUTED** -- the effect was noise at n=40; retire the claim
-- `confirmed == None` -> **STOP-INCONCLUSIVE** -- still unresolvable: report the interval, do not claim
+- `True` -> **STOP-REFUTED** -- archived
+
+> Refused to arm: n=1 cannot detect mde=0.9 at alpha=0.05 power=0.8; need n>=10
 
 A human still approves (`loop approve <envelope>`). The proposer cannot run anything.

@@ -1,0 +1,344 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/jsd-02/round-01",
+   "result": {
+    "n_conditions": 7,
+    "conditions": [
+     "contagion",
+     "ds-self",
+     "gpt4o-cross",
+     "multiexecutor",
+     "qwen-partial(N=5*)",
+     "qwen37",
+     "real-image"
+    ],
+    "pairs": [
+     {
+      "a": "contagion",
+      "b": "ds-self",
+      "jsd": 0.1404,
+      "gap": 0.7993
+     },
+     {
+      "a": "contagion",
+      "b": "gpt4o-cross",
+      "jsd": 0.2929,
+      "gap": -0.6813
+     },
+     {
+      "a": "contagion",
+      "b": "multiexecutor",
+      "jsd": 0.1753,
+      "gap": -0.2834
+     },
+     {
+      "a": "contagion",
+      "b": "qwen-partial(N=5*)",
+      "jsd": 0.18,
+      "gap": -0.3979
+     },
+     {
+      "a": "contagion",
+      "b": "qwen37",
+      "jsd": 0.1107,
+      "gap": -0.2287
+     },
+     {
+      "a": "contagion",
+      "b": "real-image",
+      "jsd": 0.2481,
+      "gap": -0.5724
+     },
+     {
+      "a": "ds-self",
+      "b": "contagion",
+      "jsd": 0.1404,
+      "gap": -0.7993
+     },
+     {
+      "a": "ds-self",
+      "b": "gpt4o-cross",
+      "jsd": 0.3493,
+      "gap": -1.4806
+     },
+     {
+      "a": "ds-self",
+      "b": "multiexecutor",
+      "jsd": 0.2277,
+      "gap": -1.0827
+     },
+     {
+      "a": "ds-self",
+      "b": "qwen-partial(N=5*)",
+      "jsd": 0.3698,
+      "gap": -1.1972
+     },
+     {
+      "a": "ds-self",
+      "b": "qwen37",
+      "jsd": 0.1583,
+      "gap": -1.028
+     },
+     {
+      "a": "ds-self",
+      "b": "real-image",
+      "jsd": 0.4029,
+      "gap": -1.3717
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "contagion",
+      "jsd": 0.2929,
+      "gap": 0.6813
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "ds-self",
+      "jsd": 0.3493,
+      "gap": 1.4806
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "multiexecutor",
+      "jsd": 0.2177,
+      "gap": 0.3979
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "qwen-partial(N=5*)",
+      "jsd": 0.3353,
+      "gap": 0.2834
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "qwen37",
+      "jsd": 0.3247,
+      "gap": 0.4526
+     },
+     {
+      "a": "gpt4o-cross",
+      "b": "real-image",
+      "jsd": 0.4705,
+      "gap": 0.1089
+     },
+     {
+      "a": "multiexecutor",
+      "b": "contagion",
+      "jsd": 0.1753,
+      "gap": 0.2834
+     },
+     {
+      "a": "multiexecutor",
+      "b": "ds-self",
+      "jsd": 0.2277,
+      "gap": 1.0827
+     },
+     {
+      "a": "multiexecutor",
+      "b": "gpt4o-cross",
+      "jsd": 0.2177,
+      "gap": -0.3979
+     },
+     {
+      "a": "multiexecutor",
+      "b": "qwen-partial(N=5*)",
+      "jsd": 0.3625,
+      "gap": -0.1145
+     },
+     {
+      "a": "multiexecutor",
+      "b": "qwen37",
+      "jsd": 0.2248,
+      "gap": 0.0547
+     },
+     {
+      "a": "multiexecutor",
+      "b": "real-image",
+      "jsd": 0.49,
+      "gap": -0.289
+     },
+     {
+      "a": "qwen-partial(N=5*)",
+      "b": "contagion",
+      "jsd": 0.18,
+      "gap": 0.3979
+     },
+     {
+      "a": "qwen-partial(N=5*)",
+      "b": "ds-self",
+      "jsd": 0.3698,
+      "gap": 1.1972
+     },
+     {
+      "a": "qwen-partial(N=5*)",
+      "b": "gpt4o-cross",
+      "jsd": 0.3353,
+      "gap": -0.2834
+     },
+     {
+      "a": "qwen-partial(N=5*)",
+      "b": "multiexecutor",
+      "jsd": 0.3625,
+      "gap": 0.1145
+     },
+     {
+      "a": "qwen-partial(N=5*)",
+      "b": "qwen37",
+      "jsd": 0.3149,
+      "gap": 0.1692
+     },
+     {
+      "a": "qwen-partial(N=5*)",
+      "b": "real-image",
+      "jsd": 0.1127,
+      "gap": -0.1745
+     },
+     {
+      "a": "qwen37",
+      "b": "contagion",
+      "jsd": 0.1107,
+      "gap": 0.2287
+     },
+     {
+      "a": "qwen37",
+      "b": "ds-self",
+      "jsd": 0.1583,
+      "gap": 1.028
+     },
+     {
+      "a": "qwen37",
+      "b": "gpt4o-cross",
+      "jsd": 0.3247,
+      "gap": -0.4526
+     },
+     {
+      "a": "qwen37",
+      "b": "multiexecutor",
+      "jsd": 0.2248,
+      "gap": -0.0547
+     },
+     {
+      "a": "qwen37",
+      "b": "qwen-partial(N=5*)",
+      "jsd": 0.3149,
+      "gap": -0.1692
+     },
+     {
+      "a": "qwen37",
+      "b": "real-image",
+      "jsd": 0.4011,
+      "gap": -0.3437
+     },
+     {
+      "a": "real-image",
+      "b": "contagion",
+      "jsd": 0.2481,
+      "gap": 0.5724
+     },
+     {
+      "a": "real-image",
+      "b": "ds-self",
+      "jsd": 0.4029,
+      "gap": 1.3717
+     },
+     {
+      "a": "real-image",
+      "b": "gpt4o-cross",
+      "jsd": 0.4705,
+      "gap": -0.1089
+     },
+     {
+      "a": "real-image",
+      "b": "multiexecutor",
+      "jsd": 0.49,
+      "gap": 0.289
+     },
+     {
+      "a": "real-image",
+      "b": "qwen-partial(N=5*)",
+      "jsd": 0.1127,
+      "gap": 0.1745
+     },
+     {
+      "a": "real-image",
+      "b": "qwen37",
+      "jsd": 0.4011,
+      "gap": 0.3437
+     }
+    ],
+    "loo": [
+     {
+      "held_out": "contagion",
+      "nearest": "qwen37",
+      "pred_rank": 2,
+      "true_rank": 1,
+      "hit": true
+     },
+     {
+      "held_out": "ds-self",
+      "nearest": "contagion",
+      "pred_rank": 1,
+      "true_rank": 0,
+      "hit": true
+     },
+     {
+      "held_out": "gpt4o-cross",
+      "nearest": "multiexecutor",
+      "pred_rank": 3,
+      "true_rank": 6,
+      "hit": false
+     },
+     {
+      "held_out": "multiexecutor",
+      "nearest": "contagion",
+      "pred_rank": 1,
+      "true_rank": 3,
+      "hit": false
+     },
+     {
+      "held_out": "qwen-partial(N=5*)",
+      "nearest": "real-image",
+      "pred_rank": 5,
+      "true_rank": 4,
+      "hit": true
+     },
+     {
+      "held_out": "qwen37",
+      "nearest": "contagion",
+      "pred_rank": 1,
+      "true_rank": 2,
+      "hit": true
+     },
+     {
+      "held_out": "real-image",
+      "nearest": "qwen-partial(N=5*)",
+      "pred_rank": 4,
+      "true_rank": 5,
+      "hit": true
+     }
+    ],
+    "hit_rate": 0.714,
+    "n_predictable": 7,
+    "confirmed": true,
+    "verdict_note": "confirmed",
+    "exit_code": 0,
+    "wall_s": 0.1,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@86e2c8bb9e3c",
+   "kill_row": "confirmed == True",
+   "verdict": "STOP-EXTEND",
+   "reason": "at threshold: extend with ablation-symmetric + more evaluators when available"
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-06T11:35:31.890878+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "13e3c1e287dcf92df6355c03214774627dfa04033f9e39f4c8b5504cd1d1ad9b",
+ "key_priv": null
+}

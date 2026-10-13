@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "updated": "2026-10-01T16:31:00.264Z",
+  "entries": [
+    {
+      "key": "p1.total",
+      "value": 1036,
+      "unit": "篇",
+      "source": "/home/liuzewen/F:\\deepseek/.agent-memory/ledger/count_p1_world_sota_20261001.py",
+      "anchor": [
+        "P1 计入合计",
+        "P1 精读 1000 篇",
+        "P1 = "
+      ],
+      "note": "已知边界（2026-10-02 实测）：verify/research_numbers 只问「该值在文中是否出现」，不问「每次出现是否都等于它」。篡改实验：把 FINAL_STATUS.md 的合计改成 1100 而保留 4 处未改的 1036 → verdict 仍为 pass；把 1036 全部替换掉才 fail(missing)。=> 门禁对「漏改」敏感、对「改了一处漏了别处」不敏感。复核时先跑 normalize_git_diff_numbers.py 做全文一致扫描，别把 pass 当作全文已核对。",
+      "revision": 1,
+      "updated": "2026-10-01T16:30:32.755Z"
+    },
+    {
+      "key": "p1.pending_line",
+      "value": 643,
+      "unit": "篇",
+      "source": "/home/liuzewen/F:\\deepseek/.agent-memory/ledger/count_p1_world_sota_20261001.py",
+      "anchor": [
+        "待归线"
+      ],
+      "note": "已知边界（2026-10-02 实测）：verify/research_numbers 只问「该值在文中是否出现」，不问「每次出现是否都等于它」。篡改实验：把 FINAL_STATUS.md 的合计改成 1100 而保留 4 处未改的 1036 → verdict 仍为 pass；把 1036 全部替换掉才 fail(missing)。=> 门禁对「漏改」敏感、对「改了一处漏了别处」不敏感。复核时先跑 normalize_git_diff_numbers.py 做全文一致扫描，别把 pass 当作全文已核对。",
+      "revision": 1,
+      "updated": "2026-10-01T16:30:40.644Z"
+    },
+    {
+      "key": "p1.line_a",
+      "value": 160,
+      "unit": "篇",
+      "source": "/home/liuzewen/F:\\deepseek/.agent-memory/ledger/count_p1_world_sota_20261001.py",
+      "anchor": [
+        "| A（gsm8k-self-evolve 自进化推理）",
+        "A160"
+      ],
+      "note": "已知边界（2026-10-02 实测）：verify/research_numbers 只问「该值在文中是否出现」，不问「每次出现是否都等于它」。篡改实验：把 FINAL_STATUS.md 的合计改成 1100 而保留 4 处未改的 1036 → verdict 仍为 pass；把 1036 全部替换掉才 fail(missing)。=> 门禁对「漏改」敏感、对「改了一处漏了别处」不敏感。复核时先跑 normalize_git_diff_numbers.py 做全文一致扫描，别把 pass 当作全文已核对。",
+      "revision": 1,
+      "updated": "2026-10-01T16:30:45.139Z"
+    },
+    {
+      "key": "p1.line_b",
+      "value": 119,
+      "unit": "篇",
+      "source": "/home/liuzewen/F:\\deepseek/.agent-memory/ledger/count_p1_world_sota_20261001.py",
+      "anchor": [
+        "| B（rag_min_demo 轻量 RAG）",
+        "B119"
+      ],
+      "note": "已知边界（2026-10-02 实测）：verify/research_numbers 只问「该值在文中是否出现」，不问「每次出现是否都等于它」。篡改实验：把 FINAL_STATUS.md 的合计改成 1100 而保留 4 处未改的 1036 → verdict 仍为 pass；把 1036 全部替换掉才 fail(missing)。=> 门禁对「漏改」敏感、对「改了一处漏了别处」不敏感。复核时先跑 normalize_git_diff_numbers.py 做全文一致扫描，别把 pass 当作全文已核对。",
+      "revision": 1,
+      "updated": "2026-10-01T16:30:53.807Z"
+    },
+    {
+      "key": "p1.line_c",
+      "value": 114,
+      "unit": "篇",
+      "source": "/home/liuzewen/F:\\deepseek/.agent-memory/ledger/count_p1_world_sota_20261001.py",
+      "anchor": [
+        "| C（mini-agent-runtime-bench 运行时）",
+        "C114"
+      ],
+      "note": "已知边界（2026-10-02 实测）：verify/research_numbers 只问「该值在文中是否出现」，不问「每次出现是否都等于它」。篡改实验：把 FINAL_STATUS.md 的合计改成 1100 而保留 4 处未改的 1036 → verdict 仍为 pass；把 1036 全部替换掉才 fail(missing)。=> 门禁对「漏改」敏感、对「改了一处漏了别处」不敏感。复核时先跑 normalize_git_diff_numbers.py 做全文一致扫描，别把 pass 当作全文已核对。",
+      "revision": 1,
+      "updated": "2026-10-01T16:31:00.264Z"
+    }
+  ],
+  "known_limits": [
+    {
+      "boundary": "existence-not-equality",
+      "statement": "research_ledger verify / research_numbers 只判「台账值在文档中出现过」，不判「同一件事在各处的取值是否一致」。改一处漏一处时只要还剩一处正确值就判 pass。",
+      "evidence": "实测 /tmp/FS_tamper.md（FINAL_STATUS.md 合计 1036→1100，文中仍余 4 处 1036）：research_ledger(verify) → pass，research_numbers → pass；强反证 /tmp/FS_no1036.md（1036 全部替换）→ verify fail 并指名源程序。",
+      "counter_test": [
+        "FS_partial.md（同义措辞一处改一处漏）→ 新门禁 exit=1，内置 pass",
+        "MS_partial.md（MISSION 单独改合计）→ exit=1 且不连累 C 线",
+        "MS_line_a.md（A160→A165）→ exit=1",
+        "真 FINAL_STATUS.md / MISSION.md → 0 error 0 info"
+      ],
+      "mitigation": "ai-researcher/scripts/normalize_git_diff_numbers.py（锚点同义词圈定范围 → 取锚点紧邻片段 → 片段内非真值即矛盾候选；剔除比值分母/序数引用/紧贴字母/他家已认领值）。已登记为 L-ops-053。"
+    }
+  ]
+}

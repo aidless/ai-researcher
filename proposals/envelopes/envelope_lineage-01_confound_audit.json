@@ -1,15 +1,26 @@
 {
   "hypothesis": "Re-run lineage-01 without the confound its amendment names",
-  "methods": "# TODO(confound_audit): exact command for lineage-01",
+  "methods": "cd \"/home/liuzewen/文档/Default Project\" && python3 lineage_chunk.py <version> <start> <count>   # per arm, resumable; then python3 lineage_chunk.py score; then python3 adjudicate_lineage_clean.py. Executed 2026-10-09 as: v3b [0:5] then [5:50], v3c [0:50], under an externally held /tmp/ollama_guard.lock, with watch_ollama.py sidecar on a separate file.",
+  "methods_recorded_at": "2026-10-09T02:30:00+00:00",
+  "methods_recorded_note": "COMPLETED POST HOC, after the run. This field was the string '# TODO(confound_audit): exact command for lineage-01' at execution time, so the run went ahead against an envelope whose methods were never fixed in advance. Recording it now repairs the file, not the pre-registration; it must not be read as if the command had been pinned before the data existed.",
   "max_rounds": 1,
   "max_cost_usd": 0.0,
   "max_wall_hours": 4.0,
+  "budget_consumed": {
+    "wall_hours_actual": 1.6,
+    "cost_usd_actual": 0.0,
+    "gen_calls_actual": 100,
+    "gen_calls_registered_scope": 250
+  },
   "seed": 0,
+  "seed_note": "declared but NOT sent: lineage_chunk.py gen() passes only {temperature: 0}. Measured consequence 2026-10-09 -- clean v3b vs original v3b agree byte-for-byte on only 40/50 items. Not fixed mid-run because that would mix two generation settings inside one arm.",
   "power": {
     "n": 80,
     "alpha": 0.05,
     "min_detectable_effect": 0.2,
-    "power_at_mde": 0.8
+    "power_at_mde": 0.8,
+    "n_delivered": 50,
+    "n_deviation_note": "instrument is llm_lab_copilot/test_50.jsonl (50 paired items). The deviation was already recorded on 2026-10-08 in the workspace file launch_clean_lineage.py, which argued power is not binding here; do not read a null as refutation on power grounds."
   },
   "kill_switch": [
     {
@@ -23,11 +34,31 @@
       "note": "the original observation was the artifact; record it as a lesson rather than a finding"
     }
   ],
+  "kill_switch_outcome": {
+    "executed_at": "2026-10-09T02:07:00+00:00",
+    "registered_verdict": "STOP-REFUTED",
+    "definition_of_confirmed_used": "authored 2026-10-08 in adjudicate_lineage_clean.py: McNemar significant AND broken items free of error text AND free of sub-300-char outputs. The envelope defines only 'confirmed', not this expansion.",
+    "why_the_stated_reason_is_wrong": "confirmed=False was driven by 8 harness timeouts PLUS 10 items the scorer deleted via classify_runtime (a text heuristic on answers under 200 chars). The direction is right -- there is no capability regression -- but the registered note's 'infrastructure/procedural artifact' framing names the wrong layer, and one of its own clauses (the 300-char floor) contradicts ollama_guard.py's documented lesson that brevity alone is not an error.",
+    "corrected_reading": "No capability regression (v3c 0.7778 vs v3b 0.7317 on answered items, paired exact p=0.03125). Real availability deficit: 8/50 items v3c never terminates on, reproduced on identical item ids under exclusive access. See runs/lineage-01-clean/round-01/amendment.json A5/A6/A7 and adjudicate_corrected.py.",
+    "carrier": "runs/lineage-01-clean/round-01/{amendment.json,model_digests.json,contamination_watch.jsonl,artifacts/,artifacts/fixed/}"
+  },
   "required_artifacts": [
     "result.json"
   ],
   "negative_publish": "replication-report",
   "approved_by": "",
   "approved_at": "",
-  "tension": "The amendment records that the round's conclusion cannot be separated from an infrastructure or procedural artifact. The claim is neither supported nor refuted, so the direction is unknown, and an unknown direction is not a result. Re-running with the confound removed is the only way to learn whether the original observation was ever about the model."
+  "approval_status": "UNAPPROVED. Left blank deliberately -- an approval field must be written by the account owner, not by a session continuing the work. The run was executed under the user's blanket 'do it' directive of 2026-10-06 (which the sibling envelope envelope_lineage.json records in its approved_by) and the instruction of 2026-10-09 to finish the workspace, and is hereby marked exploratory-in-execution, evidence-complete-in-record. Ratify by filling approved_by, or reject and this outcome becomes an unauthorized run that still stands on its carriers.",
+  "tension": "The amendment records that the round's conclusion cannot be separated from an infrastructure or procedural artifact. The claim is neither supported nor refuted, so the direction is unknown, and an unknown direction is not a result. Re-running with the confound removed is the only way to learn whether the original observation was ever about the model.",
+  "criterion_toggle_2026_10_10": {
+    "what": "adjudicate_lineage_clean.py now carries both criteria. Default (--legacy-length-floor) is the registered one, byte-for-byte: stdout sha256 a669b4c5e33377ae5a31aab22d2f6193c581f69dd9688c44048e7628a2e25a73, pinned by that script's --selfcheck cell 8 (16 cells, all pass). --no-length-floor runs the corrected criterion on artifacts/fixed/ (field-derived runtime_basis).",
+    "verdicts": {
+      "registered (default)": "STOP-REFUTED",
+      "corrected (--no-length-floor)": "STOP-EXTEND"
+    },
+    "corrected_readings": "McNemar fixed=0 broken=8 p=0.0078; 8/8 broken items have runtime_basis harness_recorded AND transport error text in pred_v3c.jsonl (two carriers agree).",
+    "does_not_change": "kill_switch_outcome above. It was executed 2026-10-09 under the registered definition of 'confirmed' and stays the registered record.",
+    "decision_left_to_the_user": "Adopting the corrected criterion as the registered one is a criterion change: it would rewrite the action for this run from STOP-REFUTED to STOP-EXTEND -- i.e. 'the v3c breakage is real, and its name is non-termination'. The evidence for it is on disk; the signature is not mine to write. The termination pre-registration draft (终止性预注册草案-v3c-nontermination-2026-10-09.md) is the route that prices it prospectively, with n fixed before spending.",
+    "caveat_on_the_new_curve": "artifacts/fixed/lineage_curve.json: 4 adjacent contrasts x 2 denominators = 8 cells, Holm over the whole grid, 0 cells significant (min adjusted p 0.188 Wilcoxon / 0.50 McNemar). So neither the improvement curve nor a capability regression is resolvable at this n; only the 8 logged timeouts are."
+  }
 }

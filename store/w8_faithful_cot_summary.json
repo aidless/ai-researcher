@@ -1,0 +1,67 @@
+{
+  "experiment": "w8_faithful_cot",
+  "arxiv_id": "2301.13379v3",
+  "probed_at": "2026-10-04T03:19:00+0800",
+  "device": "cpu",
+  "protocol": {
+    "model": "Qwen3-0.6B bf16 CPU greedy",
+    "n": 100,
+    "seed": 20261003,
+    "max_new_tokens": 384,
+    "template_flag": "enable_thinking=False",
+    "arms": {
+      "f": "翻译→Python 程序→沙箱执行（-I -S, 20s 超时）",
+      "c": "匹配 few-shot CoT（同 6 exemplar 题，#### 格式）"
+    },
+    "exemplars_source": "自编 6 题，不来自任何 GSM8K 切片（零泄漏）",
+    "prompt_f": "You translate grade school math problems into a short Python program that prints the numeric answer. Respond with ONE ```python code block and nothing else. The program must print only the final number.\n\nProblem: Maya buys 3 packs of stickers. Each pack has 12 stickers. She gives 7 stickers to her friend. How many stickers does she have left?\n```python\nstickers = 3 * 12\nstickers = stickers - 7\nprint(stickers)\n```\n\nProblem: A train travels at 60 kilometers per hour for 2.5 hours. How many kilometers does it travel?\n```python\nspeed = 60\ntime = 2.5\nprint(speed * time)\n```\n\nProblem: A jacket costs 80 dollars. The store adds a 15% sales tax. What is the total price in dollars?\n```python\nprice = 80\ntax = price * 0.15\nprint(price + tax)\n```\n\nProblem: A baker makes 250 cookies. He packs them into boxes of 8 cookies each. How many full boxes can he pack?\n```python\ncookies = 250\nper_box = 8\nprint(cookies // per_box)\n```\n\nProblem: Liam has 45 marbles. Zoe has 12 fewer than twice as many marbles as Liam. How many marbles does Zoe have?\n```python\nliam = 45\nzoe = 2 * liam - 12\nprint(zoe)\n```\n\nProblem: A faucet leaks 30 milliliters of water per hour. How many milliliters of water leak in 3 days?\n```python\nper_hour = 30\nhours = 3 * 24\nprint(per_hour * hours)\n```\n\nProblem: {q}",
+    "prompt_c": "Solve the grade school math problem. Reason step by step, then write the final numeric answer on the last line in the exact format:\n#### <number>\n\nProblem: Maya buys 3 packs of stickers. Each pack has 12 stickers. She gives 7 stickers to her friend. How many stickers does she have left?\nMaya starts with 3 packs of 12 stickers: 3 * 12 = 36 stickers.\nShe gives away 7: 36 - 7 = 29.\n#### 29\n\nProblem: A train travels at 60 kilometers per hour for 2.5 hours. How many kilometers does it travel?\nDistance = speed * time: 60 * 2.5 = 150.\n#### 150\n\nProblem: A jacket costs 80 dollars. The store adds a 15% sales tax. What is the total price in dollars?\nTax = 15% of 80: 80 * 0.15 = 12.\nTotal = 80 + 12 = 92.\n#### 92\n\nProblem: A baker makes 250 cookies. He packs them into boxes of 8 cookies each. How many full boxes can he pack?\n250 / 8 = 31 with 2 cookies left over, so he can fully pack 31 boxes.\n#### 31\n\nProblem: Liam has 45 marbles. Zoe has 12 fewer than twice as many marbles as Liam. How many marbles does Zoe have?\nTwice Liam's marbles: 2 * 45 = 90.\n12 fewer: 90 - 12 = 78.\n#### 78\n\nProblem: A faucet leaks 30 milliliters of water per hour. How many milliliters of water leak in 3 days?\nHours in 3 days: 3 * 24 = 72.\nLeak: 30 * 72 = 2160.\n#### 2160\n\nProblem: {q}",
+    "subset": "与 W7 同一子集：seed 20261003 排序抽样；gold 序列配对校验通过",
+    "anchors": {
+      "faithful": 0.723,
+      "cot": 0.633,
+      "source": "arxiv.org/html/2301.13379v3 Table 1 (greedy, code-davinci-002)",
+      "caliber_note": "code-davinci-002 与 Qwen3-0.6B 不同源 ⇒ 量级测量非受控比较"
+    }
+  },
+  "pairing_with_w7": {
+    "matched": true,
+    "n_w7": 100,
+    "n_ours": 100
+  },
+  "arm_f": {
+    "n": 100,
+    "n_correct": 31,
+    "acc": 0.31,
+    "wilson95": [
+      0.2278,
+      0.4063
+    ],
+    "n_unparsed": 2,
+    "n_truncated": 1,
+    "sec_mean": 101.3
+  },
+  "arm_c": {
+    "n": 100,
+    "n_correct": 41,
+    "acc": 0.41,
+    "wilson95": [
+      0.3187,
+      0.508
+    ],
+    "n_unparsed": 0,
+    "n_truncated": 1,
+    "sec_mean": 61.8
+  },
+  "paired_f_vs_c": {
+    "b_f_right_c_wrong": 9,
+    "c_f_wrong_c_right": 19,
+    "n_discordant": 28,
+    "p_exact_two_sided": 0.087159
+  },
+  "gap_to_anchor": {
+    "f_vs_0.723": -0.413,
+    "c_vs_0.633": -0.223
+  },
+  "wall_min": 272.4
+}

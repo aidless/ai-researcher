@@ -1,0 +1,138 @@
+{
+ "question": "AIR-CODEREPAIR: n=40 -> n=157 值不值",
+ "currency": "paired accuracy delta, step-calc − direct（逐题配对，按模型分层）",
+ "read_only": true,
+ "machine_minutes_spent": 0,
+ "ollama_calls_made": 0,
+ "ran_at_utc": null,
+ "conditions": {
+  "calibration": {
+   "coderepair-01": {
+    "recomputed": "12/21",
+    "carrier": "12/21",
+    "p_recomputed": 0.162756,
+    "p_carrier": 0.162756
+   },
+   "coderepair-02": {
+    "recomputed": "12/27",
+    "carrier": "12/27",
+    "p_recomputed": 0.023703,
+    "p_carrier": 0.023703
+   }
+  },
+  "zero_information_models": {
+   "coderepair-01": [
+    "llama3.2:3b"
+   ]
+  },
+  "direction": {
+   "both_pools_mean_negative": true,
+   "pools_resolved": [
+    "coderepair-02"
+   ],
+   "model_cells_resolved_negative": [
+    [
+     "coderepair-01",
+     "gemma3:4b"
+    ],
+    [
+     "coderepair-02",
+     "gemma3:4b"
+    ]
+   ]
+  },
+  "per_run": {
+   "coderepair-01": {
+    "n_items_carrier": 40,
+    "models_measured": 4,
+    "per_model": {
+     "qwen2.5:7b": {
+      "n_paired": 40,
+      "fixed": 8,
+      "broke": 7,
+      "delta": 0.025
+     },
+     "qwen2.5-coder:7b": {
+      "n_paired": 40,
+      "fixed": 4,
+      "broke": 4,
+      "delta": 0.0
+     },
+     "gemma3:4b": {
+      "n_paired": 40,
+      "fixed": 0,
+      "broke": 10,
+      "delta": -0.25
+     },
+     "llama3.2:3b": {
+      "n_paired": 40,
+      "fixed": 0,
+      "broke": 0,
+      "delta": 0.0
+     }
+    },
+    "mean_delta": -0.075,
+    "sd_over_models": 0.1521,
+    "zero_information_models": [
+     "llama3.2:3b"
+    ],
+    "transport_dead_models_excluded": [
+     "llama3.2:3b"
+    ],
+    "models_averaged": 3,
+    "pooled_p": 0.16275565745308995
+   },
+   "coderepair-02": {
+    "n_items_carrier": 48,
+    "models_measured": 3,
+    "per_model": {
+     "qwen2.5:7b": {
+      "n_paired": 48,
+      "fixed": 8,
+      "broke": 8,
+      "delta": 0.0
+     },
+     "qwen2.5-coder:7b": {
+      "n_paired": 48,
+      "fixed": 4,
+      "broke": 4,
+      "delta": 0.0
+     },
+     "gemma3:4b": {
+      "n_paired": 48,
+      "fixed": 0,
+      "broke": 15,
+      "delta": -0.3125
+     }
+    },
+    "mean_delta": -0.1042,
+    "sd_over_models": 0.1804,
+    "zero_information_models": [],
+    "transport_dead_models_excluded": [],
+    "models_averaged": 3,
+    "pooled_p": 0.023702702470473014
+   }
+  }
+ },
+ "limitations": [
+  "这些模型的不和谐对 b+c=0 ⇒ 在配对检验下它的 n 就是 0，不是 delta=0.0。若把它当 0.0 进均值，会把负均值往 0 拉并压低 sd（01 里 llama3.2:3b 就是这一格）。",
+  "sd 是模型间方差（4 或 3 个点），不是逐题方差：n_for_a_positive_target 只能当量级看。",
+  "两块池的题集不同（01 是 40 题、02 是 48 题）⇒ 负向是跨池复制的，不是同一批题重跑。",
+  "02 只有 3 个模型可配对（models_measured 见字段），第 4 个当时没跑成。",
+  "throughput 64.1 次/分来自 01 的一次实测，换模型/换长度不复用。"
+ ],
+ "verdict": "NOT_FUNDED_leg_resolved_worse_on_its_own_ruler",
+ "rule_fired": "direction",
+ "consequence": "撤回把 n 从 40 拉到 157 的请求：两块独立题池（40 题与 48 题）上 step-calc − direct 的模型均值都是负的，且池化配对检验在 48 题池上已 resolved（p=0.0237）。加样本只会把区间收紧在这个负均值附近，永远推不过一个正的 bar；要买的不该是题数，是『哪个模型上成立』这一层。",
+ "what_would_cost": {
+  "cells_at_157": 1256,
+  "throughput_calls_per_min_carrier": 64.1,
+  "extrapolated_minutes": 19.6,
+  "status": "假设（线性外推），且本轮决定不花"
+ },
+ "escalation_arithmetic": {
+  "n_for_a_positive_target": 409,
+  "arithmetic": "n = ceil((2.802 x sd / target)^2)，sd 取两块池里较大的模型间 sd=0.1804",
+  "why_unusable": "这个 n 是为『正效应』算的功效；观测均值是负的，把 n 提到它也不会翻正 ⇒ 只是名义可判"
+ }
+}

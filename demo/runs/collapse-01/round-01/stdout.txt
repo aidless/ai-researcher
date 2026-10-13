@@ -1,0 +1,1 @@
+{"self_final": 0.0975, "cross_final": 0.2969, "excess": 0.1994, "confirmed": true}

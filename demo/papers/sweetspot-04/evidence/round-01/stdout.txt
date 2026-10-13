@@ -1,0 +1,7 @@
+qwen2.5:7b cap=150: acc=0.5833
+qwen2.5:7b cap=400: acc=0.5833
+qwen2.5:7b cap=1000: acc=0.5833
+deepseek-r1:7b cap=150: acc=0.0000
+deepseek-r1:7b cap=400: acc=0.0833
+deepseek-r1:7b cap=1000: acc=0.2708
+{"acc": {"qwen2.5:7b": {"150": 0.5833, "400": 0.5833, "1000": 0.5833}, "deepseek-r1:7b": {"150": 0.0, "400": 0.0833, "1000": 0.2708}}, "pooled_p": 0.003906, "cliff_confirmed": false}

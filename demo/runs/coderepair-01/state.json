@@ -1,0 +1,2347 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/coderepair-01/round-01",
+   "result": {
+    "domain": "code_repair",
+    "n_items": 40,
+    "models": {
+     "qwen2.5:7b": {
+      "model": "qwen2.5:7b",
+      "policies": {
+       "direct": 0.525,
+       "step-calc": 0.55
+      },
+      "detail": {
+       "direct": [
+        {
+         "id": "cr01",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [1, 3]"
+        },
+        {
+         "id": "cr02",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [1, 3]"
+        },
+        {
+         "id": "cr03",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr04",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr05",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr06",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr07",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr08",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0.0"
+        },
+        {
+         "id": "cr09",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr10",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr11",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr12",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr13",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr14",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr15",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr16",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr17",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr18",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr19",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0.0"
+        },
+        {
+         "id": "cr20",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr21",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr22",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr23",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr24",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr25",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr26",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr27",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr28",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr29",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [1, 3]"
+        },
+        {
+         "id": "cr30",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr31",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr32",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0.0"
+        },
+        {
+         "id": "cr33",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [1, 3]"
+        },
+        {
+         "id": "cr34",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr35",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr36",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr37",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr38",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr39",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr40",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        }
+       ],
+       "step-calc": [
+        {
+         "id": "cr01",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr02",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr03",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 5"
+        },
+        {
+         "id": "cr04",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr05",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr06",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr07",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr08",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr09",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr10",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr11",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr12",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr13",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr14",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr15",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr16",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr17",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr18",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr19",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr20",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr21",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 5"
+        },
+        {
+         "id": "cr22",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr23",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr24",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 5"
+        },
+        {
+         "id": "cr25",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr26",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr27",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr28",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr29",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr30",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr31",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr32",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr33",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr34",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr35",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr36",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr37",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr38",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr39",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 5"
+        },
+        {
+         "id": "cr40",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        }
+       ]
+      }
+     },
+     "qwen2.5-coder:7b": {
+      "model": "qwen2.5-coder:7b",
+      "policies": {
+       "direct": 0.525,
+       "step-calc": 0.525
+      },
+      "detail": {
+       "direct": [
+        {
+         "id": "cr01",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr02",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr03",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr04",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr05",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr06",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr07",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr08",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr09",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr10",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr11",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr12",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr13",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr14",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr15",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr16",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Division by zero'"
+        },
+        {
+         "id": "cr17",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr18",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr19",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr20",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr21",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr22",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Division by zero'"
+        },
+        {
+         "id": "cr23",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr24",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr25",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr26",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr27",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr28",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr29",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr30",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr31",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr32",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr33",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr34",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr35",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr36",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr37",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Division by zero'"
+        },
+        {
+         "id": "cr38",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Division by zero'"
+        },
+        {
+         "id": "cr39",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr40",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        }
+       ],
+       "step-calc": [
+        {
+         "id": "cr01",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [1, 2, 5]"
+        },
+        {
+         "id": "cr02",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [1, 2, 5]"
+        },
+        {
+         "id": "cr03",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr04",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr05",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr06",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr07",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr08",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr09",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr10",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr11",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr12",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr13",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr14",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr15",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr16",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Division by zero'"
+        },
+        {
+         "id": "cr17",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr18",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr19",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr20",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr21",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr22",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Division by zero'"
+        },
+        {
+         "id": "cr23",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr24",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr25",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr26",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr27",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr28",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr29",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [1, 2, 5]"
+        },
+        {
+         "id": "cr30",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr31",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr32",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr33",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [1, 2, 5]"
+        },
+        {
+         "id": "cr34",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr35",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr36",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr37",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Division by zero'"
+        },
+        {
+         "id": "cr38",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Division by zero'"
+        },
+        {
+         "id": "cr39",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr40",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        }
+       ]
+      }
+     },
+     "gemma3:4b": {
+      "model": "gemma3:4b",
+      "policies": {
+       "direct": 0.625,
+       "step-calc": 0.375
+      },
+      "detail": {
+       "direct": [
+        {
+         "id": "cr01",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr02",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr03",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr04",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr05",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr06",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr07",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr08",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr09",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr10",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr11",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr12",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr13",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr14",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr15",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr16",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Division by zero'"
+        },
+        {
+         "id": "cr17",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr18",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr19",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr20",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr21",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr22",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr23",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr24",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr25",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 41"
+        },
+        {
+         "id": "cr26",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr27",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr28",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr29",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr30",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr31",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 41"
+        },
+        {
+         "id": "cr32",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr33",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr34",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 41"
+        },
+        {
+         "id": "cr35",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr36",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr37",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr38",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr39",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr40",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        }
+       ],
+       "step-calc": [
+        {
+         "id": "cr01",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [2, 5]"
+        },
+        {
+         "id": "cr02",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [2, 5]"
+        },
+        {
+         "id": "cr03",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr04",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 0"
+        },
+        {
+         "id": "cr05",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr06",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr07",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr08",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr09",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 41"
+        },
+        {
+         "id": "cr10",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr11",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr12",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 0"
+        },
+        {
+         "id": "cr13",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr14",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr15",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 0"
+        },
+        {
+         "id": "cr16",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Cannot divide by zero'"
+        },
+        {
+         "id": "cr17",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr18",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [4]"
+        },
+        {
+         "id": "cr19",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr20",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr21",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr22",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Cannot divide by zero'"
+        },
+        {
+         "id": "cr23",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 0"
+        },
+        {
+         "id": "cr24",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr25",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 41"
+        },
+        {
+         "id": "cr26",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "candidate raised"
+        },
+        {
+         "id": "cr27",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [4]"
+        },
+        {
+         "id": "cr28",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr29",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [2, 5]"
+        },
+        {
+         "id": "cr30",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr31",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 41"
+        },
+        {
+         "id": "cr32",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 0"
+        },
+        {
+         "id": "cr33",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "wrong value [2, 5]"
+        },
+        {
+         "id": "cr34",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "wrong value 41"
+        },
+        {
+         "id": "cr35",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr36",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr37",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Cannot divide by zero'"
+        },
+        {
+         "id": "cr38",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "expected None, got 'Error: Cannot divide by zero'"
+        },
+        {
+         "id": "cr39",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        },
+        {
+         "id": "cr40",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": true,
+         "why": "pass"
+        }
+       ]
+      }
+     },
+     "llama3.2:3b": {
+      "model": "llama3.2:3b",
+      "policies": {
+       "direct": 0.0,
+       "step-calc": 0.0
+      },
+      "detail": {
+       "direct": [
+        {
+         "id": "cr01",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr02",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr03",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr04",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr05",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr06",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr07",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr08",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr09",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr10",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr11",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr12",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr13",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr14",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr15",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr16",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr17",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr18",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr19",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr20",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr21",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr22",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr23",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr24",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr25",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr26",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr27",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr28",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr29",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr30",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr31",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr32",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr33",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr34",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr35",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr36",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr37",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr38",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr39",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr40",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        }
+       ],
+       "step-calc": [
+        {
+         "id": "cr01",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr02",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr03",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr04",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr05",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr06",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr07",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr08",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr09",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr10",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr11",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr12",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr13",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr14",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr15",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr16",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr17",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr18",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr19",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr20",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr21",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr22",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr23",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr24",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr25",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr26",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr27",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr28",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr29",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr30",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr31",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr32",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr33",
+         "cls": "off_by_one",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr34",
+         "cls": "type_coercion",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr35",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr36",
+         "cls": "missing_guard",
+         "hinted": true,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr37",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr38",
+         "cls": "missing_guard",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr39",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        },
+        {
+         "id": "cr40",
+         "cls": "none_handling",
+         "hinted": false,
+         "passed": false,
+         "why": "HTTPError: HTTP Error 404: Not Found"
+        }
+       ]
+      }
+     }
+    },
+    "gain": {
+     "qwen2.5:7b": 0.025,
+     "qwen2.5-coder:7b": 0.0,
+     "gemma3:4b": -0.25,
+     "llama3.2:3b": 0.0
+    },
+    "gain_mean": -0.0563,
+    "families_positive": "1/4",
+    "mcnemar_pooled": {
+     "fixed": 12,
+     "broke": 21,
+     "p": 0.16275565745308995
+    },
+    "localization": {
+     "hinted": {
+      "fixed": 4,
+      "broke": 10
+     },
+     "unhinted": {
+      "fixed": 8,
+      "broke": 11
+     }
+    },
+    "confirmed": false,
+    "sign_test_p": 1.0,
+    "exit_code": 0,
+    "wall_s": 299.0,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "timed_out": false,
+   "bundle": "r01@4d464ce4569a",
+   "kill_row": "confirmed == False",
+   "verdict": "STOP-REFUTED",
+   "reason": "arithmetic-arm gain does not transfer to code repair; restrict every claim to arithmetic"
+  }
+ ],
+ "status": "STOP-REFUTED",
+ "started_at": "2026-10-08T01:34:23.882487+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "fb469ff8a7061722e1cc1d6e137d3ecf4048a371b4079297e6b1d16159c146ef",
+ "key_priv": null
+}

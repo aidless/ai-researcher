@@ -1,0 +1,1 @@
+{"n_seeds": 5, "excesses": [0.0116, 0.0, 0.0551, 0.0551, 0.0365], "n_positive": 4, "confirmed": true}

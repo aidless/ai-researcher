@@ -3,7 +3,7 @@
   "methods": "RD=\"$PWD\"; EVO_OUT=\"$RD/artifacts\" python3 /tmp/air-lineage/run_lineage.py",
   "max_rounds": 1,
   "max_cost_usd": 0.0,
-  "max_wall_hours": 4.0,
+  "max_wall_hours": 10.0,
   "kill_switch": [
     {
       "condition": "any_regression == True",
@@ -20,7 +20,7 @@
     "result.json"
   ],
   "approved_by": "liuzewen (blanket 全做 directive 2026-10-06)",
-  "approved_at": "2026-10-06T11:34:20.691438+00:00",
+  "approved_at": "2026-10-07T01:11:26.341391+00:00",
   "seed": 20261006,
   "tension": "Five checkpoints of the same lineage were trained sequentially, and nobody has measured whether capability rose monotonically. If any checkpoint regresses vs its predecessor, every claim built on the final checkpoint inherits an unchecked dip. A lineage its own authors cannot characterize is not a foundation.",
   "power": {

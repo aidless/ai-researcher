@@ -1,0 +1,29 @@
+{
+ "model": "deepseek-r1:7b",
+ "k": 3,
+ "questions": {
+  "syllogism": {
+   "expected": "yes",
+   "correct_majority": false,
+   "s1_stability": 0.667,
+   "s2_deduct_placement": null,
+   "n_ok": 1
+  },
+  "coins": {
+   "expected": "2",
+   "correct_majority": false,
+   "s1_stability": 1.0,
+   "s2_deduct_placement": null,
+   "n_ok": 0
+  },
+  "gcd": {
+   "expected": "6",
+   "correct_majority": true,
+   "s1_stability": 0.667,
+   "s2_deduct_placement": null,
+   "n_ok": 2
+  }
+ },
+ "separation_gap": -0.166,
+ "confirmed": false
+}

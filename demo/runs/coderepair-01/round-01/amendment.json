@@ -1,0 +1,5 @@
+{
+  "amended_at": "2026-10-08T01:42:19.298580+00:00",
+  "correction": "MODEL-EXISTENCE CORRECTION: 80 of 320 calls (40 per policy) targeted llama3.2:3b, which is not installed locally (only llama3.2:1b). Every such call returned HTTP 404, the harness caught the exception and recorded it as a model failure, so that family reads 0.00/0.00. Those cells are an absent model, not a measured zero and must not be cited. The measured comparison is the three installed families: qwen2.5:7b 0.525->0.550 (+0.025), qwen2.5-coder:7b 0.525->0.525 (0.000), gemma3:4b 0.625->0.375 (-0.250). run_coderepair.py now preflights /api/tags and excludes absent tags before measurement, with the exclusion printed and recorded in result.json; --selftest asserts the preflight drops a nonexistent tag.",
+  "knowable_without_data": "no: discovered by reading failure reasons after the run, not before"
+}

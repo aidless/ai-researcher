@@ -1,0 +1,413 @@
+{
+  "probed_at": "2026-10-03T14:32:16+0800",
+  "probe_source": "live",
+  "lang": "english",
+  "n_query_paired": 10,
+  "n_candidates_usable": 1773,
+  "n_judgements": 20,
+  "prompt_template": "You are given a question and a passage. Answer yes if the passage contains information that can help answer the question, otherwise answer no.\nQuestion: {q}\nPassage: {p}\nAnswer (yes or no):",
+  "results": [
+    {
+      "model": "qwen3-0.6b",
+      "ok": true,
+      "load_s": 10.6,
+      "n": 20,
+      "n_judged": 20,
+      "n_unparsed": 0,
+      "sec_mean": 8.76,
+      "sec_min": 4.78,
+      "sec_max": 12.72,
+      "acc": 0.55,
+      "hallucination_rate_on_neg": 0.9,
+      "miss_rate_on_pos": 0.0,
+      "speedup_vs_first": 1.0,
+      "rows": [
+        {
+          "qid": "1047876#0",
+          "rel": 1,
+          "docid": "14370581#4",
+          "prompt_tokens": 349,
+          "sec": 12.45,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "1047876#0",
+          "rel": 0,
+          "docid": "48522006#3",
+          "prompt_tokens": 300,
+          "sec": 9.75,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "11922152#0",
+          "rel": 1,
+          "docid": "5142662#5",
+          "prompt_tokens": 159,
+          "sec": 5.22,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "11922152#0",
+          "rel": 0,
+          "docid": "5142662#54",
+          "prompt_tokens": 295,
+          "sec": 8.98,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "16181052#0",
+          "rel": 1,
+          "docid": "31628940#2",
+          "prompt_tokens": 383,
+          "sec": 11.05,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "16181052#0",
+          "rel": 0,
+          "docid": "25642668#0",
+          "prompt_tokens": 245,
+          "sec": 8.24,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "18195230#0",
+          "rel": 1,
+          "docid": "18195230#0",
+          "prompt_tokens": 252,
+          "sec": 7.48,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "18195230#0",
+          "rel": 0,
+          "docid": "40652213#1",
+          "prompt_tokens": 188,
+          "sec": 6.17,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "26387562#0",
+          "rel": 1,
+          "docid": "26387562#0",
+          "prompt_tokens": 243,
+          "sec": 7.02,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "26387562#0",
+          "rel": 0,
+          "docid": "26387562#6",
+          "prompt_tokens": 336,
+          "sec": 9.2,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "29418470#0",
+          "rel": 1,
+          "docid": "58769#19",
+          "prompt_tokens": 292,
+          "sec": 8.05,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "29418470#0",
+          "rel": 0,
+          "docid": "468641#10",
+          "prompt_tokens": 257,
+          "sec": 8.07,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "39338041#0",
+          "rel": 1,
+          "docid": "1738221#14",
+          "prompt_tokens": 377,
+          "sec": 12.72,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "39338041#0",
+          "rel": 0,
+          "docid": "76907#35",
+          "prompt_tokens": 386,
+          "sec": 12.09,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "41055715#0",
+          "rel": 1,
+          "docid": "41055715#0",
+          "prompt_tokens": 205,
+          "sec": 6.45,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "41055715#0",
+          "rel": 0,
+          "docid": "224230#45",
+          "prompt_tokens": 168,
+          "sec": 6.33,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "4706692#0",
+          "rel": 1,
+          "docid": "4706692#0",
+          "prompt_tokens": 230,
+          "sec": 9.49,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "4706692#0",
+          "rel": 0,
+          "docid": "4706692#13",
+          "prompt_tokens": 144,
+          "sec": 4.78,
+          "pred": 0,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nNo."
+        },
+        {
+          "qid": "869930#0",
+          "rel": 1,
+          "docid": "869930#0",
+          "prompt_tokens": 270,
+          "sec": 10.03,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        },
+        {
+          "qid": "869930#0",
+          "rel": 0,
+          "docid": "1093628#4",
+          "prompt_tokens": 269,
+          "sec": 11.62,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nyes"
+        }
+      ]
+    },
+    {
+      "model": "qwen3-4b",
+      "ok": true,
+      "load_s": 3.9,
+      "n": 20,
+      "n_judged": 20,
+      "n_unparsed": 0,
+      "sec_mean": 78.65,
+      "sec_min": 45.78,
+      "sec_max": 177.8,
+      "acc": 0.8,
+      "hallucination_rate_on_neg": 0.2,
+      "miss_rate_on_pos": 0.2,
+      "speedup_vs_first": 0.11,
+      "rows": [
+        {
+          "qid": "1047876#0",
+          "rel": 1,
+          "docid": "14370581#4",
+          "prompt_tokens": 349,
+          "sec": 88.03,
+          "pred": 0,
+          "raw": "No. The passage does not mention any unique blood group found in people in China"
+        },
+        {
+          "qid": "1047876#0",
+          "rel": 0,
+          "docid": "48522006#3",
+          "prompt_tokens": 300,
+          "sec": 65.66,
+          "pred": 0,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nNo."
+        },
+        {
+          "qid": "11922152#0",
+          "rel": 1,
+          "docid": "5142662#5",
+          "prompt_tokens": 159,
+          "sec": 57.17,
+          "pred": 1,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nYes."
+        },
+        {
+          "qid": "11922152#0",
+          "rel": 0,
+          "docid": "5142662#54",
+          "prompt_tokens": 295,
+          "sec": 149.44,
+          "pred": 1,
+          "raw": "Yes. The passage states that Fascism is described as a \"religious conception of"
+        },
+        {
+          "qid": "16181052#0",
+          "rel": 1,
+          "docid": "31628940#2",
+          "prompt_tokens": 383,
+          "sec": 92.22,
+          "pred": 1,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nYes."
+        },
+        {
+          "qid": "16181052#0",
+          "rel": 0,
+          "docid": "25642668#0",
+          "prompt_tokens": 245,
+          "sec": 71.61,
+          "pred": 0,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nNo."
+        },
+        {
+          "qid": "18195230#0",
+          "rel": 1,
+          "docid": "18195230#0",
+          "prompt_tokens": 252,
+          "sec": 76.18,
+          "pred": 1,
+          "raw": "(yes or no):\nassistant\n<think>\n\n</think>\n\nYes"
+        },
+        {
+          "qid": "18195230#0",
+          "rel": 0,
+          "docid": "40652213#1",
+          "prompt_tokens": 188,
+          "sec": 55.16,
+          "pred": 0,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nNo."
+        },
+        {
+          "qid": "26387562#0",
+          "rel": 1,
+          "docid": "26387562#0",
+          "prompt_tokens": 243,
+          "sec": 60.88,
+          "pred": 1,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nYes."
+        },
+        {
+          "qid": "26387562#0",
+          "rel": 0,
+          "docid": "26387562#6",
+          "prompt_tokens": 336,
+          "sec": 98.47,
+          "pred": 0,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nNo."
+        },
+        {
+          "qid": "29418470#0",
+          "rel": 1,
+          "docid": "58769#19",
+          "prompt_tokens": 292,
+          "sec": 70.47,
+          "pred": 1,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nYes."
+        },
+        {
+          "qid": "29418470#0",
+          "rel": 0,
+          "docid": "468641#10",
+          "prompt_tokens": 257,
+          "sec": 61.06,
+          "pred": 0,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nNo."
+        },
+        {
+          "qid": "39338041#0",
+          "rel": 1,
+          "docid": "1738221#14",
+          "prompt_tokens": 377,
+          "sec": 177.8,
+          "pred": 0,
+          "raw": "No. The passage does not contain information about what Marx believed the state "
+        },
+        {
+          "qid": "39338041#0",
+          "rel": 0,
+          "docid": "76907#35",
+          "prompt_tokens": 386,
+          "sec": 95.56,
+          "pred": 0,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nNo."
+        },
+        {
+          "qid": "41055715#0",
+          "rel": 1,
+          "docid": "41055715#0",
+          "prompt_tokens": 205,
+          "sec": 48.14,
+          "pred": 1,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nYes."
+        },
+        {
+          "qid": "41055715#0",
+          "rel": 0,
+          "docid": "224230#45",
+          "prompt_tokens": 168,
+          "sec": 50.7,
+          "pred": 0,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nNo."
+        },
+        {
+          "qid": "4706692#0",
+          "rel": 1,
+          "docid": "4706692#0",
+          "prompt_tokens": 230,
+          "sec": 63.54,
+          "pred": 1,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nYes."
+        },
+        {
+          "qid": "4706692#0",
+          "rel": 0,
+          "docid": "4706692#13",
+          "prompt_tokens": 144,
+          "sec": 45.78,
+          "pred": 0,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nNo."
+        },
+        {
+          "qid": "869930#0",
+          "rel": 1,
+          "docid": "869930#0",
+          "prompt_tokens": 270,
+          "sec": 68.91,
+          "pred": 1,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nYes."
+        },
+        {
+          "qid": "869930#0",
+          "rel": 0,
+          "docid": "1093628#4",
+          "prompt_tokens": 269,
+          "sec": 76.21,
+          "pred": 1,
+          "raw": "yes or no):\nassistant\n<think>\n\n</think>\n\nYes."
+        }
+      ]
+    }
+  ],
+  "verdict": {
+    "fastest": "qwen3-0.6b",
+    "fastest_sec": 8.76,
+    "best_acc": "qwen3-4b",
+    "best_acc_value": 0.8,
+    "english_full_days_at_fastest": 2.2,
+    "note": "秒数按 n_judgements 线性外推，仅为量级判断，非承诺"
+  }
+}

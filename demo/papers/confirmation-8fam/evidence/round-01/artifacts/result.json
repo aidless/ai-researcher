@@ -1,0 +1,119 @@
+{
+ "models": {},
+ "n": 160,
+ "seed": 20261010,
+ "models_requested": [
+  "qwen2.5:7b",
+  "gemma3:4b",
+  "qwen3:4b",
+  "llama3.1:8b",
+  "qwen2:7b",
+  "deepseek-r1:7b",
+  "qwen2.5-coder:7b",
+  "llama3.2:1b"
+ ],
+ "models_measured": [
+  "qwen2.5:7b",
+  "gemma3:4b",
+  "qwen3:4b",
+  "llama3.1:8b",
+  "qwen2:7b",
+  "deepseek-r1:7b",
+  "qwen2.5-coder:7b",
+  "llama3.2:1b"
+ ],
+ "item_bank": "demo/transfer/items/confirm160.json",
+ "per_model": {
+  "qwen2.5:7b": {
+   "policies": {
+    "direct": 0.1938,
+    "step-calc": 0.4313
+   },
+   "gain": 0.2375,
+   "fixed": 46,
+   "broke": 8,
+   "p": 0.0
+  },
+  "gemma3:4b": {
+   "policies": {
+    "direct": 0.1062,
+    "step-calc": 0.6312
+   },
+   "gain": 0.525,
+   "fixed": 89,
+   "broke": 5,
+   "p": 0.0
+  },
+  "qwen3:4b": {
+   "policies": {
+    "direct": 0.2437,
+    "step-calc": 0.1812
+   },
+   "gain": -0.0625,
+   "fixed": 11,
+   "broke": 21,
+   "p": 0.110184
+  },
+  "llama3.1:8b": {
+   "policies": {
+    "direct": 0.1187,
+    "step-calc": 0.5125
+   },
+   "gain": 0.3938,
+   "fixed": 74,
+   "broke": 11,
+   "p": 0.0
+  },
+  "qwen2:7b": {
+   "policies": {
+    "direct": 0.1313,
+    "step-calc": 0.4625
+   },
+   "gain": 0.3312,
+   "fixed": 60,
+   "broke": 7,
+   "p": 0.0
+  },
+  "deepseek-r1:7b": {
+   "policies": {
+    "direct": 0.4188,
+    "step-calc": 0.5875
+   },
+   "gain": 0.1687,
+   "fixed": 39,
+   "broke": 12,
+   "p": 0.000198
+  },
+  "qwen2.5-coder:7b": {
+   "policies": {
+    "direct": 0.2313,
+    "step-calc": 0.6813
+   },
+   "gain": 0.45,
+   "fixed": 80,
+   "broke": 8,
+   "p": 0.0
+  },
+  "llama3.2:1b": {
+   "policies": {
+    "direct": 0.0688,
+    "step-calc": 0.3187
+   },
+   "gain": 0.2499,
+   "fixed": 47,
+   "broke": 7,
+   "p": 0.0
+  }
+ },
+ "gain_mean": 0.2867,
+ "families_positive": "7/8",
+ "mcnemar_pooled": {
+  "fixed": 446,
+  "broke": 79,
+  "p": 0.0
+ },
+ "paired_observations": 1280,
+ "confirmed": false,
+ "sign_test_p": 1.0,
+ "salvaged": "wall clock killed the run after all per-model files completed and before the harness wrote result.json; this file was built by aggregating the untouched per-model files with the harness's own mcnemar(); no model was called and no out file was modified"
+}

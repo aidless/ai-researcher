@@ -1,0 +1,31 @@
+{
+  "bundle": {
+    "bundle_id": "r01@8619d2d73b51",
+    "sha256": "8619d2d73b51f571c953429f39de5ec7e88498d97f66068a21e0d2f21cc2d388",
+    "manifest": {
+      "files": {
+        "result.json": "c324f1a0bf944454ab8840d8985cc468a0e8b3af16e7bbbbcd3bb0a3b6bbc521"
+      },
+      "environment": {
+        "ollama_model": "",
+        "ollama_base_digest": "unknown",
+        "python": "3.12.3",
+        "numpy": "2.5.2",
+        "scipy": "1.18.1",
+        "seed": "unset"
+      },
+      "sha256": "8619d2d73b51f571c953429f39de5ec7e88498d97f66068a21e0d2f21cc2d388"
+    }
+  },
+  "envelope": {
+    "payload": {
+      "bundle_id": "r01@8619d2d73b51",
+      "bundle_sha256": "8619d2d73b51f571c953429f39de5ec7e88498d97f66068a21e0d2f21cc2d388",
+      "signer": "ai-researcher-loop",
+      "signed_at": "2026-10-06T12:10:32.891074+00:00",
+      "expires_at": "2027-10-06T00:00:00+00:00"
+    },
+    "signature": "kH/f9vZoLL05fYgY4qb0+54u8l8j53pUUb3CEoiWlgF4GvlVZMKesKMY9mud4dpw3+ti2zGhF7ZjNVsuClTCBw==",
+    "algorithm": "Ed25519"
+  }
+}

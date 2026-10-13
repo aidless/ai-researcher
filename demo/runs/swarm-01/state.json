@@ -1,0 +1,54 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/swarm-01/round-01",
+   "result": {
+    "arms": {
+     "swarm1": {
+      "swarm": 1,
+      "pci_trajectory": [
+       0.0,
+       0.1485,
+       0.1636,
+       0.1356,
+       0.2121,
+       0.2388,
+       0.2398
+      ],
+      "slope": 0.04
+     },
+     "swarm4": {
+      "swarm": 4,
+      "pci_trajectory": [
+       0.0,
+       0.1485,
+       0.1636,
+       0.2596,
+       0.2121,
+       0.2388,
+       0.3096
+      ],
+      "slope": 0.0516
+     }
+    },
+    "slope_excess": 0.0116,
+    "confirmed": true,
+    "seed": 20261006,
+    "exit_code": 0,
+    "wall_s": 839.7
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@2ff1b08c9f7b",
+   "kill_row": "confirmed == True",
+   "verdict": "STOP-EXTEND",
+   "reason": null
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-06T10:05:47.950912+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "8f3e0e072a879c49066907c22402e5235f846024924506d23560ec3d29f9870f",
+ "key_priv": null
+}

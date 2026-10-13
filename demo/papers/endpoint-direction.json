@@ -60,6 +60,10 @@
     "prompt-ablation": {
       "direction": "aligns",
       "claim": "all four wording variants beat direct in all three families (wording-robustness, preregistered scope condition, not the core phenomenon itself)"
+    },
+    "cross-dataset": {
+      "direction": "aligns",
+      "claim": "preregistered null: both independent sources must replicate; SVAMP does (3/3, p=7.3e-5) but ASDiv-rest does not (2/3, p=0.37) -- so the claim narrows rather than surviving"
     }
   }
 }

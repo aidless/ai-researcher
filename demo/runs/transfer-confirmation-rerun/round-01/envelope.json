@@ -1,0 +1,35 @@
+{
+  "bundle": {
+    "bundle_id": "r01@80e14e2c48f3",
+    "sha256": "80e14e2c48f3b5d95ad6793203c423f383a0506f518dd5d49800b08b867d912d",
+    "manifest": {
+      "files": {
+        "out_gemma3_4b_direct.jsonl": "78d0526f24646399860ef48ddc81f54426ee829196be17ef8175aaa6d1008249",
+        "out_gemma3_4b_step-calc.jsonl": "78d0526f24646399860ef48ddc81f54426ee829196be17ef8175aaa6d1008249",
+        "out_qwen2.5_7b_direct.jsonl": "49a32681bc729d97a104ac60ca8668f509e1ba63853d2d57403c7190fdc9ab1a",
+        "out_qwen2.5_7b_step-calc.jsonl": "78d0526f24646399860ef48ddc81f54426ee829196be17ef8175aaa6d1008249",
+        "result.json": "35ccc0d67f7519224863f005c36392cbad9c4f91b28438ee3f6dce547e75647e"
+      },
+      "environment": {
+        "ollama_model": "",
+        "ollama_base_digest": "unknown",
+        "python": "3.12.3",
+        "numpy": "2.5.2",
+        "scipy": "1.18.1",
+        "seed": "unset"
+      },
+      "sha256": "80e14e2c48f3b5d95ad6793203c423f383a0506f518dd5d49800b08b867d912d"
+    }
+  },
+  "envelope": {
+    "payload": {
+      "bundle_id": "r01@80e14e2c48f3",
+      "bundle_sha256": "80e14e2c48f3b5d95ad6793203c423f383a0506f518dd5d49800b08b867d912d",
+      "signer": "ai-researcher-loop",
+      "signed_at": "2026-10-11T05:46:35.555538+00:00",
+      "expires_at": "2027-10-06T00:00:00+00:00"
+    },
+    "signature": "PoB1csSj9eO7dknWr0TTbxYNb5y0XNBCAeZXUuKJ2PVzadR04v5KQ2l4A23u90rU8lKx43Pl/5Wy50EB0wrhAA==",
+    "algorithm": "Ed25519"
+  }
+}

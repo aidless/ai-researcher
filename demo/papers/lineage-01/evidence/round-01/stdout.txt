@@ -1,0 +1,1 @@
+{"rates": {"v1": null, "v2": 0.6759, "v3": 0.7326, "v3b": 0.7241, "v3c": 0.7083}, "any_regression": true}

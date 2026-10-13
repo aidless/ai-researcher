@@ -1,0 +1,174 @@
+{
+ "board": "AGI 候选臂可判定性定价板",
+ "ran_at_utc": "2026-10-09T03:38:56Z",
+ "read_only": true,
+ "kaggle_writes": 0,
+ "sim_machine_minutes": 0,
+ "kernel": {
+  "path": "/home/liuzewen/.qoder-cn/skills/prebuild-testability-check/scripts/prebuild_testability.py",
+  "z90": 1.645,
+  "z80": 2.802
+ },
+ "arms": [
+  {
+   "arm": "ARC2-MG",
+   "question": "再加 DSL 族还有没有可判的收益",
+   "currency": "solved-task fraction on the 259-task HOLD",
+   "carriers": {
+    "marginal_gain.json": "marginal_gain",
+    "elapsed_sec": 769.5,
+    "plateau_from_row_k": 8,
+    "final_row_k": 12,
+    "hold_final": "7/259",
+    "controls_oracle": 259
+   },
+   "kernel_verdict": "ESCALATION_TESTABLE_more_n_may_resolve",
+   "kernel": {
+    "bar": {
+     "bar": 0.0098,
+     "arithmetic": "0.027027 - 0.0172",
+     "status": "OK"
+    },
+    "sign_convention": "candidate-better is mean>0",
+    "ci_used": {
+     "which": "naive",
+     "ci": [
+      -0.016575,
+      0.016575
+     ],
+     "why": "clustered absent"
+    },
+    "promotion_test": {
+     "magnitude_passes_bar": false,
+     "abs_mean_over_bar_pct": 0.0,
+     "bar_sized_advantage_inside_existing_ci": true
+    },
+    "escalation_arithmetic": {
+     "n_for_ci90_to_exclude_zero_at_observed_mean": null,
+     "n_for_a_bar_sized_effect": 3,
+     "arithmetic": "n = (1.645 x sd / target)^2",
+     "what_more_cells_buy": "a real chance of resolving the bar-sized effect"
+    }
+   },
+   "kernel_verdict_name": "ESCALATION_TESTABLE_more_n_may_resolve",
+   "verdict": "ESCALATION_TESTABLE_more_n_may_resolve"
+  },
+  {
+   "arm": "GSM-TPR",
+   "question": "这条臂能不能给别的臂定升档线",
+   "currency": "true-positive rate (no-TPR-loss clause)",
+   "carriers": {
+    "ablation.json": {
+     "tpr_r1": 1.0,
+     "tpr_r2": 1.0,
+     "tpr_r7at8": 1.0
+    },
+    "denominator": 1
+   },
+   "self_verdict": "INSTRUMENT_GAP_reference_ci_has_zero_width_because_n_is_1",
+   "why": "三条 TPR 全是 1.0，而分母是 1：CI 宽度为 0 不是因为测得准，是因为只有一个正类样本。原件的 bar 规则只检查 bar>0，遇到这种退化 CI 会照样放行一个 bar —— 这是那台仪器的一个真实边界，本板不走它，改由本节直接判 GAP。",
+   "consequence": "gsm8k 这条线有资格给 FPR 腿定价（k_curve 带计数的 Wilson），但没资格给别的臂定升档线",
+   "usable_instead": {
+    "carrier": "ablation.json verdict…k_curve",
+    "k": 8,
+    "fpr": 0.9825,
+    "wilson95": [
+     0.970840927975432,
+     0.9895474564860909
+    ]
+   },
+   "verdict": "INSTRUMENT_GAP_reference_ci_has_zero_width_because_n_is_1"
+  },
+  {
+   "arm": "AIR-CODEREPAIR",
+   "question": "把 coderepair 的 n 从 40 题拉到 157 值不值",
+   "currency": "paired accuracy delta, step-calc − direct (per model)",
+   "carriers": {
+    "result.json": {
+     "n_items": 40,
+     "models": 4,
+     "mcnemar_p": 0.16275565745308995
+    },
+    "measured_cost": {
+     "minutes": 4.99,
+     "ollama_calls": 320,
+     "throughput_calls_per_min": 64.1
+    }
+   },
+   "kernel_verdict": "INSTRUMENT_GAP_bar_carrier_missing",
+   "kernel": {},
+   "kernel_verdict_name": "INSTRUMENT_GAP_bar_carrier_missing",
+   "verdict": "INSTRUMENT_GAP_bar_carrier_missing"
+  },
+  {
+   "arm": "GOODHART-C2",
+   "question": "α 往代理最大方向推，真实分掉多少是判得开的",
+   "currency": "true_score (same env, paired by seed)",
+   "carriers": {
+    "summary.csv": {
+     "rows": 30,
+     "alphas": [
+      "0.5",
+      "1.0",
+      "1.5",
+      "2.0",
+      "2.5",
+      "3.0"
+     ],
+     "peak_alpha": "0.5",
+     "seeds_paired": 5,
+     "proxy_at_peak": 0.6429,
+     "proxy_at_other": 1.3762
+    }
+   },
+   "kernel_verdict": "PROMOTION_RULED_OUT_AT_EXISTING_N_bar_outside_ci_and_mean_far_below_bar",
+   "kernel": {
+    "bar": {
+     "bar": 432.6175,
+     "arithmetic": "444.022 - 11.4045",
+     "status": "OK"
+    },
+    "sign_convention": "candidate-better is mean>0",
+    "ci_used": {
+     "which": "naive",
+     "ci": [
+      -457.355,
+      -435.129
+     ],
+     "why": "clustered absent"
+    },
+    "promotion_test": {
+     "magnitude_passes_bar": false,
+     "abs_mean_over_bar_pct": 103.15,
+     "bar_sized_advantage_inside_existing_ci": false
+    },
+    "escalation_arithmetic": {
+     "n_for_ci90_to_exclude_zero_at_observed_mean": 1,
+     "n_for_a_bar_sized_effect": 1,
+     "arithmetic": "n = (2.802 x sd / target)^2",
+     "what_more_cells_buy": "a tighter interval around the observed mean, never a promotion: the mean itself would have to reach the bar"
+    }
+   },
+   "kernel_verdict_name": "PROMOTION_RULED_OUT_AT_EXISTING_N_bar_outside_ci_and_mean_far_below_bar",
+   "verdict": "PROMOTION_RULED_OUT_AT_EXISTING_N_bar_outside_ci_and_mean_far_below_bar",
+   "reading_warning": "这条判决说的是『再加 seed 也不会把 α 推成一次升档』，不是说 Goodhart 脱钩没发生。候选均值本身是大负数（真实分从峰位崩下去），那正是这篇东西要找的效应——RULED_OUT 在此仅否掉『多买样本能翻正』这一条，绝不构成对该发现的否证。把它转述成『结论被推翻』是错的。"
+  }
+ ],
+ "not_carried": [
+  {
+   "arm": "AGI-KIT",
+   "self_verdict": "NOT_CARRIED",
+   "why": "工作区无本地目录（只有 GitHub 公开仓）；不拿别人 README 里的数字当自己的载体"
+  },
+  {
+   "arm": "agi-research",
+   "self_verdict": "NOT_CARRIED",
+   "why": "工作区无本地目录（只有 GitHub 公开仓）；不拿别人 README 里的数字当自己的载体"
+  },
+  {
+   "arm": "goodhart-project",
+   "self_verdict": "PRICED_ABOVE (GOODHART-C2)",
+   "why": "载体已接进算式：c2/results/summary.csv 逐 seed 原始值（30 行）；同目录仍有 2 份 json 未接（train_config 之类，不含待判的量）"
+  }
+ ]
+}

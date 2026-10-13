@@ -229,11 +229,42 @@ def _reference_report(text: str):
     return entries, errors
 
 
+def _num(v):
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return None
+
+
 def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
                      tier: str) -> list:
     """Run the mechanical half. Returns [(check_id, passed: bool, reason)]."""
     out = []
     text = draft_text or ""
+    # A run whose judge was forced (EVO_FORCE_DECIDE=1 terraforms abstentions into
+    # seeded-random votes marked forced=True) cannot support a strong claim:
+    # that is collapse-02's default-vote bias in a different costume. Surfaced
+    # here, at the only gate every tier passes through, because the consolidated
+    # ledger generator lives outside this repo and cannot be relied on.
+    forced = [r for r in ledger_rows
+              if "forced_votes" in (str(r.get("id", "")) + str(r.get("claim", ""))
+                                    + str(r.get("evidence", ""))).lower()
+              and _num(r.get("value")) not in (None, 0)]
+    if forced:
+        # "forced_votes = 4" merely names the field. Disclosure means the
+        # ledger SAYS what those votes are: terraformed/代判/random standing
+        # in for a judgment that never happened.
+        DISCLOSE = ("terraformed", "random", "standing in", "abstention",
+                    "forged", "synthetic", "代判", "冒充", "no real judgment",
+                    "default vote")
+        disclosed = any(w in (r.get("claim", "") + r.get("how", "")).lower()
+                        for r in ledger_rows for w in DISCLOSE)
+        runs = ", ".join(sorted({r["run"] for r in forced if r.get("run")}))
+        reason = f"{len(forced)} rows report forced judge votes (runs: {runs})"
+        if not disclosed:
+            reason += ("; the ledger never names that these votes were "
+                       "terraformed from abstentions -- the manuscript must")
+        out.append(("Z9-forced-votes-disclosed", disclosed, reason))
     for cid, desc in MECHANICAL.get(tier, []):
         if cid.endswith("numbers-trace"):
             bad = [r for r in ledger_rows
@@ -289,11 +320,19 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
                              # as a set with its mean and spread, which is the
                              # estimand; each value separately is not
                              "excesses[", "arms[", "pci[")
+            # value=None+value_note rows stay IN the denominator (author
+            # asserted a magnitude but wrote no number: "about half"), and
+            # are counted separately in the reason. The old filter
+            # (isinstance(int/float)) dropped them silently -- fewer claims
+            # as the ledger got worse. Default None (no note, e.g. an empty
+            # cell) stays out: that is a missing row, not an unverifiable one.
             quants = [r for r in ledger_rows
-                      if isinstance(r.get("value"), (int, float))
+                      if (isinstance(r.get("value"), (int, float))
+                          or (r["value"] is None and r.get("value_note")))
                       and any(h in r.get("id", "").lower() for h in MAGNITUDE_HINT)
                       and not any(h in r.get("id", "").lower()
                                   for h in NOT_ESTIMANDS)]
+            n_unverifiable = sum(1 for r in quants if r["value"] is None)
             # Denominator is the magnitude claims the MANUSCRIPT actually asserts,
             # not every magnitude row in the ledger. The consolidated ledger holds
             # one row per run per field, so 14 runs produce 14 copies of `gain`
@@ -337,9 +376,13 @@ def mechanical_check(ledger_rows: list, draft_text: str, meta: dict,
                     + len(re.findall(r"\bCI\b|\bCIs\b|confidence interval|"
                                      r"credible interval|posterior|Bayes factor|\bBF\b",
                                      text)))
-            out.append((cid, n_ci >= n_claims,
-                        "ok" if n_ci >= n_claims
-                        else f"only {n_ci} interval mentions for {n_claims} numeric claims"))
+            reason = ("ok" if n_ci >= n_claims
+                      else f"only {n_ci} interval mentions for {n_claims} numeric claims")
+            if n_unverifiable:
+                reason += (f" ({n_unverifiable} of them have unverifiable "
+                           f"values: the claim names a magnitude, the ledger "
+                           f"gives no number)")
+            out.append((cid, n_ci >= n_claims, reason))
         elif cid.endswith("double-blind"):
             # AAAI rule: no pointers to web material in the submission at all,
             # including anonymous repositories -- supplementary goes in the ZIP.

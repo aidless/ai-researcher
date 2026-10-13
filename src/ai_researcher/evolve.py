@@ -124,6 +124,60 @@ class Proposal:
         }
 
 
+N_KNOBS = ("EVO_SEEDS", "EVO_SEED", "EVO_ROUNDS", "EVO_LIMIT", "EVO_MODELS", "EVO_REPS", "EVO_K")
+
+
+def _arm_scripts(source_run: str, demo_dir: pathlib.Path) -> list:
+    """The run's family directory: the longest demo/<dir> whose name prefixes the run.
+
+    balanced-01 -> demo/balanced, collapse-replication -> demo/collapse,
+    transfer-confirmation -> demo/transfer.
+    """
+    best = None
+    for d in sorted(p for p in demo_dir.iterdir() if p.is_dir()):
+        if source_run == d.name or source_run.startswith(d.name + "-") or \
+           source_run.startswith(d.name.replace("_", "-") + "-"):
+            if best is None or len(d.name) > len(best.name):
+                best = d
+    return list(best.glob("run_*.py")) if best else []
+
+
+def _executability(p: Proposal, demo_dir=None) -> str:
+    """Refuse an escalation whose arm cannot take more n.
+
+    Why this exists: `_power_escalation` computes `need = required_n(0.10) = 157` from the
+    ledger and stamps the proposal "ready for approval", but it never asked whether the arm
+    can reach 157. Two proposals on disk could not: demo/balanced/run_balanced.py is a
+    deterministic reanalysis ("No model calls") over external weight files, and
+    demo/breadth/run_breadth.py iterates a hard-coded list of 8 diffs (its own result.json
+    says n_diffs: 8). Escalating those means authoring a new instrument, not raising a
+    number -- and a run launched from the "# TODO: exact command" methods line the proposer
+    emits would have burned hours to re-measure the same n. Arms that DO expose a knob
+    (swarm: EVO_SEEDS/EVO_ROUNDS; transfer: EVO_LIMIT/EVO_MODELS; coderepair: EVO_MODELS)
+    stay armable.
+    """
+    if p.kind != "power_escalation":
+        return ""
+    demo_dir = pathlib.Path(demo_dir) if demo_dir else \
+        pathlib.Path(__file__).resolve().parents[2] / "demo"
+    scripts = _arm_scripts(p.source_run, demo_dir)
+    if not scripts:
+        return (f"cannot arm: no run script found for {p.source_run!r} under {demo_dir}/ "
+                f"-- the escalation has nothing to raise the n of")
+    for py in scripts:
+        try:
+            txt = py.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        if any(k in txt for k in N_KNOBS):
+            return ""          # a real knob exists: armable
+    return (f"n is not a knob in this arm -- none of "
+            f"{[s.name for s in scripts]} reads any of {list(N_KNOBS)}, so the sample size "
+            f"is set by hard-coded item/seed collections in the script or by its external "
+            f"input files. Reaching n={p.n} requires authoring a new instrument (more items), "
+            f"not raising a number -- this proposal is not armable as written")
+
+
 def _power_ok(p: Proposal) -> str:
     """Refuse a proposal whose promised effect its own n cannot detect."""
     if not p.n or not p.mde:
@@ -365,7 +419,7 @@ def propose_next(runs_dir, ledger_path=None, limit: int = 5):
                 continue
             if p is None:
                 continue
-            p.blocked = _power_ok(p)
+            p.blocked = "; ".join(x for x in (_power_ok(p), _executability(p)) if x)
             out.append(p)
     out.sort(key=lambda p: (-p.priority, p.kind))
     return out[:limit]

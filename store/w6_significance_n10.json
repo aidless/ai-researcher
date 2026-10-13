@@ -1,0 +1,94 @@
+{
+  "probed_at": "2026-10-03T14:32:16+0800",
+  "probe_source": "live",
+  "n_query_paired": 10,
+  "alpha": 0.05,
+  "min_neg": 8,
+  "cells": [
+    {
+      "cell": "hallucination_on_neg",
+      "k": 9,
+      "n": 10,
+      "rate": 0.9,
+      "wilson95": [
+        0.5958,
+        0.9821
+      ]
+    },
+    {
+      "cell": "miss_on_pos",
+      "k": 0,
+      "n": 10,
+      "rate": 0.0,
+      "wilson95": [
+        0.0,
+        0.2775
+      ]
+    },
+    {
+      "cell": "acc",
+      "k": 11,
+      "n": 20,
+      "rate": 0.55,
+      "wilson95": [
+        0.3421,
+        0.7418
+      ]
+    },
+    {
+      "cell": "hallucination_on_neg",
+      "k": 2,
+      "n": 10,
+      "rate": 0.2,
+      "wilson95": [
+        0.0567,
+        0.5098
+      ]
+    },
+    {
+      "cell": "miss_on_pos",
+      "k": 2,
+      "n": 10,
+      "rate": 0.2,
+      "wilson95": [
+        0.0567,
+        0.5098
+      ]
+    },
+    {
+      "cell": "acc",
+      "k": 16,
+      "n": 20,
+      "rate": 0.8,
+      "wilson95": [
+        0.584,
+        0.9193
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "label": "hallucination_on_neg: qwen3-0.6b vs qwen3-4b",
+      "n_paired": 10,
+      "n_agree": 3,
+      "disagree": 7,
+      "first_halluc_only": 7,
+      "second_halluc_only": 0,
+      "mcnemar_p": 0.0156,
+      "discrimination": "single_direction"
+    },
+    {
+      "label": "miss_on_pos: qwen3-0.6b vs qwen3-4b",
+      "n_paired": 10,
+      "n_agree": 8,
+      "disagree": 2,
+      "first_halluc_only": 2,
+      "second_halluc_only": 0,
+      "mcnemar_p": 0.5,
+      "discrimination": "single_direction"
+    }
+  ],
+  "verdict": "directional",
+  "blockers": [],
+  "n_disc_min": 7
+}

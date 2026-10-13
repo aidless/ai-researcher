@@ -1,0 +1,44 @@
+{
+  "hypothesis": "The evaluator-bias amplification claim replicates on at least 5 of 6 GENUINELY DISTINCT seeds: the statistic (swarm4 slope minus swarm1 slope) takes at least 5 distinct values across the six runs and >=5 of them are >= 0.01/round.",
+  "methods": "RD=\"$PWD\"; ROOT=\"\"; d=\"$RD\"; while [ \"$d\" != \"/\" ]; do [ -d \"$d/src/ai_researcher\" ] && { ROOT=\"$d\"; break; }; d=$(dirname \"$d\"); done; [ -n \"$ROOT\" ] || { echo \"no repo root\" >&2; exit 1; }; EVO_OUT=\"$RD/artifacts\" EVO_SEED=20261101 EVO_SEEDS=20261101,20261102,20261103,20261104,20261105,20261106 EVO_ROUNDS=6 python3 \"$ROOT/demo/swarm/run_swarm.py\"",
+  "max_rounds": 1,
+  "max_cost_usd": 0.0,
+  "max_wall_hours": 3.0,
+  "seed": 20261101,
+  "power": {
+    "n": 6,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.01,
+    "power_at_mde": 0.8,
+    "endpoint": "sign test over 6 seeds, counted on distinct values of the statistic (n_distinct_statistic), not on n_seeds"
+  },
+  "kill_switch": [
+    {
+      "condition": "n_seeds < 6",
+      "action": "STOP-INCONCLUSIVE",
+      "note": "fewer seeds ran than declared: the escalation did not execute"
+    },
+    {
+      "condition": "n_distinct_statistic < 6",
+      "action": "STOP-INCONCLUSIVE",
+      "note": "seed6-01 measured 6 draws but only 5 distinct statistic values (excess repeated at 0.0551 because the swarm=4 arm collided). A draw that repeats another's value is not a second sample, so a 6-seed sign test is not entitled to n=6 here. Raise seeds until the statistic itself is distinct, or state the smaller denominator."
+    },
+    {
+      "condition": "confirmed == True",
+      "action": "STOP-EXTEND",
+      "note": ">=5 distinct seeds positive: the claim is citable at an adequate, genuinely distinct n"
+    },
+    {
+      "condition": "confirmed == False",
+      "action": "STOP-REFUTED",
+      "note": "does not survive distinct seeds; publish as a replication report"
+    }
+  ],
+  "required_artifacts": [
+    "result.json"
+  ],
+  "negative_publish": "replication-report",
+  "tension": "seed6-01 refuted the amplification claim at 4/6 positive, but the run also showed the denominator was inflated: two of the six seeds produced identical trajectories on the deciding arm, so only 5 distinct values of the statistic existed. If a future batch repeats that pattern, a 'confirmed' verdict would rest on fewer independent draws than the sign test assumes -- which is how an 8B-model artifact can look preregistered while being effectively n=3. This envelope therefore binds the design-integrity gate to the statistic's distinctness, not to the seed counter, so the failure mode that was observed is the failure mode that stops the run.",
+  "approved_by": "",
+  "approved_at": ""
+}

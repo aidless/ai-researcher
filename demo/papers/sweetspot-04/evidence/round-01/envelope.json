@@ -1,0 +1,38 @@
+{
+  "bundle": {
+    "bundle_id": "r01@1ddc67663178",
+    "sha256": "1ddc676631783b9ac8157de6a9a939b5d4026fa0f9cf5c67e1953295677cad06",
+    "manifest": {
+      "files": {
+        "items.json": "4d4af4339e07f71449b8a94ee6d832aaaf8cbe18af75b77ee6d8955241f34974",
+        "out_deepseek-r1_7b_cap1000.jsonl": "1f414a2eee17169dbb01b3323f5f9093e90ab6cf885f407d28260668f3fa7a0d",
+        "out_deepseek-r1_7b_cap150.jsonl": "3a77a815fd6d35394d2fa0c62f98d3c638ab187e66dd1ea10aad4054aeea363a",
+        "out_deepseek-r1_7b_cap400.jsonl": "ae02b792e4792c2fbfc8eec96bc2588ef7a754709a3a8f153bba90008958a037",
+        "out_qwen2.5_7b_cap1000.jsonl": "cf2a894d09395f020e94f792e9ad4749700389efa9908b9985422c35b0280570",
+        "out_qwen2.5_7b_cap150.jsonl": "cf2a894d09395f020e94f792e9ad4749700389efa9908b9985422c35b0280570",
+        "out_qwen2.5_7b_cap400.jsonl": "cf2a894d09395f020e94f792e9ad4749700389efa9908b9985422c35b0280570",
+        "result.json": "3703f91b6d9dd03c4f0207a39452625442254238edd5923ca7033d4393236725"
+      },
+      "environment": {
+        "ollama_model": "",
+        "ollama_base_digest": "unknown",
+        "python": "3.12.3",
+        "numpy": "2.5.2",
+        "scipy": "1.18.1",
+        "seed": "unset"
+      },
+      "sha256": "1ddc676631783b9ac8157de6a9a939b5d4026fa0f9cf5c67e1953295677cad06"
+    }
+  },
+  "envelope": {
+    "payload": {
+      "bundle_id": "r01@1ddc67663178",
+      "bundle_sha256": "1ddc676631783b9ac8157de6a9a939b5d4026fa0f9cf5c67e1953295677cad06",
+      "signer": "ai-researcher-loop",
+      "signed_at": "2026-10-08T04:16:03.938545+00:00",
+      "expires_at": "2027-10-06T00:00:00+00:00"
+    },
+    "signature": "+FZ8rBNMhFz6x6iT968RMy9xuA3aCGJBWLBL2KGyskBmUKyrtgcjmLN/IT8F2emEJLCM1/MlGddooZVKOjgzBg==",
+    "algorithm": "Ed25519"
+  }
+}

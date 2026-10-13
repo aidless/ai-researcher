@@ -1,0 +1,10 @@
+{
+  "rounds": [],
+  "status": "RUNNING",
+  "started_at": "2026-10-11T05:03:28.445939+00:00",
+  "cost_usd": 0.0,
+  "key_pub": "8a35f5b832ee2a7b93a35cb82836d0f8ae6768c42b24d467393ecbb2c472cbce",
+  "key_priv": null,
+  "key_era": "root",
+  "loop_schema": 2
+}

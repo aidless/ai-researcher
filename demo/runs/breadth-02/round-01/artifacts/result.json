@@ -1,0 +1,143 @@
+{
+ "n_diffs": 24,
+ "evaluators": [
+  "qwen2.5:7b",
+  "llama3.1:8b",
+  "gemma3:4b"
+ ],
+ "evaluators_dropped_by_preflight": {},
+ "_config": {
+  "n_diffs": 24,
+  "evaluators": 3,
+  "abstention_rate": 0.0
+ },
+ "abstention_rate": 0.0,
+ "measurable": true,
+ "votes": {
+  "bugfix-offbyone": {
+   "qwen2.5:7b": "APPROVE",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "perf-nplus1": {
+   "qwen2.5:7b": "APPROVE",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "refactor-rename": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "security-eval": {
+   "qwen2.5:7b": "APPROVE",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "REQUEST_CHANGES"
+  },
+  "docs-typo": {
+   "qwen2.5:7b": "APPROVE",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "test-only": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "dep-bump": {
+   "qwen2.5:7b": "APPROVE",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "api-change": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "perf-tradeoff": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "REQUEST_CHANGES",
+   "gemma3:4b": "APPROVE"
+  },
+  "subtle-semantics": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "multi-hunk": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "typing-tightening": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "security-order": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "cache-invalidation": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "REQUEST_CHANGES",
+   "gemma3:4b": "REQUEST_CHANGES"
+  },
+  "silent-truncation": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "regex-catastrophic": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "REQUEST_CHANGES",
+   "gemma3:4b": "REQUEST_CHANGES"
+  },
+  "float-equality": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "lock-order": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "json-nan": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "copy-vs-deepcopy": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "timezone": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "retry-storm": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  },
+  "off-by-one-guard": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "REQUEST_CHANGES"
+  },
+  "doc-only-semantics": {
+   "qwen2.5:7b": "REQUEST_CHANGES",
+   "llama3.1:8b": "APPROVE",
+   "gemma3:4b": "APPROVE"
+  }
+ },
+ "abstentions": 0,
+ "pairwise_agreement": 0.5,
+ "flip_cases": 16,
+ "confirmed": true,
+ "flip_confirmed": true
+}

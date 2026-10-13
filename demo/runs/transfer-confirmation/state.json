@@ -1,0 +1,70 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/transfer-confirmation/round-01",
+   "result": {
+    "models": {},
+    "n": 160,
+    "seed": 20261010,
+    "models_requested": [
+     "qwen2.5:7b",
+     "gemma3:4b"
+    ],
+    "models_measured": [
+     "qwen2.5:7b",
+     "gemma3:4b"
+    ],
+    "item_bank": "demo/transfer/items/confirm160.json",
+    "per_model": {
+     "qwen2.5:7b": {
+      "policies": {
+       "direct": 0.1875,
+       "step-calc": 0.4313
+      },
+      "gain": 0.2438,
+      "fixed": 45,
+      "broke": 6,
+      "p": 0.0
+     },
+     "gemma3:4b": {
+      "policies": {
+       "direct": 0.1062,
+       "step-calc": 0.625
+      },
+      "gain": 0.5188,
+      "fixed": 88,
+      "broke": 5,
+      "p": 0.0
+     }
+    },
+    "gain_mean": 0.3813,
+    "families_positive": "2/2",
+    "mcnemar_pooled": {
+     "fixed": 133,
+     "broke": 11,
+     "p": 0.0
+    },
+    "paired_observations": 320,
+    "confirmed": true,
+    "sign_test_p": 0.25,
+    "exit_code": 0,
+    "wall_s": 2267.8,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "timed_out": false,
+   "bundle": "r01@155639f189ea",
+   "kill_row": "confirmed == True",
+   "verdict": "STOP-EXTEND",
+   "reason": "gain replicates: extend to more families or more items"
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-08T04:16:24.466439+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "9fd584a6754c1cfc73f6b8389d3b513c01bb1a684c3e8df58746e25c006f8efa",
+ "key_priv": null
+}

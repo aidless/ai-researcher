@@ -1,0 +1,23 @@
+{
+  "bundle": {
+    "bundle_id": "r01@04c96d2e4e76",
+    "sha256": "04c96d2e4e765ea99ff948f7c3b8c3db5b0ffd9bc18a7eecfa470aa6a399a498",
+    "manifest": {
+      "files": {
+        "result.json": "6a30948e5fcf8b83d65b2b242db55f5e88828696de04351a91ae80384f2baef1"
+      },
+      "sha256": "04c96d2e4e765ea99ff948f7c3b8c3db5b0ffd9bc18a7eecfa470aa6a399a498"
+    }
+  },
+  "envelope": {
+    "payload": {
+      "bundle_id": "r01@04c96d2e4e76",
+      "bundle_sha256": "04c96d2e4e765ea99ff948f7c3b8c3db5b0ffd9bc18a7eecfa470aa6a399a498",
+      "signer": "ai-researcher-loop",
+      "signed_at": "2026-10-06T08:14:57.669032+00:00",
+      "expires_at": "2027-10-06T00:00:00+00:00"
+    },
+    "signature": "FxQ4NNoKgKv7Y48iSYN36DJyUgkJ7vdzfybUaQjoAAs+I/ki9+xYmuPI8SEmqbaqB69Vsi/tyhAUBy6C9RZ4Bw==",
+    "algorithm": "Ed25519"
+  }
+}

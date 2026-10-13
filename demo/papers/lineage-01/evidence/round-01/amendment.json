@@ -1,0 +1,5 @@
+{
+  "amended_at": "2026-10-07T09:57:17.566556+00:00",
+  "correction": "INFRASTRUCTURE CONTAMINATION: 2-8 explicit connection errors + 12-35 short outputs per version (v2:8/35, v3:2/12, v3b:5/15, v3c:8/32). Four experiments shared one ollama server with no locking. The v3b-vs-v3c McNemar 1:14 (p=0.001) cannot separate model regression from load-correlated failures. WITHDRAWN as a model finding; retained as the incident that motivated ollama_guard.py (exclusive lock + output validation). Re-run sequentially when the queue clears.",
+  "knowable_without_data": "no: contamination found after seeing the result, but the error counts are measured from committed prediction files, not inferred"
+}

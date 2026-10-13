@@ -1,0 +1,41 @@
+{
+ "executor": "qwen2.5:7b",
+ "rounds": 8,
+ "seed": 20261006,
+ "self": {
+  "judge": "qwen2.5:7b",
+  "pci_trajectory": [
+   0.0,
+   0.0722,
+   0.087,
+   0.0787,
+   0.1382,
+   0.1276,
+   0.1557,
+   0.0577,
+   0.0975
+  ],
+  "pci_final": 0.0975,
+  "pci_start": 0.0
+ },
+ "cross": {
+  "judge": "llama3.1:8b",
+  "pci_trajectory": [
+   0.0,
+   0.1283,
+   0.1379,
+   0.214,
+   0.1714,
+   0.1849,
+   0.214,
+   0.2969,
+   0.2969
+  ],
+  "pci_final": 0.2969,
+  "pci_start": 0.0
+ },
+ "cross_excess": 0.1994,
+ "confirmed": true,
+ "n_tasks": 8,
+ "n_strategies": 4
+}

@@ -1,0 +1,35 @@
+{
+  "bundle": {
+    "bundle_id": "r01@155639f189ea",
+    "sha256": "155639f189ea3af508055859bffa97c05a02e6f4100ddd09c087f8fd5adaedf2",
+    "manifest": {
+      "files": {
+        "out_gemma3_4b_direct.jsonl": "17e718e4d33f97b3a0a75695617c586bdab639ca61def4ab76cce15cd2cd8b0c",
+        "out_gemma3_4b_step-calc.jsonl": "e8f3420695570761d0e10dbf1b4b13f93ea1d6fc6af102ea5a176bba9c0827ab",
+        "out_qwen2.5_7b_direct.jsonl": "cb8a8a8782cd617b890d6203a1c06711c6b033ab3666063ed4c83e8ea52d081c",
+        "out_qwen2.5_7b_step-calc.jsonl": "aef624f127ac4529a170f46f8dc2325f1a7982fd3dd90a12a9e8d1544c2d64f6",
+        "result.json": "142053497648749470fba920696279717a527b6b0d7446dccc777d0e98401e5f"
+      },
+      "environment": {
+        "ollama_model": "",
+        "ollama_base_digest": "unknown",
+        "python": "3.12.3",
+        "numpy": "2.5.2",
+        "scipy": "1.18.1",
+        "seed": "unset"
+      },
+      "sha256": "155639f189ea3af508055859bffa97c05a02e6f4100ddd09c087f8fd5adaedf2"
+    }
+  },
+  "envelope": {
+    "payload": {
+      "bundle_id": "r01@155639f189ea",
+      "bundle_sha256": "155639f189ea3af508055859bffa97c05a02e6f4100ddd09c087f8fd5adaedf2",
+      "signer": "ai-researcher-loop",
+      "signed_at": "2026-10-08T04:54:12.510785+00:00",
+      "expires_at": "2027-10-06T00:00:00+00:00"
+    },
+    "signature": "tw/BvERqxRS2bHZ0lsVUvWRNCECTbpdTJ2G5JIDA/UfhHm0mtbx+gUuZsGWB2GZAVdtSuQ6TsLnb1X3MvHcCBQ==",
+    "algorithm": "Ed25519"
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "source": "arxiv.org/html/2312.11361v3 table 6（NoMIRACL test split，w/o SFT）",
+  "extracted_at": "2026-10-04T15:25+08:00",
+  "extracted_by": "curl 抓 HTML + 去标签按列序正则取数；四行均值与论文 table 3 交叉核对一致",
+  "language_column_order": [
+    "ar",
+    "bn",
+    "de",
+    "en",
+    "es",
+    "fa",
+    "fr",
+    "fi",
+    "hi",
+    "id",
+    "ja",
+    "ko",
+    "ru",
+    "sw",
+    "te",
+    "th",
+    "yo",
+    "zh"
+  ],
+  "caliber": "7-8B instruct+论文自方 prompt；与 W9（0.6B+自方 prompt）不同源 ⇒ 只做量级对照，禁说复现/达到/超过",
+  "hallucination_rate_non_relevant": {
+    "llama3_8b": {
+      "en": 19.2,
+      "sw": 4.0,
+      "zh": 64.4
+    },
+    "mistral_7b": {
+      "en": 42.8,
+      "sw": 14.8,
+      "zh": 45.2
+    }
+  },
+  "error_rate_relevant": {
+    "llama3_8b": {
+      "en": 41.6,
+      "sw": 80.8,
+      "zh": 6.0
+    },
+    "mistral_7b": {
+      "en": 8.0,
+      "sw": 57.6,
+      "zh": 13.2
+    }
+  },
+  "avg_check": {
+    "l3_h_avg": 26.8,
+    "mis_h_avg": 40.0,
+    "l3_e_avg": 45.3,
+    "mis_e_avg": 25.5,
+    "expect_from_table3": {
+      "l3_h": 26.8,
+      "mis_h": 40.0,
+      "l3_e": 45.3,
+      "mis_e": 25.5
+    },
+    "match": true
+  },
+  "note": "table6 共 19 列（18 语+Avg）；上版 avg_check 误取 zh 列，已修正为 Avg 列；expect 为 table3 的 w/o SFT 列（初版误写 w/SFT 列，已改）"
+}

@@ -1,0 +1,63 @@
+{
+ "domain": "code_repair_budget",
+ "caps": [
+  150,
+  400,
+  1000
+ ],
+ "n_items": 48,
+ "models_requested": [
+  "qwen2.5:7b",
+  "deepseek-r1:7b"
+ ],
+ "models_measured": [
+  "qwen2.5:7b",
+  "deepseek-r1:7b"
+ ],
+ "acc": {
+  "qwen2.5:7b": {
+   "150": 0.5833,
+   "400": 0.5833,
+   "1000": 0.5833
+  },
+  "deepseek-r1:7b": {
+   "150": 0.0,
+   "400": 0.0833,
+   "1000": 0.2708
+  }
+ },
+ "truncated": {
+  "qwen2.5:7b": {
+   "150": 0,
+   "400": 0,
+   "1000": 0
+  },
+  "deepseek-r1:7b": {
+   "150": 0,
+   "400": 0,
+   "1000": 0
+  }
+ },
+ "per_model": {
+  "qwen2.5:7b": {
+   "cap400_fixed": 0,
+   "cap1000_broke": 0,
+   "p": 1.0,
+   "delta": 0.0
+  },
+  "deepseek-r1:7b": {
+   "cap400_fixed": 9,
+   "cap1000_broke": 0,
+   "p": 0.003906,
+   "delta": 0.1875
+  }
+ },
+ "pooled": {
+  "cap400_fixed": 9,
+  "cap1000_broke": 0,
+  "mcnemar_p": 0.003906
+ },
+ "families_negative": "0/2",
+ "cliff_confirmed": false,
+ "confirmed": false
+}

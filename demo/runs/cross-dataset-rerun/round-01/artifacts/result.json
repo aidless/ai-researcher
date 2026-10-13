@@ -1,0 +1,99 @@
+{
+ "domain": "arithmetic",
+ "arm": "cross_dataset_confirmation",
+ "datasets": [
+  "svamp",
+  "asdiv-rest"
+ ],
+ "n_per_dataset": 120,
+ "models_requested": [
+  "qwen2.5:7b",
+  "gemma3:4b",
+  "llama3.1:8b"
+ ],
+ "models_measured": [
+  "qwen2.5:7b",
+  "gemma3:4b",
+  "llama3.1:8b"
+ ],
+ "per_dataset": {
+  "svamp": {
+   "n_items": 120,
+   "models": [
+    "qwen2.5:7b",
+    "gemma3:4b",
+    "llama3.1:8b"
+   ],
+   "gains": {
+    "qwen2.5:7b": 0.1,
+    "gemma3:4b": 0.125,
+    "llama3.1:8b": 0.1417
+   },
+   "fixed": 83,
+   "broke": 39,
+   "mcnemar_p": 8.407e-05,
+   "families_positive": "3/3"
+  },
+  "asdiv-rest": {
+   "n_items": 120,
+   "models": [
+    "qwen2.5:7b",
+    "gemma3:4b",
+    "llama3.1:8b"
+   ],
+   "gains": {
+    "qwen2.5:7b": -0.0333,
+    "gemma3:4b": 0.05,
+    "llama3.1:8b": 0.0417
+   },
+   "fixed": 26,
+   "broke": 19,
+   "mcnemar_p": 0.37129803,
+   "families_positive": "2/3"
+  }
+ },
+ "results": {
+  "svamp": {
+   "n_items": 120,
+   "models": [
+    "qwen2.5:7b",
+    "gemma3:4b",
+    "llama3.1:8b"
+   ],
+   "gains": {
+    "qwen2.5:7b": 0.1,
+    "gemma3:4b": 0.125,
+    "llama3.1:8b": 0.1417
+   },
+   "fixed": 83,
+   "broke": 39,
+   "mcnemar_p": 8.407e-05,
+   "families_positive": "3/3"
+  },
+  "asdiv-rest": {
+   "n_items": 120,
+   "models": [
+    "qwen2.5:7b",
+    "gemma3:4b",
+    "llama3.1:8b"
+   ],
+   "gains": {
+    "qwen2.5:7b": -0.0333,
+    "gemma3:4b": 0.05,
+    "llama3.1:8b": 0.0417
+   },
+   "fixed": 26,
+   "broke": 19,
+   "mcnemar_p": 0.37129803,
+   "families_positive": "2/3"
+  }
+ },
+ "paired_observations_per_dataset": 360,
+ "confirmed": false,
+ "_config": {
+  "n_items": 120,
+  "models": 3,
+  "datasets": 2
+ },
+ "measurable": true
+}

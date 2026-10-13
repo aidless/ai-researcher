@@ -1,0 +1,39 @@
+{
+  "tier": "workshop",
+  "verdict": "PASS",
+  "bar": 5.0,
+  "mechanical": [
+    {
+      "id": "W1-numbers-trace",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "W2-limitations-present",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "W3-no-strong-unverified",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "W4-reproduce-sketch",
+      "pass": true,
+      "reason": "ok"
+    }
+  ],
+  "mechanical_ok": true,
+  "judgment_means": {
+    "methodology": 8.67,
+    "devil": 7.67
+  },
+  "judgment_ok": true,
+  "judgment_incomplete": {},
+  "dimensions": [
+    "novelty-of-idea",
+    "honesty",
+    "clarity"
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "report": {
+    "total": 3,
+    "by_verdict": {
+      "pass": 0,
+      "fail": 2,
+      "insufficient": 1
+    },
+    "verdict_sum_matches": true,
+    "failing_gates": {
+      "scope_discipline": 1,
+      "effect_vs_noise": 1,
+      "mechanism_alignment": 2,
+      "caliber_isolation": 1
+    },
+    "every_fail_explains": true,
+    "gates_all_exercised": true,
+    "fixture_exemptions": 0,
+    "no_pass_without_scope": true
+  },
+  "verdicts": [
+    {
+      "claim": "上下文重建能提升检索效果",
+      "verdict": "fail",
+      "gates": {
+        "effect_vs_noise": {
+          "pass": true,
+          "reason": "跨度 0.031 落在 [0.02, 0.10]（n=64）",
+          "delta": 0.03125,
+          "span": 0.03125,
+          "n_items": 64
+        },
+        "caliber_isolation": {
+          "pass": true,
+          "reason": "同口径 'dense|fixed_220_o40|w4_64q'，指标 'span_full_at_3'"
+        },
+        "mechanism_alignment": {
+          "pass": true,
+          "reason": "'boundary' 类增益 +0.143 ≥ 其余类均值 +0.000",
+          "predicted_type": "boundary",
+          "gain_on_predicted": 0.1428571428571429,
+          "gain_elsewhere_mean": 0.0
+        },
+        "scope_discipline": {
+          "pass": false,
+          "reason": "主张文本未写明实测范围（实测范围：本语料 26 篇 / 64 题）——结论没有边界，读者无法判断它覆盖多大范围",
+          "measured_scope": "本语料 26 篇 / 64 题"
+        }
+      },
+      "n_items": 64,
+      "scale": "本语料 26 篇 / 64 题",
+      "notes": [
+        "数字出处：../rag_min_demo/bline/w5_results.json vs ../rag_min_demo/bline/w5_results.json（可复算）"
+      ]
+    },
+    {
+      "claim": "在本语料（26 篇 / 64 题）上，late chunking 改善了边界题",
+      "verdict": "insufficient",
+      "gates": {
+        "effect_vs_noise": {
+          "pass": false,
+          "reason": "跨度不足 0.016（<0.02，n=64）——只报数字，不下方向性结论",
+          "delta": -0.015625,
+          "span": 0.015625,
+          "n_items": 64
+        },
+        "caliber_isolation": {
+          "pass": true,
+          "reason": "同口径 'dense|fixed_220_o40|w4_64q'，指标 'span_full_at_3'"
+        },
+        "mechanism_alignment": {
+          "pass": false,
+          "reason": "增益不在预测的 'boundary' 类（该类 -0.143，其余类均值 +0.008）——不支持该机制主张，但效应可能真实",
+          "predicted_type": "boundary",
+          "gain_on_predicted": -0.1428571428571428,
+          "gain_elsewhere_mean": 0.00833333333333336
+        },
+        "scope_discipline": {
+          "pass": true,
+          "reason": "无越界词；实测范围：本语料 26 篇 / 64 题",
+          "measured_scope": "本语料 26 篇 / 64 题"
+        }
+      },
+      "n_items": 64,
+      "scale": "本语料 26 篇 / 64 题",
+      "notes": [
+        "数字出处：../rag_min_demo/bline/w5_results.json vs ../rag_min_demo/bline/w5_results.json（可复算）",
+        "insufficient 是一等结论：只报数字，不下方向性结论"
+      ]
+    },
+    {
+      "claim": "在本语料（26 篇 / 64 题）上，contextual retrieval 优于 W4 稀疏基线",
+      "verdict": "fail",
+      "gates": {
+        "effect_vs_noise": {
+          "pass": true,
+          "reason": "跨度 0.031 落在 [0.02, 0.10]（n=64）",
+          "delta": -0.03125,
+          "span": 0.03125,
+          "n_items": 64
+        },
+        "caliber_isolation": {
+          "pass": false,
+          "reason": "口径不同：实验臂 'dense|fixed_220_o40|w4_64q' vs 对照臂 'sparse|fixed_220_o40|w4_64q' ——差值里混着口径差异，不是处理效应"
+        },
+        "mechanism_alignment": {
+          "pass": false,
+          "reason": "两臂缺 'boundary' 类分项，无法验机制",
+          "predicted_type": "boundary"
+        },
+        "scope_discipline": {
+          "pass": true,
+          "reason": "无越界词；实测范围：本语料 26 篇 / 64 题",
+          "measured_scope": "本语料 26 篇 / 64 题"
+        }
+      },
+      "n_items": 64,
+      "scale": "本语料 26 篇 / 64 题",
+      "notes": [
+        "数字出处：../rag_min_demo/bline/w5_results.json vs rag_min_demo/bline/w5_results.json（可复算）"
+      ]
+    }
+  ]
+}

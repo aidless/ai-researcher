@@ -65,6 +65,44 @@ Return ONLY valid JSON with exactly these keys:
 }}"""
 
 
+LOCAL_HOSTS = ("127.0.0.1", "localhost", "::1")
+
+
+def _resolve_backend(model=None, url=None, key=None):
+    """Env-driven reviewer backend. A localhost endpoint needs no key; requiring one made
+    the only free cross-family reviewer (local ollama) unusable, so the judgment half of
+    this project had literally never run (0 of 27 recorded rounds).
+
+    Returns (model, url, key, provenance). `provenance` is carried into every verdict
+    because a review is a MEASURING INSTRUMENT, not authorship: whoever reads a score must
+    be able to see which model produced it and whether it is a different family from the
+    models that produced the evidence.
+    """
+    model = model or os.environ.get("REVIEW_MODEL", "mistralai/mistral-large")
+    url = url or os.environ.get(
+        "LLM_API_URL", "https://openrouter.ai/api/v1/chat/completions")
+    key = key or os.environ.get("SILICONFLOW_API_KEY", "")
+    local = any(h in url for h in LOCAL_HOSTS)
+    if not key and not local:
+        raise RuntimeError("no review key: set SILICONFLOW_API_KEY (OpenRouter value), or "
+                           "point LLM_API_URL at a local endpoint (e.g. ollama's "
+                           "http://127.0.0.1:11434/v1/chat/completions)")
+    return model, url, key, {"model": model, "endpoint": url,
+                             "endpoint_class": "local" if local else "remote",
+                             "review_is_not_authorship": True}
+
+
+def family_of(model: str) -> str:
+    return (model or "").split("/")[0].split(":")[0].lower()
+
+
+def cross_family(reviewer: str, evidence_models) -> bool:
+    """False when the reviewer shares a family with any model that produced the evidence --
+    a same-family reviewer cannot supply the independence the two-seat design claims."""
+    fams = {family_of(m) for m in (evidence_models or []) if m}
+    return family_of(reviewer) not in fams
+
+
 def _chat(model: str, prompt: str, url: str, key: str,
           max_tokens: int = 1200, timeout: int = 90) -> str:
     body = json.dumps({
@@ -165,12 +203,7 @@ Return ONLY valid JSON with exactly these keys:
 def review_rubric(draft: str, evidence: str, tier: str, dimensions: list,
                   model: str = None, url: str = None, key: str = None) -> dict:
     """Both seats score every rubric dimension. Returns per-seat score dicts."""
-    model = model or os.environ.get("REVIEW_MODEL", "mistralai/mistral-large")
-    url = url or os.environ.get(
-        "LLM_API_URL", "https://openrouter.ai/api/v1/chat/completions")
-    key = key or os.environ.get("SILICONFLOW_API_KEY", "")
-    if not key:
-        raise RuntimeError("no review key: set SILICONFLOW_API_KEY (OpenRouter value)")
+    model, url, key, provenance = _resolve_backend(model, url, key)
     dims = ", ".join(dimensions)
     meth = _parse(_chat(model, RUBRIC_PROMPT.format(
         seat="Methodology", tier=tier, dims=dims,
@@ -180,18 +213,14 @@ def review_rubric(draft: str, evidence: str, tier: str, dimensions: list,
         tier=tier, dims=dims,
         draft=draft[:6000], evidence=evidence[:3000]), url, key))
     return {"methodology": meth.get("scores", {}), "devil": devil.get("scores", {}),
-            "methodology_full": meth, "devil_full": devil, "model": model}
+            "methodology_full": meth, "devil_full": devil, "model": model,
+            "reviewer": provenance}
 
 
 def review(claim: str, evidence: str, model: str = None,
-           url: str = None, key: str = None) -> dict:
+           url: str = None, key: str = None, evidence_models=None) -> dict:
     """Run both seats. Returns {methodology, devil, contradiction, joint}."""
-    model = model or os.environ.get("REVIEW_MODEL", "mistralai/mistral-large")
-    url = url or os.environ.get(
-        "LLM_API_URL", "https://openrouter.ai/api/v1/chat/completions")
-    key = key or os.environ.get("SILICONFLOW_API_KEY", "")
-    if not key:
-        raise RuntimeError("no review key: set SILICONFLOW_API_KEY (OpenRouter value)")
+    model, url, key, provenance = _resolve_backend(model, url, key)
 
     meth = _parse(_chat(model, METHODOLOGY_PROMPT.format(
         claim=claim, evidence=evidence), url, key))
@@ -206,4 +235,7 @@ def review(claim: str, evidence: str, model: str = None,
     joint = "NOT_READY" if "NOT_READY" in (meth.get("verdict"),
                                            devil.get("verdict")) else "READY"
     return {"methodology": meth, "devil": devil,
-            "contradiction": contradiction, "joint": joint, "model": model}
+            "contradiction": contradiction, "joint": joint, "model": model,
+            "reviewer": dict(provenance,
+                             cross_family=(cross_family(model, evidence_models)
+                                           if evidence_models else None))}

@@ -1,0 +1,5 @@
+{
+  "amended_at": "2026-10-08T01:50:49.013461+00:00",
+  "correction": "UNSIGNED FILE REMOVED FROM THE SIGNED DIRECTORY: result_enriched.json (derived analysis adding gain_ci95, p_bh, p_raw to each model's record) had been written into round-01/artifacts/ at 17:09, after the 16:14 signing. The bundle manifest covers result.json only, so verify correctly refused the bundle. The file is derived, not raw evidence, so it now lives in runs/transfer-01/derived/ where the paper layer can read it. result.json is byte-identical to what was signed and the bundle verifies again. Rule: a signed artifacts directory is immutable -- derived analysis belongs outside it, or it needs its own signature.",
+  "knowable_without_data": "no: found by running verify across all runs rather than assuming they were all still valid"
+}

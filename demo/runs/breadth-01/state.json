@@ -1,0 +1,77 @@
+{
+ "rounds": [
+  {
+   "round": 1,
+   "dir": "demo/runs/breadth-01/round-01",
+   "result": {
+    "n_diffs": 8,
+    "evaluators": [
+     "qwen2.5:7b",
+     "llama3.1:8b",
+     "deepseek-r1:7b"
+    ],
+    "votes": {
+     "bugfix-offbyone": {
+      "qwen2.5:7b": "REQUEST_CHANGES",
+      "llama3.1:8b": "APPROVE",
+      "deepseek-r1:7b": null
+     },
+     "perf-nplus1": {
+      "qwen2.5:7b": "APPROVE",
+      "llama3.1:8b": "APPROVE",
+      "deepseek-r1:7b": null
+     },
+     "refactor-rename": {
+      "qwen2.5:7b": "REQUEST_CHANGES",
+      "llama3.1:8b": "APPROVE",
+      "deepseek-r1:7b": null
+     },
+     "security-eval": {
+      "qwen2.5:7b": "APPROVE",
+      "llama3.1:8b": "APPROVE",
+      "deepseek-r1:7b": null
+     },
+     "docs-typo": {
+      "qwen2.5:7b": "APPROVE",
+      "llama3.1:8b": null,
+      "deepseek-r1:7b": null
+     },
+     "test-only": {
+      "qwen2.5:7b": "REQUEST_CHANGES",
+      "llama3.1:8b": "APPROVE",
+      "deepseek-r1:7b": null
+     },
+     "dep-bump": {
+      "qwen2.5:7b": "APPROVE",
+      "llama3.1:8b": "APPROVE",
+      "deepseek-r1:7b": null
+     },
+     "api-change": {
+      "qwen2.5:7b": "REQUEST_CHANGES",
+      "llama3.1:8b": "APPROVE",
+      "deepseek-r1:7b": null
+     }
+    },
+    "abstentions": 9,
+    "pairwise_agreement": 0.429,
+    "flip_cases": 0,
+    "confirmed": true,
+    "exit_code": 0,
+    "wall_s": 1900.2,
+    "cost_usd_known": false,
+    "round_cost_usd": 0.0
+   },
+   "missing": [],
+   "exit_code": 0,
+   "bundle": "r01@adb8aebc89f6",
+   "kill_row": "confirmed == True",
+   "verdict": "STOP-EXTEND",
+   "reason": "evaluator dependence is deployment-relevant: extend to 20+ diffs + frontier evaluator for the breadth claim"
+  }
+ ],
+ "status": "STOP-EXTEND",
+ "started_at": "2026-10-07T07:56:53.672356+00:00",
+ "cost_usd": 0.0,
+ "key_pub": "62ffd9d2a8dbe75e869ec20b55b2370dd8ca0929c24eeffa83ff7ead1eb00dc9",
+ "key_priv": null
+}

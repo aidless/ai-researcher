@@ -1,0 +1,130 @@
+{
+  "tier": "zone1",
+  "verdict": "FAIL",
+  "bar": 8.0,
+  "manuscript": "demo/papers/SYNTHESIS.md",
+  "manuscript_chars": 40567,
+  "ledger": "demo/papers/CLAIM_LEDGER.md",
+  "ledger_rows": 190,
+  "runs_in_ledger": [
+    "balanced-01",
+    "breadth-01",
+    "coderepair-01",
+    "coderepair-02",
+    "collapse-02",
+    "jsd-01",
+    "jsd-02",
+    "lineage-01",
+    "matrix-01",
+    "mimicry-02",
+    "swarm-02",
+    "swarm-fd2",
+    "swarm-ms",
+    "sweetspot-02",
+    "sweetspot-04",
+    "transfer-01"
+  ],
+  "mechanical": [
+    {
+      "id": "Z1-numbers-trace",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z2-ci-present",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z3-effect-size",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z4-baselines-comprehensive",
+      "pass": true,
+      "reason": "baselines present with explicit exclusions"
+    },
+    {
+      "id": "Z5-ablation-complete",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z6-generality-discussed",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z7-predecessors-acknowledged",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z8-examples-present",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z9-new-terms-justified",
+      "pass": true,
+      "reason": "requires reviewer judgment; flagged for the seats"
+    },
+    {
+      "id": "Z10-not-narrow",
+      "pass": true,
+      "reason": "requires reviewer judgment; flagged for the seats"
+    },
+    {
+      "id": "Z11-not-applications-only",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z12-not-salami",
+      "pass": true,
+      "reason": "requires reviewer judgment; flagged for the seats"
+    },
+    {
+      "id": "Z13-data-code-available",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z14-impact-ethics",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "Z15-references-resolve",
+      "pass": true,
+      "reason": "ok: 15 entries, all carrying resolvable identifiers"
+    },
+    {
+      "id": "Z16-revision-ready",
+      "pass": true,
+      "reason": "checked against the objection table at gate time"
+    },
+    {
+      "id": "Z17-ai-disclosure",
+      "pass": true,
+      "reason": "ok"
+    }
+  ],
+  "mechanical_ok": true,
+  "judgment_means": {
+    "methodology": 8.29,
+    "devil": 7.29
+  },
+  "judgment_ok": false,
+  "judgment_incomplete": {},
+  "dimensions": [
+    "significance",
+    "correctness",
+    "clarity",
+    "generality",
+    "predecessor-acknowledgment",
+    "completeness",
+    "breadth-of-interest"
+  ]
+}

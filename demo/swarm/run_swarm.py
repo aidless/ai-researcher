@@ -15,6 +15,7 @@ Writes artifacts/result.json {arms, slopes, verdict}.
 ~48 local calls. Deterministic seeds.
 """
 import json
+import re
 import math
 import os
 import pathlib
@@ -103,6 +104,47 @@ def gen_one(args):
         return None
 
 
+def _model_digests(names):
+    """Best-effort model identity: name -> sha256 digest from `ollama show`. Missing is
+    recorded as "unknown", never as a guess -- an empty field is information."""
+    import subprocess
+    out = {}
+    for n in names:
+        try:
+            r = subprocess.run(["ollama", "show", n], capture_output=True, text=True, timeout=20)
+            m = re.search(r"sha256:[0-9a-f]{12,}", r.stdout)
+            out[n] = m.group(0) if m else "unknown"
+        except Exception:
+            out[n] = "unknown"
+    return out
+
+
+def distinct_draws(reps):
+    """How many independent samples the seed loop produced -- on two denominators.
+
+    Returns {"joint": n, "statistic": m}. They are NOT interchangeable, and the first
+    version of this function conflated them -- my own test caught it: I asserted 6
+    collapses to 4, while the joint-signature count says 6.
+
+    On seed6-01 (2026-10-09): 6 distinct joint trajectories, but only 5 distinct values of
+    the preregistered statistic, because slope_excess repeats at 0.0551 -- the swarm=4 arm
+    alone collided on two pairs of seeds (idx 0==1 and 2==3) while swarm=1 stayed
+    distinct. llm() sends temperature 0 with no model seed, so the only random source is
+    the strategy-selection rng, and the pci metric is coarser than that rng: collisions
+    appear at the statistic level even when the draws are nominally distinct. A sign test
+    is entitled to `statistic`, not to `n_seeds` -- a draw that repeats another's value
+    carries no new information. Bind a kill-switch to n_distinct.statistic.
+    """
+    seen = []
+    for r in reps:
+        sig = tuple(sorted((arm, tuple(v.get("pci_trajectory", [])))
+                           for arm, v in (r.get("arms") or {}).items()))
+        if sig not in seen:
+            seen.append(sig)
+    return {"joint": len(seen),
+            "statistic": len({r.get("slope_excess") for r in reps})}
+
+
 def run_arm(swarm, seed):
     rng = random.Random(seed)
     weights = {k: 1.0 / len(STRATEGIES) for k in STRATEGIES}
@@ -182,6 +224,18 @@ def main():
     excesses = [r["slope_excess"] for r in reps]
     n_pos = sum(1 for e in excesses if e >= 0.01)
     res = {"reps": reps, "n_seeds": len(reps),
+           "n_distinct": distinct_draws(reps),
+           # flat scalars: a kill-switch condition has to be evaluable against the artifact,
+           # so `n_distinct.statistic` in prose is worthless until it exists as a field
+           "n_distinct_joint": distinct_draws(reps)["joint"],
+           "n_distinct_statistic": distinct_draws(reps)["statistic"],
+           # which model produced these numbers, named IN the artifact. The signed bundle's
+           # environment record carried ollama_model="" and base_digest="unknown" because
+           # evidence.py reads EVO_MODEL, which this harness never sets -- so nothing on
+           # disk tied the trajectory to qwen2.5:7b. A reader should not have to trust the
+           # command line for that.
+           "producer_models": {"executor": EXECUTOR, "judge": JUDGE,
+                               "digests": _model_digests([EXECUTOR, JUDGE])},
            "excesses": excesses,
            "n_positive": n_pos,
            # n_pos >= len-1 (all but one may miss); floor of 1 so single-seed
@@ -193,7 +247,8 @@ def main():
     res["arms"] = reps[0]["arms"]
     res["slope_excess"] = reps[0]["slope_excess"]
     (out / "result.json").write_text(json.dumps(res, indent=1) + "\n")
-    print(json.dumps({"n_seeds": len(reps), "excesses": excesses,
+    print(json.dumps({"n_seeds": len(reps), "n_distinct": res["n_distinct"],
+                      "excesses": excesses,
                       "n_positive": n_pos,
                       "confirmed": res["confirmed"]}, ensure_ascii=False))
 

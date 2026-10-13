@@ -1,0 +1,46 @@
+{
+  "tier": "conference-main",
+  "verdict": "FAIL",
+  "bar": 7.0,
+  "mechanical": [
+    {
+      "id": "C1-numbers-trace",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "C2-ci-present",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "C3-limitations-present",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "C4-double-blind",
+      "pass": true,
+      "reason": "ok"
+    },
+    {
+      "id": "C5-references-resolve",
+      "pass": true,
+      "reason": "mechanical pass; hallucination scan is a separate gate"
+    },
+    {
+      "id": "C6-pages",
+      "pass": true,
+      "reason": "page count checked at submission render, not here"
+    }
+  ],
+  "mechanical_ok": true,
+  "judgment_means": {},
+  "judgment_ok": false,
+  "dimensions": [
+    "quality",
+    "clarity",
+    "significance",
+    "originality"
+  ]
+}

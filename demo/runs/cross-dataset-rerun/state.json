@@ -1,0 +1,128 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "dir": "demo/runs/cross-dataset-rerun/round-01",
+      "result": {
+        "domain": "arithmetic",
+        "arm": "cross_dataset_confirmation",
+        "datasets": [
+          "svamp",
+          "asdiv-rest"
+        ],
+        "n_per_dataset": 120,
+        "models_requested": [
+          "qwen2.5:7b",
+          "gemma3:4b",
+          "llama3.1:8b"
+        ],
+        "models_measured": [
+          "qwen2.5:7b",
+          "gemma3:4b",
+          "llama3.1:8b"
+        ],
+        "per_dataset": {
+          "svamp": {
+            "n_items": 120,
+            "models": [
+              "qwen2.5:7b",
+              "gemma3:4b",
+              "llama3.1:8b"
+            ],
+            "gains": {
+              "qwen2.5:7b": 0.1,
+              "gemma3:4b": 0.125,
+              "llama3.1:8b": 0.1417
+            },
+            "fixed": 83,
+            "broke": 39,
+            "mcnemar_p": 8.407e-05,
+            "families_positive": "3/3"
+          },
+          "asdiv-rest": {
+            "n_items": 120,
+            "models": [
+              "qwen2.5:7b",
+              "gemma3:4b",
+              "llama3.1:8b"
+            ],
+            "gains": {
+              "qwen2.5:7b": -0.0333,
+              "gemma3:4b": 0.05,
+              "llama3.1:8b": 0.0417
+            },
+            "fixed": 26,
+            "broke": 19,
+            "mcnemar_p": 0.37129803,
+            "families_positive": "2/3"
+          }
+        },
+        "results": {
+          "svamp": {
+            "n_items": 120,
+            "models": [
+              "qwen2.5:7b",
+              "gemma3:4b",
+              "llama3.1:8b"
+            ],
+            "gains": {
+              "qwen2.5:7b": 0.1,
+              "gemma3:4b": 0.125,
+              "llama3.1:8b": 0.1417
+            },
+            "fixed": 83,
+            "broke": 39,
+            "mcnemar_p": 8.407e-05,
+            "families_positive": "3/3"
+          },
+          "asdiv-rest": {
+            "n_items": 120,
+            "models": [
+              "qwen2.5:7b",
+              "gemma3:4b",
+              "llama3.1:8b"
+            ],
+            "gains": {
+              "qwen2.5:7b": -0.0333,
+              "gemma3:4b": 0.05,
+              "llama3.1:8b": 0.0417
+            },
+            "fixed": 26,
+            "broke": 19,
+            "mcnemar_p": 0.37129803,
+            "families_positive": "2/3"
+          }
+        },
+        "paired_observations_per_dataset": 360,
+        "confirmed": false,
+        "_config": {
+          "n_items": 120,
+          "models": 3,
+          "datasets": 2
+        },
+        "measurable": true,
+        "exit_code": 0,
+        "wall_s": 889.6,
+        "cost_usd_known": false,
+        "round_cost_usd": 0.0
+      },
+      "missing": [],
+      "exit_code": 0,
+      "timed_out": false,
+      "bundle": "r01@0c77a6540296",
+      "kill_row": "confirmed == False",
+      "review": {
+        "error": "RuntimeError: no review key: set SILICONFLOW_API_KEY (OpenRouter value), or point LLM_API_URL at a local endpoint (e.g. ollama's http://127.0.0.1:11434/v1/chat/completions)"
+      },
+      "verdict": "STOP-REFUTED",
+      "reason": "the effect does not replicate on at least one independent source: narrow the claim to GSM8K-style items"
+    }
+  ],
+  "status": "STOP-REFUTED",
+  "started_at": "2026-10-11T05:11:54.231726+00:00",
+  "cost_usd": 0.0,
+  "key_pub": "8a35f5b832ee2a7b93a35cb82836d0f8ae6768c42b24d467393ecbb2c472cbce",
+  "key_priv": null,
+  "key_era": "root",
+  "loop_schema": 2
+}
