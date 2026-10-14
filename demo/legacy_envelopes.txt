@@ -7,12 +7,25 @@
 # Two of these (demo/collapse, demo/mimicry) were declared with n=8 and n=9. Those
 # runs cannot have detected what they claimed; their results are reported as
 # inconclusive and were never used to support a claim.
+#
+# Second registration pass 2026-10-14. Six envelopes that predate the power gate
+# were present in the curated snapshot but never listed, so the sweep kept
+# reporting them as failures. Verified against parent commit bdb946a (all six
+# already existed there) before adding: this is a bookkeeping gap, not a
+# regression, and none of the six is used to support a claim. Same status as the
+# entries above -- not approvable, numbers stand as reported.
 demo/envelope.json
+demo/envelope_transfer.json
 demo/collapse/envelope.json
 demo/mimicry/envelope.json
 demo/lineage/envelope_lineage.json
 demo/coderepair/envelope_coderepair.json
 demo/sweetspot/envelope.json
 demo/swarm/envelope.json
+demo/swarm/envelope_multiseed.json
+demo/transfer/envelope.json
 demo/transfer/envelope_matrix.json
 demo/transfer/envelope_transfer.json
+demo/balanced/envelope.json
+demo/breadth/envelope.json
+demo/jsd/envelope.json
