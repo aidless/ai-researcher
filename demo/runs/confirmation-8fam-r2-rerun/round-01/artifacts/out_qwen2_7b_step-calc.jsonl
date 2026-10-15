@@ -1,0 +1,160 @@
+{"id": "cf-001", "passed": true, "why": ""}
+{"id": "cf-002", "passed": false, "why": "got 1.5"}
+{"id": "cf-003", "passed": true, "why": ""}
+{"id": "cf-004", "passed": true, "why": ""}
+{"id": "cf-005", "passed": true, "why": ""}
+{"id": "cf-006", "passed": true, "why": ""}
+{"id": "cf-007", "passed": false, "why": "got 360.0"}
+{"id": "cf-008", "passed": false, "why": "got 360.0"}
+{"id": "cf-009", "passed": false, "why": "got 22.8"}
+{"id": "cf-010", "passed": true, "why": ""}
+{"id": "cf-011", "passed": true, "why": ""}
+{"id": "cf-012", "passed": true, "why": ""}
+{"id": "cf-013", "passed": false, "why": "got 30.0"}
+{"id": "cf-014", "passed": true, "why": ""}
+{"id": "cf-015", "passed": true, "why": ""}
+{"id": "cf-016", "passed": false, "why": "got 1080.0"}
+{"id": "cf-017", "passed": true, "why": ""}
+{"id": "cf-018", "passed": false, "why": "got 53.0"}
+{"id": "cf-019", "passed": false, "why": "got 5.0"}
+{"id": "cf-020", "passed": false, "why": "got 20000.0"}
+{"id": "cf-021", "passed": true, "why": ""}
+{"id": "cf-022", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (400 chars); unscorable as a model failur"}
+{"id": "cf-023", "passed": true, "why": ""}
+{"id": "cf-024", "passed": true, "why": ""}
+{"id": "cf-025", "passed": false, "why": "got 23.0"}
+{"id": "cf-026", "passed": true, "why": ""}
+{"id": "cf-027", "passed": false, "why": "got 12.5"}
+{"id": "cf-028", "passed": true, "why": ""}
+{"id": "cf-029", "passed": true, "why": ""}
+{"id": "cf-030", "passed": true, "why": ""}
+{"id": "cf-031", "passed": true, "why": ""}
+{"id": "cf-032", "passed": false, "why": "got 16.0"}
+{"id": "cf-033", "passed": true, "why": ""}
+{"id": "cf-034", "passed": false, "why": "got 0.1"}
+{"id": "cf-035", "passed": false, "why": "got 3.678571428571429"}
+{"id": "cf-036", "passed": false, "why": "got 6.0"}
+{"id": "cf-037", "passed": true, "why": ""}
+{"id": "cf-038", "passed": true, "why": ""}
+{"id": "cf-039", "passed": true, "why": ""}
+{"id": "cf-040", "passed": false, "why": "got 27.0"}
+{"id": "cf-041", "passed": true, "why": ""}
+{"id": "cf-042", "passed": false, "why": "got 384437.5"}
+{"id": "cf-043", "passed": true, "why": ""}
+{"id": "cf-044", "passed": true, "why": ""}
+{"id": "cf-045", "passed": false, "why": "got 65.0"}
+{"id": "cf-046", "passed": true, "why": ""}
+{"id": "cf-047", "passed": false, "why": "got 1466.0"}
+{"id": "cf-048", "passed": true, "why": ""}
+{"id": "cf-049", "passed": false, "why": "got 39.0"}
+{"id": "cf-050", "passed": false, "why": "got 8.5"}
+{"id": "cf-051", "passed": false, "why": "got 93.75"}
+{"id": "cf-052", "passed": false, "why": "got 49.7664"}
+{"id": "cf-053", "passed": false, "why": "got 9.333"}
+{"id": "cf-054", "passed": false, "why": "got 57.0"}
+{"id": "cf-055", "passed": false, "why": "got 60.0"}
+{"id": "cf-056", "passed": false, "why": "got 36.0"}
+{"id": "cf-057", "passed": false, "why": "got 49.0"}
+{"id": "cf-058", "passed": false, "why": "got 83.33333333333333"}
+{"id": "cf-059", "passed": false, "why": "got 24.0"}
+{"id": "cf-060", "passed": true, "why": ""}
+{"id": "cf-061", "passed": false, "why": "got 310.0"}
+{"id": "cf-062", "passed": false, "why": "RuntimeError: truncated at num_predict=400 (466 chars); unscorable as a model failur"}
+{"id": "cf-063", "passed": false, "why": "got 13.0"}
+{"id": "cf-064", "passed": true, "why": ""}
+{"id": "cf-065", "passed": true, "why": ""}
+{"id": "cf-066", "passed": true, "why": ""}
+{"id": "cf-067", "passed": true, "why": ""}
+{"id": "cf-068", "passed": true, "why": ""}
+{"id": "cf-069", "passed": false, "why": "got 14.0"}
+{"id": "cf-070", "passed": false, "why": "got 200.0"}
+{"id": "cf-071", "passed": false, "why": "got 1.0"}
+{"id": "cf-072", "passed": false, "why": "got 5.0"}
+{"id": "cf-073", "passed": false, "why": "got 124.0"}
+{"id": "cf-074", "passed": false, "why": "got 28.0"}
+{"id": "cf-075", "passed": false, "why": "got 63.0"}
+{"id": "cf-076", "passed": true, "why": ""}
+{"id": "cf-077", "passed": false, "why": "got 10.0"}
+{"id": "cf-078", "passed": true, "why": ""}
+{"id": "cf-079", "passed": false, "why": "got 409500.0"}
+{"id": "cf-080", "passed": false, "why": "got 1600.0"}
+{"id": "cf-081", "passed": true, "why": ""}
+{"id": "cf-082", "passed": true, "why": ""}
+{"id": "cf-083", "passed": true, "why": ""}
+{"id": "cf-084", "passed": true, "why": ""}
+{"id": "cf-085", "passed": false, "why": "got 12.0"}
+{"id": "cf-086", "passed": false, "why": "got 34.0"}
+{"id": "cf-087", "passed": true, "why": ""}
+{"id": "cf-088", "passed": true, "why": ""}
+{"id": "cf-089", "passed": true, "why": ""}
+{"id": "cf-090", "passed": false, "why": "got 72.0"}
+{"id": "cf-091", "passed": true, "why": ""}
+{"id": "cf-092", "passed": true, "why": ""}
+{"id": "cf-093", "passed": false, "why": "got 80.0"}
+{"id": "cf-094", "passed": true, "why": ""}
+{"id": "cf-095", "passed": false, "why": "got 66.667"}
+{"id": "cf-096", "passed": false, "why": "got 225.0"}
+{"id": "cf-097", "passed": false, "why": "got 100.0"}
+{"id": "cf-098", "passed": false, "why": "got -14.0"}
+{"id": "cf-099", "passed": false, "why": "got 36.0"}
+{"id": "cf-100", "passed": true, "why": ""}
+{"id": "cf-101", "passed": true, "why": ""}
+{"id": "cf-102", "passed": true, "why": ""}
+{"id": "cf-103", "passed": true, "why": ""}
+{"id": "cf-104", "passed": true, "why": ""}
+{"id": "cf-105", "passed": true, "why": ""}
+{"id": "cf-106", "passed": false, "why": "got 82.0"}
+{"id": "cf-107", "passed": true, "why": ""}
+{"id": "cf-108", "passed": true, "why": ""}
+{"id": "cf-109", "passed": true, "why": ""}
+{"id": "cf-110", "passed": true, "why": ""}
+{"id": "cf-111", "passed": true, "why": ""}
+{"id": "cf-112", "passed": false, "why": "got 10.0"}
+{"id": "cf-113", "passed": false, "why": "got 3.0"}
+{"id": "cf-114", "passed": true, "why": ""}
+{"id": "cf-115", "passed": true, "why": ""}
+{"id": "cf-116", "passed": false, "why": "got 200.0"}
+{"id": "cf-117", "passed": false, "why": "got 42.0"}
+{"id": "cf-118", "passed": false, "why": "got 1650.0"}
+{"id": "cf-119", "passed": false, "why": "got 40000.0"}
+{"id": "cf-120", "passed": false, "why": "got 20.0"}
+{"id": "cf-121", "passed": true, "why": ""}
+{"id": "cf-122", "passed": false, "why": "got 16.0"}
+{"id": "cf-123", "passed": true, "why": ""}
+{"id": "cf-124", "passed": false, "why": "got 100.0"}
+{"id": "cf-125", "passed": true, "why": ""}
+{"id": "cf-126", "passed": false, "why": "got 5.0"}
+{"id": "cf-127", "passed": false, "why": "got 42.0"}
+{"id": "cf-128", "passed": true, "why": ""}
+{"id": "cf-129", "passed": true, "why": ""}
+{"id": "cf-130", "passed": false, "why": "got 10.0"}
+{"id": "cf-131", "passed": false, "why": "got 64.0"}
+{"id": "cf-132", "passed": true, "why": ""}
+{"id": "cf-133", "passed": true, "why": ""}
+{"id": "cf-134", "passed": false, "why": "got 21.0"}
+{"id": "cf-135", "passed": false, "why": "got 7.0"}
+{"id": "cf-136", "passed": true, "why": ""}
+{"id": "cf-137", "passed": false, "why": "got 30.0"}
+{"id": "cf-138", "passed": true, "why": ""}
+{"id": "cf-139", "passed": false, "why": "got 42.0"}
+{"id": "cf-140", "passed": true, "why": ""}
+{"id": "cf-141", "passed": true, "why": ""}
+{"id": "cf-142", "passed": false, "why": "got 148.0"}
+{"id": "cf-143", "passed": false, "why": "got 0.0"}
+{"id": "cf-144", "passed": false, "why": "got 5.0"}
+{"id": "cf-145", "passed": false, "why": "got 1.0"}
+{"id": "cf-146", "passed": true, "why": ""}
+{"id": "cf-147", "passed": true, "why": ""}
+{"id": "cf-148", "passed": false, "why": "got 198.0"}
+{"id": "cf-149", "passed": false, "why": "got 105.0"}
+{"id": "cf-150", "passed": true, "why": ""}
+{"id": "cf-151", "passed": true, "why": ""}
+{"id": "cf-152", "passed": false, "why": "got 36.0"}
+{"id": "cf-153", "passed": true, "why": ""}
+{"id": "cf-154", "passed": false, "why": "got 60.0"}
+{"id": "cf-155", "passed": true, "why": ""}
+{"id": "cf-156", "passed": false, "why": "got 30.0"}
+{"id": "cf-157", "passed": true, "why": ""}
+{"id": "cf-158", "passed": false, "why": "got 13.0"}
+{"id": "cf-159", "passed": false, "why": "got 540.8"}
+{"id": "cf-160", "passed": false, "why": "got 195000.0"}
