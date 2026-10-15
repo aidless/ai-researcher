@@ -3,6 +3,6 @@
 wrote /home/liuzewen/F:\deepseek/ai-researcher/demo/transfer/items/confirm160.json
   [SELFTEST OK] 160 items, disjointness asserted, 5 extraction cases
   [SELFTEST OK] 160 items, disjointness asserted, 5 extraction cases
-qwen2.5:7b: {'direct': 0.0, 'step-calc': 0.0} gain=0.0
-gemma3:4b: {'direct': 0.0, 'step-calc': 0.0} gain=0.0
-{"gain_mean": 0.0, "families_positive": "0/2", "pooled": {"fixed": 0, "broke": 0, "p": 1.0}, "paired_observations": 320, "confirmed": false}
+qwen2.5:7b: {'direct': 0.2125, 'step-calc': 0.4562} gain=0.2437
+gemma3:4b: {'direct': 0.0813, 'step-calc': 0.5875} gain=0.5062
+{"gain_mean": 0.375, "families_positive": "2/2", "pooled": {"fixed": 136, "broke": 16, "p": 0.0}, "paired_observations": 320, "confirmed": true}

@@ -1,14 +1,14 @@
 {
   "bundle": {
-    "bundle_id": "r01@80e14e2c48f3",
-    "sha256": "80e14e2c48f3b5d95ad6793203c423f383a0506f518dd5d49800b08b867d912d",
+    "bundle_id": "r01@1e19e10d8dcf",
+    "sha256": "1e19e10d8dcf2f303c1712e9e4f5f90c1330b19e897ba8e3b874536c5f363e6b",
     "manifest": {
       "files": {
-        "out_gemma3_4b_direct.jsonl": "78d0526f24646399860ef48ddc81f54426ee829196be17ef8175aaa6d1008249",
-        "out_gemma3_4b_step-calc.jsonl": "78d0526f24646399860ef48ddc81f54426ee829196be17ef8175aaa6d1008249",
-        "out_qwen2.5_7b_direct.jsonl": "49a32681bc729d97a104ac60ca8668f509e1ba63853d2d57403c7190fdc9ab1a",
-        "out_qwen2.5_7b_step-calc.jsonl": "78d0526f24646399860ef48ddc81f54426ee829196be17ef8175aaa6d1008249",
-        "result.json": "35ccc0d67f7519224863f005c36392cbad9c4f91b28438ee3f6dce547e75647e"
+        "out_gemma3_4b_direct.jsonl": "b56dbc464bd4f8739a974285a886e0901ef3b5da2c49d4dd0cfa1a2033479212",
+        "out_gemma3_4b_step-calc.jsonl": "9f713ea0bc38c5340713cb8226fbce79edc4e31d5d79f03e62a0a36fdd357b90",
+        "out_qwen2.5_7b_direct.jsonl": "72028fc6b25972212e8f9d32e059a940664f64039e5bc6d9248d988266a52945",
+        "out_qwen2.5_7b_step-calc.jsonl": "a9f28e2949ac1d5ef694dfd417442095ecf0a289af096e3b011fa495824a9d3e",
+        "result.json": "cb76aae13d23882c6291242ba2b91f29969fbd4e08cae4c2ed853bbe1725f8dd"
       },
       "environment": {
         "ollama_model": "",
@@ -18,18 +18,18 @@
         "scipy": "1.18.1",
         "seed": "unset"
       },
-      "sha256": "80e14e2c48f3b5d95ad6793203c423f383a0506f518dd5d49800b08b867d912d"
+      "sha256": "1e19e10d8dcf2f303c1712e9e4f5f90c1330b19e897ba8e3b874536c5f363e6b"
     }
   },
   "envelope": {
     "payload": {
-      "bundle_id": "r01@80e14e2c48f3",
-      "bundle_sha256": "80e14e2c48f3b5d95ad6793203c423f383a0506f518dd5d49800b08b867d912d",
+      "bundle_id": "r01@1e19e10d8dcf",
+      "bundle_sha256": "1e19e10d8dcf2f303c1712e9e4f5f90c1330b19e897ba8e3b874536c5f363e6b",
       "signer": "ai-researcher-loop",
-      "signed_at": "2026-10-11T05:46:35.555538+00:00",
+      "signed_at": "2026-10-15T16:45:43.314779+00:00",
       "expires_at": "2027-10-06T00:00:00+00:00"
     },
-    "signature": "PoB1csSj9eO7dknWr0TTbxYNb5y0XNBCAeZXUuKJ2PVzadR04v5KQ2l4A23u90rU8lKx43Pl/5Wy50EB0wrhAA==",
+    "signature": "aszqeHjRHMafrZ8S25AT8nCrKbuggx+TcFCHTMQ2kdHMsm2WWAckOh5tsAtylCzyv8oIw2jF9nnYP02gaJUtAA==",
     "algorithm": "Ed25519"
   }
 }
