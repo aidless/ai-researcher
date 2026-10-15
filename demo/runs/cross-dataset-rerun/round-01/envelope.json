@@ -1,22 +1,22 @@
 {
   "bundle": {
-    "bundle_id": "r01@0c77a6540296",
-    "sha256": "0c77a6540296142aabfb03cc663a41f00f26bdfc5bc448aa6d260d82e984ffcf",
+    "bundle_id": "r01@fe3574c63d95",
+    "sha256": "fe3574c63d9531adfc1c06956b174fccbcffc336e92ccc0e8cd90045aa9af254",
     "manifest": {
       "files": {
         "out_gemma3_4b_asdiv-rest_direct.jsonl": "c58e5e0d742fde2292a453da4dad2897e8f4f679381babc78857a2d78f9b9e49",
-        "out_gemma3_4b_asdiv-rest_step-calc.jsonl": "2f7a726c5c8b2478e41efa1ec895b6ec134fe02127438c94668fe8fd7ee3a75c",
-        "out_gemma3_4b_svamp_direct.jsonl": "126f1ae823c91830456f30eb66d01e5f3ec17587c8cfaf99e622861c44b3cbfe",
-        "out_gemma3_4b_svamp_step-calc.jsonl": "963c17171053b52bbb04e7bbf38ed4ad543afd1b7e8125d6881e174872578fc2",
-        "out_llama3.1_8b_asdiv-rest_direct.jsonl": "03536a046caa1e8c20b46a9fb2f7570ec469aa35b37e43f5d0d517086e898060",
-        "out_llama3.1_8b_asdiv-rest_step-calc.jsonl": "468b4471776c3a62cc5d72467687e9335df68c677d9b067ebba0b6f330e69a9d",
-        "out_llama3.1_8b_svamp_direct.jsonl": "41d49d98884afe399295694ce9648baf86bc3398f85cdec2580a34767b6e7a6f",
-        "out_llama3.1_8b_svamp_step-calc.jsonl": "4c84568e08b10ddbabd7c7b52a9e4a3be7cdf6d2766ab90651030e2d5067f679",
-        "out_qwen2.5_7b_asdiv-rest_direct.jsonl": "a9587ef650280e385762cfdf29bb5011d8da308d7e4f70789bc8a471e9cafde2",
-        "out_qwen2.5_7b_asdiv-rest_step-calc.jsonl": "fba8597138779b9472cf447eadef6e14c0a8f2f8f13bc7707af502a60c8e292a",
-        "out_qwen2.5_7b_svamp_direct.jsonl": "faa105c3f3d0f4d3bb5c8a9c9bda6067bd5b238b8e4908150f716fc58562b2f1",
-        "out_qwen2.5_7b_svamp_step-calc.jsonl": "74871b43817ed6c413ce044c18c5d0fb3ab865e2d8b63337a373142465dac6a6",
-        "result.json": "871bf946f7b0fc6c31725d1db82dea0b138fbae06bcff0f68ada9349a87f326e"
+        "out_gemma3_4b_asdiv-rest_step-calc.jsonl": "28e507c037a7636af9950c59e56444ffd233e6858f13347b801760087781bd8d",
+        "out_gemma3_4b_svamp_direct.jsonl": "6888813fdd7e043ebe7dcdee9d7bfebed26b4369db55bdc0565908487fc3a2ea",
+        "out_gemma3_4b_svamp_step-calc.jsonl": "70f175a2dd447880a6c570796e31923383a5335869507903af662924b9708954",
+        "out_llama3.1_8b_asdiv-rest_direct.jsonl": "2f4af08a2ce50a13ec2158dcfb88b30d45bffe4f60487dc46e32a4bf39094349",
+        "out_llama3.1_8b_asdiv-rest_step-calc.jsonl": "24eb99a9dc640c4907a649556d725ab42e22e696bea784f6c09909cd0142614f",
+        "out_llama3.1_8b_svamp_direct.jsonl": "ecc0ef0f84ce7fc6080a8782deafb596a5f887ff3b469ff8efb604eb361abb3a",
+        "out_llama3.1_8b_svamp_step-calc.jsonl": "8609e5e5398523b0ea2db22ea6a86b85d499e69ee5d8772ab50601949ee50ab0",
+        "out_qwen2.5_7b_asdiv-rest_direct.jsonl": "c7211e0e08e8e4e5ebee20b2b0cc740c7793a2b7076801c5cce2c598eaff42e2",
+        "out_qwen2.5_7b_asdiv-rest_step-calc.jsonl": "b2732a8263f8da72cd2331999fa141dedea716a94659472355fc4376afb994cf",
+        "out_qwen2.5_7b_svamp_direct.jsonl": "8cd3618dd8e28c94f0e652838072dad3dd5dbfe23cbc8b961cc393be88cf880e",
+        "out_qwen2.5_7b_svamp_step-calc.jsonl": "5bcadd6de45e32f3e804852fa0dc8ad69091bbad86d773204521b3cf2ad65174",
+        "result.json": "73f10d558c18b62bc8ab526a0f6137fca22583b19317a7670d564e30df4496bc"
       },
       "environment": {
         "ollama_model": "",
@@ -26,18 +26,18 @@
         "scipy": "1.18.1",
         "seed": "unset"
       },
-      "sha256": "0c77a6540296142aabfb03cc663a41f00f26bdfc5bc448aa6d260d82e984ffcf"
+      "sha256": "fe3574c63d9531adfc1c06956b174fccbcffc336e92ccc0e8cd90045aa9af254"
     }
   },
   "envelope": {
     "payload": {
-      "bundle_id": "r01@0c77a6540296",
-      "bundle_sha256": "0c77a6540296142aabfb03cc663a41f00f26bdfc5bc448aa6d260d82e984ffcf",
+      "bundle_id": "r01@fe3574c63d95",
+      "bundle_sha256": "fe3574c63d9531adfc1c06956b174fccbcffc336e92ccc0e8cd90045aa9af254",
       "signer": "ai-researcher-loop",
-      "signed_at": "2026-10-11T05:26:44.073918+00:00",
+      "signed_at": "2026-10-15T08:09:47.423739+00:00",
       "expires_at": "2027-10-06T00:00:00+00:00"
     },
-    "signature": "rthqpodUd7nq3U29Eb4OiHyCsg6xlIXxIfgjnPI9j1eYM2KX87qQEKO9XPnDJrIS4x4+JUTIuc/ihy3gDV7jAg==",
+    "signature": "P1WptM91TYDkzHS/n76yh6827p6P1vrj4gtdVXRYV0sA7nO5z5IpYUcOKnlbrnpolta0mc3lC/MbWd1x5wOyCA==",
     "algorithm": "Ed25519"
   }
 }

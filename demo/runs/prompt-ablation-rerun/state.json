@@ -24,84 +24,84 @@
           "v3-numbers"
         ],
         "direct_acc": {
-          "qwen2.5:7b": 0.225,
-          "gemma3:4b": 0.0,
+          "qwen2.5:7b": 0.2625,
+          "gemma3:4b": 0.0875,
           "llama3.1:8b": 0.0
         },
         "variant_acc": {
           "v0-canonical": {
-            "qwen2.5:7b": 0.475,
-            "gemma3:4b": 0.0,
+            "qwen2.5:7b": 0.4375,
+            "gemma3:4b": 0.5875,
             "llama3.1:8b": 0.0
           },
           "v1-terse": {
             "qwen2.5:7b": 0.8125,
-            "gemma3:4b": 0.0,
+            "gemma3:4b": 0.5875,
             "llama3.1:8b": 0.0
           },
           "v2-verbose": {
-            "qwen2.5:7b": 0.0375,
-            "gemma3:4b": 0.0,
+            "qwen2.5:7b": 0.8375,
+            "gemma3:4b": 0.7375,
             "llama3.1:8b": 0.0
           },
           "v3-numbers": {
-            "qwen2.5:7b": 0.0,
-            "gemma3:4b": 0.0,
+            "qwen2.5:7b": 0.4125,
+            "gemma3:4b": 0.225,
             "llama3.1:8b": 0.0
           }
         },
         "contrasts": {
           "v0-canonical": {
-            "gain_mean": 0.0833,
+            "gain_mean": 0.225,
             "gains": {
-              "qwen2.5:7b": 0.25,
-              "gemma3:4b": 0.0,
+              "qwen2.5:7b": 0.175,
+              "gemma3:4b": 0.5,
               "llama3.1:8b": 0.0
             },
-            "fixed": 23,
-            "broke": 3,
-            "mcnemar_p": 8.8e-05,
-            "families_positive": "1/3"
+            "fixed": 62,
+            "broke": 8,
+            "mcnemar_p": 0.0,
+            "families_positive": "2/3"
           },
           "v1-terse": {
-            "gain_mean": 0.1958,
+            "gain_mean": 0.35,
             "gains": {
-              "qwen2.5:7b": 0.5875,
-              "gemma3:4b": 0.0,
+              "qwen2.5:7b": 0.55,
+              "gemma3:4b": 0.5,
               "llama3.1:8b": 0.0
             },
-            "fixed": 48,
-            "broke": 1,
+            "fixed": 88,
+            "broke": 4,
             "mcnemar_p": 0.0,
-            "families_positive": "1/3"
+            "families_positive": "2/3"
           },
           "v2-verbose": {
-            "gain_mean": -0.0625,
+            "gain_mean": 0.4083,
             "gains": {
-              "qwen2.5:7b": -0.1875,
-              "gemma3:4b": 0.0,
+              "qwen2.5:7b": 0.575,
+              "gemma3:4b": 0.65,
               "llama3.1:8b": 0.0
             },
-            "fixed": 3,
-            "broke": 18,
-            "mcnemar_p": 0.00149,
-            "families_positive": "0/3"
+            "fixed": 101,
+            "broke": 3,
+            "mcnemar_p": 0.0,
+            "families_positive": "2/3"
           },
           "v3-numbers": {
-            "gain_mean": -0.075,
+            "gain_mean": 0.0958,
             "gains": {
-              "qwen2.5:7b": -0.225,
-              "gemma3:4b": 0.0,
+              "qwen2.5:7b": 0.15,
+              "gemma3:4b": 0.1375,
               "llama3.1:8b": 0.0
             },
-            "fixed": 0,
-            "broke": 18,
-            "mcnemar_p": 8e-06,
-            "families_positive": "0/3"
+            "fixed": 32,
+            "broke": 9,
+            "mcnemar_p": 0.000431,
+            "families_positive": "2/3"
           }
         },
-        "all_variants_beat_direct": false,
-        "confirmed": false,
+        "all_variants_beat_direct": true,
+        "confirmed": true,
         "_config": {
           "n_items": 80,
           "models": 3,
@@ -109,24 +109,24 @@
         },
         "measurable": true,
         "exit_code": 0,
-        "wall_s": 1140.8,
+        "wall_s": 16169.5,
         "cost_usd_known": false,
         "round_cost_usd": 0.0
       },
       "missing": [],
       "exit_code": 0,
       "timed_out": false,
-      "bundle": "r01@88e307ef5e4d",
-      "kill_row": "confirmed == False",
+      "bundle": "r01@5a1a18d9fa4e",
+      "kill_row": "confirmed == True",
       "review": {
         "error": "RuntimeError: no review key: set SILICONFLOW_API_KEY (OpenRouter value), or point LLM_API_URL at a local endpoint (e.g. ollama's http://127.0.0.1:11434/v1/chat/completions)"
       },
-      "verdict": "STOP-REFUTED",
-      "reason": "at least one variant fails: the effect is wording-sensitive, narrow the claim to the canonical phrasing"
+      "verdict": "STOP-EXTEND",
+      "reason": "all variants beat direct: the effect is the policy, report it as such"
     }
   ],
-  "status": "STOP-REFUTED",
-  "started_at": "2026-10-11T05:27:04.780143+00:00",
+  "status": "STOP-EXTEND",
+  "started_at": "2026-10-15T10:01:18.335206+00:00",
   "cost_usd": 0.0,
   "key_pub": "8a35f5b832ee2a7b93a35cb82836d0f8ae6768c42b24d467393ecbb2c472cbce",
   "key_priv": null,
