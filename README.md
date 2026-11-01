@@ -62,6 +62,40 @@ two-seat review correctly calls it `NOT_READY` (2/10 and 1/10), because n=4 is
 meaningless. The loop and the review disagree the way they should: the
 kill-switch measures the *effect*, the seats measure the *evidence*.
 
+## 证明什么 / 不证明什么
+
+> 诚实性约束（fail-closed）：本仓证明的是**「信封（envelope）约束下的自主研究回路」是可执行、可验证、不可绕过的**；不证明任何具体研究结论。
+
+**证明什么**
+
+1. **契约先于执行**：`envelope.py` 的 `validate()` 会在循环启动前拒绝任何不完整的信封（缺 kill-switch 行、缺 required artifact、预算为 0 等）。没有 override 标志——卡住的运行只能换信封，不能绕过（`loop.py` 注释与设计规则）。
+2. **证据链可验证**：每个 round 的 `evidence.py` 产出 Ed25519 签名 bundle（sha256 manifest → bundle id → 绑定信封）。`python -m ai_researcher.loop verify demo/runs/exp-01` 返回 `1 valid`——已提交的 demo 运行在**固定信任根**上可复验（见下方复算段）。
+3. **两席分歧评分**：`two_seat.py` 报 `contradiction`（两席 verdict 不同或分差 ≥3），不报均值——单一 PASS 且无反对记录是弱信号。
+4. **kill-switch 是结果判定**：demo 的 `gain=0.75` 命中 `gain>=0.5` → `STOP-EXTEND`；而两席评审因 n=4 判 `NOT_READY`。**循环测效果、席位测证据**，二者按设计分歧。
+
+**不证明什么**
+
+1. **不证明 demo 的研究结论**：demo 假设「lowercasing+trimming 提升 4 例精确匹配」是**演示用**的确定性玩具（`demo/exp-01/run_exp.py`），n=4 无统计意义；两席已正确判 `NOT_READY`（2/10、1/10）。
+2. **不证明自主回路能产出可信论文**：本仓只证明回路**在其信封内正确执行**；研究质量取决于信封内容与模型，回路本身不评审科学价值。
+3. **不证明免于伪造**：证据链是**可感知篡改**（sha256 哈希 + Ed25519 签名），不是防篡改加密存储；攻击者若控制签名私钥可伪造（`keystore.py` 设计如此）。
+4. **不证明无需人工**：信封的 `approved_by` / `approved_at` 是唯一的人工授权点；回路不产生新授权。
+
+## 复算（Reproduction）
+
+README 中的数字都能从本仓落盘证据重算：
+
+| 数字 | 从哪里重算 | 命令 |
+|---|---|---|
+| 57 个测试通过 | `tests/` 下 10 个 `test_*.py` | `python3 -m pytest -q`（先 `pip install cryptography`） |
+| `gain=0.75, n=4` | `demo/exp-01/run_exp.py`（确定性，`CASES` 4 例） | `python3 demo/exp-01/run_exp.py` → `{"gain": 0.75}` |
+| 信封绑定验证 | `demo/runs/exp-01/round-01/` 的签名 bundle | `PYTHONPATH=src python3 -m ai_researcher.loop verify demo/runs/exp-01` → `1 valid` |
+| STOP-EXTEND 判定 | `state.json` 的 `kill_row` + `verdict` | 读取 `demo/runs/exp-01/state.json` |
+| 两席 NOT_READY | `two_seat.py` 的评审逻辑（demo 输出） | 见 `demo/` 与 `two_seat.py` 单元测试 |
+
+**验证脚本入口**：`.github/workflows/checks.yml`（CI 先装 `requirements.txt` 的 `cryptography`，再跑 pytest）。
+
+> 数字一致性由 `tests/test_signing_power.py` / `tests/test_kill_binding.py` 守护：签名 bundle 必须在固定信任根上验证、kill-switch 判定必须匹配信封行。
+
 ## Design rules (no exceptions)
 
 - No override flag. A stuck run gets a new envelope, not a bypass.
