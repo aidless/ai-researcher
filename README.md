@@ -1,5 +1,7 @@
 # ai-researcher — autonomous research loop with a signed evidence chain
 
+[![CI](https://github.com/aidless/ai-researcher/actions/workflows/checks.yml/badge.svg)](https://github.com/aidless/ai-researcher/actions/workflows/checks.yml)
+
 A fully automatic AI researcher does not mean "no human ever". It means the human
 decides **once**, up front, inside a machine-checkable contract — and the machine
 then runs unattended inside that contract. Anything outside it stops the run
