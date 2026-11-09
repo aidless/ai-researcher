@@ -1,0 +1,16 @@
+{
+  "fixture": true,
+  "note": "Canned seats for the offline wiring check. Not a model judgment and not scientific acceptance.",
+  "methodology": {
+    "score": 2,
+    "verdict": "NOT_READY",
+    "strongest_objection": "result.json was written by the methods command in this same envelope; n is synthetic.",
+    "evidence_refs": ["result.json"]
+  },
+  "devil": {
+    "score": 1,
+    "verdict": "NOT_READY",
+    "strongest_objection": "A kill-switch match on a synthetic gain is not a finding.",
+    "evidence_refs": ["result.json"]
+  }
+}

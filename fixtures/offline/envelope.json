@@ -1,0 +1,37 @@
+{
+  "hypothesis": "Offline fixture: the methods command writes gain 0.75 into result.json, so the pre-registered STOP-EXTEND row matches.",
+  "methods": "OFFLINE_SYNTHETIC",
+  "max_rounds": 1,
+  "max_cost_usd": 1.0,
+  "max_wall_hours": 0.1,
+  "kill_switch": [
+    {
+      "condition": "gain >= 0.5",
+      "action": "STOP-EXTEND",
+      "note": "synthetic file matched the extend row; not a finding"
+    },
+    {
+      "condition": "gain >= 0.0",
+      "action": "CONTINUE",
+      "note": "non-negative synthetic gain stays inside the budget"
+    },
+    {
+      "condition": "gain < 0.0",
+      "action": "STOP-REFUTED",
+      "note": "synthetic gain changed sign"
+    }
+  ],
+  "required_artifacts": ["result.json"],
+  "approved_by": "",
+  "approved_at": "",
+  "seed": 42,
+  "power": {
+    "n": 120,
+    "alpha": 0.05,
+    "min_detectable_effect": 0.25,
+    "power_at_mde": 0.8,
+    "endpoint": ""
+  },
+  "negative_publish": "archive",
+  "tension": "This envelope is a wiring fixture. It checks that approve, one round, a signature, and a canned review can run with no API key. It does not state a scientific hypothesis, and answering it changes nothing about a model."
+}

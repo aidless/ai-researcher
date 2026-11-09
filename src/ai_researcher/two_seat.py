@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import json
 import os
+import pathlib
 import urllib.request
 
 METHODOLOGY_PROMPT = """You are the Methodology reviewer for an AI research claim.
@@ -217,9 +218,53 @@ def review_rubric(draft: str, evidence: str, tier: str, dimensions: list,
             "reviewer": provenance}
 
 
+def _review_from_fixture(path: str) -> dict:
+    """Load both seats from a JSON file. This is a wiring stand-in, not a model.
+
+    The file must set ``fixture: true``. A path that omits the flag is refused
+    even when an API key is present, so a normal review JSON cannot be laundered
+    through ``AI_RESEARCHER_REVIEW_FIXTURE``.
+    """
+    try:
+        raw = json.loads(pathlib.Path(path).read_text(encoding="utf-8"))
+    except OSError as e:
+        raise RuntimeError(f"AI_RESEARCHER_REVIEW_FIXTURE unreadable: {e}") from e
+    except json.JSONDecodeError as e:
+        raise RuntimeError(f"AI_RESEARCHER_REVIEW_FIXTURE is not JSON: {e}") from e
+    if raw.get("fixture") is not True:
+        raise RuntimeError(
+            "AI_RESEARCHER_REVIEW_FIXTURE must be JSON with fixture=true; "
+            "a file that omits the flag is not a review and is not accepted")
+    meth = raw.get("methodology") or {}
+    devil = raw.get("devil") or {}
+    try:
+        contradiction = (
+            (meth.get("verdict") != devil.get("verdict"))
+            or abs(int(meth.get("score", 0)) - int(devil.get("score", 0))) >= 3
+        )
+    except (TypeError, ValueError) as e:
+        raise RuntimeError(f"fixture scores are not integers: {e}") from e
+    joint = "NOT_READY" if "NOT_READY" in (meth.get("verdict"),
+                                           devil.get("verdict")) else "READY"
+    return {"methodology": meth, "devil": devil,
+            "contradiction": contradiction, "joint": joint, "model": "fixture",
+            "fixture": True,
+            "reviewer": {"model": "fixture", "endpoint": str(path),
+                         "endpoint_class": "fixture",
+                         "review_is_not_authorship": True, "fixture": True}}
+
+
 def review(claim: str, evidence: str, model: str = None,
            url: str = None, key: str = None, evidence_models=None) -> dict:
-    """Run both seats. Returns {methodology, devil, contradiction, joint}."""
+    """Run both seats. Returns {methodology, devil, contradiction, joint}.
+
+    ``AI_RESEARCHER_REVIEW_FIXTURE`` short-circuits this to a canned file.
+    Callers must keep ``fixture: true`` on the result. A fixture is not a
+    two-seat verdict.
+    """
+    fixture = os.environ.get("AI_RESEARCHER_REVIEW_FIXTURE", "").strip()
+    if fixture:
+        return _review_from_fixture(fixture)
     model, url, key, provenance = _resolve_backend(model, url, key)
 
     meth = _parse(_chat(model, METHODOLOGY_PROMPT.format(

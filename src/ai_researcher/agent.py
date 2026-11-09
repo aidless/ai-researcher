@@ -61,9 +61,9 @@ def run_step(name: str, module: str, timeout: int = STEP_TIMEOUT_S) -> dict:
     """跑一个模块，忠实记录 rc。绝不吞 rc —— 吞 rc 是本项目犯过多次的错。
 
     cwd 必须是 src 本身：`-m` 把 cwd 放进 sys.path，包才能被找到。
-    本工作区根目录名含字面反斜杠（/home/liuzewen/F:\\deepseek），实测
-    PYTHONPATH 跨 subprocess 传这种路径会丢——cwd 方案不经过环境变量，
-    不踩这个坑。产物路径各模块都从 __file__ 自解析，不受 cwd 影响。
+    目录名里如果有单个反斜杠，把该路径放进 PYTHONPATH 再传给子进程会被
+    拆开。cwd 不经过环境变量，避开这个问题。产物路径各模块都从 __file__
+    自解析，不受 cwd 影响。
     """
     t0 = time.time()
     try:

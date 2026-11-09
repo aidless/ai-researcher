@@ -16,7 +16,6 @@ import sys
 import time
 
 MODEL_DIR_GLOB = "~/.cache/huggingface/hub/models--Qwen--Qwen3-4B/snapshots/*"
-VENV_PY = "/home/liuzewen/.venvs/w4-torch/bin/python"
 
 
 def read_meminfo_gb() -> dict:
