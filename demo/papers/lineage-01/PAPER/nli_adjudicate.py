@@ -20,7 +20,8 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer
 HERE = Path(__file__).resolve().parent
 SNAP = Path.home() / (".cache/huggingface/hub/models--tals--"
                       "albert-xlarge-vitaminc-mnli/snapshots/3082ba54344bd9ddada2be1c5e9b4131721d2a5d/")
-CLEAN = Path("/home/liuzewen/F:\\deepseek/ai-researcher/demo/runs/lineage-01-clean/round-01/artifacts")
+# PAPER -> lineage-01 -> papers -> demo, then runs/...
+CLEAN = HERE.parents[2] / "runs" / "lineage-01-clean" / "round-01" / "artifacts"
 FAM = ["c021", "c022", "c023", "c024", "c025",
        "c026", "c027", "c028", "c029", "c030"]
 

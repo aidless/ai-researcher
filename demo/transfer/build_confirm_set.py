@@ -23,18 +23,33 @@ Invariants, all executable:
 
 Usage: python3 demo/transfer/build_confirm_set.py [--n 160] [--seed 20261010]
 """
-import sys as _sys
-_sys.path.insert(0, '/home/liuzewen/F:/src')
-from ai_researcher import canonical
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import pathlib
 import random
 import re
+import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
+
+
+def _ensure_src() -> None:
+    for cand in [HERE, *HERE.parents]:
+        src = cand / "src"
+        if (src / "ai_researcher" / "loop.py").is_file():
+            s = str(src)
+            if s not in sys.path:
+                sys.path.insert(0, s)
+            return
+    raise SystemExit("no repository root; run from a clone or set PYTHONPATH=src")
+
+
+_ensure_src()
+from ai_researcher import canonical  # noqa: E402
+
 REOT = None
 
 

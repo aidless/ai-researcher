@@ -412,6 +412,9 @@ def _cmd_run_locked(args, workdir: Path, lock_fd) -> int:
                                  # model id is unreadable later: same-family and different-
                                  # family reviews look identical otherwise, and the whole
                                  # point of the two seats is cross-family independence.
+                                 # fixture=true means the seats were read from a file.
+                                 # That is a wiring check, not a verdict.
+                                 "fixture": bool(rev.get("fixture")),
                                  "reviewer": rev.get("reviewer")}
             except Exception as e:
                 rec["review"] = {"error": f"{type(e).__name__}: {e}"}
@@ -466,6 +469,17 @@ def cmd_verify(args):
           + (f"  ({legacy} of them legacy-era, non-authoritative)" if legacy else ""))
     if not res["rounds"]:
         print(f"nothing signed under {workdir}: no state.json rounds and no round-*/envelope.json")
+    st_path = workdir / STATE
+    if st_path.exists():
+        try:
+            st = json.loads(st_path.read_text(encoding="utf-8"))
+        except Exception:
+            st = {}
+        for r in st.get("rounds") or []:
+            rev = r.get("review") or {}
+            if rev.get("fixture"):
+                print(f"  note: round {r.get('round')} review is a fixture file, "
+                      "not a two-seat verdict and not scientific acceptance")
     return 0 if bad == 0 else 1
 
 

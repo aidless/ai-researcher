@@ -1,4 +1,10 @@
 name: checks
+# Green means: unit tests under tests/, plus one offline fixture round
+# (approve, synthetic result.json, Ed25519 verify, canned review).
+# No API key and no network call is required.
+# This workflow does not run scripts/gate.sh. That historical-bundle sweep
+# is .github/workflows/evidence-integrity.yml, and a green badge here is
+# not a venue verdict or a two-seat model review.
 on: [push, pull_request]
 permissions:
   contents: read
@@ -13,5 +19,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - run: python -m pip install -r requirements.txt pytest
-      - run: python -m pytest tests -q
+      - name: install package and test runner
+        run: python -m pip install -e ".[dev]"
+      - name: unit tests
+        run: python -m pytest tests -q
+      - name: offline fixture (no API key)
+        env:
+          SILICONFLOW_API_KEY: ""
+        run: python -m ai_researcher.offline_fixture
