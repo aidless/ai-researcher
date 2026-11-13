@@ -1,5 +1,9 @@
 # ai-researcher — autonomous research loop with a signed evidence chain
 
+[![CI](https://github.com/aidless/ai-researcher/actions/workflows/checks.yml/badge.svg)](https://github.com/aidless/ai-researcher/actions/workflows/checks.yml)
+
+> 🗂 **本仓是「自主研究循环」主题的主线仓**（证据链签字版）。同主题姊妹仓：[ai-researcher-employee](https://github.com/aidless/ai-researcher-employee)（骨架 v0.1，manager/worker 分离参考实现）· [autoresearcher](https://github.com/aidless/autoresearcher)（逐段统计门禁变体）· [agi-research](https://github.com/aidless/agi-research)（五年期 Archimedes 研究纲领）· [auto-research-driver](https://github.com/aidless/auto-research-driver)（TMLR 端到端 driver 层）。
+
 A fully automatic AI researcher does not mean "no human ever". It means the human
 decides **once**, up front, inside a machine-checkable contract — and the machine
 then runs unattended inside that contract. Anything outside it stops the run
