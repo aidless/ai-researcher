@@ -37,7 +37,6 @@ from __future__ import annotations
 
 import json
 import pathlib
-import re
 from dataclasses import dataclass, field
 
 from .envelope import required_n
@@ -211,13 +210,13 @@ def _boundary_probe(run: dict) -> Proposal | None:
         source_run=run["name"],
         evidence=f"{fam} families positive; pooled McNemar "
                  f"{mc.get('fixed')}:{mc.get('broke')} p={mc.get('p')}",
-        tension=(f"The same policy that replicated across every family tested on "
-                 f"the original domain produced no positive family at all on a "
-                 f"shifted domain. Either the mechanism does not generalise or the "
-                 f"policy is mismatched to the shifted task, and the two are not "
-                 f"separable by re-running the same comparison. Answering it decides "
-                 f"whether the result is a bounded mechanism with a stated boundary "
-                 f"or a domain-general one."),
+        tension=("The same policy that replicated across every family tested on "
+                 "the original domain produced no positive family at all on a "
+                 "shifted domain. Either the mechanism does not generalise or the "
+                 "policy is mismatched to the shifted task, and the two are not "
+                 "separable by re-running the same comparison. Answering it decides "
+                 "whether the result is a bounded mechanism with a stated boundary "
+                 "or a domain-general one."),
         method_sketch=("Re-run the shifted domain with a policy adapted to the "
                        "shifted task's structure (specification-explicit rather "
                        "than defect-explicit), keeping items, scorer, seed and "
@@ -296,11 +295,11 @@ def _power_escalation(run: dict, ledger_rows: list) -> Proposal | None:
         source_run=run["name"],
         evidence=f"{len(vague)} ledger claim(s) flagged inconclusive on sample size; "
                  f"n=40 could not detect mde=0.10 (needs n>={need})",
-        tension=(f"The ledger records claims that cannot be resolved at the n "
-                 f"actually run, so they are formally unciteable. Either they "
-                 f"are real effects awaiting enough data, or they are noise that "
-                 f"more data will not rescue. Only one of those is worth buying, "
-                 f"and the difference is currently unmeasured."),
+        tension=("The ledger records claims that cannot be resolved at the n "
+                 "actually run, so they are formally unciteable. Either they "
+                 "are real effects awaiting enough data, or they are noise that "
+                 "more data will not rescue. Only one of those is worth buying, "
+                 "and the difference is currently unmeasured."),
         method_sketch=("Same items, policies, scorer and seed; increase n to the "
                        "pre-checked requirement and report per-condition CIs "
                        "rather than a pooled test."),
@@ -368,10 +367,10 @@ def _retire(run: dict) -> Proposal | None:
         source_run=run["name"],
         evidence=(f"verdict STOP-REFUTED with no amendment and no live "
                   f"alternative reading ({str(run.get('reason') or '')[:120]})"),
-        tension=(f"This direction has been tested and refuted with no remaining "
-                 f"discriminating experiment. Continuing to spend compute on it "
-                 f"is not persistence, it is a sunk cost. Retiring it frees the "
-                 f"budget for directions that can still change a conclusion."),
+        tension=("This direction has been tested and refuted with no remaining "
+                 "discriminating experiment. Continuing to spend compute on it "
+                 "is not persistence, it is a sunk cost. Retiring it frees the "
+                 "budget for directions that can still change a conclusion."),
         method_sketch="No experiment. Archive the run, keep the replication report.",
         kill_switch=[{"condition": "True", "action": "STOP-REFUTED",
                       "note": "archived"}],
@@ -428,10 +427,10 @@ def propose_next(runs_dir, ledger_path=None, limit: int = 5):
 def _render(p: Proposal, seq: int) -> str:
     status = ("**BLOCKED** -- " + p.blocked) if p.blocked else "ready for approval"
     lines = [
-        f"---",
+        "---",
         f"tags: [proposal, self-evolution, {p.kind}, {p.source_run}]",
-        f"generated_by: ai_researcher.evolve",
-        f"---",
+        "generated_by: ai_researcher.evolve",
+        "---",
         "",
         f"# NEXT-{seq:02d} {p.title}",
         "",

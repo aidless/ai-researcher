@@ -33,7 +33,6 @@ import json
 import os
 import pathlib
 import sys
-from math import comb
 
 def _resolve_root(start: pathlib.Path) -> pathlib.Path:
     """Repo root, never derived from the process cwd.

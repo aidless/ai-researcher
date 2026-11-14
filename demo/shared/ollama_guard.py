@@ -48,7 +48,6 @@ def _is_error_text(t: str) -> bool:
 
 def _acquire_lock(timeout_s: int = 600):
     """Exclusive ollama lock. Stale locks (dead pid) are taken over."""
-    import fcntl
     t0 = time.monotonic()
     while True:
         try:

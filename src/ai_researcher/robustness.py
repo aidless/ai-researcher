@@ -22,7 +22,6 @@ selection space.
 from __future__ import annotations
 
 import itertools
-import json
 
 
 def audit_subsets(candidates: dict, metric_fn, select_fn, sizes=(3, 3)):

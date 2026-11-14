@@ -650,7 +650,6 @@ def cmd_amend(args):
     recording what was corrected, why, and whether the correction was knowable
     without seeing the data. Bridge reads amendments and surfaces them.
     """
-    import shutil
     workdir = Path(args.workdir)
     st = _load_state(workdir)
     rnd = int(args.round)

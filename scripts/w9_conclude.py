@@ -22,7 +22,6 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, os.path.join(ROOT, "ai-researcher", "src"))
-import ai_researcher.store as st          # noqa: E402
 import ai_researcher.writer as wr         # noqa: E402
 
 TARGET_ID = "2312.11361v3"

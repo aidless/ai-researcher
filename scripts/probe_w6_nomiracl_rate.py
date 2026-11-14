@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import glob
 import gzip
-import io
 import json
 import os
 import sys

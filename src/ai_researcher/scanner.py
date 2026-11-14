@@ -34,7 +34,7 @@ import json
 import os
 import re
 from dataclasses import dataclass, asdict, field
-from typing import Any, Iterator
+from typing import Any
 
 WIKI = os.path.expanduser("~/.dsh/storages/research_wiki.json")
 SECTIONS = ("做法", "开放点", "与本项目关系")

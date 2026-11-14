@@ -23,13 +23,14 @@ Invariants, all executable:
 
 Usage: python3 demo/transfer/build_confirm_set.py [--n 160] [--seed 20261010]
 """
+from __future__ import annotations
 import sys as _sys
 _sys.path.insert(0, '/home/liuzewen/F:/src')
 from ai_researcher import canonical
-from __future__ import annotations
 
 import argparse
 import json
+import os
 import pathlib
 import random
 import re

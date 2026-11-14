@@ -47,8 +47,7 @@ sys.path.insert(0, str(HERE.parents[1] / "shared"))
 sys.path.insert(0, str(HERE.parents[2] / "src"))
 
 from run_coderepair import (  # noqa: E402
-    TESTS, available_models, build_items, extract_code, normalize_tests,
-    resolve_models, run_tests, selftest as harness_selftest,
+    TESTS, extract_code, resolve_models, run_tests, selftest as harness_selftest,
 )
 
 MODELS = ["qwen2.5:7b", "qwen2.5-coder:7b", "gemma3:4b"]

@@ -18,7 +18,6 @@ fail-closed：store 里该提案不是「已批」状态就拒绝运行。
 """
 from __future__ import annotations
 
-import argparse
 import glob
 import json
 import math

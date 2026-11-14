@@ -300,8 +300,8 @@ def run_chunk(arm: str, start: int, count: int) -> None:
                             rows_collected=n_new)
                         break
                     if consec_err >= 3:
-                        print(f"  !! 3 consecutive row errors with healthy "
-                              f"server; STOPPING CHUNK for review", flush=True)
+                        print("  !! 3 consecutive row errors with healthy "
+                              "server; STOPPING CHUNK for review", flush=True)
                         log(f"chunk-abort-{arm}", at=t["id"],
                             reason="3 consecutive row errors, server healthy",
                             rows_collected=n_new)

@@ -93,7 +93,7 @@ def write_report(layer: dict, n_queue: int) -> str:
         "",
         f"- 新增文件：`queue/decode_layer.json`（{r['count']} 条）——独立层，"
         "共享 wiki **零改动**（本脚本对 wiki 只读）。",
-        f"- 共享 wiki：未修改任何笔记（scanner/decode_queue 同款只读约束）。",
+        "- 共享 wiki：未修改任何笔记（scanner/decode_queue 同款只读约束）。",
         f"- **已解码 0 / {n_queue}**：标签展开全部待人工（decode_queue 铁律："
         "自动展开=编造）。`decoded` 全空，auto_expanded=0 不变量保持。",
         f"- 配对完成 {r['count']} / {n_queue}：每条压缩标签已配上同笔记的"

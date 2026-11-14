@@ -48,7 +48,6 @@ against the tier's rubric. A paper passes a tier only if BOTH halves pass.
 """
 from __future__ import annotations
 
-import json
 import re
 
 TIERS = ("workshop", "conference-main", "tmlr", "sci-journal", "zone1")

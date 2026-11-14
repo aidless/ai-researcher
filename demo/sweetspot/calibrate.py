@@ -9,7 +9,6 @@ import json
 import os
 import pathlib
 import sys
-import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from run_sweetspot import ask, grade

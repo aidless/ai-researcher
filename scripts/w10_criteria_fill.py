@@ -39,8 +39,6 @@ store 里 41 条被阻塞提案的 blocking_reason 全是同一族：「缺判�
 """
 from __future__ import annotations
 
-import gzip
-import io
 import json
 import os
 import re

@@ -338,7 +338,7 @@ def main() -> int:
     worst = list(conf_tests) + [("untestable-%d" % i, 1.0, "untestable-%d" % i)
                                 for i in range(len(untested))]
     bh_worst = benjamini_hochberg(worst)
-    print(f"\nSENSITIVITY (untestable arms as worst-case p=1.0 inside confirmatory):")
+    print("\nSENSITIVITY (untestable arms as worst-case p=1.0 inside confirmatory):")
     for label in sorted(bh_worst, key=lambda k: bh_worst[k][0]):
         p_bh, ok, rank, run = bh_worst[label]
         if run.startswith("untestable"):

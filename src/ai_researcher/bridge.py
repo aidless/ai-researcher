@@ -244,10 +244,10 @@ def cmd_bridge(args):
             seen.add(obj)
             if i < last_idx:
                 d.append(f"- [devil, r{rnd['round']:02d}] {obj[:300]}")
-                d.append(f"  → Response: addressed in a later round")
+                d.append("  → Response: addressed in a later round")
             else:
                 d.append(f"- [devil, r{rnd['round']:02d}] {obj[:300]}")
-                d.append(f"  → Response: OPEN — must be addressed before submission")
+                d.append("  → Response: OPEN — must be addressed before submission")
     if not seen:
         d.append("- No recorded objections (review absent or joint READY without objection — "
                  "treat as weak signal per the two-seat rule).")

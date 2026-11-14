@@ -60,7 +60,6 @@ import sys
 from dataclasses import dataclass, field, asdict
 from typing import Any
 
-from . import scanner as S
 from . import ranker as R
 
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(

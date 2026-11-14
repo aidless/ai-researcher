@@ -28,7 +28,6 @@ Usage:
 from __future__ import annotations
 
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -191,7 +190,6 @@ def archive_feedback(ideas: list, archive: list) -> list:
     decisions with reasons. The archive itself is never rewritten by this
     function -- it is append-only.
     """
-    from collections import Counter
     verdicts: dict = {}
     for rec in archive:
         verdicts.setdefault(rec.get("source_gap", "?"), []).append(rec.get("verdict"))

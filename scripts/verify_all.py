@@ -31,7 +31,6 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]  # scripts/ -> repo root
 sys.path.insert(0, str(ROOT / "src"))
 
-from ai_researcher.evidence import verify_round  # noqa: E402
 from ai_researcher import keystore as KS  # noqa: E402
 from ai_researcher.envelope import Envelope  # noqa: E402
 from ai_researcher.loop import _parse_ledger  # noqa: E402
@@ -316,7 +315,6 @@ def check_envelopes() -> None:
 
 def check_mechanical_gate(tier: str = "zone1") -> None:
     section(f"{tier} mechanical gate (real manuscript)")
-    from ai_researcher.quality import BAR
     draft_p = ROOT / "demo/papers/SYNTHESIS.md"
     ledger_p = ROOT / "demo/papers/CLAIM_LEDGER.md"
     if not draft_p.exists():

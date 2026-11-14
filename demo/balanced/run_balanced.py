@@ -11,7 +11,6 @@ Writes artifacts/result.json {full, balanced, verdict}.
 No model calls. Deterministic.
 """
 import json
-import math
 import os
 import pathlib
 import sys
